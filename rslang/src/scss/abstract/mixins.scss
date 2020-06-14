@@ -1,7 +1,8 @@
-@mixin font($size, $height, $weight: 400) {
+@mixin font ($size, $height: $size, $weight: normal, $style: normal) {
   font-size: $size;
-  font-size: $weight;
   line-height: $height;
+  font-weight: $weight;
+  font-style: $style;
 }
 
 @mixin laptop-l {
