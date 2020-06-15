@@ -7,7 +7,8 @@
     "style": "sass --watch src/scss/style.scss src/css/style.css",
     "dev": "webpack --mode development",
     "prod": "webpack --mode production",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "build": "webpack -p"
   },
   "author": "",
   "license": "ISC",

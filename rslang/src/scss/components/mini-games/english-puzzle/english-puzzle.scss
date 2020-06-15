@@ -1,0 +1,56 @@
+* {
+    margin: 0 auto;
+}
+
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+    min-width: 320px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-container, .start-window, .result-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.submit-button, .information-button, .game-button{
+    width: 150px;
+    height: 40px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    outline: none;
+    background-color: rgb(255, 177, 153);
+    border: none;
+    transition: all 0.5s;
+    margin-top: 10px;
+}
+
+.submit-button:hover, .information-button:hover, .game-button:hover{
+    background:rgb(255, 88, 88);
+    color:white;
+    box-shadow: inset 0 0 0 1px #3a7999;
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+.start-block_information {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 500;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.information-title {
+    margin-bottom: 20px;
+    font-size: 2em;
+}
