@@ -1,0 +1,5 @@
+class MapAndShuffle{
+    mapping(){
+        
+    }
+}
