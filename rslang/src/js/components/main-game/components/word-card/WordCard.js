@@ -1,37 +1,46 @@
 import create from '../../../../utils/сreate';
-import mainGameStrings from '../../../../constants/constants';
+import { mainGameStrings, urls } from '../../../../constants/constants';
+
+const {
+  WORDS_IMAGES_URL,
+} = urls;
 
 const {
   REMOVE_WORD_BUTTON,
   ADD_TO_DIFFICULT_WORDS,
+  NEXT_BUTTON,
 } = mainGameStrings;
 
 class WordCard {
-  constructor(word, translation, textMeaning, textExample, wordTranslate, audio, image) {
+  constructor(id, word, wordTranslate, textMeaning, textExample, audio, image) {
     this.HTML = null;
 
+    this.id = id;
     this.word = word;
-    this.translation = translation;
+    this.wordTranslate = wordTranslate;
     this.textMeaning = textMeaning;
     this.textExample = textExample;
-    this.wordTranslate = wordTranslate;
     this.audio = audio;
     this.image = image;
   }
 
   render() {
     const sentencesBlock = this.renderSentences();
-    const imageBlock = create(
-      'div', 'word-card__image-block',
-      `<img src="${this.image}" alt="${this.word}" />`,
-      null,
-    );
+    const imageBlock = create('div', 'word-card__image-block');
     const formHTML = WordCard.renderWordForm();
+    const wordTranslationHTML = create('div', 'word-card__translation', this.wordTranslate);
+
+    const wordImage = new Image();
+    wordImage.src = `${WORDS_IMAGES_URL}${this.image}`;
+    wordImage.onload = () => {
+      imageBlock.innerHTML = `<img src="${wordImage.src}" alt="${this.word}" />`;
+    };
+    const nextButton = WordCard.renderButton('next-button', NEXT_BUTTON);
 
     this.HTML = create(
       'div', 'main-game__word-card',
-      [sentencesBlock, imageBlock, formHTML],
-      null, ['word', this.word],
+      [sentencesBlock, imageBlock, wordTranslationHTML, formHTML, nextButton],
+      null, ['word', this.word], ['word-id', this.id],
     );
 
     return this.HTML;

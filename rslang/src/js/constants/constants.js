@@ -3,6 +3,7 @@ const urls = {
   CREATE_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users',
   LOGIN_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/signin',
   GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
+  WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/irinainina/rslang-data/master/',
 };
 
 const authenticationTexts = {
@@ -26,6 +27,7 @@ const errorTypes = {
 const mainGameStrings = {
   REMOVE_WORD_BUTTON: 'Снять с изучения',
   ADD_TO_DIFFICULT_WORDS: 'Добавить в сложные',
+  NEXT_BUTTON: 'Далее',
 };
 
 export {
