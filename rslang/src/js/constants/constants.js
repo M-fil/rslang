@@ -4,6 +4,7 @@ const urls = {
   LOGIN_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/signin',
   GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/irinainina/rslang-data/master/',
+  WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/irinainina/rslang-data/master/',
 };
 
 const authenticationTexts = {
@@ -28,6 +29,8 @@ const mainGameStrings = {
   REMOVE_WORD_BUTTON: 'Снять с изучения',
   ADD_TO_DIFFICULT_WORDS: 'Добавить в сложные',
   NEXT_BUTTON: 'Далее',
+  SETTINGS_AUTOPLABACK_TEXT: 'Автопроизношение',
+  SETTINGS_TRANSLATIONS_LABEL_TEXT: 'Показывать переводы слова и предложений',
 };
 
 export {

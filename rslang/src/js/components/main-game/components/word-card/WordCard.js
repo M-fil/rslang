@@ -12,14 +12,21 @@ const {
 } = mainGameStrings;
 
 class WordCard {
-  constructor(id, word, wordTranslate, textMeaning, textExample, audio, image) {
+  constructor(
+    id, word, wordTranslate,
+    textMeaning, textMeaningTranslate, 
+    textExample, textExampleTranslate,
+    audio, image,
+  ) {
     this.HTML = null;
 
     this.id = id;
     this.word = word;
     this.wordTranslate = wordTranslate;
     this.textMeaning = textMeaning;
+    this.textMeaningTranslate = textMeaningTranslate;
     this.textExample = textExample;
+    this.textExampleTranslate = textExampleTranslate;
     this.audio = audio;
     this.image = image;
   }
@@ -27,28 +34,35 @@ class WordCard {
   render() {
     const sentencesBlock = this.renderSentences();
     const imageBlock = create('div', 'word-card__image-block');
-    const formHTML = WordCard.renderWordForm();
-    const wordTranslationHTML = create('div', 'word-card__translation', this.wordTranslate);
+    const formHTML = this.renderWordForm();
+    const wordTranslationHTML = create(
+      'div', 'word-card__translation',
+      this.wordTranslate, null,
+      ['style', 'opacity: 0'], ['translationElement', ''],
+    );
 
     const wordImage = new Image();
     wordImage.src = `${WORDS_IMAGES_URL}${this.image}`;
     wordImage.onload = () => {
       imageBlock.innerHTML = `<img src="${wordImage.src}" alt="${this.word}" />`;
     };
-    const nextButton = WordCard.renderButton('next-button', NEXT_BUTTON);
 
     this.HTML = create(
       'div', 'main-game__word-card',
-      [sentencesBlock, imageBlock, wordTranslationHTML, formHTML, nextButton],
+      [sentencesBlock, imageBlock, wordTranslationHTML, formHTML],
       null, ['word', this.word], ['word-id', this.id],
     );
 
     return this.HTML;
   }
 
-  static renderWordForm() {
-    const formHTML = create('form', 'main-game__form');
-    create('input', 'word-card__input', '', formHTML, ['type', 'text']);
+  renderWordForm() {
+    const nextButton = WordCard.renderButton('next-button', NEXT_BUTTON, 'submit');
+    const inputHTML = create(
+      'input', 'word-card__input', '', null,
+      ['type', 'text'], ['style', `width: ${this.word.length}ch`],
+    );
+    const formHTML = create('form', 'main-game__form', [inputHTML, nextButton]);
 
     return formHTML;
   }
@@ -56,7 +70,17 @@ class WordCard {
   renderSentences() {
     const container = create('div', 'word-card__sentences');
     create('div', 'word-card__text-meaning', this.textMeaning, container);
+    create(
+      'div', 'word-card__text-meaning-translation',
+      this.textMeaningTranslate, container,
+      ['style', 'opacity: 0;'], ['translationElement', ''],
+    );
     create('div', 'word-card__text-example', this.textExample, container);
+    create(
+      'div', 'word-card__text-example-translation',
+      this.textExampleTranslate, container,
+      ['style', 'opacity: 0;'], ['translationElement', ''],
+    );
 
     return container;
   }
