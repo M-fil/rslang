@@ -8,7 +8,8 @@ const {
 } = urls;
 
 const {
-  INCORRECT_VALUES,
+  USER_ALREADY_EXISTS,
+  ERROR_417,
 } = errorTypes;
 
 const getWords = async (page = 0, group = 0) => {
@@ -28,8 +29,8 @@ const createUser = async (user) => {
     body: JSON.stringify(user),
   });
 
-  if (rawResponse.status === 417) {
-    throw new Error(INCORRECT_VALUES);
+  if (rawResponse.status === ERROR_417) {
+    throw new Error(USER_ALREADY_EXISTS);
   }
 
   const content = await rawResponse.json();
@@ -46,8 +47,8 @@ const loginUser = async (user) => {
     body: JSON.stringify(user),
   });
 
-  if (rawResponse.status === 417) {
-    throw new Error(INCORRECT_VALUES);
+  if (rawResponse.status === ERROR_417) {
+    throw new Error(USER_ALREADY_EXISTS);
   }
 
   const content = await rawResponse.json();

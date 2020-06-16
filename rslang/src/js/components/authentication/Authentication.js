@@ -1,5 +1,6 @@
 import create from '../../utils/сreate';
 import { authenticationTexts, errorTypes } from '../../constants/constants';
+import { checkPassword, checkEmail } from '../../utils/validators';
 
 const {
   PASSWORD_LABEL_TEXT,
@@ -10,6 +11,7 @@ const {
   EMPTY_FIELD,
   INCORRECT_VALUES,
   PASSWORD_REQUIRMENTS,
+  INCORRECT_EMAIL,
 } = errorTypes;
 
 class Authentication {
@@ -72,24 +74,30 @@ class Authentication {
       const passwordInput = formHTML.querySelector('[name="password"]');
       const emailInput = formHTML.querySelector('[name="email"]');
 
-      if (passwordInput.value.trim() === '' || emailInput.value.trim() === '') {
-        throw new Error(EMPTY_FIELD);
-      }
+      const trimedPasswordValue = passwordInput.value.trim();
+      const trimedEmailValue = emailInput.value.trim();
       const userSubmitData = {
-        email: emailInput.value.trim(),
-        password: passwordInput.value.trim(),
+        email: trimedEmailValue,
+        password: trimedPasswordValue,
       };
 
       try {
+        if (trimedPasswordValue === '' || trimedEmailValue === '') {
+          throw new Error(EMPTY_FIELD);
+        }
+
+        if (!checkPassword(trimedPasswordValue)) {
+          throw new Error(PASSWORD_REQUIRMENTS);
+        }
+
+        if (!checkEmail(trimedEmailValue)) {
+          throw new Error(INCORRECT_EMAIL);
+        }
+
         const data = await submitFunction(userSubmitData);
 
         if ('error' in data) {
-          const { path } = data.error.errors[0];
-          if (path.includes('password')) {
-            throw new Error(PASSWORD_REQUIRMENTS);
-          } else {
-            throw new Error(INCORRECT_VALUES);
-          }
+          throw new Error(INCORRECT_VALUES);
         }
 
         localStorage.setItem('user-data', JSON.stringify(data));
