@@ -23,8 +23,14 @@ const errorTypes = {
   USER_ALREADY_EXISTS: 'пользователь с такими данными уже существует',
 };
 
+const mainGameStrings = {
+  REMOVE_WORD_BUTTON: 'Снять с изучения',
+  ADD_TO_DIFFICULT_WORDS: 'Добавить в сложные',
+};
+
 export {
   urls,
   authenticationTexts,
   errorTypes,
+  mainGameStrings,
 };
