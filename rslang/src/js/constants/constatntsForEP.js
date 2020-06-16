@@ -7,7 +7,7 @@ const START_WINDOW = {
 
 const RESULT_FORM = {
   title: 'Результат',
-  buttonNames: 'Продолжить',
+  buttonName: 'Продолжить',
   statusTitle: ['Я знаю', 'Я не знаю'],
 };
 

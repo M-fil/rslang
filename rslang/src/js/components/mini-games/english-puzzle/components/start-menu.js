@@ -4,7 +4,6 @@ import {
 } from '../../../../constants/constatntsForEP';
 
 export default function createStartWindow() {
-  const backgroundBlock = create('div', 'start-window');
   const informationElements = [
     create('p', 'information-title'),
     create('p', 'information-description'),
@@ -28,6 +27,5 @@ export default function createStartWindow() {
     }
   }
   const informationBlock = create('div', 'start-block_information', informationElements);
-  backgroundBlock.appendChild(informationBlock);
-  return backgroundBlock;
+  return create('div', 'start-window', informationBlock);
 }

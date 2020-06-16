@@ -54,3 +54,165 @@
     margin-bottom: 20px;
     font-size: 2em;
 }
+
+.hidden-element {
+    display: none;
+}
+
+.game-container {
+    width: 100%;
+    height: 100%;
+}
+
+.game-block {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.control-block {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.game-mode-selects, .control-buttons_container {
+    width: 35%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.select-block {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 33%;
+}
+
+.select-block p::after {
+    content: ':';
+    margin-right: 2px;
+}
+
+.select-block_mode {
+    width: 60%;
+    max-width: 60px;
+    min-width: 45px;
+    height: 40%;
+    background-color:  lightcyan;
+    border: 2px solid rgb(255, 177, 153);
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.control-buttons_container button, .new_lvl-button {
+    position: relative;
+    margin: 1px;
+    width: 45px;
+    height: 45px;
+    outline: none;
+    cursor: pointer;
+    background-color: lightcyan;
+    border: 2px solid rgb(255, 177, 153);
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+
+.sound-button {
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.translate-sentense {
+    text-align: center;
+    width: 70%;
+    height: 80%;
+}
+
+.control-buttons_container button:hover {
+    border-radius: 50%;
+}
+
+.new_lvl-button:hover {
+    border-radius: 50%;
+    background-color: rgb(255, 88, 88);
+}
+
+.control-buttons_container .active-button {
+    background-color: rgb(255, 88, 88);
+    border-color: black;
+}
+
+.game-block_field {
+    height: 85%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.game-block_field--tooltips,
+.game-block_field--puzzle,
+.game-block_field--description,
+.game-block_field--buttons {
+    margin-bottom: 1%;
+    width: 70%;
+    display: flex;
+}
+
+.game-block_field--tooltips {
+    background-color: lightcyan;
+    position: relative;
+    height: 9%;
+    flex-direction: column;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-block_field--puzzle {
+    padding: 5px;
+    background-color: rgb(255, 177, 153);
+    height: 60%;
+    flex-direction: column;
+}
+
+.game-block_field--puzzle:last-child {
+    border-bottom: none;
+}
+
+.game-block_field--description {
+    background-color: rgb(255, 177, 153);
+    height: 10%;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-block_field--buttons {
+    height: 10%;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-field_row {
+    width: 100%;
+    height: 10%;
+    transition: all 0.5s;
+    border-radius: 5px;
+    padding: 0 1px 0 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 0.5px solid  rgb(255, 88, 88);
+}
