@@ -7,8 +7,7 @@ export default class Preloader {
 
   render() {
     const body = document.querySelector('body');
-    this.container = create('div', 'container', '', body);
-    this.preload = create('div', 'preloader', '', this.container);
+    this.preload = create('div', 'preloader', '', body);
     this.preloadContent = create('div', 'preloader_content', '', this.preload);
     this.preloadFirst = create('div', 'preloader_first', '', this.preloadContent);
     this.preloadSecond = create('div', 'preloader_second', '', this.preloadContent);
