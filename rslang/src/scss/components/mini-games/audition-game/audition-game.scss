@@ -1,0 +1,68 @@
+body{
+    font-size: 4rem;
+}
+.answers{
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 45%;
+    
+}
+.element{
+    border: 1px solid black;
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 300;
+    max-width: 270px;
+    text-align: center;
+    position: relative;
+    padding: 20px 20px;
+    transition: all .15s ease;
+    border-radius: 5%;
+    cursor: pointer;
+    margin: 0 20px;
+}
+.game{
+    margin: 0 auto;
+    max-width: 600px;
+}
+.gameName{
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 60px;
+    color: #6cffde;
+    opacity: .8;
+    text-transform: uppercase;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 13px;
+}
+.gameDesc{
+    margin: 0 auto 58px;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 300;
+}
+.gameStartButton{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1;
+    text-align: center;
+    padding: 19px 15px 21px;
+    text-decoration: none!important;
+    min-width: 162px;
+    color: #fff!important;
+    background: #00c49d;
+    border-radius: 4px;
+    transition: all .15s ease;
+}
+.startScreen{
+    margin: 14% auto;
+}
+.hide{
+    display: none;
+}

@@ -1,18 +1,28 @@
 import GameService from './GameService';
-import create  from '../../../utils/сreate';
+import StartGameScreen from './StartGameScreen'
+
 
 export default class AuditionGame{
    
     render(){
+        const gameStartScreen= new StartGameScreen();
+        const gameStartButton=gameStartScreen.createStartScreen();
         const gS = new GameService('toasty');
         const gameServ = new GameService('toast');
-        gameServ.init();
-        gameServ.compare(gS);
+        gameStartButton.addEventListener('click',() => {
+           document.querySelector('.startScreen').classList.toggle('hide');
+           
+           gameServ.init();
+          // gameServ.compare(gS);
+        });
     }
 }
-const  body  = document.querySelector('body');
-const container = create('div','container','test',body);
-console.log(container);
-   
-    console.log("wqrq!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    
+/*window.onload=()=>{
+document.querySelector('.gameStartButton').addEventListener("click",(event)=>{
+    document.querySelector('.startScreen').classList.toggle('hide');
+    const gS = new GameService('toasty');
+    const gameServ = new GameService('toast');
+    gameServ.init();
+    gameServ.compare(gS);
+    });
+}*/
