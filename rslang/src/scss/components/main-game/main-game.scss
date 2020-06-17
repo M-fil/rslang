@@ -45,3 +45,16 @@
   display: flex;
   justify-content: space-around;
 }
+
+.word-card__sentence-word-container {
+  border-bottom: 1px solid $standard-border-color;
+  padding-bottom: 3px;
+}
+
+.word-card__sentence-word {
+  opacity: 0;
+
+  &_visible {
+    opacity: 1;
+  }
+}

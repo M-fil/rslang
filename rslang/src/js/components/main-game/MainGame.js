@@ -32,17 +32,19 @@ class MainGame {
     const words = await getWords();
     this.state.wordsArray = words;
 
+    console.log(words);
     const wordCard = MainGame.createWordCard(words[currentWordIndex]);
     this.setAudiosForWords(words[currentWordIndex]);
     const gameSettingsBlock = new SettingsControls();
 
-    const mainGameHTML = create('div', 'main-game', [wordCard.render(), gameSettingsBlock.render()]);
+    const mainGameHTML = create('div', 'main-game', [gameSettingsBlock.render(), wordCard.render()]);
     document.body.append(mainGameHTML);
     const wordCardInput = document.querySelector('.word-card__input');
     wordCardInput.focus();
     this.activateGameSettingsEvents();
     this.activateNextButton();
     MainGame.activateInputWordsHandler();
+    this.activateEstimateButtons();
   }
 
   renderWordCard(currentWordCard) {
@@ -55,6 +57,7 @@ class MainGame {
     wordCardInput.focus();
     this.activateNextButton();
     MainGame.activateInputWordsHandler();
+    this.activateEstimateButtons();
   }
 
   activateGameSettingsEvents() {
@@ -72,13 +75,15 @@ class MainGame {
     });
   }
 
-  showTheNextWordCard() {
-    const mainGameHTML = document.querySelector('.main-game');
+  switchToTheNextWordCard() {
     const inputHTML = document.querySelector('.word-card__input');
     const wordCardHTML = document.querySelector('.main-game__word-card');
+    const nextButtonHTML = document.querySelector('.main-game__next-button');
+    const sentencesWords = document.querySelectorAll('.word-card__sentence-word');
 
     const { currentWordIndex, wordsArray } = this.state;
     const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
+
     if (currentWordIndex + 1 !== wordsArray.length) {
       const numberOfMistakes = MainGame.checkWord(wordsArray[currentWordIndex].word);
 
@@ -90,19 +95,30 @@ class MainGame {
       }
 
       if (numberOfMistakes === 0) {
+        sentencesWords.forEach((word) => {
+          word.classList.add('word-card__sentence-word_visible');
+        });
         inputHTML.value = '';
         inputHTML.setAttribute('disabled', 'disabled');
+        nextButtonHTML.setAttribute('disabled', 'disabled');
 
         wordCardHTML.append(new EstimateButtonsBlock().render());
-
-        setTimeout(() => {
-          MainGame.removeWordCardFromDOM();
-
-          this.state.currentWordIndex += 1;
-          this.renderWordCard(wordsArray[this.state.currentWordIndex]);
-        }, 2000);
       }
     }
+  }
+
+  activateEstimateButtons() {
+    document.addEventListener('click', (event) => {
+      if (event.target.classList.contains('main-game__estimate-button')) {
+        const { wordsArray } = this.state;
+        MainGame.removeWordCardFromDOM();
+
+        this.state.currentWordIndex += 1;
+        this.renderWordCard(wordsArray[this.state.currentWordIndex]);
+        this.state.audio.pause();
+        this.state.audio.src = '';
+      };
+    });
   }
 
   activateNextButton() {
@@ -110,9 +126,7 @@ class MainGame {
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      if (this.state.isAudioEnded) {
-        this.showTheNextWordCard();
-      }
+      this.switchToTheNextWordCard();
     });
   }
 
@@ -205,7 +219,10 @@ class MainGame {
   }
 
   playAudio(source) {
-    if (this.state.audio.src === '' || this.state.audio.ended) {
+    const { src, ended } = this.state.audio;
+    console.log((/localhost/).test(src));
+    console.log(src);
+    if (src === '' || (/localhost/).test(src) || ended) {
       this.state.audio.src = source;
       this.state.audio.play();
     }

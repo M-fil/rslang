@@ -70,20 +70,28 @@ class WordCard {
     return formHTML;
   }
 
+  static removeCurrentWordFromSentence(sentenceHTML) {
+    const newNode = create('span', 'word-card__sentence-word-container');
+    create('span', 'word-card__sentence-word', sentenceHTML.firstElementChild.textContent, newNode);
+    sentenceHTML.replaceChild(newNode, sentenceHTML.firstElementChild);
+  }
+
   renderSentences() {
     const container = create('div', 'word-card__sentences');
-    create('div', 'word-card__text-meaning', this.textMeaning, container);
+    const textMeaningHTML = create('div', 'word-card__text-meaning', this.textMeaning, container);
     create(
       'div', 'word-card__text-meaning-translation',
       this.textMeaningTranslate, container,
       ['style', 'opacity: 0;'], ['translationElement', ''],
     );
-    create('div', 'word-card__text-example', this.textExample, container);
+    const textExampleHTML = create('div', 'word-card__text-example', this.textExample, container);
     create(
       'div', 'word-card__text-example-translation',
       this.textExampleTranslate, container,
       ['style', 'opacity: 0;'], ['translationElement', ''],
     );
+    WordCard.removeCurrentWordFromSentence(textMeaningHTML);
+    WordCard.removeCurrentWordFromSentence(textExampleHTML);
 
     return container;
   }
