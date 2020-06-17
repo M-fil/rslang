@@ -10,6 +10,7 @@ if (!localStorage.userSettings) {
   const userSettings = {
     sound: false,
     translate: false,
+    background: false,
   };
   localStorage.setItem('userSettings', JSON.stringify(userSettings));
 }
@@ -126,9 +127,15 @@ function createUserTooltips(buttonStat) {
   return create('div', 'game-block_field--tooltips', [soundBlock, translateSentense]);
 }
 
+const gameFieldRows = new Array(GAME_BLOCK.gameZoneRows).fill(1).map((el) => {
+  let elem = el;
+  elem = create('div', 'puzzle-row');
+  return elem;
+});
+
 function createWorkBlock() {
   const buttonStat = JSON.parse(localStorage.userSettings);
-  const puzzleField = create('div', 'game-block_field--puzzle', new Array(GAME_BLOCK.gameZoneRows).fill(create('div', 'game-field_row')));
+  const puzzleField = create('div', 'game-block_field--puzzle', gameFieldRows);
   const descriptionField = create('div', 'game-block_field--description');
   const gameField = create('div', 'game-block_field', [createUserTooltips(buttonStat), puzzleField, descriptionField, createGameButtons()]);
   const controlBlock = create('div', 'control-block', [createSelectBlock(), createControlButtons(buttonStat)]);

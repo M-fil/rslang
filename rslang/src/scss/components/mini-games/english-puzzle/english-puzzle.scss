@@ -122,6 +122,35 @@
     border: 2px solid rgb(255, 177, 153);
     border-radius: 5px;
     transition: all 0.5s;
+    font-size: 1.5em;
+}
+
+.button-sintezise::before {
+    position: absolute;
+    left: 25%;
+    bottom: 20%;
+    content: '\1F508';
+}
+
+.button-trunslate::before {
+    position: absolute;
+    left: 25%;
+    bottom: 20%;
+    content: '\240A';
+}
+
+.button-background::before {
+    position: absolute;
+    left: 25%;
+    bottom: 20%;
+    content: '\1F3B4';
+}
+
+.button-logout::before {
+    position: absolute;
+    left: 25%;
+    bottom: 20%;
+    content: '\1F6AA';
 }
 
 .sound-button {
@@ -147,6 +176,14 @@
     border-radius: 50%;
     background-color: rgb(255, 88, 88);
 }
+
+.new_lvl-button::before {
+    position: absolute;
+    left: 25%;
+    bottom: 20%;
+    content: '\1F50E';
+}
+
 
 .control-buttons_container .active-button {
     background-color: rgb(255, 88, 88);
@@ -181,14 +218,15 @@
 }
 
 .game-block_field--puzzle {
-    padding: 5px;
     background-color: rgb(255, 177, 153);
     height: 60%;
+    width: 75%;
     flex-direction: column;
 }
 
-.game-block_field--puzzle:last-child {
-    border-bottom: none;
+.puzzle-row {
+    height: 10%;
+    width: 100%;
 }
 
 .game-block_field--description {
@@ -205,14 +243,19 @@
     align-items: center;
 }
 
-.game-field_row {
-    width: 100%;
-    height: 10%;
-    transition: all 0.5s;
-    border-radius: 5px;
-    padding: 0 1px 0 1px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 0.5px solid  rgb(255, 88, 88);
+.canvas-item:not(:first-child) {
+    margin-left: -8px;
+}
+
+.canvas-item {
+  height: 35px;
+  cursor: pointer;
+}
+
+.group-words {
+  display: flex;
+}
+
+.row-hover {
+    background-color: lightblue;
 }
