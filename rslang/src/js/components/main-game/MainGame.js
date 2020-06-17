@@ -5,6 +5,7 @@ import { checkIsManyMistakes } from '../../utils/calculations';
 
 import WordCard from './components/word-card/WordCard';
 import SettingsControls from './components/settings-controls/SettingsControls';
+import EstimateButtonsBlock from './components/estimate-buttons/EstimateButtonsBlock';
 
 const {
   WORDS_AUDIOS_URL,
@@ -15,6 +16,7 @@ class MainGame {
     this.state = {
       currentWordIndex: 0,
       wordsArray: [],
+      audio: new Audio(),
       audios: [],
       isAudioEnded: true,
       gameSetting: {
@@ -64,6 +66,8 @@ class MainGame {
     });
 
     translationSettingCheckbox.addEventListener('change', (event) => {
+      const wordTransaltionHTML = document.querySelector('.word-card__translation');
+      wordTransaltionHTML.style.opacity = event.target.checked ? 1 : 0;
       this.state.gameSetting.isTranslationsEnabled = event.target.checked;
     });
   }
@@ -71,6 +75,7 @@ class MainGame {
   showTheNextWordCard() {
     const mainGameHTML = document.querySelector('.main-game');
     const inputHTML = document.querySelector('.word-card__input');
+    const wordCardHTML = document.querySelector('.main-game__word-card');
 
     const { currentWordIndex, wordsArray } = this.state;
     const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
@@ -87,6 +92,8 @@ class MainGame {
       if (numberOfMistakes === 0) {
         inputHTML.value = '';
         inputHTML.setAttribute('disabled', 'disabled');
+
+        wordCardHTML.append(new EstimateButtonsBlock().render());
 
         setTimeout(() => {
           MainGame.removeWordCardFromDOM();
@@ -162,7 +169,7 @@ class MainGame {
     });
 
     inputHTML.addEventListener('input', () => {
-      if (userAnswerHTML.childElementCount > 0) {
+      if (userAnswerHTML && userAnswerHTML.childElementCount > 0) {
         userAnswerHTML.innerHTML = '';
         userAnswerHTML.classList.remove('word-card__user-answer_translucent');
         userAnswerHTML.children.forEach((child) => {
@@ -184,10 +191,9 @@ class MainGame {
     if (number < this.state.audios.length) {
       this.state.isAudioEnded = false;
       let firstAudioIndex = number;
-      const audio = new Audio(this.state.audios[firstAudioIndex]);
-      audio.play();
+      this.playAudio(this.state.audios[firstAudioIndex]);
 
-      audio.onended = () => {
+      this.state.audio.onended = () => {
         if (firstAudioIndex === this.state.audios.length - 1) {
           this.state.isAudioEnded = true;
         }
@@ -195,6 +201,13 @@ class MainGame {
         firstAudioIndex += 1;
         this.playAudiosInTurns(firstAudioIndex);
       };
+    }
+  }
+
+  playAudio(source) {
+    if (this.state.audio.src === '' || this.state.audio.ended) {
+      this.state.audio.src = source;
+      this.state.audio.play();
     }
   }
 

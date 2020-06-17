@@ -33,9 +33,29 @@ const mainGameStrings = {
   SETTINGS_TRANSLATIONS_LABEL_TEXT: 'Показывать переводы слова и предложений',
 };
 
+const estimateButtonsTypes = {
+  AGAIN: {
+    text: 'Снова',
+    time: '10 мин',
+  },
+  HARD: {
+    text: 'Трудно',
+    time: '13 дн',
+  },
+  GOOD: {
+    text: 'Хорошо',
+    time: '1.5 мес',
+  },
+  EASY: {
+    text: 'Легко',
+    time: '3.1 мес',
+  },
+};
+
 export {
   urls,
   authenticationTexts,
   errorTypes,
   mainGameStrings,
+  estimateButtonsTypes,
 };

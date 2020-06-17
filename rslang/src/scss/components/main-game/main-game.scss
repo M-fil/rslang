@@ -40,3 +40,8 @@
     color: $many-mistakes-letter-color;
   }
 }
+
+.main-game__estimate-buttons {
+  display: flex;
+  justify-content: space-around;
+}

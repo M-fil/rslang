@@ -38,7 +38,7 @@ class WordCard {
     const wordTranslationHTML = create(
       'div', 'word-card__translation',
       this.wordTranslate, null,
-      ['style', 'opacity: 0'], ['translationElement', ''],
+      ['style', 'opacity: 1'], ['translationElement', ''],
     );
 
     const wordImage = new Image();
