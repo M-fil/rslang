@@ -8,6 +8,7 @@ import SettingsControls from './components/settings-controls/SettingsControls';
 import EstimateButtonsBlock from './components/estimate-buttons/EstimateButtonsBlock';
 import WordsSelectList from './components/words-select-list/WordsSelectList';
 import ProgressBar from './components/progress-bar/ProgressBar';
+import Preloader from '../preloader/Preloader';
 
 const {
   WORDS_AUDIOS_URL,
@@ -17,6 +18,7 @@ class MainGame {
   constructor() {
     this.state = {
       currentWordIndex: 0,
+      isLoading: false,
       wordsArray: [],
       audio: new Audio(),
       audios: [],
@@ -31,10 +33,18 @@ class MainGame {
   async render() {
     const { currentWordIndex } = this.state;
 
+    const mainGameHTML = create('div', 'main-game');
+    document.body.append(mainGameHTML);
+    this.preloader = new Preloader();
+    this.preloader.render();
+    this.preloader.show();
+    this.state.isLoading = true;
+
     const words = await getWords();
     this.state.wordsArray = words;
+    this.state.isLoading = false;
+    this.preloader.hide();
 
-    console.log(words);
     const wordCard = MainGame.createWordCard(words[currentWordIndex]);
     this.setAudiosForWords(words[currentWordIndex]);
     const gameSettingsBlock = new SettingsControls();
@@ -42,17 +52,14 @@ class MainGame {
     const wordsSelectList = new WordsSelectList();
     this.progressBar = new ProgressBar(currentWordIndex, this.state.wordsArray.length);
 
-    const mainGameHTML = create(
-      'div', 'main-game',
-      [
-        gameSettingsBlock.render(),
-        vocabularyButtons,
-        wordsSelectList.render(),
-        wordCard.render(),
-        this.progressBar.render(),
-      ],
+    mainGameHTML.append(
+      gameSettingsBlock.render(),
+      vocabularyButtons,
+      wordsSelectList.render(),
+      wordCard.render(),
+      this.progressBar.render(),
     );
-    document.body.append(mainGameHTML);
+
     const wordCardInput = document.querySelector('.word-card__input');
     wordCardInput.focus();
     this.activateGameSettingsEvents();
@@ -143,7 +150,7 @@ class MainGame {
         this.state.audio.pause();
         this.state.isAudioEnded = true;
         this.state.audio.src = '';
-      };
+      }
     });
   }
 
@@ -249,8 +256,6 @@ class MainGame {
 
   playAudio(source) {
     const { src, ended } = this.state.audio;
-    console.log((/localhost/).test(src));
-    console.log(src);
     if (src === '' || (/localhost/).test(src) || ended) {
       this.state.audio.src = source;
       this.state.audio.play();
