@@ -12,10 +12,17 @@ export default class Preloader {
     this.preloadFirst = create('div', 'preloader_first', '', this.preloadContent);
     this.preloadSecond = create('div', 'preloader_second', '', this.preloadContent);
     this.preloadThird = create('div', 'preloader_third', '', this.preloadContent);
-    return this.preload;
   }
 
   toggle() {
     this.preload.classList.toggle('preloader__visible');
+  }
+
+  show() {
+    this.preload.classList.add('preloader__visible');
+  }
+
+  hide() {
+    this.preload.classList.remove('preloader__visible');
   }
 }
