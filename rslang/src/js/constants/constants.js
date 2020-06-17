@@ -28,7 +28,8 @@ const errorTypes = {
 const mainGameStrings = {
   REMOVE_WORD_BUTTON: 'Снять с изучения',
   ADD_TO_DIFFICULT_WORDS: 'Добавить в сложные',
-  NEXT_BUTTON: 'Далее',
+  NEXT_BUTTON: 'Дальше',
+  SHOW_ANSWER_BUTTON: 'Показать ответ',
   SETTINGS_AUTOPLABACK_TEXT: 'Автопроизношение',
   SETTINGS_TRANSLATIONS_LABEL_TEXT: 'Показывать переводы слова и предложений',
 };

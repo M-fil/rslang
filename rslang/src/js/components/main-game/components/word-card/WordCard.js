@@ -9,6 +9,7 @@ const {
   REMOVE_WORD_BUTTON,
   ADD_TO_DIFFICULT_WORDS,
   NEXT_BUTTON,
+  SHOW_ANSWER_BUTTON,
 } = mainGameStrings;
 
 class WordCard {
@@ -59,13 +60,14 @@ class WordCard {
   renderWordForm() {
     const width = ['style', `width: ${this.word.length}ch`];
     const nextButton = WordCard.renderButton('next-button', NEXT_BUTTON, 'submit');
+    const showAnswerButton = WordCard.renderButton('show-answer-button', SHOW_ANSWER_BUTTON, 'button');
     const inputHTML = create(
       'input', 'word-card__input', '', null,
       ['type', 'text'], width,
     );
     const userAnswerHTML = create('div', 'word-card__user-answer');
     const inputContainer = create('div', 'word-card__input-container', [inputHTML, userAnswerHTML], null, width);
-    const formHTML = create('form', 'main-game__form', [inputContainer, nextButton]);
+    const formHTML = create('form', 'main-game__form', [inputContainer, nextButton, showAnswerButton]);
 
     return formHTML;
   }

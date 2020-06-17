@@ -43,6 +43,7 @@ class MainGame {
     wordCardInput.focus();
     this.activateGameSettingsEvents();
     this.activateNextButton();
+    this.activateShowAnswerButton();
     MainGame.activateInputWordsHandler();
     this.activateEstimateButtons();
   }
@@ -56,8 +57,8 @@ class MainGame {
     const wordCardInput = document.querySelector('.word-card__input');
     wordCardInput.focus();
     this.activateNextButton();
+    this.activateShowAnswerButton();
     MainGame.activateInputWordsHandler();
-    this.activateEstimateButtons();
   }
 
   activateGameSettingsEvents() {
@@ -75,32 +76,35 @@ class MainGame {
     });
   }
 
-  switchToTheNextWordCard() {
+  switchToTheNextWordCard(isForShowAnswerButton = false) {
     const inputHTML = document.querySelector('.word-card__input');
     const wordCardHTML = document.querySelector('.main-game__word-card');
     const nextButtonHTML = document.querySelector('.main-game__next-button');
     const sentencesWords = document.querySelectorAll('.word-card__sentence-word');
+    const showAnswerButton = document.querySelector('.main-game__show-answer-button');
 
     const { currentWordIndex, wordsArray } = this.state;
     const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
 
     if (currentWordIndex + 1 !== wordsArray.length) {
+      const trimedValue = inputHTML.value.trim();
       const numberOfMistakes = MainGame.checkWord(wordsArray[currentWordIndex].word);
 
-      if (isAudioPlaybackEnabled) {
+      if (isAudioPlaybackEnabled && this.state.isAudioEnded) {
         this.playAudiosInTurns(0);
       }
       if (isTranslationsEnabled) {
         MainGame.toggleTranslations();
       }
 
-      if (numberOfMistakes === 0) {
+      if ((numberOfMistakes === 0 && trimedValue.length) || isForShowAnswerButton) {
         sentencesWords.forEach((word) => {
           word.classList.add('word-card__sentence-word_visible');
         });
         inputHTML.value = '';
         inputHTML.setAttribute('disabled', 'disabled');
         nextButtonHTML.setAttribute('disabled', 'disabled');
+        showAnswerButton.setAttribute('disabled', 'disabled');
 
         wordCardHTML.append(new EstimateButtonsBlock().render());
       }
@@ -130,12 +134,21 @@ class MainGame {
     });
   }
 
+  activateShowAnswerButton() {
+    const showAnswerButton = document.querySelector('.main-game__show-answer-button');
+
+    showAnswerButton.addEventListener('click', () => {
+      this.switchToTheNextWordCard(true);
+    });
+  }
+
   static checkWord(word) {
     const correctLetters = word.split('');
     const inputHTML = document.querySelector('.word-card__input');
     const userAnswerHTML = document.querySelector('.word-card__user-answer');
     const inputValueLetters = inputHTML.value.trim().split('');
 
+    userAnswerHTML.innerHTML = '';
     const numberOfMistakes = inputValueLetters
       .filter((letter, index) => letter !== correctLetters[index]).length;
     const isManyMistakes = checkIsManyMistakes(correctLetters.length, numberOfMistakes);
@@ -147,6 +160,9 @@ class MainGame {
         case isLetterCorrect:
         default:
           extraClassName = 'word-card-letter_correct';
+          break;
+        case !inputValueLetters.length:
+          extraClassName = 'word-card-letter_many-mistakes';
           break;
         case !isLetterCorrect && !isManyMistakes:
           extraClassName = 'word-card-letter_not-many-mistakes';
@@ -160,7 +176,7 @@ class MainGame {
       userAnswerHTML.append(letterHTML);
     });
 
-    if (numberOfMistakes === 0) return 0;
+    if (numberOfMistakes === 0 && inputValueLetters.length) return 0;
 
     inputHTML.value = '';
     setTimeout(() => {
@@ -177,7 +193,6 @@ class MainGame {
 
     formHTML.addEventListener('click', (event) => {
       if (event.target.closest('.word-card__user-answer')) {
-        userAnswerHTML.innerHTML = '';
         inputHTML.focus();
       }
     });
@@ -186,9 +201,6 @@ class MainGame {
       if (userAnswerHTML && userAnswerHTML.childElementCount > 0) {
         userAnswerHTML.innerHTML = '';
         userAnswerHTML.classList.remove('word-card__user-answer_translucent');
-        userAnswerHTML.children.forEach((child) => {
-          child.className = 'word-card-letter';
-        });
       }
     });
   }
