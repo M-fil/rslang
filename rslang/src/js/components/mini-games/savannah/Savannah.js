@@ -1,5 +1,6 @@
 import create from '../../../utils/сreate';
 import { startWindow } from '../../../constants/constants';
+import Preloader from '../../preloader/Preloader';
 
 const {
   RULES,
@@ -12,7 +13,8 @@ export default class SavannahGame {
     this.body = document.querySelector('body');
     this.container = create('div', 'container', '', this.body);
     this.gameWindow = create('div', 'start-game-window', '', this.container);
-    this.numberReverse = create('span', 'number-reverse', '', this.body);
+    this.numberReverse = create('span', 'number-reverse', '', this.container);
+    this.preloader = new Preloader();
   }
 
   render() {
@@ -27,12 +29,16 @@ export default class SavannahGame {
     const startGameWindow = document.querySelector('.start-game-window');
     startGameWindow.style.display = 'none';
     this.numberReverse.style.display = 'block';
+    this.preloader.render();
+    this.preloader.show();
     const seconds = 3;
     let timeLeft = seconds;
+
+    this.numberReverse.innerHTML = timeLeft;
     const timer = setInterval(() => {
-      if (timeLeft > 0) {
-        this.numberReverse.innerHTML = timeLeft;
+      if (timeLeft > 1) {
         timeLeft -= 1;
+        this.numberReverse.innerHTML = timeLeft;
       } else {
         clearInterval(timer);
         this.mainGame();
@@ -42,5 +48,6 @@ export default class SavannahGame {
 
   mainGame() {
     this.numberReverse.style.display = 'none';
+    this.preloader.hide();
   }
 }
