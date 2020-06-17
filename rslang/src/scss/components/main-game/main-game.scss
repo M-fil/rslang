@@ -7,4 +7,36 @@
 
 .word-card__input {
   @include font(2rem, 2.5rem);
+
+  position: relative;
+}
+
+.word-card__input-container {
+  position: relative;
+}
+
+.word-card__user-answer {
+  position: absolute;
+  top: 0;
+  margin-left: 4px;
+
+  &_translucent {
+    opacity: 0.8;
+  } 
+}
+
+.word-card-letter {
+  @include font(2rem, 2.5rem);
+
+  &_correct {
+    color: $correct-letter-color;
+  }
+
+  &_not-many-mistakes {
+    color: $not-many-mistakes-letter-color;
+  }
+
+  &_many-mistakes {
+    color: $many-mistakes-letter-color;
+  }
 }

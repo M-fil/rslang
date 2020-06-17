@@ -1,6 +1,7 @@
 import { getWords } from '../../service/service';
 import create from '../../utils/сreate';
 import { urls } from '../../constants/constants';
+import { checkIsManyMistakes } from '../../utils/calculations';
 
 import WordCard from './components/word-card/WordCard';
 import SettingsControls from './components/settings-controls/SettingsControls';
@@ -15,6 +16,7 @@ class MainGame {
       currentWordIndex: 0,
       wordsArray: [],
       audios: [],
+      isAudioEnded: true,
       gameSetting: {
         isAudioPlaybackEnabled: true,
         isTranslationsEnabled: true,
@@ -23,7 +25,13 @@ class MainGame {
   }
 
   async render() {
-    const wordCard = await this.renderWordCard();
+    const { currentWordIndex } = this.state;
+
+    const words = await getWords();
+    this.state.wordsArray = words;
+
+    const wordCard = MainGame.createWordCard(words[currentWordIndex]);
+    this.setAudiosForWords(words[currentWordIndex]);
     const gameSettingsBlock = new SettingsControls();
 
     const mainGameHTML = create('div', 'main-game', [wordCard.render(), gameSettingsBlock.render()]);
@@ -32,6 +40,19 @@ class MainGame {
     wordCardInput.focus();
     this.activateGameSettingsEvents();
     this.activateNextButton();
+    MainGame.activateInputWordsHandler();
+  }
+
+  renderWordCard(currentWordCard) {
+    const wordCard = MainGame.createWordCard(currentWordCard);
+    this.setAudiosForWords(currentWordCard);
+    const mainGameHTML = document.querySelector('.main-game');
+    mainGameHTML.append(wordCard.render());
+
+    const wordCardInput = document.querySelector('.word-card__input');
+    wordCardInput.focus();
+    this.activateNextButton();
+    MainGame.activateInputWordsHandler();
   }
 
   activateGameSettingsEvents() {
@@ -47,21 +68,106 @@ class MainGame {
     });
   }
 
+  showTheNextWordCard() {
+    const mainGameHTML = document.querySelector('.main-game');
+    const inputHTML = document.querySelector('.word-card__input');
+
+    const { currentWordIndex, wordsArray } = this.state;
+    const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
+    if (currentWordIndex + 1 !== wordsArray.length) {
+      const numberOfMistakes = MainGame.checkWord(wordsArray[currentWordIndex].word);
+
+      if (isAudioPlaybackEnabled) {
+        this.playAudiosInTurns(0);
+      }
+      if (isTranslationsEnabled) {
+        MainGame.toggleTranslations();
+      }
+
+      if (numberOfMistakes === 0) {
+        inputHTML.value = '';
+        inputHTML.setAttribute('disabled', 'disabled');
+
+        setTimeout(() => {
+          MainGame.removeWordCardFromDOM();
+
+          this.state.currentWordIndex += 1;
+          this.renderWordCard(wordsArray[this.state.currentWordIndex]);
+        }, 2000);
+      }
+    }
+  }
+
   activateNextButton() {
     const form = document.querySelector('.main-game__form');
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
+      if (this.state.isAudioEnded) {
+        this.showTheNextWordCard();
+      }
+    });
+  }
 
-      const { currentWordIndex, wordsArray } = this.state;
-      const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
-      if (currentWordIndex + 1 !== wordsArray.length) {
-        this.state.currentWordIndex += 1;
-        if (isAudioPlaybackEnabled) {
-          this.playAudiosInTurns(0);
-        }
-        if (isTranslationsEnabled) {
-          MainGame.toggleTranslations();
-        }
+  static checkWord(word) {
+    const correctLetters = word.split('');
+    const inputHTML = document.querySelector('.word-card__input');
+    const userAnswerHTML = document.querySelector('.word-card__user-answer');
+    const inputValueLetters = inputHTML.value.trim().split('');
+
+    const numberOfMistakes = inputValueLetters
+      .filter((letter, index) => letter !== correctLetters[index]).length;
+    const isManyMistakes = checkIsManyMistakes(correctLetters.length, numberOfMistakes);
+
+    correctLetters.forEach((letter, index) => {
+      const isLetterCorrect = letter === inputValueLetters[index];
+      let extraClassName = null;
+      switch (true) {
+        case isLetterCorrect:
+        default:
+          extraClassName = 'word-card-letter_correct';
+          break;
+        case !isLetterCorrect && !isManyMistakes:
+          extraClassName = 'word-card-letter_not-many-mistakes';
+          break;
+        case !isLetterCorrect && isManyMistakes:
+          extraClassName = 'word-card-letter_many-mistakes';
+          break;
+      }
+
+      const letterHTML = create('span', `word-card-letter ${extraClassName}`, letter);
+      userAnswerHTML.append(letterHTML);
+    });
+
+    if (numberOfMistakes === 0) return 0;
+
+    inputHTML.value = '';
+    setTimeout(() => {
+      userAnswerHTML.classList.add('word-card__user-answer_translucent');
+    }, 1000);
+
+    return numberOfMistakes;
+  }
+
+  static activateInputWordsHandler() {
+    const formHTML = document.querySelector('.main-game__form');
+    const inputHTML = document.querySelector('.word-card__input');
+    const userAnswerHTML = document.querySelector('.word-card__user-answer');
+
+    formHTML.addEventListener('click', (event) => {
+      if (event.target.closest('.word-card__user-answer')) {
+        userAnswerHTML.innerHTML = '';
+        inputHTML.focus();
+      }
+    });
+
+    inputHTML.addEventListener('input', () => {
+      if (userAnswerHTML.childElementCount > 0) {
+        userAnswerHTML.innerHTML = '';
+        userAnswerHTML.classList.remove('word-card__user-answer_translucent');
+        userAnswerHTML.children.forEach((child) => {
+          child.className = 'word-card-letter';
+        });
       }
     });
   }
@@ -76,28 +182,23 @@ class MainGame {
 
   playAudiosInTurns(number) {
     if (number < this.state.audios.length) {
+      this.state.isAudioEnded = false;
       let firstAudioIndex = number;
       const audio = new Audio(this.state.audios[firstAudioIndex]);
       audio.play();
 
       audio.onended = () => {
+        if (firstAudioIndex === this.state.audios.length - 1) {
+          this.state.isAudioEnded = true;
+        }
+
         firstAudioIndex += 1;
         this.playAudiosInTurns(firstAudioIndex);
       };
     }
   }
 
-  async renderWordCard() {
-    const { currentWordIndex } = this.state;
-    const words = await getWords();
-    this.state.wordsArray = words;
-    this.state.audios = [
-      `${WORDS_AUDIOS_URL}${words[currentWordIndex].audio}`,
-      `${WORDS_AUDIOS_URL}${words[currentWordIndex].audioMeaning}`,
-      `${WORDS_AUDIOS_URL}${words[currentWordIndex].audioExample}`,
-    ];
-
-    const currentWord = words[currentWordIndex];
+  static createWordCard(currentWord) {
     const wordCard = new WordCard(
       currentWord.id,
       currentWord.word,
@@ -111,6 +212,19 @@ class MainGame {
     );
 
     return wordCard;
+  }
+
+  static removeWordCardFromDOM() {
+    const wordCardHTML = document.querySelector('.main-game__word-card');
+    wordCardHTML.remove();
+  }
+
+  setAudiosForWords(currentWord) {
+    this.state.audios = [
+      `${WORDS_AUDIOS_URL}${currentWord.audio}`,
+      `${WORDS_AUDIOS_URL}${currentWord.audioMeaning}`,
+      `${WORDS_AUDIOS_URL}${currentWord.audioExample}`,
+    ];
   }
 }
 

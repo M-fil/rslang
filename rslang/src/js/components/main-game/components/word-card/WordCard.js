@@ -57,12 +57,15 @@ class WordCard {
   }
 
   renderWordForm() {
+    const width = ['style', `width: ${this.word.length}ch`];
     const nextButton = WordCard.renderButton('next-button', NEXT_BUTTON, 'submit');
     const inputHTML = create(
       'input', 'word-card__input', '', null,
-      ['type', 'text'], ['style', `width: ${this.word.length}ch`],
+      ['type', 'text'], width,
     );
-    const formHTML = create('form', 'main-game__form', [inputHTML, nextButton]);
+    const userAnswerHTML = create('div', 'word-card__user-answer');
+    const inputContainer = create('div', 'word-card__input-container', [inputHTML, userAnswerHTML], null, width);
+    const formHTML = create('form', 'main-game__form', [inputContainer, nextButton]);
 
     return formHTML;
   }
