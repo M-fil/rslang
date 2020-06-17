@@ -2,16 +2,18 @@ import create from '../../utils/сreate';
 
 export default class Preloader {
   constructor() {
-    this.preload = null;
+    this.preload = document.querySelector('#preloader');
   }
 
   render() {
-    const body = document.querySelector('body');
-    this.preload = create('div', 'preloader', '', body);
-    this.preloadContent = create('div', 'preloader_content', '', this.preload);
-    this.preloadFirst = create('div', 'preloader_first', '', this.preloadContent);
-    this.preloadSecond = create('div', 'preloader_second', '', this.preloadContent);
-    this.preloadThird = create('div', 'preloader_third', '', this.preloadContent);
+    if (!this.preload) {
+      const body = document.querySelector('body');
+      this.preload = create('div', 'preloader', '', body, ['id', 'preloader']);
+      this.preloadContent = create('div', 'preloader_content', '', this.preload);
+      this.preloadFirst = create('div', 'preloader_first', '', this.preloadContent);
+      this.preloadSecond = create('div', 'preloader_second', '', this.preloadContent);
+      this.preloadThird = create('div', 'preloader_third', '', this.preloadContent);
+    }
   }
 
   toggle() {
