@@ -6,6 +6,7 @@ import { checkIsManyMistakes } from '../../utils/calculations';
 import WordCard from './components/word-card/WordCard';
 import SettingsControls from './components/settings-controls/SettingsControls';
 import EstimateButtonsBlock from './components/estimate-buttons/EstimateButtonsBlock';
+import WordsSelectList from './components/words-select-list/WordsSelectList';
 
 const {
   WORDS_AUDIOS_URL,
@@ -36,8 +37,13 @@ class MainGame {
     const wordCard = MainGame.createWordCard(words[currentWordIndex]);
     this.setAudiosForWords(words[currentWordIndex]);
     const gameSettingsBlock = new SettingsControls();
+    const vocabularyButtons = WordCard.renderVocabularyButtons();
+    const wordsSelectList = new WordsSelectList();
 
-    const mainGameHTML = create('div', 'main-game', [gameSettingsBlock.render(), wordCard.render()]);
+    const mainGameHTML = create(
+      'div', 'main-game',
+      [gameSettingsBlock.render(), vocabularyButtons, wordsSelectList.render(), wordCard.render()]
+    );
     document.body.append(mainGameHTML);
     const wordCardInput = document.querySelector('.word-card__input');
     wordCardInput.focus();
@@ -82,6 +88,7 @@ class MainGame {
     const nextButtonHTML = document.querySelector('.main-game__next-button');
     const sentencesWords = document.querySelectorAll('.word-card__sentence-word');
     const showAnswerButton = document.querySelector('.main-game__show-answer-button');
+    const userAnswerHTML = document.querySelector('.word-card__user-answer');
 
     const { currentWordIndex, wordsArray } = this.state;
     const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
@@ -107,6 +114,11 @@ class MainGame {
         showAnswerButton.setAttribute('disabled', 'disabled');
 
         wordCardHTML.append(new EstimateButtonsBlock().render());
+      } else {
+        inputHTML.value = '';
+        setTimeout(() => {
+          userAnswerHTML.classList.add('word-card__user-answer_translucent');
+        }, 1000);
       }
     }
   }
@@ -120,6 +132,7 @@ class MainGame {
         this.state.currentWordIndex += 1;
         this.renderWordCard(wordsArray[this.state.currentWordIndex]);
         this.state.audio.pause();
+        this.state.isAudioEnded = true;
         this.state.audio.src = '';
       };
     });
@@ -177,11 +190,6 @@ class MainGame {
     });
 
     if (numberOfMistakes === 0 && inputValueLetters.length) return 0;
-
-    inputHTML.value = '';
-    setTimeout(() => {
-      userAnswerHTML.classList.add('word-card__user-answer_translucent');
-    }, 1000);
 
     return numberOfMistakes;
   }

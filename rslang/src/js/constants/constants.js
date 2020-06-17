@@ -32,6 +32,13 @@ const mainGameStrings = {
   SHOW_ANSWER_BUTTON: 'Показать ответ',
   SETTINGS_AUTOPLABACK_TEXT: 'Автопроизношение',
   SETTINGS_TRANSLATIONS_LABEL_TEXT: 'Показывать переводы слова и предложений',
+  WORDS_TYPES_SELECT_TITLE: 'Как изучать слова?',
+};
+
+const wordsToLearnOptions = {
+  MIXED: 'Вперемешку',
+  ONLY_NEW_WORDS: 'Только новые слова',
+  ONLY_WORDS_TO_REPEAT: 'Только слова для повторения',
 };
 
 const estimateButtonsTypes = {
@@ -59,4 +66,5 @@ export {
   errorTypes,
   mainGameStrings,
   estimateButtonsTypes,
+  wordsToLearnOptions,
 };
