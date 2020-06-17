@@ -58,3 +58,18 @@
     opacity: 1;
   }
 }
+
+.main-game__progress-bar {
+  height: 10px;
+}
+
+.main-game__progress-background {
+  background-color: $standard-progress-bar-background;
+  height: 10px;
+  max-width: 30rem;
+  margin: 0 10px;
+}
+
+.main-game__progress-bar-line {
+  background-color: $standard-progress-bar-line-color;
+}

@@ -5,6 +5,11 @@ const checkIsManyMistakes = (correctNumber, mistakesNumber) => {
   return mistakesNumber >= differenceNumber;
 };
 
+const calculatePercentage = (completedItemsNumber, allItemsNumber) => {
+  return parseInt((completedItemsNumber / allItemsNumber) * 100, 10);
+};
+
 export {
   checkIsManyMistakes,
+  calculatePercentage,
 };

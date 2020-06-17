@@ -7,6 +7,7 @@ import WordCard from './components/word-card/WordCard';
 import SettingsControls from './components/settings-controls/SettingsControls';
 import EstimateButtonsBlock from './components/estimate-buttons/EstimateButtonsBlock';
 import WordsSelectList from './components/words-select-list/WordsSelectList';
+import ProgressBar from './components/progress-bar/ProgressBar';
 
 const {
   WORDS_AUDIOS_URL,
@@ -39,10 +40,17 @@ class MainGame {
     const gameSettingsBlock = new SettingsControls();
     const vocabularyButtons = WordCard.renderVocabularyButtons();
     const wordsSelectList = new WordsSelectList();
+    this.progressBar = new ProgressBar(currentWordIndex, this.state.wordsArray.length);
 
     const mainGameHTML = create(
       'div', 'main-game',
-      [gameSettingsBlock.render(), vocabularyButtons, wordsSelectList.render(), wordCard.render()]
+      [
+        gameSettingsBlock.render(),
+        vocabularyButtons,
+        wordsSelectList.render(),
+        wordCard.render(),
+        this.progressBar.render(),
+      ],
     );
     document.body.append(mainGameHTML);
     const wordCardInput = document.querySelector('.word-card__input');
@@ -57,8 +65,8 @@ class MainGame {
   renderWordCard(currentWordCard) {
     const wordCard = MainGame.createWordCard(currentWordCard);
     this.setAudiosForWords(currentWordCard);
-    const mainGameHTML = document.querySelector('.main-game');
-    mainGameHTML.append(wordCard.render());
+    const progressBarHTML = document.querySelector('.main-game__progress-bar');
+    document.querySelector('.main-game').insertBefore(wordCard.render(), progressBarHTML);
 
     const wordCardInput = document.querySelector('.word-card__input');
     wordCardInput.focus();
@@ -113,6 +121,7 @@ class MainGame {
         nextButtonHTML.setAttribute('disabled', 'disabled');
         showAnswerButton.setAttribute('disabled', 'disabled');
 
+        this.progressBar.updateSize(currentWordIndex + 1, wordsArray.length);
         wordCardHTML.append(new EstimateButtonsBlock().render());
       } else {
         inputHTML.value = '';
