@@ -1,10 +1,13 @@
-.preloader {
+  .preloader {
     margin-top: 25%;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: 1s;
     opacity: 0.8;
+  }
+  .preloader__visible {
+    display: block;
   }
   
   .preloader_content {
