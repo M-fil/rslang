@@ -13,7 +13,7 @@ class EstimateButton {
     create('div', 'main-game__revise-time', this.timeToRevise, this.HTML);
     create(
       'button', `main-game__estimate-button main-game__button-${this.classNameType}`,
-      this.buttonText, this.HTML, ['type', 'button'],
+      this.buttonText, this.HTML, ['type', 'button'], ['buttonAprraisal', this.buttonText],
     );
 
     return this.HTML;

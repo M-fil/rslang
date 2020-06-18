@@ -1,6 +1,11 @@
 import { getWords } from '../../service/service';
 import create from '../../utils/сreate';
-import { urls, mainGameStrings, wordsToLearnOptions } from '../../constants/constants';
+import {
+  urls,
+  mainGameStrings,
+  wordsToLearnOptions,
+  estimateButtonsTypes,
+} from '../../constants/constants';
 import { checkIsManyMistakes } from '../../utils/calculations';
 
 import WordCard from './components/word-card/WordCard';
@@ -21,6 +26,10 @@ const {
   ONLY_NEW_WORDS,
   ONLY_WORDS_TO_REPEAT,
 } = wordsToLearnOptions;
+
+const {
+  AGAIN, HARD, GOOD, EASY,
+} = estimateButtonsTypes;
 
 const {
   WORDS_AUDIOS_URL,
@@ -227,6 +236,18 @@ class MainGame {
           const userAnswerHTML = document.querySelector('.word-card__user-answer');
           const inputHTML = document.querySelector('.word-card__input');
 
+          const targetElementAppraisal = event.target.dataset.buttonAprraisal;
+          const currentWord = this.state.wordsToLearn[this.state.currentWordIndex];
+          switch (targetElementAppraisal) {
+            case AGAIN.text: {
+              const newLength = this.state.wordsToLearn.push(currentWord);
+              this.progressBar.updateSize(this.state.currentWordIndex + 1, newLength);
+              break;
+            }
+            default:
+              console.log('nothing');
+          }
+
           const { wordsToLearn } = this.state;
           MainGame.removeWordCardFromDOM();
 
@@ -234,7 +255,6 @@ class MainGame {
           this.renderWordCard(wordsToLearn[this.state.currentWordIndex]);
           this.state.audio.pause();
           this.state.isAudioEnded = true;
-          this.state.audio.src = '';
           this.estimateWords.removeFromDOM();
           MainGame.toggleControlElements(false);
           userAnswerHTML.innerHTML = '';
