@@ -108,6 +108,7 @@ class MainGame {
     const wordCardInput = document.querySelector('.word-card__input');
     wordCardInput.focus();
     this.formControl.updateInputWidth(currentWordCard.word);
+    this.toggleWordCardTranslation();
   }
 
   static renderVocabularyButtons() {
@@ -150,22 +151,23 @@ class MainGame {
     });
 
     translationSettingCheckbox.addEventListener('change', (event) => {
-      const wordTransaltionHTML = document.querySelector('.word-card__translation');
-      if (event.target.checked) {
-        wordTransaltionHTML.classList.remove('word-card__translation_hidden');
-      } else {
-        wordTransaltionHTML.classList.add('word-card__translation_hidden');
-      }
-
       this.state.gameSetting.isTranslationsEnabled = event.target.checked;
+      this.toggleWordCardTranslation();
     });
+  }
+
+  toggleWordCardTranslation() {
+    const wordTransaltionHTML = document.querySelector('.word-card__translation');
+    if (this.state.gameSetting.isTranslationsEnabled) {
+      wordTransaltionHTML.classList.remove('word-card__translation_hidden');
+    } else {
+      wordTransaltionHTML.classList.add('word-card__translation_hidden');
+    }
   }
 
   switchToTheNextWordCard(isForShowAnswerButton = false) {
     const inputHTML = document.querySelector('.word-card__input');
-    const nextButtonHTML = document.querySelector('.main-game__next-button');
     const sentencesWords = document.querySelectorAll('.word-card__sentence-word');
-    const showAnswerButton = document.querySelector('.main-game__show-answer-button');
     const userAnswerHTML = document.querySelector('.word-card__user-answer');
     const mainContainer = document.querySelector('.main-game__main-container');
 
@@ -188,12 +190,11 @@ class MainGame {
           word.classList.add('word-card__sentence-word_visible');
         });
         inputHTML.value = '';
-        inputHTML.setAttribute('disabled', 'disabled');
-        nextButtonHTML.setAttribute('disabled', 'disabled');
-        showAnswerButton.setAttribute('disabled', 'disabled');
+        MainGame.toggleControlElements();
 
         this.progressBar.updateSize(currentWordIndex + 1, wordsToLearn.length);
-        mainContainer.append(new EstimateButtonsBlock().render());
+        this.estimateWords = new EstimateButtonsBlock();
+        mainContainer.append(this.estimateWords.render());
       } else {
         inputHTML.value = '';
         setTimeout(() => {
@@ -203,9 +204,28 @@ class MainGame {
     }
   }
 
+  static toggleControlElements(isToDisable = true) {
+    const inputHTML = document.querySelector('.word-card__input');
+    const nextButtonHTML = document.querySelector('.main-game__next-button');
+    const showAnswerButton = document.querySelector('.main-game__show-answer-button');
+
+    if (isToDisable) {
+      inputHTML.setAttribute('disabled', 'disabled');
+      nextButtonHTML.setAttribute('disabled', 'disabled');
+      showAnswerButton.setAttribute('disabled', 'disabled');
+    } else {
+      inputHTML.removeAttribute('disabled', 'disabled');
+      nextButtonHTML.removeAttribute('disabled', 'disabled');
+      showAnswerButton.removeAttribute('disabled', 'disabled');
+    }
+  }
+
   activateEstimateButtons() {
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('main-game__estimate-button')) {
+        const userAnswerHTML = document.querySelector('.word-card__user-answer');
+        const inputHTML = document.querySelector('.word-card__input');
+
         const { wordsToLearn } = this.state;
         MainGame.removeWordCardFromDOM();
 
@@ -214,6 +234,11 @@ class MainGame {
         this.state.audio.pause();
         this.state.isAudioEnded = true;
         this.state.audio.src = '';
+        this.estimateWords.removeFromDOM();
+        MainGame.toggleControlElements(false);
+        userAnswerHTML.innerHTML = '';
+        userAnswerHTML.classList.remove('word-card__user-answer_translucent');
+        inputHTML.focus();
       }
     });
   }

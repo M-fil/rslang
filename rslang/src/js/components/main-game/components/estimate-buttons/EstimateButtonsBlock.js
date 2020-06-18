@@ -25,6 +25,12 @@ class EstimateButtonsBlock {
 
     return this.HTML;
   }
+
+  removeFromDOM() {
+    if (this.HTML) {
+      this.HTML.remove();
+    }
+  }
 }
 
 export default EstimateButtonsBlock;

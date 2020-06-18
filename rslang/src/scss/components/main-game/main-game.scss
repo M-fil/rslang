@@ -22,6 +22,7 @@
   border-radius: 20px;
   padding: 30px 10px;
   margin-bottom: 50px;
+  min-width: 65vw;
 }
 
 .main-game__word-card {
@@ -33,6 +34,10 @@
 .word-card__sentences {
   text-align: center;
   margin-bottom: 10px;
+
+  & > *:not(:last-child) {
+    margin-bottom: 5px;
+  }
 }
 
 .main-game__form {
@@ -67,17 +72,24 @@
 
 .word-card__input {
   @include font(2rem, 2.5rem);
-
-  position: relative;
 }
 
 .word-card__input-container {
   position: relative;
 }
 
+.word-card__input-wrapper {
+  position: relative;
+}
+
 .word-card__user-answer {
   position: absolute;
   top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  text-align: center;
 
   &_translucent {
     opacity: 0.5;
@@ -85,7 +97,7 @@
 }
 
 .word-card-letter {
-  @include font(2rem, 2.5rem);
+  @include font(2.5rem);
 
   &_correct {
     color: $correct-letter-color;

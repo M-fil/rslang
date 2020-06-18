@@ -13,18 +13,18 @@ class FormControll {
   }
 
   render() {
-    const width = ['style', this.getInputCSSWidth()];
     const nextButton = FormControll.renderButton('next-button', NEXT_BUTTON, 'submit');
     const showAnswerButton = FormControll.renderButton('show-answer-button', SHOW_ANSWER_BUTTON, 'button');
-    this.inputHTML = create(
-      'input', 'word-card__input', '', null,
-      ['type', 'text'], width,
-    );
-    const buttonsContainer = create('div', 'main-game__form-buttons', [showAnswerButton, nextButton]);
-    const userAnswerHTML = create('div', 'word-card__user-answer');
-    const inputContainer = create('div', 'word-card__input-container', [this.inputHTML, userAnswerHTML]);
-    this.HTML = create('form', 'main-game__form', [inputContainer, buttonsContainer]);
 
+    const userAnswerHTML = create('div', 'word-card__user-answer');
+    this.inputHTML = create('input', 'word-card__input', '', null, ['type', 'text']);
+    const inputWrapper = create('div', 'word-card__input-wrapper', [this.inputHTML, userAnswerHTML]);
+    this.inputHTML.style.width = this.getInputCSSWidth();
+
+    const buttonsContainer = create('div', 'main-game__form-buttons', [showAnswerButton, nextButton]);
+    const inputContainer = create('div', 'word-card__input-container', inputWrapper);
+
+    this.HTML = create('form', 'main-game__form', [inputContainer, buttonsContainer]);
     return this.HTML;
   }
 
@@ -34,7 +34,7 @@ class FormControll {
   }
 
   getInputCSSWidth() {
-    return `width: ${this.word.length}ch`;
+    return `${this.word.length}ch`;
   }
 
   static renderButton(buttonClassNameType, buttonText, buttonType = 'button') {
