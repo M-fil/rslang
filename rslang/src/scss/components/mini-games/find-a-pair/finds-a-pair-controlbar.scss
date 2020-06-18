@@ -1,0 +1,12 @@
+.find-a-pair__controlbar {
+  display: flex;
+  justify-content: space-between;
+  vertical-align: baseline;
+  width: 100%;
+  @include font(1.5rem);
+}
+
+.find-a-pair__pause-button {
+  @include font(1.3rem);
+  width: 90px;
+}
