@@ -1,7 +1,67 @@
 .main-game {
   @include font(2rem, 2.5rem);
+
   display: flex;
   flex-direction: column;
+  align-items: center;
+
+  min-height: 100vh;
+  margin: 0 20px;
+}
+
+.main-game__controls {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.main-game__main-container {
+  box-shadow: 0 0 10px $standard-border-color;
+  border-radius: 20px;
+  padding: 30px 10px;
+  margin-bottom: 50px;
+}
+
+.main-game__word-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.word-card__sentences {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.main-game__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+
+.main-game__form-buttons {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.word-card__input-container {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.word-card__vocabulary-buttons {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-evenly;
   align-items: center;
 }
 
@@ -18,7 +78,6 @@
 .word-card__user-answer {
   position: absolute;
   top: 0;
-  margin-left: 4px;
 
   &_translucent {
     opacity: 0.5;
@@ -43,7 +102,10 @@
 
 .main-game__estimate-buttons {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+
+  width: 100%;
+  margin-top: 15px;
 }
 
 .word-card__sentence-word-container {
@@ -57,6 +119,18 @@
   &_visible {
     opacity: 1;
   }
+}
+
+.word-card__translation {
+  opacity: 1;
+
+  &_hidden {
+    opacity: 0;
+  }
+}
+
+.hidden-translation {
+  opacity: 0;
 }
 
 .main-game__progress-bar {

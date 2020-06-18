@@ -9,6 +9,7 @@ import EstimateButtonsBlock from './components/estimate-buttons/EstimateButtonsB
 import WordsSelectList from './components/words-select-list/WordsSelectList';
 import ProgressBar from './components/progress-bar/ProgressBar';
 import Preloader from '../preloader/Preloader';
+import FormControll from './components/form-control/FormControl';
 
 const {
   REMOVE_WORD_BUTTON,
@@ -58,18 +59,19 @@ class MainGame {
     this.state.isLoading = false;
     this.preloader.hide();
 
+    const currentWord = this.state.wordsToLearn[currentWordIndex].word;
     const wordCard = MainGame.createWordCard(words[currentWordIndex]);
     this.setAudiosForWords(words[currentWordIndex]);
-    const gameSettingsBlock = new SettingsControls();
-    const vocabularyButtons = MainGame.renderVocabularyButtons();
-    const wordsSelectList = new WordsSelectList();
+    const mainGameControls = MainGame.renderMainGameControls();
+    this.formControl = new FormControll(currentWord);
     this.progressBar = new ProgressBar(currentWordIndex, this.state.wordsToLearn.length);
+    const mainGameMainContainer = create(
+      'div', 'main-game__main-container', [wordCard.render(), this.formControl.render()],
+    );
 
     mainGameHTML.append(
-      gameSettingsBlock.render(),
-      vocabularyButtons,
-      wordsSelectList.render(),
-      wordCard.render(),
+      mainGameControls,
+      mainGameMainContainer,
       this.progressBar.render(),
     );
 
@@ -84,22 +86,33 @@ class MainGame {
     this.activateEstimateButtons();
   }
 
+  static renderMainGameControls() {
+    const container = create('div', 'main-game__controls');
+    const gameSettingsBlock = new SettingsControls();
+    const vocabularyButtons = MainGame.renderVocabularyButtons();
+    const wordsSelectList = new WordsSelectList();
+    container.append(
+      gameSettingsBlock.render(),
+      vocabularyButtons,
+      wordsSelectList.render(),
+    );
+
+    return container;
+  }
+
   renderWordCard(currentWordCard) {
     const wordCard = MainGame.createWordCard(currentWordCard);
     this.setAudiosForWords(currentWordCard);
-    const progressBarHTML = document.querySelector('.main-game__progress-bar');
-    document.querySelector('.main-game').insertBefore(wordCard.render(), progressBarHTML);
+    document.querySelector('.main-game__main-container').prepend(wordCard.render());
 
     const wordCardInput = document.querySelector('.word-card__input');
     wordCardInput.focus();
-    this.activateNextButton();
-    this.activateShowAnswerButton();
-    MainGame.activateInputWordsHandler();
+    this.formControl.updateInputWidth(currentWordCard.word);
   }
 
   static renderVocabularyButtons() {
-    const removeWordButton = WordCard.renderButton('remove-word', REMOVE_WORD_BUTTON);
-    const addToDifficultButton = WordCard.renderButton('add-to-difficult', ADD_TO_DIFFICULT_WORDS);
+    const removeWordButton = FormControll.renderButton('remove-word', REMOVE_WORD_BUTTON);
+    const addToDifficultButton = FormControll.renderButton('add-to-difficult', ADD_TO_DIFFICULT_WORDS);
     const container = create('div', 'word-card__vocabulary-buttons', [removeWordButton, addToDifficultButton]);
 
     return container;
@@ -138,24 +151,29 @@ class MainGame {
 
     translationSettingCheckbox.addEventListener('change', (event) => {
       const wordTransaltionHTML = document.querySelector('.word-card__translation');
-      wordTransaltionHTML.style.opacity = event.target.checked ? 1 : 0;
+      if (event.target.checked) {
+        wordTransaltionHTML.classList.remove('word-card__translation_hidden');
+      } else {
+        wordTransaltionHTML.classList.add('word-card__translation_hidden');
+      }
+
       this.state.gameSetting.isTranslationsEnabled = event.target.checked;
     });
   }
 
   switchToTheNextWordCard(isForShowAnswerButton = false) {
     const inputHTML = document.querySelector('.word-card__input');
-    const wordCardHTML = document.querySelector('.main-game__word-card');
     const nextButtonHTML = document.querySelector('.main-game__next-button');
     const sentencesWords = document.querySelectorAll('.word-card__sentence-word');
     const showAnswerButton = document.querySelector('.main-game__show-answer-button');
     const userAnswerHTML = document.querySelector('.word-card__user-answer');
+    const mainContainer = document.querySelector('.main-game__main-container');
 
     const { currentWordIndex, wordsToLearn } = this.state;
     const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
 
     if (currentWordIndex + 1 !== wordsToLearn.length) {
-      const trimedValue = inputHTML.value.trim();
+      const trimedValue = inputHTML.value.trim().toLowerCase();
       const numberOfMistakes = MainGame.checkWord(wordsToLearn[currentWordIndex].word);
 
       if (isAudioPlaybackEnabled && this.state.isAudioEnded) {
@@ -175,7 +193,7 @@ class MainGame {
         showAnswerButton.setAttribute('disabled', 'disabled');
 
         this.progressBar.updateSize(currentWordIndex + 1, wordsToLearn.length);
-        wordCardHTML.append(new EstimateButtonsBlock().render());
+        mainContainer.append(new EstimateButtonsBlock().render());
       } else {
         inputHTML.value = '';
         setTimeout(() => {
@@ -218,22 +236,22 @@ class MainGame {
   }
 
   static activateVocabularyButtons() {
-    document.addEventListener('click', () => {
-      if (event.target.classList.contains('.main-game__remove-word')) {
-        console.log('click');
+    document.addEventListener('click', (event) => {
+      if (event.target.classList.contains('main-game__remove-word')) {
+        return;
       }
 
-      if (event.target.classList.contains('.main-game__add-to-difficult')) {
-        console.log('click');
+      if (event.target.classList.contains('main-game__add-to-difficult')) {
+        return;
       }
     });
   }
 
   static checkWord(word) {
-    const correctLetters = word.split('');
+    const correctLetters = word.toLowerCase().split('');
     const inputHTML = document.querySelector('.word-card__input');
     const userAnswerHTML = document.querySelector('.word-card__user-answer');
-    const inputValueLetters = inputHTML.value.trim().split('');
+    const inputValueLetters = inputHTML.value.trim().toLowerCase().split('');
 
     userAnswerHTML.innerHTML = '';
     const numberOfMistakes = inputValueLetters
@@ -291,7 +309,11 @@ class MainGame {
     const translationElements = document.querySelectorAll('[data-translation-element]');
 
     translationElements.forEach((element) => {
-      element.style.opacity = isToShow ? 1 : 0;
+      if (isToShow) {
+        element.classList.remove('hidden-translation');
+      } else {
+        element.classList.add('hidden-translation');
+      }
     });
   }
 
