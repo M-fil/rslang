@@ -17,7 +17,7 @@ export default async function createCanvasElements(
     colorText = 'magenta',
     colorShadowText = 'black',
     solidTextColor = 'white',
-    fontStyle = 'fillText', // strokeText
+    fontStyle = 'fillText',
   },
 ) {
   if (!wordsList || !Array.isArray(wordsList) || !wordsList.length || !wordsList.every((el) => typeof el === 'string')) {
@@ -30,7 +30,6 @@ export default async function createCanvasElements(
     const img = new Image();
     img.src = src;
     img.onload = () => {
-      console.log(img.width, img.height);
       const imgWidth = img.width;
       const imgHeight = img.height;
       const groupsWords = wordsList.map((word) => word.split(' '));
@@ -141,7 +140,6 @@ export default async function createCanvasElements(
     };
 
     img.onerror = (err) => {
-      console.log(err);
       reject(err);
     };
   });
