@@ -29,12 +29,16 @@ class FormControll {
   }
 
   updateInputWidth(newWord) {
+    document.querySelector('.word-card__fake-word').remove();
     this.word = newWord;
     this.inputHTML.style.width = this.getInputCSSWidth();
   }
 
   getInputCSSWidth() {
-    return `${this.word.length}ch`;
+    this.fakeWord = create('div', 'word-card__fake-word', this.word);
+    create('div', 'word-card__fake-word-container', this.fakeWord, document.body);
+
+    return `${this.fakeWord.offsetWidth}px`;
   }
 
   static renderButton(buttonClassNameType, buttonText, buttonType = 'button') {

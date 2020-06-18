@@ -174,7 +174,7 @@ class MainGame {
     const { currentWordIndex, wordsToLearn } = this.state;
     const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
 
-    if (currentWordIndex + 1 !== wordsToLearn.length) {
+    if (currentWordIndex !== wordsToLearn.length) {
       const trimedValue = inputHTML.value.trim().toLowerCase();
       const numberOfMistakes = MainGame.checkWord(wordsToLearn[currentWordIndex].word);
 
@@ -223,22 +223,24 @@ class MainGame {
   activateEstimateButtons() {
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('main-game__estimate-button')) {
-        const userAnswerHTML = document.querySelector('.word-card__user-answer');
-        const inputHTML = document.querySelector('.word-card__input');
+        if (this.state.currentWordIndex !== this.state.wordsToLearn.length - 1) {
+          const userAnswerHTML = document.querySelector('.word-card__user-answer');
+          const inputHTML = document.querySelector('.word-card__input');
 
-        const { wordsToLearn } = this.state;
-        MainGame.removeWordCardFromDOM();
+          const { wordsToLearn } = this.state;
+          MainGame.removeWordCardFromDOM();
 
-        this.state.currentWordIndex += 1;
-        this.renderWordCard(wordsToLearn[this.state.currentWordIndex]);
-        this.state.audio.pause();
-        this.state.isAudioEnded = true;
-        this.state.audio.src = '';
-        this.estimateWords.removeFromDOM();
-        MainGame.toggleControlElements(false);
-        userAnswerHTML.innerHTML = '';
-        userAnswerHTML.classList.remove('word-card__user-answer_translucent');
-        inputHTML.focus();
+          this.state.currentWordIndex += 1;
+          this.renderWordCard(wordsToLearn[this.state.currentWordIndex]);
+          this.state.audio.pause();
+          this.state.isAudioEnded = true;
+          this.state.audio.src = '';
+          this.estimateWords.removeFromDOM();
+          MainGame.toggleControlElements(false);
+          userAnswerHTML.innerHTML = '';
+          userAnswerHTML.classList.remove('word-card__user-answer_translucent');
+          inputHTML.focus();
+        }
       }
     });
   }
@@ -267,7 +269,7 @@ class MainGame {
       }
 
       if (event.target.classList.contains('main-game__add-to-difficult')) {
-        return;
+
       }
     });
   }
@@ -361,7 +363,8 @@ class MainGame {
 
   playAudio(source) {
     const { src, ended } = this.state.audio;
-    if (src === '' || (/localhost/).test(src) || ended) {
+
+    if (src === '' || src !== source || ended) {
       this.state.audio.src = source;
       this.state.audio.play();
     }

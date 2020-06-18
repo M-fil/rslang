@@ -71,7 +71,7 @@
 }
 
 .word-card__input {
-  @include font(2rem, 2.5rem);
+  @include font(2.1rem);
 }
 
 .word-card__input-container {
@@ -110,6 +110,18 @@
   &_many-mistakes {
     color: $many-mistakes-letter-color;
   }
+}
+
+.word-card__fake-word-container {
+  display: inline-block;
+  height: 0;
+}
+
+.word-card__fake-word {
+  @include font(2.5rem);
+
+  display: inline;
+  opacity: 0;
 }
 
 .main-game__estimate-buttons {
