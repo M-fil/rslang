@@ -66,3 +66,25 @@ body{
 .hide{
     display: none;
 }
+.audioPulse{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    color: gray;
+    font-family: Roboto;
+    background:url("https://psv4.userapi.com/c856528/u106151900/docs/d5/cbb2cd905626/audio.png?extra=WkoXkuoHCbjsCc5_frZiKM0kwKTuclLooYdbvx9OjoDMknCaKfm_TsxTxUUjkO5hYxtfhANH7nUpVN90bMbqX7wW5LfIoXeibLc0p1ifK3hHrAglZIcxurA7-VOZr0zM9Rki_bFF6Okg");
+    background-size: contain;
+    border-radius: 50%;
+    animation: radial-pulse 1s infinite;
+}
+@keyframes radial-pulse {
+    0% {
+      box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.5);
+    }
+   
+    100% {
+      box-shadow: 0 0 0 40px rgba(0, 0, 0, 0);
+    }
+}
