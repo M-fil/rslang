@@ -1,6 +1,6 @@
 import { getWords } from '../../service/service';
 import create from '../../utils/сreate';
-import { urls } from '../../constants/constants';
+import { urls, mainGameStrings, wordsToLearnOptions } from '../../constants/constants';
 import { checkIsManyMistakes } from '../../utils/calculations';
 
 import WordCard from './components/word-card/WordCard';
@@ -11,6 +11,17 @@ import ProgressBar from './components/progress-bar/ProgressBar';
 import Preloader from '../preloader/Preloader';
 
 const {
+  REMOVE_WORD_BUTTON,
+  ADD_TO_DIFFICULT_WORDS,
+} = mainGameStrings;
+
+const {
+  MIXED,
+  ONLY_NEW_WORDS,
+  ONLY_WORDS_TO_REPEAT,
+} = wordsToLearnOptions;
+
+const {
   WORDS_AUDIOS_URL,
 } = urls;
 
@@ -19,6 +30,7 @@ class MainGame {
     this.state = {
       currentWordIndex: 0,
       isLoading: false,
+      wordsToLearn: [],
       wordsArray: [],
       audio: new Audio(),
       audios: [],
@@ -42,15 +54,16 @@ class MainGame {
 
     const words = await getWords();
     this.state.wordsArray = words;
+    this.state.wordsToLearn = words;
     this.state.isLoading = false;
     this.preloader.hide();
 
     const wordCard = MainGame.createWordCard(words[currentWordIndex]);
     this.setAudiosForWords(words[currentWordIndex]);
     const gameSettingsBlock = new SettingsControls();
-    const vocabularyButtons = WordCard.renderVocabularyButtons();
+    const vocabularyButtons = MainGame.renderVocabularyButtons();
     const wordsSelectList = new WordsSelectList();
-    this.progressBar = new ProgressBar(currentWordIndex, this.state.wordsArray.length);
+    this.progressBar = new ProgressBar(currentWordIndex, this.state.wordsToLearn.length);
 
     mainGameHTML.append(
       gameSettingsBlock.render(),
@@ -66,6 +79,8 @@ class MainGame {
     this.activateNextButton();
     this.activateShowAnswerButton();
     MainGame.activateInputWordsHandler();
+    MainGame.activateVocabularyButtons();
+    this.activateWordsToLearnSelect();
     this.activateEstimateButtons();
   }
 
@@ -80,6 +95,37 @@ class MainGame {
     this.activateNextButton();
     this.activateShowAnswerButton();
     MainGame.activateInputWordsHandler();
+  }
+
+  static renderVocabularyButtons() {
+    const removeWordButton = WordCard.renderButton('remove-word', REMOVE_WORD_BUTTON);
+    const addToDifficultButton = WordCard.renderButton('add-to-difficult', ADD_TO_DIFFICULT_WORDS);
+    const container = create('div', 'word-card__vocabulary-buttons', [removeWordButton, addToDifficultButton]);
+
+    return container;
+  }
+
+  activateWordsToLearnSelect() {
+    const selectHTML = document.querySelector('.main-game__words-type-select');
+    selectHTML.addEventListener('change', (event) => {
+      const { options } = event.target;
+      const selectedOptionValue = options[options.selectedIndex].value;
+      let selectedArrayType = [];
+      switch (selectedOptionValue) {
+        case MIXED:
+        default:
+          selectedArrayType = this.state.wordsToLearn;
+          break;
+        case ONLY_NEW_WORDS:
+          selectedArrayType = this.state.wordsToLearn;
+          break;
+        case ONLY_WORDS_TO_REPEAT:
+          selectedArrayType = this.state.wordsToLearn;
+          break;
+      }
+
+      this.state.wordsToLearn = selectedArrayType;
+    });
   }
 
   activateGameSettingsEvents() {
@@ -105,12 +151,12 @@ class MainGame {
     const showAnswerButton = document.querySelector('.main-game__show-answer-button');
     const userAnswerHTML = document.querySelector('.word-card__user-answer');
 
-    const { currentWordIndex, wordsArray } = this.state;
+    const { currentWordIndex, wordsToLearn } = this.state;
     const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
 
-    if (currentWordIndex + 1 !== wordsArray.length) {
+    if (currentWordIndex + 1 !== wordsToLearn.length) {
       const trimedValue = inputHTML.value.trim();
-      const numberOfMistakes = MainGame.checkWord(wordsArray[currentWordIndex].word);
+      const numberOfMistakes = MainGame.checkWord(wordsToLearn[currentWordIndex].word);
 
       if (isAudioPlaybackEnabled && this.state.isAudioEnded) {
         this.playAudiosInTurns(0);
@@ -128,7 +174,7 @@ class MainGame {
         nextButtonHTML.setAttribute('disabled', 'disabled');
         showAnswerButton.setAttribute('disabled', 'disabled');
 
-        this.progressBar.updateSize(currentWordIndex + 1, wordsArray.length);
+        this.progressBar.updateSize(currentWordIndex + 1, wordsToLearn.length);
         wordCardHTML.append(new EstimateButtonsBlock().render());
       } else {
         inputHTML.value = '';
@@ -142,11 +188,11 @@ class MainGame {
   activateEstimateButtons() {
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('main-game__estimate-button')) {
-        const { wordsArray } = this.state;
+        const { wordsToLearn } = this.state;
         MainGame.removeWordCardFromDOM();
 
         this.state.currentWordIndex += 1;
-        this.renderWordCard(wordsArray[this.state.currentWordIndex]);
+        this.renderWordCard(wordsToLearn[this.state.currentWordIndex]);
         this.state.audio.pause();
         this.state.isAudioEnded = true;
         this.state.audio.src = '';
@@ -168,6 +214,18 @@ class MainGame {
 
     showAnswerButton.addEventListener('click', () => {
       this.switchToTheNextWordCard(true);
+    });
+  }
+
+  static activateVocabularyButtons() {
+    document.addEventListener('click', () => {
+      if (event.target.classList.contains('.main-game__remove-word')) {
+        console.log('click');
+      }
+
+      if (event.target.classList.contains('.main-game__add-to-difficult')) {
+        console.log('click');
+      }
     });
   }
 

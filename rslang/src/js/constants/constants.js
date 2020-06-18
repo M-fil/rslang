@@ -3,8 +3,8 @@ const urls = {
   CREATE_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users',
   LOGIN_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/signin',
   GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
-  WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/irinainina/rslang-data/master/',
-  WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/irinainina/rslang-data/master/',
+  WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
+  WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
 };
 
 const authenticationTexts = {

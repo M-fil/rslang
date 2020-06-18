@@ -8,8 +8,6 @@ const {
 } = urls;
 
 const {
-  REMOVE_WORD_BUTTON,
-  ADD_TO_DIFFICULT_WORDS,
   NEXT_BUTTON,
   SHOW_ANSWER_BUTTON,
 } = mainGameStrings;
@@ -100,14 +98,6 @@ class WordCard {
     );
     WordCard.removeCurrentWordFromSentence(textMeaningHTML);
     WordCard.removeCurrentWordFromSentence(textExampleHTML);
-
-    return container;
-  }
-
-  static renderVocabularyButtons() {
-    const removeWordButton = WordCard.renderButton('remove-word', REMOVE_WORD_BUTTON);
-    const addToDifficultButton = WordCard.renderButton('add-to-difficult', ADD_TO_DIFFICULT_WORDS);
-    const container = create('div', 'word-card__vocabulary-buttons', [removeWordButton, addToDifficultButton]);
 
     return container;
   }
