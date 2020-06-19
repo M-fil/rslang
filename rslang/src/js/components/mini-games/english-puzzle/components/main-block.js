@@ -2,7 +2,7 @@ import {
   GAME_BLOCK,
 } from '../../../../constants/constatntsForEP';
 import {
-  hidingElement,
+  viewElement,
 } from './dom-actions';
 import create from '../../../../utils/сreate';
 
@@ -99,15 +99,18 @@ function createGameButtons() {
         break;
       case 2:
         gameButton.classList.add('continue-button');
-        hidingElement(gameButton);
+        viewElement([gameButton], []);
+        // hidingElement(gameButton);
         break;
       case 3:
         gameButton.classList.add('result-button');
-        hidingElement(gameButton);
+        viewElement([gameButton], []);
+        // hidingElement(gameButton);
         break;
       default:
         gameButton.classList.add('repeat-button');
-        hidingElement(gameButton);
+        viewElement([gameButton], []);
+        // hidingElement(gameButton);
         break;
     }
     gameButtons.appendChild(gameButton);
@@ -141,7 +144,8 @@ function createWorkBlock() {
   const controlBlock = create('div', 'control-block', [createSelectBlock(), createControlButtons(buttonStat)]);
   const gameBlock = create('div', 'game-block', [controlBlock, gameField]);
   const gameContainer = create('div', 'game-container', gameBlock);
-  hidingElement(gameContainer);
+  viewElement([gameContainer], []);
+  // hidingElement(gameContainer);
   return gameContainer;
 }
 

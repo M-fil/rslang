@@ -2,7 +2,7 @@ import {
   RESULT_FORM,
 } from '../../../../constants/constatntsForEP';
 import {
-  hidingElement,
+  viewElement,
 } from './dom-actions';
 import create from '../../../../utils/сreate';
 
@@ -15,6 +15,6 @@ export default function createResulBlock() {
   resultButton.textContent = RESULT_FORM.buttonName;
   const resultBlock = create('div', 'result-block', [resultTitle, resultStatistic, resultButtonBlock]);
   const resultContainer = create('div', 'result-container', resultBlock);
-  hidingElement(resultContainer);
+  viewElement([resultContainer], []);
   return resultContainer;
 }

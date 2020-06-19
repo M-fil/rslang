@@ -54,7 +54,6 @@ export default async function createCanvasElements(
           const canvas = create('canvas', `canvas-item canvas-row-${i + 1} canvas-item-${j + 1}`);
           canvas.setAttribute('data-item', `${i + 1}-${j + 1}`);
           canvas.setAttribute('data-word', word);
-          canvas.draggable = 'true';
 
           const ctx = canvas.getContext('2d');
           let canvasWidth = (word.length * onePart) + extraWidth;

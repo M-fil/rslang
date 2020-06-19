@@ -3,8 +3,7 @@ import createWorkBlock from './components/main-block';
 import createResultBlock from './components/result-block';
 import create from '../../../utils/сreate';
 import {
-  hidingElement,
-  showingElement,
+  viewElement,
   cleanParentNode,
 } from './components/dom-actions';
 import getWords from '../../../service/service';
@@ -13,6 +12,7 @@ import {
   RESULT_FORM,
 } from '../../../constants/constatntsForEP';
 import createCanvasElements from './components/game-field';
+import findPainting from './components/select-painting';
 
 export default class EnglishPuzzle {
   constructor() {
@@ -20,14 +20,15 @@ export default class EnglishPuzzle {
     this.gameForm = createWorkBlock();
     this.resultForm = createResultBlock();
     this.sinth = window.speechSynthesis;
-    /* this.actualSentenses = null;
+    this.actualSentenses = null;
     this.actualTranslate = null;
     this.actualCards = null;
     this.activeSentenseCounter = 0;
     this.rightAnswers = [];
-    this.falseAnswers = []; */
+    this.falseAnswers = [];
     this.dropped = null;
     this.activeSentenseForCheck = null;
+    this.painting = null;
   }
 
   start() {
@@ -40,11 +41,18 @@ export default class EnglishPuzzle {
     this.controlButtonsAction();
   }
 
+  async getCardsAndStartGame() {
+    await this.getGameCards();
+    this.gameStart();
+    this.showTranslate();
+    this.dragAndDropActions();
+  }
+
   async getGameCards() {
     const level = document.querySelector('.level').value - 1;
     const page = document.querySelector('.page').value - 1;
     const words = await getWords(page, level);
-
+    this.painting = findPainting(level + 1, page + 1);
     this.actualSentenses = [];
     this.actualTranslate = [];
     this.rightAnswers = [];
@@ -59,7 +67,7 @@ export default class EnglishPuzzle {
     }
 
     this.actualCards = await createCanvasElements({
-      src: 'https://raw.githubusercontent.com/Shnyrkevich/rslang_data_paintings/master/level1/9th_wave.jpg',
+      src: `https://raw.githubusercontent.com/Shnyrkevich/rslang_data_paintings/master/${this.painting.imageSrc}`,
       wordsList: this.actualSentenses,
       fontFamily: 'Arial',
       fontRatio: 0.7,
@@ -84,22 +92,30 @@ export default class EnglishPuzzle {
       if (document.querySelector('.sound-button').classList.contains('active-sintez')) {
         this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter]);
       }
-      hidingElement(document.querySelector('.continue-button'));
-      showingElement(document.querySelector('.check-button'), document.querySelector('.show-result-button'));
+      viewElement([document.querySelector('.continue-button')],
+        [
+          document.querySelector('.check-button'),
+          document.querySelector('.show-result-button'),
+        ]);
     } else if (this.activeSentenseCounter + 1 === GAME_BLOCK.gameZoneRows) {
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
         const page = document.querySelector('.page');
         page.value = Number(page.value) + 1;
-        await this.getGameCards();
-        // Можно сделать отдельную функцию
-        this.gameStart();
-        this.showTranslate();
-        this.dragAndDropActions();
-        showingElement(document.querySelector('.check-button'), document.querySelector('.show-result-button'));
-        hidingElement(document.querySelector('.continue-button'), document.querySelector('.result-button'));
+        this.getCardsAndStartGame();
+        viewElement([
+          document.querySelector('.continue-button'),
+          document.querySelector('.result-button'),
+        ], [
+          document.querySelector('.check-button'),
+          document.querySelector('.show-result-button'),
+        ]);
       } else {
-        hidingElement(document.querySelector('.continue-button'));
-        showingElement(document.querySelector('.repeat-button'), document.querySelector('.result-button'));
+        viewElement([
+          document.querySelector('.continue-button'),
+        ], [
+          document.querySelector('.repeat-button'),
+          document.querySelector('.result-button'),
+        ]);
       }
     }
   }
@@ -128,12 +144,11 @@ export default class EnglishPuzzle {
         this.dropped = null;
       });
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
-        showingElement(document.querySelector('.result-button'));
+        viewElement([], [document.querySelector('.check-button')]);
       }
-      hidingElement(document.querySelector('.check-button'));
-      showingElement(document.querySelector('.continue-button'));
+      viewElement([document.querySelector('.check-button')], [document.querySelector('.continue-button')]);
     } else {
-      showingElement(document.querySelector('.show-result-button'));
+      viewElement([], [document.querySelector('.show-result-button')]);
     }
   }
 
@@ -157,7 +172,6 @@ export default class EnglishPuzzle {
     this.activeSentenseForCheck.forEach((el) => {
       const elem = el;
       elem.classList.remove('active-card');
-      elem.draggable = 'false';
       gameFieldRow.appendChild(elem);
     });
   }
@@ -195,11 +209,9 @@ export default class EnglishPuzzle {
   static checkFieldCompletion() {
     const sentensBase = document.querySelector('.game-block_field--description');
     if (!sentensBase.hasChildNodes()) {
-      hidingElement(document.querySelector('.show-result-button'));
+      viewElement([document.querySelector('.show-result-button')], []);
     }
   }
-
-  // RESULT
 
   resultCollection() {
     const resultStatistic = document.querySelector('.result-block_statistic');
@@ -230,13 +242,8 @@ export default class EnglishPuzzle {
 
   startMenuButtonAction() {
     document.querySelector('.information-button').addEventListener('click', async () => {
-      await this.getGameCards();
-      // Три метода в один левый
-      this.gameStart();
-      this.showTranslate();
-      this.dragAndDropActions();
-      hidingElement(this.startMenu);
-      showingElement(this.gameForm);
+      this.getCardsAndStartGame();
+      viewElement([this.startMenu], [this.gameForm]);
     });
   }
 
@@ -300,8 +307,7 @@ export default class EnglishPuzzle {
     });
 
     document.querySelector('.button-logout').addEventListener('click', async () => {
-      hidingElement(this.gameForm);
-      showingElement(this.startMenu);
+      viewElement([this.gameForm], [this.startMenu]);
     });
 
     document.querySelector('.button-sintezise').addEventListener('click', () => {
@@ -338,21 +344,22 @@ export default class EnglishPuzzle {
     });
 
     document.querySelector('.new_lvl-button').addEventListener('click', async () => {
-      await this.getGameCards();
-      // Три метода в один левый
-      this.gameStart();
-      this.showTranslate();
-      this.dragAndDropActions();
-      hidingElement(document.querySelector('.result-button'), document.querySelector('.continue-button'), document.querySelector('.repeat-button'));
-      showingElement(document.querySelector('.check-button'), document.querySelector('.show-result-button'));
+      this.getCardsAndStartGame();
+      viewElement([
+        document.querySelector('.result-button'),
+        document.querySelector('.continue-button'),
+        document.querySelector('.repeat-button'),
+      ], [
+        document.querySelector('.check-button'),
+        document.querySelector('.show-result-button'),
+      ]);
     });
   }
 
   controlButtonsAction() {
     document.querySelector('.show-result-button').addEventListener('click', (event) => {
       this.showCorrectSentens();
-      hidingElement(event.target, document.querySelector('.check-button'));
-      showingElement(document.querySelector('.continue-button'));
+      viewElement([event.target, document.querySelector('.check-button')], [document.querySelector('.continue-button')]);
     });
 
     document.querySelector('.check-button').addEventListener('click', () => {
@@ -366,23 +373,23 @@ export default class EnglishPuzzle {
     document.querySelector('.result-button').addEventListener('click', () => {
       this.resultCollection();
       this.actionForResultSounds();
-      hidingElement(this.gameForm);
-      showingElement(this.resultForm);
+      viewElement([this.gameForm], [this.resultForm]);
     });
 
     document.querySelector('.repeat-button').addEventListener('click', async (event) => {
-      await this.getGameCards();
-      // Три метода в один левый
-      this.gameStart();
-      this.showTranslate();
-      this.dragAndDropActions();
-      hidingElement(document.querySelector('.result-button'), event.target);
-      showingElement(document.querySelector('.check-button'), document.querySelector('.show-result-button'));
+      this.getCardsAndStartGame();
+      viewElement([
+        document.querySelector('.result-button'),
+        event.target,
+      ],
+      [
+        document.querySelector('.check-button'),
+        document.querySelector('.show-result-button'),
+      ]);
     });
 
     document.querySelector('.result-button_continue').addEventListener('click', () => {
-      hidingElement(this.resultForm);
-      showingElement(this.gameForm);
+      viewElement([this.resultForm], [this.gameForm]);
     });
   }
 

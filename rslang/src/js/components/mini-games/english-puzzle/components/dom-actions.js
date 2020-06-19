@@ -1,9 +1,10 @@
-function hidingElement(...el) {
-  el.forEach((e) => e.classList.add('hidden-element'));
-}
-
-function showingElement(...el) {
-  el.forEach((e) => e.classList.remove('hidden-element'));
+function viewElement(hide, show) {
+  if (hide.length) {
+    hide.forEach((e) => e.classList.add('hidden-element'));
+  }
+  if (show.length) {
+    show.forEach((e) => e.classList.remove('hidden-element'));
+  }
 }
 
 function cleanParentNode(par) {
@@ -15,7 +16,6 @@ function cleanParentNode(par) {
 }
 
 export {
-  hidingElement,
-  showingElement,
+  viewElement,
   cleanParentNode,
 };
