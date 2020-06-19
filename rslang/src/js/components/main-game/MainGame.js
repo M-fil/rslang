@@ -1,4 +1,8 @@
-import { getWords } from '../../service/service';
+import {
+  getWords,
+  createUserWord,
+  getUserWord,
+} from '../../service/service';
 import create from '../../utils/сreate';
 import {
   urls,
@@ -247,6 +251,27 @@ class MainGame {
     }
   }
 
+  static async createWordDataForBackend(wordData, allWordData) {
+    const savedUserData = JSON.parse(localStorage.getItem('user-data'));
+    const { userId, token } = savedUserData;
+    const {
+      id: wordId, word, difficulty, daysInterval, valuationDate,
+    } = wordData;
+    const dataToRecieve = {
+      difficulty,
+      optional: {
+        word,
+        daysInterval: String(daysInterval),
+        valuationDate: valuationDate.toString(),
+        allData: JSON.stringify(allWordData),
+      },
+    };
+
+    const data = await createUserWord(userId, wordId, dataToRecieve, token);
+    console.log('dataWord', data);
+    return data;
+  }
+
   activateEstimateButtons() {
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('main-game__estimate-button')) {
@@ -259,6 +284,36 @@ class MainGame {
           switch (targetElementAppraisal) {
             case AGAIN.text: {
               this.addWordToTheCurrentTraining();
+              break;
+            }
+            case HARD.text: {
+              MainGame.createWordDataForBackend({
+                id: currentWord.id,
+                word: currentWord.word,
+                difficulty: HARD.text,
+                daysInterval: HARD.daysInterval,
+                valuationDate: new Date(),
+              }, currentWord);
+              break;
+            }
+            case GOOD.text: {
+              MainGame.createWordDataForBackend({
+                id: currentWord.id,
+                word: currentWord.word,
+                difficulty: GOOD.text,
+                daysInterval: GOOD.daysInterval,
+                valuationDate: new Date(),
+              }, currentWord);
+              break;
+            }
+            case EASY.text: {
+              MainGame.createWordDataForBackend({
+                id: currentWord.id,
+                word: currentWord.word,
+                difficulty: EASY.text,
+                daysInterval: EASY.daysInterval,
+                valuationDate: new Date(),
+              }, currentWord);
               break;
             }
             default:

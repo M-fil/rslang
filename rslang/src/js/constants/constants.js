@@ -51,14 +51,17 @@ const estimateButtonsTypes = {
   HARD: {
     text: 'Трудно',
     time: '13 дн',
+    daysInterval: 13,
   },
   GOOD: {
     text: 'Хорошо',
     time: '1.5 мес',
+    daysInterval: 45,
   },
   EASY: {
     text: 'Легко',
-    time: '3.1 мес',
+    time: '3 мес',
+    daysInterval: 90,
   },
 };
 
