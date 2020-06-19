@@ -67,9 +67,10 @@ body{
     display: none;
 }
 .audioPulse{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    right: 50%;
     width: 150px;
     height: 150px;
     color: gray;
@@ -87,4 +88,35 @@ body{
     100% {
       box-shadow: 0 0 0 40px rgba(0, 0, 0, 0);
     }
+}
+span{
+    color: green;
+}
+.line-through{
+    text-decoration: line-through;
+    opacity: 1;
+}
+.nextBtn{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    right: 50%;
+    cursor: pointer;
+    font-size: 4.5rem;
+    font-weight: 300;
+    line-height: 1;
+    text-align: center;
+    padding: 19px 15px 21px;
+    text-decoration: none !important;
+    min-width: 162px;
+    color: #fff !important;
+    background: lightpink;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+.checked{
+    opacity: 1;
+}
+.unchecked{
+    opacity: .5;
 }

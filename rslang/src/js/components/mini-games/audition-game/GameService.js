@@ -15,27 +15,50 @@ export default class GameService{
       
        
         for(let i=0; i<5; i++){
-            const element = create('div','element',arr[i].translate,answers);
+            const element = create('div','element',`${i+1}.${arr[i].translate}`,answers);
         }
         const audio = new Audio(`https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/${mainWord.audio}`);
         audio.play();
         document.querySelector('.answers').addEventListener('click',(event)=>{
-            if(event.target.classList.contains("element")){
-        if(event.target.innerText===mainWord.translate){
+            const AG=new AuditionGame();
+            
+        if(event.target.classList.contains("element") && !event.target.classList.contains('unchecked')&& !event.target.classList.contains('checked')){
+                const nextBtn=document.querySelector('.nextBtn');
+                nextBtn.innerHTML='&rarr;';
+                event.target.classList.toggle('checked');
+                const elements=document.querySelectorAll('.element');
+                for(let i=0;i<elements.length;i++){
+                    if(!elements[i].classList.contains("checked"))
+                    elements[i].classList.add("unchecked");
+                }
+        if(event.target.innerText.includes(mainWord.translate)){
+            event.target.innerHTML="<span>&#10004;</span>"+ event.target.innerText;
             const audio1 = new Audio("https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/correct.mp3");
         audio1.play();
-        const AG=new AuditionGame();
+       
+    
+        nextBtn.addEventListener('click',()=>{
         AG.render(false,lives);
         document.querySelector('.container').remove();
+        });
+        
         }
         else{
             const audio1 = new Audio("https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3");
             audio1.play();
-            const AG=new AuditionGame();
+            event.target.classList.toggle('line-through');
+            
+           // const nextBtn=create('button','element','&rarr;',document.querySelector('.game'));
+            nextBtn.addEventListener('click',()=>{
             AG.render(false,--lives);
             document.querySelector('.container').remove();
+            });
         }
     }
+    });
+    document.querySelector('.nextBtn').addEventListener('click',(event)=>{
+        if(event.target.innerText==="Не знаю")
+        audio.play();
     });
     }
     compare(obj){

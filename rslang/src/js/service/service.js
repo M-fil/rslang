@@ -10,7 +10,19 @@ const getWords = async (page = 0, group = 0) => {
 
   return data;
 };
-
+const getWordsAdditionalInfo = async (word) => {
+  const response = await fetch(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
+		"x-rapidapi-key": "bbfd4a02a1msh37e5e02afd1dafap13728ejsnfaf5795cd64b"
+	}
+});
+const data = await response.json();
+console.log(data);
+return data;
+}
 export {
   getWords,
+  getWordsAdditionalInfo,
 };
