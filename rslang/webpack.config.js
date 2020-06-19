@@ -3,6 +3,7 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 
@@ -68,6 +69,14 @@ module.exports = (env, options) => {
         $: 'jquery',
         jQuery: 'jquery',
         'window.jQuery': 'jquery',
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.resolve(__dirname, 'src/assets'),
+            to: path.resolve(__dirname, 'dist/src/assets'),
+          },
+        ],
       }),
       new Dotenv({
         path: './.env',
