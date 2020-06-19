@@ -90,16 +90,13 @@ class Authentication {
           throw new Error(PASSWORD_REQUIRMENTS);
         }
 
-        if (!checkEmail(trimedEmailValue)) {
-          throw new Error(INCORRECT_EMAIL);
-        }
-
         const data = await submitFunction(userSubmitData);
 
         if ('error' in data) {
           throw new Error(INCORRECT_VALUES);
         }
 
+        console.log('data', data);
         localStorage.setItem('user-data', JSON.stringify(data));
       } catch (error) {
         const errorBlockFromDOM = document.querySelector('.error-block');

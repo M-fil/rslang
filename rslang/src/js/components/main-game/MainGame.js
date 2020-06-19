@@ -52,11 +52,11 @@ class MainGame {
     };
   }
 
-  async render() {
+  async render(elementQuery) {
     const { currentWordIndex } = this.state;
 
     const mainGameHTML = create('div', 'main-game');
-    document.body.append(mainGameHTML);
+    document.querySelector(elementQuery).append(mainGameHTML);
     this.preloader = new Preloader();
     this.preloader.render();
     this.preloader.show();

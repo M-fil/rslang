@@ -22,7 +22,9 @@ const errorTypes = {
   PASSWORD_REQUIRMENTS: 'Пароль должен содержать не менее 8 символов, как минимум одну прописную букву, одну заглавную букву, одну цифру и один спецсимвол',
   INCORRECT_EMAIL: 'email введен неверно.',
   ERROR_417: 417,
+  UNDEFINED_ERROR: 'Неопределенная ошикба',
   USER_ALREADY_EXISTS: 'пользователь с такими данными уже существует',
+  STATUS_200: 200,
 };
 
 const mainGameStrings = {

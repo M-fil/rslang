@@ -10,6 +10,8 @@ const {
 const {
   USER_ALREADY_EXISTS,
   ERROR_417,
+  UNDEFINED_ERROR,
+  STATUS_200,
 } = errorTypes;
 
 const getWords = async (page = 0, group = 0) => {
@@ -33,6 +35,10 @@ const createUser = async (user) => {
     throw new Error(USER_ALREADY_EXISTS);
   }
 
+  if (rawResponse.status !== STATUS_200) {
+    throw new Error(UNDEFINED_ERROR);
+  }
+
   const content = await rawResponse.json();
   return content;
 };
@@ -49,6 +55,10 @@ const loginUser = async (user) => {
 
   if (rawResponse.status === ERROR_417) {
     throw new Error(USER_ALREADY_EXISTS);
+  }
+
+  if (rawResponse.status !== STATUS_200) {
+    throw new Error(UNDEFINED_ERROR);
   }
 
   const content = await rawResponse.json();
