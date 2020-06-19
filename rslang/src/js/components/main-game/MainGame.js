@@ -63,6 +63,7 @@ class MainGame {
     this.state.isLoading = true;
 
     const words = await getWords();
+    this.wordsDataLength = words.length;
     this.state.wordsArray = words;
     this.state.wordsToLearn = words;
     this.state.isLoading = false;
@@ -199,6 +200,7 @@ class MainGame {
           word.classList.add('word-card__sentence-word_visible');
         });
         inputHTML.value = '';
+        userAnswerHTML.classList.remove('word-card__user-answer_translucent');
         MainGame.toggleControlElements();
 
         this.progressBar.updateSize(currentWordIndex + 1, wordsToLearn.length);
@@ -209,6 +211,7 @@ class MainGame {
         setTimeout(() => {
           userAnswerHTML.classList.add('word-card__user-answer_translucent');
         }, 1000);
+        this.addWordToTheCurrentTraining(true);
       }
     }
   }
@@ -229,6 +232,21 @@ class MainGame {
     }
   }
 
+  addWordToTheCurrentTraining(isWrongAnswer = false) {
+    const { wordsToLearn, currentWordIndex } = this.state;
+    const currentWordInTheArray = wordsToLearn
+      .slice(this.wordsDataLength)
+      .find((item) => wordsToLearn[currentWordIndex].word === item.word);
+    if (!currentWordInTheArray) {
+      const currentWord = wordsToLearn[currentWordIndex];
+      const newLength = this.state.wordsToLearn.push(currentWord);
+      this.progressBar.updateSize(
+        isWrongAnswer ? currentWordIndex : currentWordIndex + 1,
+        newLength,
+      );
+    }
+  }
+
   activateEstimateButtons() {
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('main-game__estimate-button')) {
@@ -240,8 +258,7 @@ class MainGame {
           const currentWord = this.state.wordsToLearn[this.state.currentWordIndex];
           switch (targetElementAppraisal) {
             case AGAIN.text: {
-              const newLength = this.state.wordsToLearn.push(currentWord);
-              this.progressBar.updateSize(this.state.currentWordIndex + 1, newLength);
+              this.addWordToTheCurrentTraining();
               break;
             }
             default:
