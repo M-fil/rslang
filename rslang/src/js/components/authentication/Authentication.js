@@ -96,7 +96,6 @@ class Authentication {
           throw new Error(INCORRECT_VALUES);
         }
 
-        console.log('data', data);
         localStorage.setItem('user-data', JSON.stringify(data));
       } catch (error) {
         const errorBlockFromDOM = document.querySelector('.error-block');

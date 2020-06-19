@@ -80,9 +80,44 @@ const getUserById = async (id, token) => {
   return content;
 };
 
+const createUserWord = async (userId, wordId, word, token) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/words/${wordId}`, {
+    method: 'POST',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(word),
+  });
+
+  const content = await rawResponse.json();
+
+  console.log(content);
+  return content;
+};
+
+const getUserWord = async (userId, wordId, token) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/words/${wordId}`, {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const content = await rawResponse.json();
+
+  console.log(content);
+  return content;
+};
+
 export {
   getWords,
   createUser,
   loginUser,
   getUserById,
+  createUserWord,
+  getUserWord,
 };
