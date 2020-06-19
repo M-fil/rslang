@@ -1,5 +1,6 @@
-$color1: #4c83ff;
-$color2: #2afadf;
+$gradientforcardcontainer: linear-gradient(45deg, #4c83ff 0%, #2afadf 100%);
+$shadowcolor: rgba(0,0,0,0.5);
+$shadowcoloronhover: rgba(0,0,0,0.9);
 $cardtextcolor: #ffffff;
 
 .find-a-pair-card {
@@ -20,11 +21,11 @@ $cardtextcolor: #ffffff;
   justify-content: center;
   text-align: center;
   border-radius: 15px;
-  box-shadow: 0 5px 10.5px 0 rgba(0,0,0,0.5);
-  background: linear-gradient(45deg, $color1 0%, $color2 100%);
+  box-shadow: 0 5px 10.5px 0 $shadowcolor;
+  background: $gradientforcardcontainer;
   @media (hover: hover) {
     &:hover {
-      box-shadow: 0 5px 10.5px 0 rgba(0,0,0,0.9);
+      box-shadow: 0 5px 10.5px 0 $shadowcoloronhover;
     }
   }
 }

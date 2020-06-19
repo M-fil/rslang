@@ -7,7 +7,17 @@ import {
 import create from '../../../utils/сreate';
 import shuffle from '../../../utils/shuffle';
 import wordsFilter from '../../../utils/wordsfilter';
-import Preloader from '../../preloader/preloader';
+import Preloader from '../../preloader/Preloader';
+
+const findAPairConst = {
+  maxPages: 30,
+  maxLevel: 6,
+  cardsCount: 10,
+  cardsCheckCount: 2,
+  delayForClosingCards: 500,
+  gameTimerSec: 90,
+  gameTimerInterval: 1000,
+};
 
 export default class FindAPair {
   init() {
@@ -42,7 +52,7 @@ export default class FindAPair {
     container.innerHTML = '';
     container.classList.remove('find-a-pair__start-page');
 
-    const timerEl = create('i', 'find-a-pair-timer__seconds', '90', undefined, ['id', 'remain_seconds']);
+    const timerEl = create('i', 'find-a-pair-timer__seconds', `${findAPairConst.gameTimerSec}`, undefined, ['id', 'remain_seconds']);
     const timerSpan = create('span', 'find-a-pair-timer__text', `${findAPairText.remainSec}: ${timerEl.outerHTML}`);
     const timerContainer = create('div', 'find-a-pair-timer', timerSpan);
 
@@ -66,14 +76,12 @@ export default class FindAPair {
   }
 
   async getCardsData() {
-    // Random page
-    const page = Math.floor(Math.random() * 30);
+    const page = Math.floor(Math.random() * findAPairConst.maxPages);
     const words = await getWords(page, this.level - 1);
-    if (words.length === 0) {
+    if (!words.length) {
       this.getCardsData();
     }
-    console.log(page, this.level, words);
-    const data = shuffle(wordsFilter(words), 10);
+    const data = shuffle(wordsFilter(words), findAPairConst.cardsCount);
     const arrCards = [];
     data.forEach((el) => {
       arrCards.push({
@@ -95,9 +103,6 @@ export default class FindAPair {
     const back = create('div', 'find-a-pair-card__side find-a-pair-card__back', word, undefined, ['wordPair', cardData.pair]);
     const cardContainer = create('div', 'find-a-pair-card__container', [face, back], undefined, ['wordPair', cardData.pair]);
 
-    // cardContainer.addEventListener('mouseenter', (this.mouseEnterHandler).bind(cardContainer));
-    // cardContainer.addEventListener('mouseleave', (this.mouseLeaveHandler).bind(cardContainer));
-
     cardContainer.addEventListener('click', (this.mouseClickHandler).bind({ obj: this, element: cardContainer }));
 
     const card = create('div', 'find-a-pair-card', cardContainer, undefined, ['wordPair', cardData.pair]);
@@ -107,14 +112,14 @@ export default class FindAPair {
 
   checkPair() {
     const checkedCards = document.querySelectorAll('.is-fixed');
-    if (checkedCards.length === 2) {
+    if (checkedCards.length === findAPairConst.cardsCheckCount) {
       if (checkedCards[0].dataset.wordPair === checkedCards[1].dataset.wordPair) {
         this.findPairs += 1;
         this.playAudio('correct');
         checkedCards[0].classList.add('is-paired');
         checkedCards[1].classList.add('is-paired');
         this.updateFindPairs();
-        if (this.findPairs === 10) this.resultsPage();
+        if (this.findPairs === findAPairConst.cardsCount) this.resultsPage();
       } else {
         this.playAudio('error');
       }
@@ -122,7 +127,7 @@ export default class FindAPair {
     this.fixedCards = 0;
     setTimeout(() => {
       checkedCards.forEach((element) => element.classList.remove('is-fixed'));
-    }, 500);
+    }, findAPairConst.delayForClosingCards);
   }
 
   playAudio(file) {
@@ -131,7 +136,7 @@ export default class FindAPair {
   }
 
   startTimer() {
-    this.timer = setInterval((this.timerHandler).bind(this), 1000);
+    this.timer = setInterval((this.timerHandler).bind(this), findAPairConst.gameTimerInterval);
   }
 
   updateFindPairs() {
@@ -157,11 +162,11 @@ export default class FindAPair {
   }
 
   levelUp() {
-    this.level = (this.level < 6) ? this.level + 1 : this.level;
+    this.level = (this.level < findAPairConst.maxLevel) ? this.level + 1 : this.level;
   }
 
   saveStats() {
-    if (this.findPairs === 10) this.levelUp();
+    if (this.findPairs === findAPairConst.cardsCount) this.levelUp();
     const findPairs = Number(localStorage.findedpairs) || 0;
     localStorage.level = this.level;
     localStorage.findedpairs = findPairs + this.findPairs;
@@ -201,7 +206,7 @@ export default class FindAPair {
       }
       this.element.classList.add('is-fixed');
       this.obj.fixedCards += 1;
-      if (this.obj.fixedCards === 2) {
+      if (this.obj.fixedCards === findAPairConst.cardsCheckCount) {
         this.obj.checkPair();
       }
     }
@@ -209,7 +214,7 @@ export default class FindAPair {
 
   timerHandler() {
     if (!this.gameOnPause) {
-      let seconds = parseInt(document.querySelector('#remain_seconds').innerText, 10);
+      let seconds = Number(document.querySelector('#remain_seconds').innerText);
       seconds -= 1;
       document.querySelector('#remain_seconds').innerText = seconds;
       if (seconds === 0) {
