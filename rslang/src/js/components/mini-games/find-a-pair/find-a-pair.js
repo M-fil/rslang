@@ -37,7 +37,7 @@ export default class FindAPair {
     const startGameButton = create('button', 'find-a-pair__startgame-button', findAPairText.startButton, undefined, ['id', 'find-a-pair-startgame-button']);
     startGameButton.addEventListener('click', (this.startGameHandler).bind(this));
     const gameLevel = create('p', 'find-a-pair__gamelevel', `${findAPairText.level}: ${this.level}`);
-    create('div', 'find-a-pair find-a-pair__start-page', [aboutgame, startGameButton, gameLevel], document.body, ['id', 'find-a-pair']);
+    this.container = create('div', 'find-a-pair find-a-pair__start-page', [aboutgame, startGameButton, gameLevel], document.body, ['id', 'find-a-pair']);
   }
 
   async startGame() {
@@ -48,9 +48,8 @@ export default class FindAPair {
   }
 
   renderGame() {
-    const container = document.querySelector('#find-a-pair');
-    container.innerHTML = '';
-    container.classList.remove('find-a-pair__start-page');
+    this.container.innerHTML = '';
+    this.container.classList.remove('find-a-pair__start-page');
 
     const timerEl = create('i', 'find-a-pair-timer__seconds', `${findAPairConst.gameTimerSec}`, undefined, ['id', 'remain_seconds']);
     const timerSpan = create('span', 'find-a-pair-timer__text', `${findAPairText.remainSec}: ${timerEl.outerHTML}`);
@@ -70,8 +69,8 @@ export default class FindAPair {
 
     pauseButton.addEventListener('click', (this.pauseGameHandler).bind(this));
 
-    container.appendChild(controlbar);
-    container.appendChild(playingField);
+    this.container.appendChild(controlbar);
+    this.container.appendChild(playingField);
     this.preloader.hide();
   }
 
@@ -148,14 +147,13 @@ export default class FindAPair {
     this.clearTimer();
     this.saveStats();
     const globalFindedCards = localStorage.findedpairs || 0;
-    const container = document.querySelector('#find-a-pair');
-    container.innerHTML = '';
-    container.classList.add('find-a-pair__start-page');
+    this.container.innerHTML = '';
+    this.container.classList.add('find-a-pair__start-page');
 
-    create('p', 'find-a-pair__result-text', findAPairText.resultText, container);
-    create('p', 'find-a-pair__finded-pairs', `${findAPairText.findCards}: ${this.findPairs} (${globalFindedCards})`, container);
-    create('p', 'find-a-pair__next-level', `${findAPairText.nextLevel}: ${this.level}`, container);
-    const newGame = create('button', 'find-a-pair__newgame-button', findAPairText.newGameButton, container);
+    create('p', 'find-a-pair__result-text', findAPairText.resultText, this.container);
+    create('p', 'find-a-pair__finded-pairs', `${findAPairText.findCards}: ${this.findPairs} (${globalFindedCards})`, this.container);
+    create('p', 'find-a-pair__next-level', `${findAPairText.nextLevel}: ${this.level}`, this.container);
+    const newGame = create('button', 'find-a-pair__newgame-button', findAPairText.newGameButton, this.container);
 
     newGame.addEventListener('click', (this.newGameHandler).bind(this));
     this.preloader.hide();
