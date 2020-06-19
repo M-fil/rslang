@@ -1,7 +1,7 @@
-$gradientforcardcontainer: linear-gradient(45deg, #4c83ff 0%, #2afadf 100%);
-$shadowcolor: rgba(0,0,0,0.5);
-$shadowcoloronhover: rgba(0,0,0,0.9);
-$cardtextcolor: #ffffff;
+$gradient-for-card-container: linear-gradient(45deg, #4c83ff 0%, #2afadf 100%);
+$shadow-color: rgba(0,0,0,0.5);
+$shadow-color-on-hover: rgba(0,0,0,0.9);
+$card-text-color: #ffffff;
 
 .find-a-pair-card {
   perspective: 600px;
@@ -21,11 +21,11 @@ $cardtextcolor: #ffffff;
   justify-content: center;
   text-align: center;
   border-radius: 15px;
-  box-shadow: 0 5px 10.5px 0 $shadowcolor;
-  background: $gradientforcardcontainer;
+  box-shadow: 0 5px 10.5px 0 $shadow-color;
+  background: $gradient-for-card-container;
   @media (hover: hover) {
     &:hover {
-      box-shadow: 0 5px 10.5px 0 $shadowcoloronhover;
+      box-shadow: 0 5px 10.5px 0 $shadow-color-on-hover;
     }
   }
 }
@@ -41,7 +41,7 @@ $cardtextcolor: #ffffff;
 }
 
 .find-a-pair-card__word {
-  color: $cardtextcolor;
+  color: $card-text-color;
   @include font(1.7rem);
 }
 
