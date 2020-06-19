@@ -11,6 +11,4 @@ const getWords = async (page = 0, group = 0) => {
   return data;
 };
 
-export {
-  getWords,
-};
+export default getWords;
