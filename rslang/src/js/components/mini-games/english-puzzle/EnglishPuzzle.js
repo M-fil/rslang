@@ -53,6 +53,8 @@ export default class EnglishPuzzle {
     const page = document.querySelector('.page').value - 1;
     const words = await getWords(page, level);
     this.painting = findPainting(level + 1, page + 1);
+    const imageUrl = `https://raw.githubusercontent.com/Shnyrkevich/rslang_data_paintings/master/${this.painting.imageSrc}`;
+    this.paintingText = `${this.painting.author}, ${this.painting.name} (${this.painting.year})`;
     this.actualSentenses = [];
     this.actualTranslate = [];
     this.rightAnswers = [];
@@ -60,6 +62,7 @@ export default class EnglishPuzzle {
     this.activeSentenseCounter = 0;
 
     document.querySelectorAll('.puzzle-row').forEach((el) => cleanParentNode(el));
+    document.querySelector('.game-block_field--background').style.backgroundImage = `url(${imageUrl})`;
 
     for (let i = 0; i < GAME_BLOCK.gameZoneRows; i += 1) {
       this.actualSentenses.push(words[i].textExample);
@@ -67,7 +70,7 @@ export default class EnglishPuzzle {
     }
 
     this.actualCards = await createCanvasElements({
-      src: `https://raw.githubusercontent.com/Shnyrkevich/rslang_data_paintings/master/${this.painting.imageSrc}`,
+      src: imageUrl,
       wordsList: this.actualSentenses,
       fontFamily: 'Arial',
       fontRatio: 0.7,
@@ -89,9 +92,6 @@ export default class EnglishPuzzle {
       this.gameStart();
       this.showTranslate();
       this.dragAndDropActions();
-      if (document.querySelector('.sound-button').classList.contains('active-sintez')) {
-        this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter]);
-      }
       viewElement([document.querySelector('.continue-button')],
         [
           document.querySelector('.check-button'),
@@ -137,6 +137,7 @@ export default class EnglishPuzzle {
 
     if (mistakeCounter === 0) {
       this.rightAnswers.push(this.actualSentenses[this.activeSentenseCounter]);
+      this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter]);
       cardsWithAnswers.forEach((el) => {
         const elem = el;
         elem.classList.remove('active-card');
@@ -144,9 +145,10 @@ export default class EnglishPuzzle {
         this.dropped = null;
       });
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
-        viewElement([], [document.querySelector('.check-button')]);
+        viewElement([document.querySelector('.game-block_field--puzzle-container')], [document.querySelector('.game-block_field--background')]);
+        this.showActualPainting();
       }
-      viewElement([document.querySelector('.check-button')], [document.querySelector('.continue-button')]);
+      viewElement([document.querySelector('.check-button')], [document.querySelector('.continue-button'), document.querySelector('.show-result-button')]);
     } else {
       viewElement([], [document.querySelector('.show-result-button')]);
     }
@@ -172,8 +174,14 @@ export default class EnglishPuzzle {
     this.activeSentenseForCheck.forEach((el) => {
       const elem = el;
       elem.classList.remove('active-card');
+      elem.draggable = 'false';
       gameFieldRow.appendChild(elem);
     });
+  }
+
+  showActualPainting() {
+    const descr = create('p', 'painting-description', '', document.querySelector('.game-block_field--description'));
+    descr.textContent = this.paintingText;
   }
 
   static createCorrectSentence(sent) {
@@ -201,8 +209,10 @@ export default class EnglishPuzzle {
     const cardsContainer = document.querySelector('.game-block_field--description');
     cleanParentNode(cardsContainer);
     cards.forEach((el) => {
-      cardsContainer.appendChild(el);
-      el.classList.add('active-card');
+      const elem = el;
+      elem.draggable = 'true';
+      elem.classList.add('active-card');
+      cardsContainer.appendChild(elem);
     });
   }
 
@@ -216,6 +226,12 @@ export default class EnglishPuzzle {
   resultCollection() {
     const resultStatistic = document.querySelector('.result-block_statistic');
     cleanParentNode(resultStatistic);
+    const painting = document.querySelector('.result-block_painting').childNodes;
+    const image = document.querySelector('.game-block_field--background').cloneNode(false);
+    image.classList.add('result-image');
+    cleanParentNode(painting[0]);
+    painting[0].appendChild(image);
+    painting[1].textContent = this.paintingText;
     for (let i = 0; i < RESULT_FORM.statusTitle.length; i += 1) {
       const blockTitle = create('p', 'result-block_statistic--title', '', resultStatistic);
       blockTitle.textContent = RESULT_FORM.statusTitle[i];
@@ -242,7 +258,7 @@ export default class EnglishPuzzle {
 
   startMenuButtonAction() {
     document.querySelector('.information-button').addEventListener('click', async () => {
-      this.getCardsAndStartGame();
+      await this.getCardsAndStartGame();
       viewElement([this.startMenu], [this.gameForm]);
     });
   }
@@ -344,7 +360,7 @@ export default class EnglishPuzzle {
     });
 
     document.querySelector('.new_lvl-button').addEventListener('click', async () => {
-      this.getCardsAndStartGame();
+      await this.getCardsAndStartGame();
       viewElement([
         document.querySelector('.result-button'),
         document.querySelector('.continue-button'),
@@ -377,7 +393,7 @@ export default class EnglishPuzzle {
     });
 
     document.querySelector('.repeat-button').addEventListener('click', async (event) => {
-      this.getCardsAndStartGame();
+      await this.getCardsAndStartGame();
       viewElement([
         document.querySelector('.result-button'),
         event.target,

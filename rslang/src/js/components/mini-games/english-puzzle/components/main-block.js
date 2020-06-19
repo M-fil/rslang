@@ -100,17 +100,14 @@ function createGameButtons() {
       case 2:
         gameButton.classList.add('continue-button');
         viewElement([gameButton], []);
-        // hidingElement(gameButton);
         break;
       case 3:
         gameButton.classList.add('result-button');
         viewElement([gameButton], []);
-        // hidingElement(gameButton);
         break;
       default:
         gameButton.classList.add('repeat-button');
         viewElement([gameButton], []);
-        // hidingElement(gameButton);
         break;
     }
     gameButtons.appendChild(gameButton);
@@ -138,14 +135,16 @@ const gameFieldRows = new Array(GAME_BLOCK.gameZoneRows).fill(1).map((el) => {
 
 function createWorkBlock() {
   const buttonStat = JSON.parse(localStorage.userSettings);
-  const puzzleField = create('div', 'game-block_field--puzzle', gameFieldRows);
+  const puzzleFieldContainer = create('div', 'game-block_field--puzzle-container');
+  create('div', 'game-block_field--puzzle', gameFieldRows, puzzleFieldContainer);
+  const puzzleFieldBackground = create('div', 'game-block_field--background');
+  viewElement([puzzleFieldBackground], []);
   const descriptionField = create('div', 'game-block_field--description');
-  const gameField = create('div', 'game-block_field', [createUserTooltips(buttonStat), puzzleField, descriptionField, createGameButtons()]);
+  const gameField = create('div', 'game-block_field', [createUserTooltips(buttonStat), puzzleFieldContainer, puzzleFieldBackground, descriptionField, createGameButtons()]);
   const controlBlock = create('div', 'control-block', [createSelectBlock(), createControlButtons(buttonStat)]);
   const gameBlock = create('div', 'game-block', [controlBlock, gameField]);
   const gameContainer = create('div', 'game-container', gameBlock);
   viewElement([gameContainer], []);
-  // hidingElement(gameContainer);
   return gameContainer;
 }
 

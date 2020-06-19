@@ -6,7 +6,6 @@ const START_WINDOW = {
 };
 
 const RESULT_FORM = {
-  title: 'Результат',
   buttonName: 'Продолжить',
   statusTitle: ['Я знаю', 'Я не знаю'],
 };
@@ -15,7 +14,7 @@ const GAME_BLOCK = {
   langEn: 'en-US',
   level: 'Уровень',
   page: 'Страница',
-  gameButtons: ['Я не знаю', 'Проверить', 'Продолжить', 'Результат', 'Повторить снова'],
+  gameButtons: ['Я не знаю', 'Проверить', 'Продолжить', 'Результат', 'Повторить'],
   gameMode: 2,
   gameLevels: 6,
   gamePages: 30,

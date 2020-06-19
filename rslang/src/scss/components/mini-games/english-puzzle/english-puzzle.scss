@@ -204,7 +204,6 @@
 }
 
 .game-block_field--tooltips,
-.game-block_field--puzzle,
 .game-block_field--description,
 .game-block_field--buttons {
     margin-bottom: 1%;
@@ -222,11 +221,32 @@
     align-items: center;
 }
 
-.game-block_field--puzzle {
-    background-color: rgb(255, 177, 153);
+.game-block_field--puzzle-container {
+    margin-bottom: 1%;
+    width: 70%;
     height: 60%;
-    width: 75%;
+}
+
+.game-block_field--puzzle {
+    width: 100%;
+    height: 100%;
+    display: flex;
     flex-direction: column;
+    background-color: rgb(255, 177, 153);
+}
+
+.game-block_field--background {
+    margin-bottom: 1%;
+    width: 70%;
+    height: 60%;
+}
+
+.game-block_field--background {
+    margin-bottom: 1%;
+    width: 70%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .puzzle-row {
@@ -255,10 +275,10 @@
 .canvas-item {
   height: 37px;
   cursor: pointer;
+  border: 1px;
 }
 
 .group-words {
-  width: 600px;
   display: flex;
 }
 
@@ -306,11 +326,37 @@
     margin-top: 0;
 }
 
+.result-block_painting {
+    width: 90%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.result-block_painting--image {
+    width: 60%;
+    height: 80%;
+}
+
+.result-block_painting--description {
+    width: 100%;
+    height: 20%;
+    text-align: center;
+}
+
+.result-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 .result-block_statistic {
-    height: 60%;
+    height: 40%;
     width: 90%;
     overflow-y: scroll;
-    margin: 30px 0 30px 0;
+    margin: 10px 0 30px 0;
 }
 
 .result-row {
