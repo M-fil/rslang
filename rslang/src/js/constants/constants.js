@@ -38,9 +38,25 @@ const findAPairText = {
   newGameButton: 'Сыграть снова',
 };
 
+const speakItConstants = {
+  RESTART_BUTTON: 'Начать занаво',
+  START_GAME_BUTTON: 'Начать игру',
+  RESULTS_BUTTON: 'Результаты',
+  GAME_COMPLEXITY: 'Сложность игры',
+  DESCRIPTION_OF_LEVELS: '1 - самый легкий уровень; 6 - самый сложный',
+  FILES_PATH: 'files/',
+  START_GAME_DESCRIPTION_1: 'Нажимайте на слова, чтобы услышать их звучание.',
+  START_GAME_DESCRIPTION_2: 'Нажмите на кнопку и произнесите слова в микрофон.',
+  START_PAGE_BUTTON_TEXT: 'Старт',
+  CORRECT_WORDS_TEXT: 'Я знаю',
+  INCORRECT_WORDS_TEXT: 'Я не знаю',
+  NEW_GAME_BUTTON: 'Новая Игра',
+};
+
 export {
   urls,
   findAPairText,
   authenticationTexts,
   errorTypes,
+  speakItConstants,
 };

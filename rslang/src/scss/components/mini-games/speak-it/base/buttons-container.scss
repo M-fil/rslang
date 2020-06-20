@@ -1,0 +1,23 @@
+.buttons-container {
+  display: flex;
+  justify-content: center;
+}
+
+.buttons-container__button {
+  @include font(3.5rem, 4rem);
+
+  border: 3px solid #012E4D;
+  border-radius: 20px;
+  transition: 0.3s ease all;
+  padding: 5px 10px;
+  box-shadow: 0 0 5px white;
+  
+  &:not(:last-child) {
+    margin-right: 40px;
+  }
+
+  &:hover {
+    background-color: #8597A1;
+    color: #ffffff;
+  }
+}

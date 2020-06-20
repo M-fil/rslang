@@ -1,0 +1,42 @@
+.microphone-button {
+  cursor: pointer;
+  position: fixed;
+  width: 70px;
+  height: 70px;
+  right: 100px;
+  top: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 5px solid #82C91E;
+  border-radius: 50%;
+  transition: 0.5s ease-in all;
+  background-color: white;
+
+  & i {
+    font-size: 5rem;
+    color: #82C91E;
+  }
+
+  &:hover {
+    box-shadow: 
+      0 0 0 5px rgba(130, 201, 30, 0.5),
+      0 0 0 10px rgba(130, 201, 30, 0.2);
+  }
+
+  &_disabled {
+    border-color: crimson;
+
+    & i {
+      color: crimson;
+    }
+
+    &:hover {
+      box-shadow: 
+        0 0 0 5px rgba(220, 20, 60, 0.5),
+        0 0 0 10px rgba(220, 20, 60, 0.2);
+    }
+  }
+}

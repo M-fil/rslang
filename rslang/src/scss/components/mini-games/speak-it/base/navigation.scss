@@ -1,0 +1,35 @@
+.navigation__list {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  margin-bottom: 20px;
+}
+
+.navigation__item {
+  @include font(4rem, 5rem, 900);
+  
+  cursor: pointer;
+  transition: 0.4s ease all;
+  text-align: center;
+  width: 50px;
+  height: 50px;
+  background-color: #012E4D;
+  border: 5px solid white;
+  margin-right: 20px;
+  color: white;
+
+  &:hover {
+    color: #012E4D;
+    border-color: #012E4D;
+    background-color: white;
+  }
+
+  &_selected {
+    border-radius: 50%;
+    box-shadow: 0 0 20px #012E4D;
+
+    &:hover {
+      border-radius: none;
+    }
+  }
+}

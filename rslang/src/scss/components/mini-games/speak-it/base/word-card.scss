@@ -1,0 +1,47 @@
+.word-card {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  
+  border: 2px solid transparent;
+  background-color: #012E4D;
+  color: white;
+  box-shadow: 0 0 0 4px #012E4D, 0 0 6px white;
+
+  min-width: 15%;
+  padding: 5px 20px;
+  margin-bottom: 30px;
+  margin-right: 20px;
+  transition: 0.5s ease all;
+
+  &_guessed {
+    border-color: #21A465;
+    box-shadow: 0 0 0 4px #21A465;
+  }
+
+  &_selected, &:hover {
+    border-color: white;
+  }
+
+  & i {
+    font-size: 3rem;
+  }
+}
+
+.word-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-left: 15px;
+}
+
+.word-card__word {
+  @include font(2.2rem, 3rem);
+}
+
+.word-card__transcription {
+  @include font(1.5rem, 2rem, 300);
+
+  color: grey;
+}

@@ -1,0 +1,27 @@
+.statistics__word {
+  @include font(2rem, 3.5rem);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  border-bottom: 2px solid white;
+  transition: 0.3s ease all;
+
+  &:hover {
+    cursor: pointer;
+    border-color: crimson;
+  }
+
+  & i {
+    margin-right: 100px;
+  }
+}
+
+.word__content {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+
