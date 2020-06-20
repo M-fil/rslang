@@ -25,6 +25,7 @@ const errorTypes = {
   UNDEFINED_ERROR: 'Неопределенная ошикба',
   USER_ALREADY_EXISTS: 'пользователь с такими данными уже существует',
   STATUS_200: 200,
+  USER_IS_NOT_AUTHORIZED: 'Пользователь не авторизирован',
 };
 
 const mainGameStrings = {

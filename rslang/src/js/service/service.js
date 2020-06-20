@@ -113,6 +113,21 @@ const getUserWord = async (userId, wordId, token) => {
   return content;
 };
 
+const getAllUserWords = async (userId, token) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/words`, {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const content = await rawResponse.json();
+
+  console.log(content);
+  return content;
+};
+
 export {
   getWords,
   createUser,
@@ -120,4 +135,5 @@ export {
   getUserById,
   createUserWord,
   getUserWord,
+  getAllUserWords,
 };

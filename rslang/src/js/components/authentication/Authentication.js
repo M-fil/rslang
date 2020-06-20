@@ -65,8 +65,8 @@ class Authentication {
     document.querySelector('.authentication__form').append(errorBlock);
   }
 
-  static submitData(formClassNameType, submitFunction) {
-    const formHTML = document.querySelector(`.${formClassNameType}`);
+  static submitData(authenticationType, submitFunction) {
+    const formHTML = document.querySelector(`.${authenticationType}__form`);
 
     formHTML.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -91,7 +91,7 @@ class Authentication {
         }
 
         const data = await submitFunction(userSubmitData);
-
+        console.log(data);
         if ('error' in data) {
           throw new Error(INCORRECT_VALUES);
         }

@@ -2,6 +2,7 @@ import {
   getWords,
   createUserWord,
   getUserWord,
+  getAllUserWords,
 } from '../../service/service';
 import create from '../../utils/сreate';
 import {
@@ -17,7 +18,7 @@ import SettingsControls from './components/settings-controls/SettingsControls';
 import EstimateButtonsBlock from './components/estimate-buttons/EstimateButtonsBlock';
 import WordsSelectList from './components/words-select-list/WordsSelectList';
 import ProgressBar from './components/progress-bar/ProgressBar';
-import Preloader from '../preloader/Preloader';
+import Preloader from '../preloader/preloader';
 import FormControll from './components/form-control/FormControl';
 
 const {
@@ -44,6 +45,7 @@ class MainGame {
     this.state = {
       currentWordIndex: 0,
       isLoading: false,
+      userWords: [],
       wordsToLearn: [],
       wordsArray: [],
       audio: new Audio(),
@@ -66,6 +68,15 @@ class MainGame {
     this.preloader.show();
     this.state.isLoading = true;
 
+    this.userWords = await MainGame.getAllUserWordsFromBackend();
+    /*this.userWords = this.userWords.map((item) => ({
+      ...item,
+      optional: {
+        ...item.optional,
+        allData: JSON.parse(item.optional.allData),
+      },
+    }));*/
+    console.log(this.userWords);
     const words = await getWords();
     this.wordsDataLength = words.length;
     this.state.wordsArray = words;
@@ -98,6 +109,24 @@ class MainGame {
     MainGame.activateVocabularyButtons();
     this.activateWordsToLearnSelect();
     this.activateEstimateButtons();
+  }
+
+  selectWordsToLearn() {
+    const currentTime = new Date();
+    const { wordsToLearn, wordsFromBackend } = this.state;
+    const wordTexts = wordsToLearn.map((word) => word.word);
+    const filteredWords = wordsFromBackend.filter((word) => {
+      return wordTexts.indexOf(word.optional.word) === 1;
+    });
+  }
+
+  static async getAllUserWordsFromBackend() {
+    const savedUserData = JSON.parse(localStorage.getItem('user-data'));
+    if (savedUserData) {
+      const { userId, token } = savedUserData;
+      const data = await getAllUserWords(userId, token);
+      return data;
+    }
   }
 
   static renderMainGameControls() {
