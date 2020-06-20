@@ -9,9 +9,9 @@ const calculatePercentage = (
   completedItemsNumber, allItemsNumber,
 ) => parseInt((completedItemsNumber / allItemsNumber) * 100, 10);
 
-const addDaysToTheDate = (daysToAdd, date = new Date()) => {
-  return date.setDate(date.getDate() + parseInt(daysToAdd, 10));
-};
+const addDaysToTheDate = (
+  daysToAdd, date = new Date(),
+) => date.setDate(date.getDate() + parseInt(daysToAdd, 10));
 
 export {
   checkIsManyMistakes,

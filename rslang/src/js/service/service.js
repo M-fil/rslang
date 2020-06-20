@@ -128,6 +128,42 @@ const getAllUserWords = async (userId, token) => {
   return content;
 };
 
+const updateUserWord = async (userId, wordId, word, token) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/words/${wordId}`, {
+    method: 'PUT',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(word),
+  });
+  console.log(rawResponse, 'rawResponse')
+
+  const content = await rawResponse.json();
+
+  console.log('PUT', content);
+  return content;
+};
+
+const removeUserWord = async (userId, wordId, token) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/words/${wordId}`, {
+    method: 'DELETE',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(rawResponse, 'rawResponse')
+  const content = await rawResponse.json();
+
+  console.log('DELETE', content);
+  return content;
+};
+
 export {
   getWords,
   createUser,
@@ -136,4 +172,6 @@ export {
   createUserWord,
   getUserWord,
   getAllUserWords,
+  updateUserWord,
+  removeUserWord,
 };
