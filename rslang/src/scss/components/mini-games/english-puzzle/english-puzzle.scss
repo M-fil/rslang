@@ -273,13 +273,17 @@
 }
 
 .canvas-item {
-  height: 37px;
+  height: 98%;
   cursor: pointer;
-  border: 1px;
+  padding: 1px;
 }
 
 .group-words {
   display: flex;
+}
+
+.active-card {
+    height: 37px;
 }
 
 .row-hover {
@@ -287,10 +291,12 @@
 }
 
 .correct-card {
+    padding: 0;
     border: 1px solid green;
 }
 
 .incorrect-card {
+    padding: 0;
     border: 1px solid red;
 }
 
@@ -378,4 +384,8 @@
     width: 85%;
     text-align: left;
     text-align: justify;
+}
+
+.painting-description {
+    text-align: center;
 }

@@ -101,11 +101,13 @@ export default class EnglishPuzzle {
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
         const page = document.querySelector('.page');
         page.value = Number(page.value) + 1;
-        this.getCardsAndStartGame();
+        await this.getCardsAndStartGame();
         viewElement([
+          document.querySelector('.game-block_field--background'),
           document.querySelector('.continue-button'),
           document.querySelector('.result-button'),
         ], [
+          document.querySelector('.game-block_field--puzzle-container'),
           document.querySelector('.check-button'),
           document.querySelector('.show-result-button'),
         ]);
@@ -145,10 +147,20 @@ export default class EnglishPuzzle {
         this.dropped = null;
       });
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
-        viewElement([document.querySelector('.game-block_field--puzzle-container')], [document.querySelector('.game-block_field--background')]);
+        viewElement([
+          document.querySelector('.game-block_field--puzzle-container'),
+        ], [
+          document.querySelector('.game-block_field--background'),
+          document.querySelector('.result-button'),
+        ]);
         this.showActualPainting();
       }
-      viewElement([document.querySelector('.check-button')], [document.querySelector('.continue-button'), document.querySelector('.show-result-button')]);
+      viewElement([
+        document.querySelector('.check-button'),
+        document.querySelector('.show-result-button'),
+      ], [
+        document.querySelector('.continue-button'),
+      ]);
     } else {
       viewElement([], [document.querySelector('.show-result-button')]);
     }
@@ -204,10 +216,12 @@ export default class EnglishPuzzle {
 
   gameStart() {
     const cards = Array.from(this.actualCards[this.activeSentenseCounter].childNodes);
-    this.activeSentenseForCheck = cards.slice();
-    cards.sort(() => Math.random() - 0.5);
     const cardsContainer = document.querySelector('.game-block_field--description');
     cleanParentNode(cardsContainer);
+
+    this.activeSentenseForCheck = cards.slice();
+    cards.sort(() => Math.random() - 0.5);
+
     cards.forEach((el) => {
       const elem = el;
       elem.draggable = 'true';
@@ -225,13 +239,15 @@ export default class EnglishPuzzle {
 
   resultCollection() {
     const resultStatistic = document.querySelector('.result-block_statistic');
-    cleanParentNode(resultStatistic);
     const painting = document.querySelector('.result-block_painting').childNodes;
+    cleanParentNode(painting[0]);
+    cleanParentNode(resultStatistic);
+
     const image = document.querySelector('.game-block_field--background').cloneNode(false);
     image.classList.add('result-image');
-    cleanParentNode(painting[0]);
     painting[0].appendChild(image);
     painting[1].textContent = this.paintingText;
+
     for (let i = 0; i < RESULT_FORM.statusTitle.length; i += 1) {
       const blockTitle = create('p', 'result-block_statistic--title', '', resultStatistic);
       blockTitle.textContent = RESULT_FORM.statusTitle[i];
