@@ -121,9 +121,9 @@ class MainGame {
   }
 
   static async getAllUserWordsFromBackend() {
-    const savedUserData = JSON.parse(localStorage.getItem('user-data'));
+    const savedUserData = localStorage.getItem('user-data');
     if (savedUserData) {
-      const { userId, token } = savedUserData;
+      const { userId, token } = JSON.parse(savedUserData);
       const data = await getAllUserWords(userId, token);
       return data;
     }
