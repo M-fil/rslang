@@ -1,7 +1,6 @@
 import {
   getWords,
   createUserWord,
-  getUserWord,
   updateUserWord,
   getAllUserWords,
   removeUserWord,
@@ -15,7 +14,6 @@ import {
 } from '../../constants/constants';
 import {
   checkIsManyMistakes,
-  daysToAdd,
   addDaysToTheDate,
 } from '../../utils/calculations';
 
@@ -84,7 +82,6 @@ class MainGame {
         allData: JSON.parse(item.optional.allData),
       },
     }));
-    console.log('this.state.userWords', this.state.userWords);
     const words = await getWords(3, 1);
     this.state.wordsArray = words;
     this.state.wordsToLearn = this.selectWordsToLearn();
@@ -92,11 +89,7 @@ class MainGame {
     this.state.isLoading = false;
     this.preloader.hide();
 
-    console.log('this.words', this.state.wordsArray.map((word) => word.word));
-    console.log('this.state.wordsToLearn', this.state.wordsToLearn.map((word) => word.word));
-    console.log(this.state.wordsToLearn);
     const currentWord = this.state.wordsToLearn[currentWordIndex].word;
-    console.log(this.state.wordsToLearn[currentWordIndex], currentWordIndex);
     const wordCard = MainGame.createWordCard(this.state.wordsToLearn[currentWordIndex]);
     this.setAudiosForWords(this.state.wordsToLearn[currentWordIndex]);
     const mainGameControls = MainGame.renderMainGameControls();
@@ -126,20 +119,16 @@ class MainGame {
   selectWordsToLearn() {
     const currentTime = new Date();
     const { wordsArray, userWords } = this.state;
-    let wordsToRevise = userWords.filter((word) => {
+    const wordsToRevise = userWords.filter((word) => {
       const { valuationDate, daysInterval } = word.optional;
       const elapsedTime = addDaysToTheDate(1, new Date(2020, 5, 18));
       const isNeedToRevise = elapsedTime < currentTime;
       return isNeedToRevise && valuationDate && daysInterval;
     });
-    console.log(wordsToRevise)
-    console.log('wordsArray', wordsArray)
 
     const wordsToReviseTexts = wordsToRevise.map((word) => word.word);
     const commonWords = wordsArray.filter((word) => wordsToReviseTexts.includes(word.word));
     const otherWords = wordsArray.filter((word) => !wordsToReviseTexts.includes(word.word));
-
-    console.log('RESULT', [...commonWords, ...otherWords]);
 
     return [...commonWords, ...otherWords];
   }
@@ -250,7 +239,6 @@ class MainGame {
     if (currentWordIndex !== wordsToLearn.length) {
       const trimedValue = inputHTML.value.trim().toLowerCase();
       const numberOfMistakes = MainGame.checkWord(wordsToLearn[currentWordIndex].word);
-      console.log('numberOfMistakes', numberOfMistakes);
 
       if (isAudioPlaybackEnabled && this.state.isAudioEnded) {
         this.playAudiosInTurns(0);
@@ -334,7 +322,6 @@ class MainGame {
         allData: JSON.stringify(allData),
       },
     };
-    console.log('dataToRecieve', dataToRecieve);
 
     if (isOnlyObject) {
       return dataToRecieve;
@@ -354,13 +341,15 @@ class MainGame {
           const currentWord = this.state.wordsToLearn[this.state.currentWordIndex];
           const { userId, token } = MainGame.getUserDataForAuthorization();
           const userWordsTexts = this.state.userWords.map((word) => word.optional.word);
-          console.log('userWordsTexts', userWordsTexts)
 
           switch (targetElementAppraisal) {
             case AGAIN.text: {
               if (userWordsTexts.includes(currentWord.word)) {
-                console.log('for remove')
-                await removeUserWord(userId, currentWord.id, token);
+                try {
+                  await removeUserWord(userId, currentWord.id, token);
+                } catch (error) {
+                  this.addWordToTheCurrentTraining();
+                }
               } else {
                 this.addWordToTheCurrentTraining();
               }
@@ -405,7 +394,6 @@ class MainGame {
     const userWordsTexts = this.state.userWords.map((word) => word.optional.word);
 
     if (userWordsTexts.includes(currentWord.word)) {
-      console.log('updated');
       const data = MainGame.createWordDataForBackend(currentWord, buttonType, true);
       await updateUserWord(userId, currentWord.id, data, token);
     } else {

@@ -75,8 +75,8 @@ const getUserById = async (id, token) => {
       'Content-Type': 'application/json',
     },
   });
-  const content = await response.json();
 
+  const content = await response.json();
   return content;
 };
 
@@ -93,8 +93,6 @@ const createUserWord = async (userId, wordId, word, token) => {
   });
 
   const content = await rawResponse.json();
-
-  console.log(content);
   return content;
 };
 
@@ -107,9 +105,8 @@ const getUserWord = async (userId, wordId, token) => {
       Accept: 'application/json',
     },
   });
-  const content = await rawResponse.json();
 
-  console.log(content);
+  const content = await rawResponse.json();
   return content;
 };
 
@@ -122,9 +119,8 @@ const getAllUserWords = async (userId, token) => {
       Accept: 'application/json',
     },
   });
-  const content = await rawResponse.json();
 
-  console.log(content);
+  const content = await rawResponse.json();
   return content;
 };
 
@@ -139,11 +135,8 @@ const updateUserWord = async (userId, wordId, word, token) => {
     },
     body: JSON.stringify(word),
   });
-  console.log(rawResponse, 'rawResponse')
 
   const content = await rawResponse.json();
-
-  console.log('PUT', content);
   return content;
 };
 
@@ -157,10 +150,8 @@ const removeUserWord = async (userId, wordId, token) => {
       'Content-Type': 'application/json',
     },
   });
-  console.log(rawResponse, 'rawResponse')
-  const content = await rawResponse.json();
 
-  console.log('DELETE', content);
+  const content = await rawResponse.json();
   return content;
 };
 

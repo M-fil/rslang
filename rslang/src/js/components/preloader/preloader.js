@@ -26,6 +26,5 @@ export default class Preloader {
 
   hide() {
     this.preload.classList.remove('preloader__visible');
-    this.preload.remove();
   }
 }

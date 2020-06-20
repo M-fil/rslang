@@ -69,7 +69,6 @@ class App {
 
   async signInUser() {
     const data = await Authentication.submitData(loginUser);
-    console.log('Authentication', data);
     this.state = {
       ...this.state,
       user: {
@@ -80,7 +79,7 @@ class App {
     };
     document.querySelector('.authentication').remove();
     document.querySelector('.authentication__buttons').remove();
-    this.renderMainGame();
+    App.renderMainGame();
   }
 
   async checkIsUserAuthorized() {
@@ -108,10 +107,8 @@ class App {
         id: data.id,
         email: data.email,
       };
-      this.renderMainGame();
-      console.log('data', data);
+      App.renderMainGame();
     } catch (error) {
-      console.log(error);
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.renderAuthenticationBlock('authorization');
@@ -120,7 +117,7 @@ class App {
     }
   }
 
-  renderMainGame() {
+  static renderMainGame() {
     const mainGame = new MainGame();
     mainGame.render('.main-content');
   }
