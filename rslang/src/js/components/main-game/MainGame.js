@@ -11,7 +11,11 @@ import {
   wordsToLearnOptions,
   estimateButtonsTypes,
 } from '../../constants/constants';
-import { checkIsManyMistakes } from '../../utils/calculations';
+import {
+  checkIsManyMistakes,
+  daysToAdd,
+  addDaysToTheDate,
+} from '../../utils/calculations';
 
 import WordCard from './components/word-card/WordCard';
 import SettingsControls from './components/settings-controls/SettingsControls';
@@ -68,24 +72,30 @@ class MainGame {
     this.preloader.show();
     this.state.isLoading = true;
 
-    this.userWords = await MainGame.getAllUserWordsFromBackend();
-    /*this.userWords = this.userWords.map((item) => ({
+    this.state.userWords = await MainGame.getAllUserWordsFromBackend();
+    this.state.userWords = this.state.userWords.map((item) => ({
       ...item,
       optional: {
         ...item.optional,
+        valuationDate: new Date(item.optional.valuationDate),
+        daysInterval: parseInt(item.optional.daysInterval, 10),
         allData: JSON.parse(item.optional.allData),
       },
-    }));*/
-    console.log(this.userWords);
-    const words = await getWords();
-    this.wordsDataLength = words.length;
+    }));
+    console.log(this.state.userWords);
+    const words = await getWords(3, 1);
     this.state.wordsArray = words;
-    this.state.wordsToLearn = words;
+    this.state.wordsToLearn = this.selectWordsToLearn();
+    this.wordsDataLength = this.state.wordsToLearn.length;
     this.state.isLoading = false;
     this.preloader.hide();
 
+    console.log('this.words', this.state.wordsArray.map((word) => word.word))
+    console.log('this.state.wordsToLearn', this.state.wordsToLearn.map((word) => word.word));
+    console.log(this.state.wordsToLearn)
     const currentWord = this.state.wordsToLearn[currentWordIndex].word;
-    const wordCard = MainGame.createWordCard(words[currentWordIndex]);
+    console.log(this.state.wordsToLearn[currentWordIndex], currentWordIndex)
+    const wordCard = MainGame.createWordCard(this.state.wordsToLearn[currentWordIndex]);
     this.setAudiosForWords(words[currentWordIndex]);
     const mainGameControls = MainGame.renderMainGameControls();
     this.formControl = new FormControll(currentWord);
@@ -113,11 +123,31 @@ class MainGame {
 
   selectWordsToLearn() {
     const currentTime = new Date();
-    const { wordsToLearn, wordsFromBackend } = this.state;
-    const wordTexts = wordsToLearn.map((word) => word.word);
-    const filteredWords = wordsFromBackend.filter((word) => {
-      return wordTexts.indexOf(word.optional.word) === 1;
+    const { wordsArray, userWords } = this.state;
+    let wordsToRevise = userWords.filter((word) => {
+      const { valuationDate, daysInterval } = word.optional;
+      const elapsedTime = addDaysToTheDate(1, new Date(2020, 5, 18));
+      const isNeedToRevise = elapsedTime < currentTime;
+      return isNeedToRevise && valuationDate && daysInterval;
     });
+
+    const resultWords = [];
+    wordsArray.forEach((wordToLearn) => {
+      wordsToRevise.forEach((wordToRevise) => {
+        if (wordToRevise.optional.word === wordToLearn.word) {
+          resultWords.push(wordToRevise.optional.allData);
+          wordsToRevise = wordsToRevise.filter((word) => word.optional.word !== wordToLearn.word);
+        } else {
+          resultWords.push(wordToLearn);
+        }
+      });
+    });
+
+    console.log('wordsToRevise', wordsToRevise);
+    return [
+      ...wordsToRevise.map((word) => word && word.optional.allData),
+      ...resultWords,
+    ];
   }
 
   static async getAllUserWordsFromBackend() {
@@ -297,7 +327,6 @@ class MainGame {
     };
 
     const data = await createUserWord(userId, wordId, dataToRecieve, token);
-    console.log('dataWord', data);
     return data;
   }
 
@@ -346,8 +375,8 @@ class MainGame {
               break;
             }
             default:
-              console.log('nothing');
-          }
+              return;
+          };
 
           const { wordsToLearn } = this.state;
           MainGame.removeWordCardFromDOM();
@@ -390,7 +419,7 @@ class MainGame {
       }
 
       if (event.target.classList.contains('main-game__add-to-difficult')) {
-
+        return;
       }
     });
   }
