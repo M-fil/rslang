@@ -53,33 +53,41 @@ class App {
         await this.signInUser();
       }
       if (event.target.classList.contains('registration__form')) {
-        const data = await Authentication.submitData(createUser);
-        this.state = {
-          ...this.state,
-          user: {
-            ...this.state.user,
-            id: data.userId,
-            email: data.email,
-          },
-        };
-        await this.signInUser();
+        try {
+          const data = await Authentication.submitData(createUser);
+          this.state = {
+            ...this.state,
+            user: {
+              ...this.state.user,
+              id: data.userId,
+              email: data.email,
+            },
+          };
+          await this.signInUser();
+        } catch (error) {
+          Authentication.createErrorBlock(error.message);
+        }
       }
     });
   }
 
   async signInUser() {
-    const data = await Authentication.submitData(loginUser);
-    this.state = {
-      ...this.state,
-      user: {
-        ...this.state.user,
-        id: data.userId,
-        token: data.token,
-      },
-    };
-    document.querySelector('.authentication').remove();
-    document.querySelector('.authentication__buttons').remove();
-    App.renderMainGame();
+    try {
+      const data = await Authentication.submitData(loginUser);
+      this.state = {
+        ...this.state,
+        user: {
+          ...this.state.user,
+          id: data.userId,
+          token: data.token,
+        },
+      };
+      document.querySelector('.authentication').remove();
+      document.querySelector('.authentication__buttons').remove();
+      App.renderMainGame();
+    } catch (error) {
+      Authentication.createErrorBlock(error.message);
+    }
   }
 
   async checkIsUserAuthorized() {
@@ -107,7 +115,7 @@ class App {
         id: data.id,
         email: data.email,
       };
-      App.renderMainGame();
+      App.renderMainGame(this.state.user);
     } catch (error) {
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
@@ -117,8 +125,8 @@ class App {
     }
   }
 
-  static renderMainGame() {
-    const mainGame = new MainGame();
+  static renderMainGame(userState) {
+    const mainGame = new MainGame(userState);
     mainGame.render('.main-content');
   }
 
@@ -127,7 +135,7 @@ class App {
     this.authenticationToggleButton = create(
       'button',
       'authentication__toggle-button',
-      AUTHORIZATION_TITLE,
+      REGISTRATION_TITLE,
       buttonsContainer,
       ['type', 'button'], ['authenticationType', 'authorization'],
     );
@@ -141,8 +149,8 @@ class App {
         this.renderAuthenticationBlock(typeToInit);
         target.dataset.authenticationType = typeToInit;
         target.textContent = authenticationType === 'registration'
-          ? AUTHORIZATION_TITLE
-          : REGISTRATION_TITLE;
+          ? REGISTRATION_TITLE
+          : AUTHORIZATION_TITLE;
       }
     });
   }

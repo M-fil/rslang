@@ -60,8 +60,15 @@ class Authentication {
   }
 
   static createErrorBlock(message) {
-    const errorBlock = create('span', 'error-block', message);
-    document.querySelector('.authentication__form').append(errorBlock);
+    const errorBlockHTML = document.querySelector('.error-block');
+    if (errorBlockHTML) {
+      errorBlockHTML.remove();
+    }
+
+    setTimeout(() => {
+      const errorBlock = create('span', 'error-block', message);
+      document.querySelector('.authentication__form').append(errorBlock);
+    }, 2000);
   }
 
   static async submitData(submitFunction) {
@@ -76,7 +83,6 @@ class Authentication {
       password: trimedPasswordValue,
     };
 
-    let data = null;
     try {
       if (trimedPasswordValue === '' || trimedEmailValue === '') {
         throw new Error(EMPTY_FIELD);
@@ -86,22 +92,16 @@ class Authentication {
         throw new Error(PASSWORD_REQUIRMENTS);
       }
 
-      data = await submitFunction(userSubmitData);
+      const data = await submitFunction(userSubmitData);
       if ('error' in data) {
         throw new Error(INCORRECT_VALUES);
       }
 
       localStorage.setItem('user-data', JSON.stringify(data));
+      return data;
     } catch (error) {
-      const errorBlockFromDOM = document.querySelector('.error-block');
-
-      if (!errorBlockFromDOM) {
-        this.createErrorBlock(error.message);
-        document.querySelector('.error-block').remove();
-      }
+      throw new Error(error.message);
     }
-
-    return data;
   }
 }
 

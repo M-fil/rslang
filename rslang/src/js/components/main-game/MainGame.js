@@ -24,6 +24,7 @@ import WordsSelectList from './components/words-select-list/WordsSelectList';
 import ProgressBar from './components/progress-bar/ProgressBar';
 import Preloader from '../preloader/preloader';
 import FormControll from './components/form-control/FormControl';
+import Authentication from '../authentication/Authentication';
 
 const {
   REMOVE_WORD_BUTTON,
@@ -45,7 +46,7 @@ const {
 } = urls;
 
 class MainGame {
-  constructor() {
+  constructor(userState) {
     this.state = {
       currentWordIndex: 0,
       isLoading: false,
@@ -59,6 +60,7 @@ class MainGame {
         isAudioPlaybackEnabled: true,
         isTranslationsEnabled: true,
       },
+      userState,
     };
   }
 
@@ -72,48 +74,52 @@ class MainGame {
     this.preloader.show();
     this.state.isLoading = true;
 
-    this.state.userWords = await MainGame.getAllUserWordsFromBackend();
-    this.state.userWords = this.state.userWords.map((item) => ({
-      ...item,
-      optional: {
-        ...item.optional,
-        valuationDate: new Date(item.optional.valuationDate),
-        daysInterval: parseInt(item.optional.daysInterval, 10),
-        allData: JSON.parse(item.optional.allData),
-      },
-    }));
-    const words = await getWords(3, 1);
-    this.state.wordsArray = words;
-    this.state.wordsToLearn = this.selectWordsToLearn();
-    this.wordsDataLength = this.state.wordsToLearn.length;
-    this.state.isLoading = false;
-    this.preloader.hide();
+    try {
+      this.state.userWords = await MainGame.getAllUserWordsFromBackend();
+      this.state.userWords = this.state.userWords.map((item) => ({
+        ...item,
+        optional: {
+          ...item.optional,
+          valuationDate: new Date(item.optional.valuationDate),
+          daysInterval: parseInt(item.optional.daysInterval, 10),
+          allData: JSON.parse(item.optional.allData),
+        },
+      }));
+      const words = await getWords();
+      this.state.wordsArray = words;
+      this.state.wordsToLearn = this.selectWordsToLearn();
+      this.wordsDataLength = this.state.wordsToLearn.length;
+      this.state.isLoading = false;
+      this.preloader.hide();
 
-    const currentWord = this.state.wordsToLearn[currentWordIndex].word;
-    const wordCard = MainGame.createWordCard(this.state.wordsToLearn[currentWordIndex]);
-    this.setAudiosForWords(this.state.wordsToLearn[currentWordIndex]);
-    const mainGameControls = MainGame.renderMainGameControls();
-    this.formControl = new FormControll(currentWord);
-    this.progressBar = new ProgressBar(currentWordIndex, this.state.wordsToLearn.length);
-    const mainGameMainContainer = create(
-      'div', 'main-game__main-container', [wordCard.render(), this.formControl.render()],
-    );
+      const currentWord = this.state.wordsToLearn[currentWordIndex].word;
+      const wordCard = MainGame.createWordCard(this.state.wordsToLearn[currentWordIndex]);
+      this.setAudiosForWords(this.state.wordsToLearn[currentWordIndex]);
+      const mainGameControls = MainGame.renderMainGameControls();
+      this.formControl = new FormControll(currentWord);
+      this.progressBar = new ProgressBar(currentWordIndex, this.state.wordsToLearn.length);
+      const mainGameMainContainer = create(
+        'div', 'main-game__main-container', [wordCard.render(), this.formControl.render()],
+      );
 
-    mainGameHTML.append(
-      mainGameControls,
-      mainGameMainContainer,
-      this.progressBar.render(),
-    );
+      mainGameHTML.append(
+        mainGameControls,
+        mainGameMainContainer,
+        this.progressBar.render(),
+      );
 
-    const wordCardInput = document.querySelector('.word-card__input');
-    wordCardInput.focus();
-    this.activateGameSettingsEvents();
-    this.activateNextButton();
-    this.activateShowAnswerButton();
-    MainGame.activateInputWordsHandler();
-    MainGame.activateVocabularyButtons();
-    this.activateWordsToLearnSelect();
-    this.activateEstimateButtons();
+      const wordCardInput = document.querySelector('.word-card__input');
+      wordCardInput.focus();
+      this.activateGameSettingsEvents();
+      this.activateNextButton();
+      this.activateShowAnswerButton();
+      MainGame.activateInputWordsHandler();
+      MainGame.activateVocabularyButtons();
+      this.activateWordsToLearnSelect();
+      this.activateEstimateButtons();
+    } catch (error) {
+      Authentication.createErrorBlock(error.message);
+    }
   }
 
   selectWordsToLearn() {
@@ -145,7 +151,10 @@ class MainGame {
       return JSON.parse(savedUserData);
     }
 
-    return { userId: '', token: '' };
+    return {
+      userId: this.userState.userId,
+      token: this.userState.token,
+    };
   }
 
   static renderMainGameControls() {
