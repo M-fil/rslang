@@ -42,10 +42,14 @@ export default class EnglishPuzzle {
   }
 
   async getCardsAndStartGame() {
-    await this.getGameCards();
-    this.gameStart();
-    this.showTranslate();
-    this.dragAndDropActions();
+    try {
+      await this.getGameCards();
+      this.gameStart();
+      this.showTranslate();
+      this.dragAndDropActions();
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   async getGameCards() {
