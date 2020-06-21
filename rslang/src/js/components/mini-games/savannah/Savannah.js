@@ -72,6 +72,8 @@ export default class SavannahGame {
     this.animatedWord();
     this.liveIndex = 0;
     this.rusBut = document.querySelectorAll('.word_russian');
+    this.rightWords = [];
+    this.wrongWords = [];
   }
 
   crateCardsData() {
@@ -106,6 +108,7 @@ export default class SavannahGame {
   }
 
   async changeCard() {
+    // clearTimeout(this.errorTimer);
     this.animatedWord();
     this.rusBut.forEach((rusButton) => {
       rusButton.classList.remove('word_correct');
@@ -160,7 +163,10 @@ export default class SavannahGame {
           this.changeCard();
         } else {
           this.errorWord();
-          if (this.error === 4) {
+          if (this.error === 5) {
+            const statisticaContainer = create('div', 'modal', '', this.body);
+            this.statisticaText = create('div', 'modal_text', '', statisticaContainer);
+            const statisticaTitle = create('h4', 'modal_title', 'Статистика', this.statisticaText);
             console.log('statistica');
           }
         }
@@ -194,15 +200,16 @@ export default class SavannahGame {
     this.modalWarning = create('p', 'modal_warning', MODAL_WARNING, modalText);
     this.modalClose = create('button', 'modal_button close_button', CLOSE_BUTTON, modalText);
     this.modalCancel = create('button', 'modal_button cancel_button', CANCEL_BUTTON, modalText);
-
     this.exitButton.addEventListener('click', () => {
       modal.classList.remove('none');
+      clearInterval(this.timer);
     });
     this.modalClose.addEventListener('click', () => {
       modal.classList.add('none');
     });
     this.modalCancel.addEventListener('click', () => {
       modal.classList.add('none');
+      this.animatedWord();
     });
   }
 
@@ -240,6 +247,8 @@ export default class SavannahGame {
       }
     });
     clearInterval(this.timer);
-    setTimeout(this.changeCard, 2000);
+    this.errorTimer = setTimeout(async () => {
+      await this.changeCard();
+    }, 2000);
   }
 }
