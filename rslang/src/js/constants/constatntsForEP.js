@@ -26,9 +26,27 @@ const ERROR_CONTENT = {
   getDataError: 'Неудачная попытка получить слова',
 };
 
+const PUZZLE_PROPERTIES = {
+  extraWidthValue: 10,
+  fontFamily: 'Arial',
+  fontRatio: 1,
+  fontType: 'bold',
+  borderPuzzle: 1,
+  shadowPuzzle: 2,
+  borderText: 1,
+  shadowText: 10,
+  colorBorder: 'rgb(0,255,250)',
+  colorShadowBorder: 'rgb(255,255,250)',
+  colorText: 'magenta',
+  colorShadowText: 'black',
+  solidTextColor: 'white',
+  fontStyle: 'fillText',
+};
+
 export {
   START_WINDOW,
   GAME_BLOCK,
   RESULT_FORM,
   ERROR_CONTENT,
+  PUZZLE_PROPERTIES,
 };

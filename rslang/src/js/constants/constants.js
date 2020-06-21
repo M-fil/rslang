@@ -3,6 +3,7 @@ const urls = {
   CREATE_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users',
   LOGIN_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/signin',
   GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
+  GET_PAINTING: (way) => `https://raw.githubusercontent.com/Shnyrkevich/rslang_data_paintings/master/${way}`,
 };
 
 const authenticationTexts = {

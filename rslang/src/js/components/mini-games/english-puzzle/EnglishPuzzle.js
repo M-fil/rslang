@@ -6,7 +6,12 @@ import {
   viewElement,
   cleanParentNode,
 } from './components/dom-actions';
-import getWords from '../../../service/service';
+import {
+  getWords,
+} from '../../../service/service';
+import {
+  urls,
+} from '../../../constants/constants';
 import {
   GAME_BLOCK,
   RESULT_FORM,
@@ -57,7 +62,7 @@ export default class EnglishPuzzle {
     const page = document.querySelector('.page').value - 1;
     const words = await getWords(page, level);
     this.painting = findPainting(level + 1, page + 1);
-    const imageUrl = `https://raw.githubusercontent.com/Shnyrkevich/rslang_data_paintings/master/${this.painting.imageSrc}`;
+    const imageUrl = urls.GET_PAINTING(this.painting.imageSrc);
     this.paintingText = `${this.painting.author}, ${this.painting.name} (${this.painting.year})`;
     this.actualSentenses = [];
     this.actualTranslate = [];
@@ -76,17 +81,6 @@ export default class EnglishPuzzle {
     this.actualCards = await createCanvasElements({
       src: imageUrl,
       wordsList: this.actualSentenses,
-      fontFamily: 'Arial',
-      fontRatio: 0.7,
-      fontType: 'bold',
-      borderPuzzle: 1,
-      shadowPuzzle: 2,
-      borderText: 1,
-      shadowText: 10,
-      colorBorder: 'rgb(255,255,250)',
-      colorShadowText: 'black',
-      solidTextColor: 'white',
-      fontStyle: 'fillText',
     });
   }
 
@@ -288,6 +282,7 @@ export default class EnglishPuzzle {
 
     function dragOver(ev) {
       ev.preventDefault();
+      this.placeForDrope = ev.target;
     }
 
     function dragEnter(ev) {

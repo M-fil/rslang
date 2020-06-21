@@ -15,7 +15,6 @@ if (!localStorage.userSettings) {
   localStorage.setItem('userSettings', JSON.stringify(userSettings));
 }
 
-// Create select in function whereis select
 function selectFill(numberOfRows) {
   const masOfOptions = [];
   for (let i = 1; i <= numberOfRows; i += 1) {
@@ -51,7 +50,6 @@ function createSelectBlock() {
   return selectsContainer;
 }
 
-// Why local storage?
 function createControlButtons(buttonStat) {
   const buttonsContainer = create('div', 'control-buttons_container');
   for (let i = 0; i < GAME_BLOCK.controlButtons; i += 1) {

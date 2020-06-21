@@ -9,9 +9,7 @@ function viewElement(hide, show) {
 
 function cleanParentNode(par) {
   while (par.firstChild) {
-    if (par.firstChild) {
-      par.removeChild(par.firstChild);
-    }
+    par.removeChild(par.firstChild);
   }
 }
 

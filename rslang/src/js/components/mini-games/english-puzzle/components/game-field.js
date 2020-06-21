@@ -1,31 +1,14 @@
 import create from '../../../../utils/сreate';
+import {
+  PUZZLE_PROPERTIES,
+} from '../../../../constants/constatntsForEP';
 
 export default async function createCanvasElements(
   {
     src,
     wordsList,
-    extraWidthValue = 10,
-    fontFamily = 'Arial',
-    fontRatio = 1,
-    fontType = 'bold',
-    borderPuzzle = 1,
-    shadowPuzzle = 2,
-    borderText = 1,
-    shadowText = 10,
-    colorBorder = 'rgb(0,255,250)',
-    colorShadowBorder = 'rgb(255,255,250)',
-    colorText = 'magenta',
-    colorShadowText = 'black',
-    solidTextColor = 'white',
-    fontStyle = 'fillText',
   },
 ) {
-  if (!wordsList || !Array.isArray(wordsList) || !wordsList.length || !wordsList.every((el) => typeof el === 'string')) {
-    throw new TypeError('"wordsList" argument must be an array containing strings. Example: ["string"]');
-  }
-  if (!src || typeof src !== 'string') {
-    throw new TypeError('"src" argument must be a "string"');
-  }
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.src = src;
@@ -34,7 +17,7 @@ export default async function createCanvasElements(
       const imgHeight = img.height;
       const groupsWords = wordsList.map((word) => word.split(' '));
       const groupsRow = groupsWords.length;
-      const EXTRA_WIDTH_VALUE = parseInt(extraWidthValue, 10);
+      const EXTRA_WIDTH_VALUE = parseInt(PUZZLE_PROPERTIES.extraWidthValue, 10);
       const result = [];
 
       let startYPointCropImage = 0;
@@ -113,23 +96,27 @@ export default async function createCanvasElements(
             canvasWidth + radius,
             canvasHeight,
           );
-          ctx.shadowColor = colorShadowBorder;
-          ctx.strokeStyle = colorBorder;
-          ctx.shadowBlur = shadowPuzzle;
-          ctx.lineWidth = borderPuzzle;
+          ctx.shadowColor = PUZZLE_PROPERTIES.colorShadowBorder;
+          ctx.strokeStyle = PUZZLE_PROPERTIES.colorBorder;
+          ctx.shadowBlur = PUZZLE_PROPERTIES.shadowPuzzle;
+          ctx.lineWidth = PUZZLE_PROPERTIES.borderPuzzle;
           ctx.stroke();
           ctx.globalCompositeOperation = 'destination-in';
           ctx.fill();
           ctx.globalCompositeOperation = 'source-over';
           ctx.beginPath();
-          ctx.shadowColor = colorShadowText;
-          ctx.shadowBlur = shadowText;
-          ctx.lineWidth = borderText;
-          ctx.strokeStyle = colorText;
-          ctx.font = `${fontType} ${fontSize * fontRatio}pt ${fontFamily}`;
+          ctx.shadowColor = PUZZLE_PROPERTIES.colorShadowText;
+          ctx.shadowBlur = PUZZLE_PROPERTIES.shadowText;
+          ctx.lineWidth = PUZZLE_PROPERTIES.borderText;
+          ctx.strokeStyle = PUZZLE_PROPERTIES.colorText;
+          ctx.font = `${PUZZLE_PROPERTIES.fontType} ${fontSize * PUZZLE_PROPERTIES.fontRatio}pt ${PUZZLE_PROPERTIES.fontFamily}`;
           ctx.textAlign = 'center';
-          ctx.fillStyle = solidTextColor;
-          ctx[fontStyle](word, canvasWidth / 2 + radius / 2, canvasHeight / 2 + fontSize / 3);
+          ctx.fillStyle = PUZZLE_PROPERTIES.solidTextColor;
+          ctx[PUZZLE_PROPERTIES.fontStyle](
+            word,
+            canvasWidth / 2 + radius / 2,
+            canvasHeight / 2 + fontSize / 3,
+          );
           row.appendChild(canvas);
         });
         startYPointCropImage += canvasHeight;
