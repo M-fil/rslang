@@ -108,7 +108,6 @@ export default class SavannahGame {
   }
 
   async changeCard() {
-    // clearTimeout(this.errorTimer);
     this.animatedWord();
     this.rusBut.forEach((rusButton) => {
       rusButton.classList.remove('word_correct');
@@ -130,9 +129,7 @@ export default class SavannahGame {
 
     if (this.num !== this.data.length - 1) {
       this.num += 1;
-
       this.engBut.innerHTML = this.engRandomWords[this.num].word;
-
       this.engBut.setAttribute('data-translate', this.engRandomWords[this.num].wordTranslate);
       const randomData = this.data;
       const correctWord = randomData.find((word) => this.engBut.dataset.translate === word.wordTranslate);
@@ -164,10 +161,11 @@ export default class SavannahGame {
         } else {
           this.errorWord();
           if (this.error === 5) {
+            clearInterval(this.timer);
+            clearTimeout(this.errorTimer);
             const statisticaContainer = create('div', 'modal', '', this.body);
             this.statisticaText = create('div', 'modal_text', '', statisticaContainer);
-            const statisticaTitle = create('h4', 'modal_title', 'Статистика', this.statisticaText);
-            console.log('statistica');
+            this.statisticaTitle = create('h4', 'modal_title', 'Статистика', this.statisticaText);
           }
         }
       }
