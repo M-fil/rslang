@@ -3,6 +3,9 @@ const urls = {
   CREATE_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users',
   LOGIN_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/signin',
   GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
+  WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
+  WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
+  DEAFAULT_SPEAKIT_WORD_IMAGE_URL: 'https://raw.githubusercontent.com/rolling-scopes-school/m-fil-RS2020Q1/speakit/speakit/src/assets/english.jpg?token=ANOB63H6THJPRBEB42AFKMK67BOEW',  
 };
 
 const authenticationTexts = {
@@ -39,6 +42,7 @@ const findAPairText = {
 };
 
 const speakItConstants = {
+  SPEAKIT_TITLE: 'SpeakIt',
   RESTART_BUTTON: 'Начать занаво',
   START_GAME_BUTTON: 'Начать игру',
   RESULTS_BUTTON: 'Результаты',

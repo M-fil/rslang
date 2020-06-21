@@ -1,7 +1,11 @@
-import create from '../../pathes';
+import create, { urls } from '../../pathes';
+
+const {
+  DEAFAULT_SPEAKIT_WORD_IMAGE_URL,
+} = urls;
 
 export default class ImageBlock {
-  constructor(image = '../src/assets/english.jpg', word = '', translation = '', isHeadenRecognition = true) {
+  constructor(image = DEAFAULT_SPEAKIT_WORD_IMAGE_URL, word = '', translation = '', isHeadenRecognition = true) {
     this.image = image;
     this.word = word;
     this.translation = translation;
