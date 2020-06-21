@@ -1,5 +1,5 @@
 import createStartWindow from './components/start-menu';
-import createWorkBlock from './components/main-block';
+import MainBlock from './components/main-block';
 import createResultBlock from './components/result-block';
 import create from '../../../utils/сreate';
 import {
@@ -22,7 +22,7 @@ import findPainting from './components/select-painting';
 export default class EnglishPuzzle {
   constructor() {
     this.startMenu = createStartWindow();
-    this.gameForm = createWorkBlock();
+    this.gameForm = null;
     this.resultForm = createResultBlock();
     this.sinth = window.speechSynthesis;
     this.actualSentenses = null;
@@ -37,6 +37,8 @@ export default class EnglishPuzzle {
   }
 
   start() {
+    const gameZone = new MainBlock();
+    this.gameForm = gameZone.createMainForm();
     [this.body] = document.getElementsByTagName('body');
     this.wrapper = create('div', 'wrapper', [this.startMenu, this.gameForm, this.resultForm]);
     this.body.appendChild(this.wrapper);
