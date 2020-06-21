@@ -1,5 +1,7 @@
 body{
     font-size: 4rem;
+    background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(88,9,121,1) 58%, rgba(255,0,206,1) 100%);
 }
 .answers{
     display: flex;
@@ -42,6 +44,7 @@ body{
     font-size: 18px;
     line-height: 24px;
     font-weight: 300;
+    color: white;
 }
 .gameStartButton{
     cursor: pointer;
@@ -120,3 +123,30 @@ span{
 .unchecked{
     opacity: .5;
 }
+.close {
+    cursor:pointer;
+    position: absolute;
+    right: 32px;
+    top: 32px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.3;
+  }
+  .close:hover {
+    opacity: 1;
+  }
+  .close:before, .close:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #333;
+  }
+  .close:before {
+    transform: rotate(45deg);
+  }
+  .close:after {
+    transform: rotate(-45deg);
+  }
+  

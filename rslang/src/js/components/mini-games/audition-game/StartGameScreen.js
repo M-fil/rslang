@@ -1,13 +1,13 @@
-import create  from '../../../utils/сreate';
-import {auditionGameVariables}  from '../../../constants/constants';
-export default class StartGameScreen{
+import create from '../../../utils/сreate';
+import { auditionGameVariables } from '../../../constants/constants';
 
-    createStartScreen(){
-        const  body  = document.querySelector('body');
-        const startScreen = create('div','startScreen','',body);
-        const gameName = create('h1','gameName',auditionGameVariables.gameTitle,startScreen);
-        const gameDesc = create('p','gameDesc',auditionGameVariables.gameDescription,startScreen);
-        const gameStartButton = create('button','gameStartButton',auditionGameVariables.gameStartBtn,startScreen);
-        return gameStartButton;
-    }
+export default class StartGameScreen {
+  createStartScreen() {
+    this.body = document.querySelector('body');
+    this.startScreen = create('div', 'startScreen', '', this.body);
+    this.gameName = create('h1', 'gameName', auditionGameVariables.gameTitle, this.startScreen);
+    this.gameDesc = create('p', 'gameDesc', auditionGameVariables.gameDescription, this.startScreen);
+    this.gameStartButton = create('button', 'gameStartButton', auditionGameVariables.gameStartBtn, this.startScreen);
+    return this.gameStartButton;
+  }
 }

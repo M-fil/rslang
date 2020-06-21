@@ -7,7 +7,9 @@
     "style": "sass --watch src/scss/style.scss src/css/style.css",
     "dev": "webpack --mode development",
     "prod": "webpack --mode production",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "lint": "eslint ./src/js/components/mini-games/audition-game",
+    "fix":"eslint ./src/js/components/mini-games/audition-game --fix"
   },
   "author": "",
   "license": "ISC",
