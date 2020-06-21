@@ -24,16 +24,16 @@
     font-size: 1.2rem;
     border-radius: 10px;
     outline: none;
-    background-color: rgb(255, 177, 153);
+    background-color: $english-puzzle-field-and-buttons-back;
     border: none;
     transition: all 0.5s;
     margin-top: 10px;
 }
 
 .submit-button:hover, .information-button:hover, .game-button:hover{
-    background:rgb(255, 88, 88);
-    color:white;
-    box-shadow: inset 0 0 0 1px #3a7999;
+    background: $english-puzzle-button-hover-background;
+    color: $english-puzzle-text-color;
+    box-shadow: inset 0 0 0 1px $english-puzzle-button-hover-shadow;
     -webkit-transform: scale(1.1);
     -ms-transform: scale(1.1);
     transform: scale(1.1);
@@ -104,8 +104,8 @@
     max-width: 60px;
     min-width: 45px;
     height: 40%;
-    background-color:  lightcyan;
-    border: 2px solid rgb(255, 177, 153);
+    background-color: $english-puzzle-help-zone;
+    border: 2px solid $english-puzzle-field-and-buttons-back;
     outline: none;
     cursor: pointer;
     border-radius: 5px;
@@ -118,8 +118,8 @@
     height: 45px;
     outline: none;
     cursor: pointer;
-    background-color: lightcyan;
-    border: 2px solid rgb(255, 177, 153);
+    background-color: $english-puzzle-help-zone;
+    border: 2px solid $english-puzzle-field-and-buttons-back;
     border-radius: 5px;
     transition: all 0.5s;
     font-size: 1.5em;
@@ -179,7 +179,7 @@
 
 .new_lvl-button:hover {
     border-radius: 50%;
-    background-color: rgb(255, 88, 88);
+    background-color: $english-puzzle-button-hover-background;
 }
 
 .new_lvl-button::before {
@@ -191,8 +191,8 @@
 
 
 .control-buttons_container .active-button {
-    background-color: rgb(255, 88, 88);
-    border-color: black;
+    background-color: $english-puzzle-button-hover-background;
+    border-color: $english-puzzle-border-black;
 }
 
 .game-block_field {
@@ -212,7 +212,7 @@
 }
 
 .game-block_field--tooltips {
-    background-color: lightcyan;
+    background-color: $english-puzzle-help-zone;
     position: relative;
     height: 9%;
     flex-direction: column;
@@ -232,7 +232,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: rgb(255, 177, 153);
+    background-color: $english-puzzle-field-and-buttons-back;
 }
 
 .game-block_field--background {
@@ -255,7 +255,7 @@
 }
 
 .game-block_field--description {
-    background-color: rgb(255, 177, 153);
+    background-color: $english-puzzle-field-and-buttons-back;
     height: 10%;
     border-radius: 10px;
     justify-content: center;
@@ -287,17 +287,17 @@
 }
 
 .row-hover {
-    background-color: lightblue;
+    background-color: $english-puzzle-button-hover-shadow;
 }
 
 .correct-card {
     padding: 0;
-    border: 1px solid green;
+    border: 1px solid $english-puzzle-false-cards;
 }
 
 .incorrect-card {
     padding: 0;
-    border: 1px solid red;
+    border: 1px solid $english-puzzle-right-cards;
 }
 
 .result-block {
@@ -309,7 +309,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: lightblue;
+    background-color: $english-puzzle-button-hover-shadow;
     border-radius: 10px;
 }
 
