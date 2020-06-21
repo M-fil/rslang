@@ -1,3 +1,5 @@
+$shadow-color: rgba(0,0,0,0.6);
+
 body {
   font-size: 20px;
   line-height: 1.2;
@@ -41,4 +43,81 @@ body {
   left: calc(50% - 15px);
   color: green;
   font-size: 50px;
+}
+
+.word {
+  width: 200px;
+  height: 50px;
+}
+.word_english {
+  border: none;
+  background-color: transparent;
+  color: cadetblue;
+  font-size: 33px; 
+}
+.word_russian {
+  color: green;
+  font-size: 24px;
+  cursor: pointer;
+}
+.word_correct {
+  background-color: lightgreen;
+}
+.english-line {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 100px);
+  display: flex;
+  justify-content: center;
+}
+.russian-line {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20%;
+}
+
+.lives {
+  position: absolute;
+  top: 25px;
+  right: 150px;
+  width: 200px;
+}
+.live {
+  width: 40px;
+  height: 40px;
+}
+
+.sound_off {
+  background-color: green;
+}
+.sound_on {
+  background-color: white;
+}
+.modal {
+  position: fixed;
+  align-items: center;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $shadow-color;
+}
+.none {
+  display: none;
+}
+.modal_text {
+  background-color: white;
+  margin-top: 15%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 30%;
+  text-align: center;
+}
+
+.modal_button {
+  width: 53%;
 }

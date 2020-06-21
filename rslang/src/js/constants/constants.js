@@ -7,9 +7,11 @@ const savannahConstants = {
   RULES: 'Тренировка Саванна развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь.',
   START_BUTTON: 'Начать',
   LAST_NUMBER: 1,
-  COUNT_CARDS: 4,
-  PREVIOUS_LAST_CARD: 3,
   MAX_PAGE: 29,
+  MODAL_TITLE: 'Тренировка не закончена!',
+  MODAL_WARNING: 'Если вы вернетесь к списку, ваши требования не будут сохранены',
+  CLOSE_BUTTON: 'Закрыть',
+  CANCEL_BUTTON: 'Отмена',
 };
 
 export {
