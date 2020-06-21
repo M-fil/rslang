@@ -3,4 +3,4 @@ import '../scss/style.scss';
 import AuditionGame from './components/mini-games/audition-game/AuditionGame';
 
 const audition = new AuditionGame();
-audition.render(5);
+audition.render(5, 5);

@@ -4,31 +4,31 @@ import create from '../../../utils/сreate';
 import { auditionGameVariables } from '../../../constants/constants';
 
 export default class GameService {
-  async init(lives) {
-    console.log(lives);
-    const mp = new GameDataService();
-    this.data = await mp.mapping();
+  async init(lives, roundsAll, currentRound) {
+    const gameDataService = new GameDataService();
+    this.data = await gameDataService.mapping();
     this.answers = document.querySelector('.answers');
     this.arr = this.data.array;
     const mainWord = this.data.mainWordToAsk;
     this.createPossibleWords(this.arr, this.answers);
-    const audio = new Audio(`https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/${mainWord.audio}`);
+    const audio = new Audio(`${auditionGameVariables.mainAudioPath}${mainWord.audio}`);
     audio.play();
-    this.mainEventHandler(lives, mainWord, audio);
+    this.mainEventHandler(lives, mainWord, roundsAll, currentRound);
     this.idkBtnHandler(audio);
     this.closeBtnHandler();
+    this.progressBarHandler(roundsAll, currentRound);
+    this.bgRandomize();
   }
 
-  /* compare(obj) {
-    console.log(this.word === obj.word);
-    return this.word === obj.word;
-  } */
-
-  nextRound(lives) {
-    if (lives > 0) {
-      this.init(lives);
+  nextRound(lives, roundsAll, currentRound) {
+    if (lives > 0 && currentRound !== roundsAll) {
+      let curr = currentRound;
+      curr += 1;
+      this.init(lives, roundsAll, curr);
     } else {
       document.querySelector('.startScreen').classList.toggle('hide');
+      document.querySelector('.progress').style.width = '0%';
+      document.querySelector('body').className = '';
     }
   }
 
@@ -44,7 +44,7 @@ export default class GameService {
     }
   }
 
-  mainEventHandler(lives, mainWord) {
+  mainEventHandler(lives, mainWord, roundsAll, currentRound) {
     document.querySelector('.answers').addEventListener('click', (event) => {
       if (event.target.classList.contains('element') && !event.target.classList.contains('unchecked') && !event.target.classList.contains('checked')) {
         const nextBtn = document.querySelector('.nextBtn');
@@ -54,23 +54,23 @@ export default class GameService {
         this.designUncheckedPossibleWords(elements);
         if (event.target.innerText.includes(mainWord.translate)) {
           event.target.innerHTML = `${auditionGameVariables.checkMark}${event.target.innerText}`;
-          const audio1 = new Audio('https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/correct.mp3');
-          audio1.play();
-          this.nextRoundEventHandler(nextBtn, lives);
+          const audioRoundResult = new Audio(auditionGameVariables.correctSound);
+          audioRoundResult.play();
+          this.nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound);
         } else {
-          const audio1 = new Audio('https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3');
-          audio1.play();
+          const audioRoundResult = new Audio(auditionGameVariables.errorSound);
+          audioRoundResult.play();
           event.target.classList.toggle('line-through');
-          this.nextRoundEventHandler(nextBtn, --lives);
+          this.nextRoundEventHandler(nextBtn, --lives, roundsAll, currentRound);
         }
       }
     });
   }
 
-  nextRoundEventHandler(nextBtn, lives) {
+  nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound) {
     nextBtn.addEventListener('click', () => {
       document.querySelector('.container').remove();
-      this.nextRound(lives);
+      this.nextRound(lives, roundsAll, currentRound);
     });
   }
 
@@ -84,8 +84,43 @@ export default class GameService {
 
   closeBtnHandler() {
     document.querySelector('.close').addEventListener('click', () => {
+      this.modalDialog();
+    });
+  }
+
+  progressBarHandler(roundsAll, currentRound) {
+    document.querySelector('.progress').style.width = `${100 * (currentRound / roundsAll)}%`;
+  }
+
+  bgRandomize() {
+    const bg = ['bg1', 'bg2', 'bg3', 'bg4'];
+    bg.sort(() => Math.random() - 0.5);
+    const body = document.querySelector('body');
+    body.className = '';
+    body.classList.toggle(bg[0]);
+  }
+
+  modalDialog() {
+    const body = document.querySelector('body');
+    this.modal = create('div', 'modal', '', body);
+    this.modalContent = create('div', 'modal-content', '', this.modal);
+    this.modalAgreeBtn = create('h2', 'alarmMessage', auditionGameVariables.modalAlarm, this.modalContent);
+    this.modalAgreeBtn = create('p', 'alarmDesc', auditionGameVariables.modalDesc, this.modalContent);
+    this.modalAgreeBtn = create('button', 'agreeToClose', auditionGameVariables.close, this.modalContent);
+    this.modalCancelBtn = create('button', 'cancelToClose', auditionGameVariables.cancel, this.modalContent);
+    this.modalDialogEventsHandler();
+  }
+
+  modalDialogEventsHandler() {
+    document.querySelector('.agreeToClose').addEventListener('click', () => {
       document.querySelector('.container').remove();
       document.querySelector('.startScreen').classList.toggle('hide');
+      document.querySelector('.modal').remove();
+      document.querySelector('body').className = '';
+      document.querySelector('.progress').style.width = '0%';
+    });
+    document.querySelector('.cancelToClose').addEventListener('click', () => {
+      document.querySelector('.modal').remove();
     });
   }
 }

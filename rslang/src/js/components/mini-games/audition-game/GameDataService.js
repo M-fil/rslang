@@ -13,18 +13,18 @@ export default class GameDataService {
     this.mainWord = create('div', 'audioPulse', /* shuffledValue[0].word */'', this.game);
     this.answers = create('div', 'answers', '', this.game);
     this.nextBtn = create('button', 'nextBtn', 'Не знаю', this.game);
-    const array1 = [];
+    const wordsInfo = [];
     for (let i = 0; i < this.shuffledValue.length - 1; i += 1) {
       const test = await getWordsAdditionalInfo(this.shuffledValue[i].word);
       const partOfSpeech = test.results !== undefined ? test?.results[0]?.partOfSpeech : 'IDK';
-      array1.push({
+      wordsInfo.push({
         word: this.shuffledValue[i].word, translate: this.shuffledValue[i].wordTranslate, audio: this.shuffledValue[i].audio, partOfSpeech,
       });
     }
-    const a = array1.filter((word) => word.partOfSpeech === 'noun');
-    const arrTest = a.slice(0, 5);
-    const mainWordToAsk = arrTest[0];
-    const array = shuffle(arrTest);
-    return { mainWordToAsk, array };
+    const filteredWordsInfo = wordsInfo.filter((word) => word.partOfSpeech === 'noun');
+    const possibleAnswers = filteredWordsInfo.slice(0, 5);
+    const mainWordToAsk = possibleAnswers[0];
+    const shuffledPossibleAnswers = shuffle(possibleAnswers);
+    return { mainWordToAsk, array: shuffledPossibleAnswers };
   }
 }
