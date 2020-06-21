@@ -6,10 +6,6 @@ import Preloader from '../../../../preloader/preloader';
 import { getWords } from '../../pathes';
 import { speakItConstants } from '../../pathes';
 
-const {
-  FILES_PATH,
-} = speakItConstants;
-
 export default class GamePage {
   constructor(pageNumber, groupNumber) {
     this.pageNumber = pageNumber;
@@ -46,12 +42,7 @@ export default class GamePage {
     wordsListHTML.innerHTML = '';
 
     this.wordsList.forEach((word) => {
-      const wordCard = new WordCard(
-        word.word,
-        word.transcription,
-        word.image.replace(FILES_PATH, ''),
-        word.audio.replace(FILES_PATH, ''),
-      );
+      const wordCard = new WordCard(word.word, word.transcription);
 
       wordsListHTML.append(wordCard.render());
     });

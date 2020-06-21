@@ -5,7 +5,16 @@ const urls = {
   GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
-  DEAFAULT_SPEAKIT_WORD_IMAGE_URL: 'https://raw.githubusercontent.com/rolling-scopes-school/m-fil-RS2020Q1/speakit/speakit/src/assets/english.jpg?token=ANOB63H6THJPRBEB42AFKMK67BOEW',  
+  DEAFAULT_SPEAKIT_WORD_IMAGE_URL: 'https://raw.githubusercontent.com/rolling-scopes-school/m-fil-RS2020Q1/speakit/speakit/src/assets/english.jpg?token=ANOB63H6THJPRBEB42AFKMK67BOEW',
+  CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
+  INCORRECT_AUDIO_PATH: './src/assets/audio/error.mp3',
+  SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
+};
+
+const wordsToLearnSelectConstants = {
+  SELECT_TITLE: 'Какие слова учить?',
+  SELECT_OPTION_1: 'Уже изученные слова',
+  SELECT_OPTION_2: 'Слова из коллекций',
 };
 
 const authenticationTexts = {
@@ -55,6 +64,7 @@ const speakItConstants = {
   CORRECT_WORDS_TEXT: 'Я знаю',
   INCORRECT_WORDS_TEXT: 'Я не знаю',
   NEW_GAME_BUTTON: 'Новая Игра',
+  NUMBER_OF_GROUPS: 6,
 };
 
 export {
@@ -63,4 +73,5 @@ export {
   authenticationTexts,
   errorTypes,
   speakItConstants,
+  wordsToLearnSelectConstants,
 };

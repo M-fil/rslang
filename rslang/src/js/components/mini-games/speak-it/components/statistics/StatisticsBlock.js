@@ -16,12 +16,15 @@ export default class StatisticsBlock {
   render() {
     this.container = create('div', 'statistics hidden');
     const words = create('div', 'statistics__words', '', this.container);
-    create('div', 'statistics__correct', `<h3>${CORRECT_WORDS_TEXT}</h3>`, words);
-    const mistakesContainer = create('div', 'statistics__mistakes', `<h3>${INCORRECT_WORDS_TEXT}</h3>`, words);
+    const correctTitle = create('div', 'statistics__correct-title', CORRECT_WORDS_TEXT);
+    create('div', 'statistics__correct', correctTitle, words);
+    const mistakesTitle = create('div', 'statistics__mistakes-title', INCORRECT_WORDS_TEXT);
+    const mistakesContainer = create('div', 'statistics__mistakes', mistakesTitle, words);
     this.fullStatisticsWithWords(mistakesContainer);
 
     const buttons = create('div', 'statistics__buttons', '', this.container);
-    create('button', 'back-button statistics__button', '<i class="fas fa-arrow-left"></i>', buttons);
+    const icon = create('i', 'fas fa-arrow-left');
+    create('button', 'back-button statistics__button', icon, buttons);
     create('button', 'new-game-button statistics__button', NEW_GAME_BUTTON, buttons);
 
     return this.container;
@@ -29,7 +32,10 @@ export default class StatisticsBlock {
 
   fullStatisticsWithWords(container) {
     this.words.forEach((word) => {
-      new StatisticsWord(word.word, word.transcription).render(container);
+      const statisticsWord = new StatisticsWord(
+        word.word, word.transcription, word.wordTranslate,
+      );
+      statisticsWord.render(container);
     });
   }
 }

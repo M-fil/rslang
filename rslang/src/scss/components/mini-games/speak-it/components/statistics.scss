@@ -28,20 +28,23 @@
 
 .statistics__correct {
   color: white;
-  h3 {
-    padding: 5px 10px;
-    background-color: chartreuse;
-  }
-
   margin-bottom: 10px;
+}
+
+.statistics__correct-title {
+  color: white;
+  padding: 5px 10px;
+  background-color: chartreuse;
 }
 
 .statistics__mistakes {
   color: white;
-  h3 {
-    padding: 5px 10px;
-    background-color: red;
-  }
+}
+
+.statistics__mistakes-title {
+  color: white;
+  padding: 5px 10px;
+  background-color: red;
 }
 
 .statistics__buttons {

@@ -1,8 +1,9 @@
 import create from '../../pathes';
 
 export default class WordCard {
-  constructor(word) {
+  constructor(word, transcription) {
     this.word = word;
+    this.transcription = transcription;
     this.card = null;
   }
 
