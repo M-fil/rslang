@@ -87,6 +87,7 @@ const vocabularyConstants = {
   WORDS_TO_LEARN_TITLE: 'Слова для изучения',
   REMOVED_WORDS_TITLE: 'Удаленные слова',
   DIFFUCULT_WORDS_TITLE: 'Сложные слова',
+  RESTORE_BUTTON_TEXT: 'Восстановить',
 };
 
 export {

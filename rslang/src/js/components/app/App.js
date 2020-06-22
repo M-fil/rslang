@@ -1,13 +1,16 @@
 import create from '../../utils/сreate';
+
 import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
+import Vocabulary from '../vocabulary/Vocabulary';
 
 import {
   createUser,
   loginUser,
   getUserById,
+  getWords,
 } from '../../service/service';
 import {
   errorTypes,
@@ -43,6 +46,7 @@ class App {
   run() {
     this.container = create('main', 'main-content', '', document.body);
     this.checkIsUserAuthorized();
+    this.renderVocabulary();
   }
 
   activateAuthenticationForm() {
@@ -88,6 +92,12 @@ class App {
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
+  }
+
+  async renderVocabulary() {
+    const words = await getWords();
+    const vocabulary = new Vocabulary(words);
+    document.body.append(vocabulary.render());
   }
 
   async checkIsUserAuthorized() {

@@ -24,14 +24,7 @@ class VocabularyItem {
   render() {
     this.HTML = create('div', 'vocabulary__word-item', '', null, ['vacabularyWordId', this.id]);
 
-    const volumeIcon = create('i', 'fas fa-volume-up word-item__icon');
-    create('div', 'word-item__audio', volumeIcon, this.HTML);
-
-    const mainHTML = create('div', 'word-item__main', this.HTML);
-    const mainInfoHTML = create('div', 'word-item__main-info', mainHTML);
-    create('div', 'word-item__word', `${this.word} - ${this.wordTranslate}`, mainInfoHTML);
-    create('div', 'word-item__transcription', this.transcription, mainInfoHTML);
-
+    create('div', 'word-item__main', this.renderMainContent(), this.HTML);
     const sentencesBlock = create('div', 'word-item__sentences', '', this.HTML);
     create('div', 'word-item__sentence', this.textMeaning, sentencesBlock);
     create('div', 'word-item__sentence', this.textExample, sentencesBlock);
@@ -40,6 +33,18 @@ class VocabularyItem {
     imageBlock.style.backgroundImage = `url(${WORDS_IMAGES_URL}${this.image})`;
 
     return this.HTML;
+  }
+
+  renderMainContent() {
+    const volumeIcon = create('i', 'fas fa-volume-up word-item__icon');
+    const audioBlock = create('div', 'word-item__audio', volumeIcon);
+
+    const mainHTML = create('div', 'word-item__main');
+    const mainInfoHTML = create('div', 'word-item__main-info', '', mainHTML);
+    create('div', 'word-item__word', `${this.word} - ${this.wordTranslate}`, mainInfoHTML);
+    create('div', 'word-item__transcription', this.transcription, mainInfoHTML);
+
+    return [audioBlock, mainHTML];
   }
 }
 

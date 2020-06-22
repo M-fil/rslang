@@ -18,6 +18,8 @@ class MainVocabulary {
       this.renderVocabularyTitle(),
       this.renderVocabularyItems(),
     );
+
+    return this.container;
   }
 
   renderVocabularyTitle() {

@@ -1,0 +1,6 @@
+.vocabulary__word-item {
+  @include font(2rem);
+
+  display: flex;
+  align-items: center;
+}
