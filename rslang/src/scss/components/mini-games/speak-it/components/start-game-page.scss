@@ -4,11 +4,13 @@
   justify-content: center;
   align-items: center;
   color: $speak-it-standard-button-text-color;
+  height: 100%;
 }
 
 .start-page__title {
   @include font(9rem, 10.5rem, 900);
 
+  margin: 0;
   margin-bottom: 40px;
   text-shadow: 0 0 10px $speak-it-standard-text-shadow;
 }
@@ -17,13 +19,14 @@
   @include font(2.5rem, 4.5rem, 400);
 
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   text-shadow: 0 0 10px $speak-it-standard-text-shadow;
 }
 
 .start-page__button-start {
-  @include font(4rem, 6.5rem, 400);
+  @include font(4rem, 5.5rem, 400);
 
+  cursor: pointer;
   color: $speak-it-standard-button-background;
   border-radius: 20px;
   padding: 5px 30px;

@@ -144,27 +144,26 @@ export default class SpeakIt {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.word-card');
 
-      if (!target) return;
-      if (this.state.gameStarted) return;
+      if (target && !this.state.gameStarted) {
+        const wordHTML = target.querySelector('.word-card__word').textContent;
 
-      const wordHTML = target.querySelector('.word-card__word').textContent;
-
-      SpeakIt.selectSingleElementFromList(target, 'word-card_selected');
-      const clickedWord = this.words.find((word) => word.word === target.dataset.word);
-      const tranlation = clickedWord.wordTranslate;
-      this.playAudio(`${WORDS_AUDIOS_URL}${clickedWord.audio}`);
-
-      let currentImage = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
-      if (document.querySelector('.game-page__image-block')) {
-        document.querySelector('.game-page__image-block').remove();
+        SpeakIt.selectSingleElementFromList(target, 'word-card_selected');
+        const clickedWord = this.words.find((word) => word.word === target.dataset.word);
+        const tranlation = clickedWord.wordTranslate;
+        this.playAudio(`${WORDS_AUDIOS_URL}${clickedWord.audio}`);
+  
+        let currentImage = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
+        if (document.querySelector('.game-page__image-block')) {
+          document.querySelector('.game-page__image-block').remove();
+        }
+        if (document.querySelector('.game-page__word-info')) {
+          document.querySelector('.game-page__word-info').remove();
+        }
+  
+        currentImage = `${WORDS_IMAGES_URL}${clickedWord.image}`;
+        const imageBlock = new ImageBlock(currentImage, wordHTML, tranlation);
+        document.querySelector('.game-page').prepend(imageBlock.render());
       }
-      if (document.querySelector('.game-page__word-info')) {
-        document.querySelector('.game-page__word-info').remove();
-      }
-
-      currentImage = `${WORDS_IMAGES_URL}${clickedWord.image}`;
-      const imageBlock = new ImageBlock(currentImage, wordHTML, tranlation);
-      document.querySelector('.game-page').prepend(imageBlock.render());
     });
   }
 
