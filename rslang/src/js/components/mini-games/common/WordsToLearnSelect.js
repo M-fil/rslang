@@ -5,8 +5,8 @@ import {
 
 const {
   SELECT_TITLE,
-  SELECT_OPTION_1,
-  SELECT_OPTION_2,
+  SELECT_OPTION_LEARNED_WORDS,
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS,
 } = wordsToLearnSelectConstants; 
 
 class WordsToLearnSelect {
@@ -17,12 +17,12 @@ class WordsToLearnSelect {
 
   render() {
     this.HTML = create('div', `select__container ${this.containerClassNameType}__container`);
-    create('div', `select__title ${this.containerClassNameType}`, SELECT_TITLE, this.HTML);
+    create('div', `select__title ${this.containerClassNameType}__select-title`, SELECT_TITLE, this.HTML);
     create(
-      'select', 'select__item',
+      'select', `select__item ${this.containerClassNameType}__learn-words-select`,
       [
-        this.renderOption(SELECT_OPTION_1),
-        this.renderOption(SELECT_OPTION_2),
+        this.renderOption(SELECT_OPTION_LEARNED_WORDS),
+        this.renderOption(SELECT_OPTION_WORDS_FROM_COLLECTIONS),
       ],
       this.HTML,
     );
@@ -34,7 +34,7 @@ class WordsToLearnSelect {
     return create(
       'option',
       `select__option ${this.containerClassNameType}`, optionText, '',
-      ['optionType', optionText],
+      ['value', optionText],
     );
   }
 }

@@ -1,6 +1,6 @@
 import create, {
   getWords,
-  speakItConstants,
+  wordsToLearnSelectConstants,
   urls,
 } from './pathes';
 
@@ -21,6 +21,11 @@ const {
   CORRECT_AUDIO_PATH,
   SUCCESS_AUDIO_PATH,
 } = urls;
+
+const {
+  SELECT_OPTION_LEARNED_WORDS,
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS,
+} = wordsToLearnSelectConstants;
 
 export default class SpeakIt {
   constructor() {
@@ -74,13 +79,10 @@ export default class SpeakIt {
       this.state.groupOfWords = 0;
       const data = await getWords(this.state.currentPage, this.state.groupOfWords);
       this.preloader.hide();
-      this.words = data.slice(0, 10).map((wordData) => {
-        return {
-          ...wordData,
-          word: wordData.word.toLowerCase(),
-        };
-      });
-      console.log(this.words);
+      this.words = data.slice(0, 10).map((wordData) => ({
+        ...wordData,
+        word: wordData.word.toLowerCase(),
+      }));
 
       this.renderWordsOnThePage();
       this.wordCardClickEvent();
@@ -92,6 +94,7 @@ export default class SpeakIt {
       this.activateStatisticsBlock();
       this.acitavateRecognition();
       this.activateSoundForStatisticsWords();
+      SpeakIt.activateWordsToLearnSelect();
 
       this.recognition.addEventListener('end', this.recognition.start);
       this.recognition.start();
@@ -99,12 +102,12 @@ export default class SpeakIt {
   }
 
   static renderNavigation() {
-    const select = new WordsToLearnSelect();
-    const navigation = new Navigation();
+    const select = new WordsToLearnSelect('speak-it');
+    this.navigation = new Navigation();
 
     create(
       'div', 'navigation',
-      [select.render(), navigation.render()],
+      [select.render(), this.navigation.render()],
       document.querySelector('.main-container__wrapper'),
     );
   }
@@ -162,6 +165,32 @@ export default class SpeakIt {
       currentImage = `${WORDS_IMAGES_URL}${clickedWord.image}`;
       const imageBlock = new ImageBlock(currentImage, wordHTML, tranlation);
       document.querySelector('.game-page').prepend(imageBlock.render());
+    });
+  }
+
+  static activateWordsToLearnSelect() {
+    const select = document.querySelector('.speak-it__learn-words-select');
+    const defaultSelectValue = select.options[select.options.selectedIndex].value;
+
+    if (defaultSelectValue === SELECT_OPTION_LEARNED_WORDS) {
+      this.navigation.hide();
+    }
+
+    select.addEventListener('change', (event) => {
+      const { options, selectedIndex } = event.target;
+      const selectedValue = options[selectedIndex].value;
+
+      switch (selectedValue) {
+        case SELECT_OPTION_LEARNED_WORDS:
+        default: {
+          this.navigation.hide();
+          break;
+        }
+        case SELECT_OPTION_WORDS_FROM_COLLECTIONS: {
+          this.navigation.show();
+          break;
+        }
+      }
     });
   }
 
@@ -271,7 +300,10 @@ export default class SpeakIt {
   }
 
   activateNavigation() {
-    document.querySelector('.navigation').addEventListener('click', (event) => {
+    const navigationHTML = document.querySelector('.navigation');
+    const pagesSelectHTML = document.querySelector('.navigation__pages-list');
+
+    navigationHTML.addEventListener('click', (event) => {
       if (event.target.classList.contains('navigation__item')) {
         this.state.isNavSwitched = true;
         this.state.groupOfWords = event.target.dataset.navNumber;
@@ -284,13 +316,20 @@ export default class SpeakIt {
         this.renderMainGamePage(this.state.groupOfWords - 1);
       }
     });
+
+    pagesSelectHTML.addEventListener('change', (event) => {
+      const { options, selectedIndex } = event.target;
+      const selectedValue = options[selectedIndex].value;
+      this.state.currentPage = Number(selectedValue);
+      this.renderMainGamePage(this.state.groupOfWords, this.state.currentPage);
+    });
   }
 
-  async renderMainGamePage(groupNumber) {
+  async renderMainGamePage(groupNumber, pageNumber) {
     this.preloader.show();
-    const randomPageNumber = SpeakIt.getRandomNumber(0, 29);
-    this.state.currentPage = randomPageNumber;
-    const wordsData = await getWords(this.state.currentPage, groupNumber);
+    this.state.groupOfWords = groupNumber;
+    this.state.currentPage = pageNumber;
+    const wordsData = await getWords(pageNumber, groupNumber);
     this.words = wordsData.slice(0, 10);
     document.querySelector('.game-page').remove();
     this.renderWords();
@@ -329,11 +368,6 @@ export default class SpeakIt {
     micro.querySelector('i').className = 'fas fa-microphone-slash';
   }
 
-  static getRandomNumber(min, max) {
-    const rand = min + Math.random() * (max + 1 - min);
-    return Math.floor(rand);
-  }
-
   activateStatisticsBlock() {
     document.querySelector('.result-button').addEventListener('click', () => {
       document.querySelector('.statistics').classList.remove('hidden');
@@ -357,11 +391,11 @@ export default class SpeakIt {
       if (target) {
         document.querySelector('.overlay').classList.add('hidden');
         document.body.style.overflow = 'auto';
-  
+
         this.switchOnTrainingMode();
         SpeakIt.selectSingleElementFromList(document.querySelector('[data-nav-number="1"]'), 'navigation__item_selected');
         this.renderMainGamePage(this.state.groupOfWords);
-  
+
         document.querySelector('.statistics').remove();
       }
     });

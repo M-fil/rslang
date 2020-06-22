@@ -13,8 +13,8 @@ const urls = {
 
 const wordsToLearnSelectConstants = {
   SELECT_TITLE: 'Какие слова учить?',
-  SELECT_OPTION_1: 'Уже изученные слова',
-  SELECT_OPTION_2: 'Слова из коллекций',
+  SELECT_OPTION_LEARNED_WORDS: 'Уже изученные слова',
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS: 'Слова из коллекций',
 };
 
 const authenticationTexts = {
@@ -65,6 +65,7 @@ const speakItConstants = {
   INCORRECT_WORDS_TEXT: 'Я не знаю',
   NEW_GAME_BUTTON: 'Новая Игра',
   NUMBER_OF_GROUPS: 6,
+  NUMBER_OF_PAGES: 29,
 };
 
 export {
