@@ -10,11 +10,10 @@ class ShortenVocabularyItem extends VocabularyItem {
   constructor(id, word, wordTranslate, transcription) {
     super(id, word, wordTranslate, transcription);
     this.HTML = null;
-    console.log(id);
   }
 
   render() {
-    this.HTML = create('div', 'vocabulary__word-item', '', null, ['vacabularyWordId', this.id]);
+    this.HTML = create('div', 'vocabulary__extra-word-item', '', null, ['vacabularyWordId', this.id]);
     const [audioBlock, mainHTML] = this.renderMainContent();
     const restoreButtonHTML = create('button', 'word-item__restore-button', RESTORE_BUTTON_TEXT);
     this.HTML.append(audioBlock, mainHTML, restoreButtonHTML);

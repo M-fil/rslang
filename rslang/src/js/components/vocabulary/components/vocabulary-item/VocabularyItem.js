@@ -24,7 +24,7 @@ class VocabularyItem {
   render() {
     this.HTML = create('div', 'vocabulary__word-item', '', null, ['vacabularyWordId', this.id]);
 
-    create('div', 'word-item__main', this.renderMainContent(), this.HTML);
+    create('div', 'word-item__main-container', this.renderMainContent(), this.HTML);
     const sentencesBlock = create('div', 'word-item__sentences', '', this.HTML);
     create('div', 'word-item__sentence', this.textMeaning, sentencesBlock);
     create('div', 'word-item__sentence', this.textExample, sentencesBlock);
