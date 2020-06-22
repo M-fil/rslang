@@ -5,15 +5,15 @@
 .word-info__image {
   width: 450px;
   height: 200px;
-  box-shadow: 0 0 10px #131131;
+  box-shadow: 0 0 10px $speak-it-standard-box-shadow;
 }
 
 .word-info__translation {
   @include font(3rem, 4.2rem);
 
-  background: white;
+  background: $speak-it-standard-button-text-color;
   border-radius: 5px;
-  color: #012E4D;
+  color: $speak-it-standard-button-background;
   margin-top: 10px;
   text-align: center;
 }
@@ -22,9 +22,9 @@
   @include font(3rem, 4.2rem);
 
   margin-top: 10px;
-  background-color: white;
-  color: #012E4D;
-  border: 2px solid #012E4D;
+  background-color: $speak-it-standard-button-text-color;
+  color: $speak-it-standard-button-background;
+  border: 2px solid $speak-it-standard-button-background;
   padding: 10px 5px;
 
   display: flex;
@@ -32,7 +32,7 @@
 
   & i {
     font-size: 3rem;
-    color: #012E4D;
+    color: $speak-it-standard-button-background;
     margin-right: 5px;
   }
 

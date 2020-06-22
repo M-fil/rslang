@@ -10,33 +10,33 @@
   justify-content: center;
   align-items: center;
 
-  border: 5px solid #82C91E;
+  border: 5px solid $speak-it-microphone-enabled-color;
   border-radius: 50%;
   transition: 0.5s ease-in all;
-  background-color: white;
+  background-color: $speak-it-microphone-background;
 
   & i {
     font-size: 5rem;
-    color: #82C91E;
+    color: $speak-it-microphone-enabled-color;
   }
 
   &:hover {
     box-shadow: 
-      0 0 0 5px rgba(130, 201, 30, 0.5),
-      0 0 0 10px rgba(130, 201, 30, 0.2);
+      0 0 0 5px $speak-it-microphone-enabled-shadow-1,
+      0 0 0 10px $speak-it-microphone-enabled-shadow-2;
   }
 
   &_disabled {
-    border-color: crimson;
+    border-color: $speak-it-microphone-disabled-color;
 
     & i {
-      color: crimson;
+      color: $speak-it-microphone-disabled-color;
     }
 
     &:hover {
       box-shadow: 
-        0 0 0 5px rgba(220, 20, 60, 0.5),
-        0 0 0 10px rgba(220, 20, 60, 0.2);
+        0 0 0 5px $speak-it-microphone-disabled-shadow-1,
+        0 0 0 10px $speak-it-microphone-disabled-shadow-2;
     }
   }
 }

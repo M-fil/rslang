@@ -4,9 +4,9 @@
   align-items: center;
   
   border: 2px solid transparent;
-  background-color: #012E4D;
-  color: white;
-  box-shadow: 0 0 0 4px #012E4D, 0 0 6px white;
+  background-color: $speak-it-standard-button-background;
+  color: $speak-it-standard-button-text-color;
+  box-shadow: 0 0 0 4px $speak-it-standard-button-background, 0 0 6px $speak-it-standard-button-text-color;
 
   min-width: 15%;
   padding: 5px 20px;
@@ -15,12 +15,12 @@
   transition: 0.5s ease all;
 
   &_guessed {
-    border-color: #21A465;
-    box-shadow: 0 0 0 4px #21A465;
+    border-color: $speak-it-guessed-card-border-color;
+    box-shadow: 0 0 0 4px $speak-it-guessed-card-border-color;
   }
 
   &_selected, &:hover {
-    border-color: white;
+    border-color: $speak-it-standard-button-text-color;
   }
 
   & i {
@@ -43,5 +43,5 @@
 .word-card__transcription {
   @include font(1.5rem, 2rem, 300);
 
-  color: grey;
+  color: $speak-it-transcription-color;
 }

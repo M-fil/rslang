@@ -18,7 +18,7 @@ class WordsToLearnSelect {
   render() {
     this.HTML = create('div', `select__container ${this.containerClassNameType}__container`);
     create('div', `select__title ${this.containerClassNameType}__select-title`, SELECT_TITLE, this.HTML);
-    create(
+    this.select = create(
       'select', `select__item ${this.containerClassNameType}__learn-words-select`,
       [
         this.renderOption(SELECT_OPTION_LEARNED_WORDS),

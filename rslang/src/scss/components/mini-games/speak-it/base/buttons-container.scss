@@ -6,18 +6,18 @@
 .buttons-container__button {
   @include font(3.5rem, 4rem);
 
-  border: 3px solid #012E4D;
+  border: 3px solid $speak-it-standard-button-background;
   border-radius: 20px;
   transition: 0.3s ease all;
   padding: 5px 10px;
-  box-shadow: 0 0 5px white;
+  box-shadow: 0 0 5px $speak-it-standard-button-text-color;
   
   &:not(:last-child) {
     margin-right: 40px;
   }
 
   &:hover {
-    background-color: #8597A1;
-    color: #ffffff;
+    background-color: $speak-it-standard-button-background-hover;
+    color: $speak-it-standard-button-text-color;
   }
 }

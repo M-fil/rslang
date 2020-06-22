@@ -5,12 +5,12 @@
   justify-content: space-between;
   align-items: center;
   
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid $speak-it-standard-button-text-color;
   transition: 0.3s ease all;
 
   &:hover {
     cursor: pointer;
-    border-color: crimson;
+    border-color: $speak-it-microphone-disabled-color;
   }
 
   & i {

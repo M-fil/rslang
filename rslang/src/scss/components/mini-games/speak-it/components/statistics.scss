@@ -15,7 +15,7 @@
   width: 60vw;
   height: 80vh;
 
-  background-color: #012E4D;
+  background-color: $speak-it-standard-button-background;
   border-radius: 5px;
 
   z-index: 7000;
@@ -27,24 +27,24 @@
 }
 
 .statistics__correct {
-  color: white;
+  color: $speak-it-standard-button-text-color;
   margin-bottom: 10px;
 }
 
 .statistics__correct-title {
-  color: white;
+  color: $speak-it-standard-button-text-color;
   padding: 5px 10px;
-  background-color: chartreuse;
+  background-color: $speak-it-incorrect-color;
 }
 
 .statistics__mistakes {
-  color: white;
+  color: $speak-it-standard-button-text-color;
 }
 
 .statistics__mistakes-title {
-  color: white;
+  color: $speak-it-standard-button-text-color;
   padding: 5px 10px;
-  background-color: red;
+  background-color: $speak-it-correct-color;
 }
 
 .statistics__buttons {
@@ -55,20 +55,20 @@
 .statistics__button {
   @include font(4rem, 5rem);
   
-  color: white;
-  border: 3px solid white;
-  background-color: #012E4D;
+  color: $speak-it-standard-button-text-color;
+  border: 3px solid $speak-it-standard-button-text-color;
+  background-color: $speak-it-standard-button-background;
   border-radius: 20px;
   padding: 5px 10px;
   transition: 0.3s ease all;
 }
 
 .back-button:hover {
-  color: red;
-  border-color:red;
+  color: $speak-it-correct-color;
+  border-color:$speak-it-correct-color;
 }
 
 .new-game-button:hover {
-  color: chartreuse;
-  border-color: chartreuse;
+  color: $speak-it-incorrect-color;
+  border-color: $speak-it-incorrect-color;
 }

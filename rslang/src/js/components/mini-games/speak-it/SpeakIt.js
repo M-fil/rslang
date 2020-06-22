@@ -102,12 +102,12 @@ export default class SpeakIt {
   }
 
   static renderNavigation() {
-    const select = new WordsToLearnSelect('speak-it');
+    this.wordToLearnSelect = new WordsToLearnSelect('speak-it');
     this.navigation = new Navigation();
 
     create(
       'div', 'navigation',
-      [select.render(), this.navigation.render()],
+      [this.wordToLearnSelect.render(), this.navigation.render()],
       document.querySelector('.main-container__wrapper'),
     );
   }
@@ -205,7 +205,9 @@ export default class SpeakIt {
   startGame() {
     document.querySelector('.start-game-button').addEventListener('click', () => {
       if (!this.state.gameStarted) {
+        const wordsToLearnSelectHTML = document.querySelector('.speak-it__learn-words-select');
         this.state.gameStarted = true;
+        wordsToLearnSelectHTML.setAttribute('disabled', 'disabled');
 
         document.querySelector('.microphone-button').classList.remove('microphone-button_disabled');
         document.querySelector('.microphone-button i').className = 'fas fa-microphone';
@@ -341,6 +343,7 @@ export default class SpeakIt {
   }
 
   switchOnTrainingMode() {
+    document.querySelector('.speak-it__learn-words-select').removeAttribute('disabled');
     document.querySelector('.word-info__image').src = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
     document.querySelector('.word-info__translation').textContent = '';
     document.querySelector('.word-info__speech-recognition span').textContent = '';
