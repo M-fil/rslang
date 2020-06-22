@@ -3,6 +3,7 @@ import VocabularyItem from '../vocabulary-item/VocabularyItem';
 
 const {
   NUMBER_OF_WORDS_TEXT,
+  EMPTY_VOCABULARY_MESSAGE,
 } = vocabularyConstants;
 
 class MainVocabulary {
@@ -30,20 +31,33 @@ class MainVocabulary {
     return titleContainer;
   }
 
+  static getEmptyVocabularyMessage() {
+    return create('div', 'vocbulary__message', EMPTY_VOCABULARY_MESSAGE);
+  }
+
   renderVocabularyItems() {
-    const wordsHTML = this.words.map((word) => {
-      const wordItem = new VocabularyItem(
-        word.id,
-        word.word,
-        word.wordTranslate,
-        word.transcription,
-        word.textMeaning,
-        word.textExample,
-        word.image,
-      );
-      return wordItem.render();
-    });
-    const container = create('div', 'vocabulary__words-list', wordsHTML);
+    const container = create('div', 'vocabulary__words-list');
+
+    if (!this.words.length) {
+      const messageHTML = MainVocabulary.getEmptyVocabularyMessage();
+      container.append(messageHTML);
+      return container;
+    }
+
+    this.words
+      .map((word) => JSON.parse(word.optional.allData))
+      .forEach((word) => {
+        const wordItem = new VocabularyItem(
+          word.id,
+          word.word,
+          word.wordTranslate,
+          word.transcription,
+          word.textMeaning,
+          word.textExample,
+          word.image,
+        );
+        container.append(wordItem.render());
+      });
 
     return container;
   }

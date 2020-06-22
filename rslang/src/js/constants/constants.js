@@ -88,6 +88,7 @@ const vocabularyConstants = {
   REMOVED_WORDS_TITLE: 'Удаленные слова',
   DIFFUCULT_WORDS_TITLE: 'Сложные слова',
   RESTORE_BUTTON_TEXT: 'Восстановить',
+  EMPTY_VOCABULARY_MESSAGE: 'Словарь пуст.'
 };
 
 export {

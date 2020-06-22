@@ -10,7 +10,6 @@ import {
   createUser,
   loginUser,
   getUserById,
-  getWords,
 } from '../../service/service';
 import {
   errorTypes,
@@ -47,6 +46,11 @@ class App {
     this.container = create('main', 'main-content', '', document.body);
     this.checkIsUserAuthorized();
     this.renderVocabulary();
+  }
+
+  renderVocabulary() {
+    const vocabulary = new Vocabulary(this.state.user);
+    document.body.append(vocabulary.render());
   }
 
   activateAuthenticationForm() {
@@ -92,12 +96,6 @@ class App {
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
-  }
-
-  async renderVocabulary() {
-    const words = await getWords();
-    const vocabulary = new Vocabulary(words);
-    document.body.append(vocabulary.render());
   }
 
   async checkIsUserAuthorized() {

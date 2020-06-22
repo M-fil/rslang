@@ -5,7 +5,7 @@ import ShortenVocabularyItem from '../vocabulary-item/ShortenVocabularyItem';
 class ExtraVocabulary extends MainVocabulary {
   constructor(title, words) {
     super(title, words);
-    this.title = title;
+    this.word = words;
   }
 
   render() {
@@ -19,16 +19,23 @@ class ExtraVocabulary extends MainVocabulary {
   }
 
   renderVocabularyItems() {
-    const wordsHTML = this.words.map((word) => {
+    const container = create('div', 'vocabulary__words-list');
+
+    if (!this.words.length) {
+      const messageHTML = MainVocabulary.getEmptyVocabularyMessage();
+      container.append(messageHTML);
+      return container;
+    }
+
+    this.words.forEach((word) => {
+      const {
+        id, word: wordText, wordTranslate, transcription,
+      } = JSON.parse(word.optional.allData);
       const wordItem = new ShortenVocabularyItem(
-        word.id,
-        word.word,
-        word.wordTranslate,
-        word.transcription,
+        id, wordText, wordTranslate, transcription,
       );
-      return wordItem.render();
+      container.append(wordItem.render())
     });
-    const container = create('div', 'vocabulary__words-list', wordsHTML);
 
     return container;
   }
