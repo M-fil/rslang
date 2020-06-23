@@ -1,8 +1,10 @@
 import create from '../../utils/сreate';
+
 import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
+import Preloader from '../preloader/preloader';
 
 import {
   createUser,
@@ -50,10 +52,13 @@ class App {
       event.preventDefault();
 
       if (event.target.classList.contains('authorization__form')) {
+        this.prelodaer.show();
         await this.signInUser();
+        this.prelodaer.hide();
       }
       if (event.target.classList.contains('registration__form')) {
         try {
+          this.prelodaer.show();
           const data = await Authentication.submitData(createUser);
           this.state = {
             ...this.state,
@@ -64,7 +69,9 @@ class App {
             },
           };
           await this.signInUser();
+          this.prelodaer.hide();
         } catch (error) {
+          this.prelodaer.hide();
           Authentication.createErrorBlock(error.message);
         }
       }
@@ -93,6 +100,10 @@ class App {
   async checkIsUserAuthorized() {
     const savedUserData = localStorage.getItem('user-data');
     try {
+      this.prelodaer = new Preloader();
+      this.prelodaer.render();
+      this.prelodaer.show();
+
       let data = null;
       switch (true) {
         case savedUserData !== '': {
@@ -116,12 +127,14 @@ class App {
         email: data.email,
       };
       App.renderMainGame(this.state.user);
+      this.prelodaer.hide();
     } catch (error) {
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.renderAuthenticationBlock('authorization');
       this.renderToggleAuthentication();
       this.activateAuthenticationForm();
+      this.prelodaer.hide();
     }
   }
 

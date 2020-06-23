@@ -10,8 +10,10 @@ const {
 const {
   USER_ALREADY_EXISTS,
   ERROR_417,
-  UNDEFINED_ERROR,
+  ERROR_404,
+  INCORRECT_VALUES,
   STATUS_200,
+  USER_NOT_FOUND,
 } = errorTypes;
 
 const getWords = async (page = 0, group = 0) => {
@@ -36,7 +38,7 @@ const createUser = async (user) => {
   }
 
   if (rawResponse.status !== STATUS_200) {
-    throw new Error(UNDEFINED_ERROR);
+    throw new Error(INCORRECT_VALUES);
   }
 
   const content = await rawResponse.json();
@@ -57,8 +59,12 @@ const loginUser = async (user) => {
     throw new Error(USER_ALREADY_EXISTS);
   }
 
+  if (rawResponse.status === ERROR_404) {
+    throw new Error(USER_NOT_FOUND);
+  }
+
   if (rawResponse.status !== STATUS_200) {
-    throw new Error(UNDEFINED_ERROR);
+    throw new Error(INCORRECT_VALUES);
   }
 
   const content = await rawResponse.json();

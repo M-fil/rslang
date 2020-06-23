@@ -65,10 +65,8 @@ class Authentication {
       errorBlockHTML.remove();
     }
 
-    setTimeout(() => {
-      const errorBlock = create('span', 'error-block', message);
-      document.querySelector('.authentication__form').append(errorBlock);
-    }, 2000);
+    const errorBlock = create('span', 'error-block', message);
+    document.querySelector('.authentication__form').append(errorBlock);
   }
 
   static async submitData(submitFunction) {
