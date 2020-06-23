@@ -1,6 +1,8 @@
 import create, {
   vocabularyConstants,
   getAllUserWords,
+  playAudio,
+  urls,
 } from './pathes';
 
 import VocabularyHeader from './components/vocabulary-header/VocabularyHeader';
@@ -16,9 +18,14 @@ const {
   DIFFUCULT_WORDS_TITLE,
 } = vocabularyConstants;
 
+const {
+  WORDS_AUDIOS_URL,
+} = urls;
+
 class Vocabulary {
   constructor(userState) {
     this.container = null;
+    this.audio = new Audio();
 
     this.state = {
       allUserWords: [],
@@ -38,8 +45,9 @@ class Vocabulary {
     this.container.append(vocabularyHeader.render());
     this.mainContentHTML = create('div', 'vocabulary__main-content', '', this.container);
 
-    this.sortWordsInVocabularies(); 
+    this.sortWordsInVocabularies();
     this.activateVocabularyHeaderButtons();
+    this.activateAudioButtons();
 
     return this.container;
   }
@@ -63,14 +71,14 @@ class Vocabulary {
   }
 
   renderVocabulary(vocabularyClass) {
-    const vocabulary = vocabularyClass
+    const vocabulary = vocabularyClass;
     this.mainContentHTML.innerHTML = '';
     this.mainContentHTML.append(vocabulary.render());
   }
 
   activateVocabularyHeaderButtons() {
     document.addEventListener('click', (event) => {
-      const target = event.target.closest('.vocabulary__header-item')
+      const target = event.target.closest('.vocabulary__header-item');
       if (target) {
         const targetVocabularyType = target.dataset.vocabularyType;
         const {
@@ -100,6 +108,22 @@ class Vocabulary {
             break;
           }
         }
+      }
+    });
+  }
+
+  activateAudioButtons() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.word-item__audio');
+
+      if (target) {
+        const wordCardHTML = target.closest('.vocabulary__word-item');
+        const targetWordId = wordCardHTML.dataset.vocabularyWordId;
+        const targetWordObject = this.state.allUserWords.find((word) => word.wordId === targetWordId);
+        const allData = JSON.parse(targetWordObject.optional.allData);
+        const source = `${WORDS_AUDIOS_URL}${allData.audio}`;
+
+        playAudio(source, this.audio);
       }
     });
   }
