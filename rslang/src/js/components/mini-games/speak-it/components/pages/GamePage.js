@@ -1,9 +1,6 @@
-import create from '../../pathes';
+import create, { getWords, speakItConstants } from '../../pathes';
 import WordCard from '../words/WordCard';
 import ImageBlock from '../imageBlock/ImageBlock';
-
-import { getWords } from '../../pathes';
-import { speakItConstants } from '../../pathes';
 
 const {
   WORDS_LIMIT_NUMBER,
@@ -45,7 +42,7 @@ export default class GamePage {
     wordsListHTML.innerHTML = '';
 
     this.wordsList.forEach((word) => {
-      const wordCard = new WordCard(word.word, word.transcription);
+      const wordCard = new WordCard(word.id, word.word, word.transcription);
 
       wordsListHTML.append(wordCard.render());
     });

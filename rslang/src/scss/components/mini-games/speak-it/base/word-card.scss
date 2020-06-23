@@ -1,4 +1,6 @@
 .word-card {
+  position: relative;
+
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -17,10 +19,39 @@
   &_guessed {
     border-color: $speak-it-guessed-card-border-color;
     box-shadow: 0 0 0 4px $speak-it-guessed-card-border-color;
+
+    & .word-card__skip-word-button {
+      display: none;
+    }
   }
 
   &_selected, &:hover {
     border-color: $speak-it-standard-button-text-color;
+  }
+
+  &_skipped {
+    border-color: $speak-it-skipped-card-border-color;
+    opacity: 0.7;
+  }
+
+  &_in-game:hover {
+    border-color: $speak-it-standard-button-text-color;
+
+    & .word-card__skip-word-button {
+      display: block;
+    }
+  }
+  
+  &_skipped:hover {
+    & .word-card__skip-word-button {
+      display: none;
+    }
+  }
+
+  &_guessed:hover {
+    & .word-card__skip-word-button {
+      display: none;
+    }
   }
 
   & i {
@@ -44,4 +75,22 @@
   @include font(1.5rem, 2rem, 300);
 
   color: $speak-it-transcription-color;
+}
+
+.word-card__skip-word-button {
+  @include font(1.5rem, 2rem);
+
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+  border: none;
+  outline: none;
+  color: $speak-it-standard-button-text-color;
+  background-color: $speak-it-standard-button-background;
+
+  &:hover {
+    background-color: $speak-it-microphone-disabled-color;
+  }
 }

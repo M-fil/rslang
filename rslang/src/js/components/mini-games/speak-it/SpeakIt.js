@@ -35,6 +35,7 @@ const {
 export default class SpeakIt {
   constructor() {
     this.words = [];
+    this.skippedWords = [];
     this.audio = new Audio();
     this.recognition = SpeakIt.createSpeechRecongnition();
 
@@ -99,6 +100,7 @@ export default class SpeakIt {
       this.activateStatisticsBlock();
       this.acitavateRecognition();
       this.activateSoundForStatisticsWords();
+      this.acivateSkipButtons();
       SpeakIt.activateWordsToLearnSelect();
 
       this.recognition.addEventListener('end', this.recognition.start);
@@ -121,11 +123,11 @@ export default class SpeakIt {
     const container = create('div', 'game-page');
     const wordsContainer = create('div', 'game-page__words', '', container);
 
-    const imageBlock = new ImageBlock();
-    container.prepend(imageBlock.render());
+    this.imageBlock = new ImageBlock();
+    container.prepend(this.imageBlock.render());
 
     this.words.forEach((word) => {
-      const wordCard = new WordCard(word.word, word.transcription);
+      const wordCard = new WordCard(word.id, word.word, word.transcription);
       wordsContainer.append(wordCard.render());
     });
 
@@ -150,24 +152,15 @@ export default class SpeakIt {
       const target = event.target.closest('.word-card');
 
       if (target && !this.state.gameStarted) {
-        const wordHTML = target.querySelector('.word-card__word').textContent;
-
         SpeakIt.selectSingleElementFromList(target, 'word-card_selected');
         const clickedWord = this.words.find((word) => word.word === target.dataset.word);
-        const tranlation = clickedWord.wordTranslate;
+        const translation = clickedWord.wordTranslate;
         this.playAudio(`${WORDS_AUDIOS_URL}${clickedWord.audio}`);
   
         let currentImage = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
-        if (document.querySelector('.game-page__image-block')) {
-          document.querySelector('.game-page__image-block').remove();
-        }
-        if (document.querySelector('.game-page__word-info')) {
-          document.querySelector('.game-page__word-info').remove();
-        }
   
         currentImage = `${WORDS_IMAGES_URL}${clickedWord.image}`;
-        const imageBlock = new ImageBlock(currentImage, wordHTML, tranlation);
-        document.querySelector('.game-page').prepend(imageBlock.render());
+        this.imageBlock.update(currentImage, translation);
       }
     });
   }
@@ -206,12 +199,31 @@ export default class SpeakIt {
     target.classList.add(selectedClass);
   }
 
+  acivateSkipButtons() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.word-card__skip-word-button');
+
+      if (target) {
+        const wordCardHTML = target.closest('.word-card');
+        const wordId = Number(wordCardHTML.dataset.wordId);
+        wordCardHTML.classList.add('word-card_skipped');
+
+        const wordObject = this.words.find((word) => word.id === wordId);
+        this.skippedWords.push(wordObject);
+      }
+    });
+  }
+
   startGame() {
     document.querySelector('.start-game-button').addEventListener('click', () => {
       if (!this.state.gameStarted) {
+        const wordCardsHTML = document.querySelectorAll('.word-card');
         const wordsToLearnSelectHTML = document.querySelector('.speak-it__learn-words-select');
         this.state.gameStarted = true;
         wordsToLearnSelectHTML.setAttribute('disabled', 'disabled');
+        wordCardsHTML.forEach((wordHTML) => {
+          wordHTML.classList.add('word-card_in-game');
+        });
 
         document.querySelector('.microphone-button').classList.remove('microphone-button_disabled');
         document.querySelector('.microphone-button i').className = 'fas fa-microphone';
@@ -266,9 +278,15 @@ export default class SpeakIt {
       const pronouncedWords = transcript.trim().toLowerCase().split(' ');
       const guessedWord = this.words.find((word) => pronouncedWords.includes(word.word));
       const currentWordHTML = document.querySelector(`[data-word="${(guessedWord && guessedWord.word) || ''}"]`);
-      resultHTML.textContent = transcript;
+      if (resultHTML) {
+        resultHTML.textContent = transcript;
+      }
 
-      if (guessedWord && currentWordHTML && !currentWordHTML.classList.contains('word-card_guessed')) {
+      if (
+        guessedWord && currentWordHTML 
+        && !currentWordHTML.classList.contains('word-card_guessed')
+        && !currentWordHTML.classList.contains('word-card_skipped')
+      ) {
         currentWordHTML.classList.add('word-card_guessed');
         this.playAudio(CORRECT_AUDIO_PATH);
         wordInfoHTML.remove();
@@ -281,7 +299,9 @@ export default class SpeakIt {
         scoreHTML.classList.remove('hidden');
         SpeakIt.updateStatistics(guessedWord.word);
 
-        if (this.state.correct === listOfWords.length) {
+        const numberOfCorrectWords = listOfWords.length - this.skippedWords.length;
+        console.log('numberOfCorrectWords', numberOfCorrectWords);
+        if (this.state.correct === numberOfCorrectWords) {
           setTimeout(() => {
             this.playAudio(SUCCESS_AUDIO_PATH);
             statisticsHTML.classList.remove('hidden');
@@ -327,6 +347,10 @@ export default class SpeakIt {
       const { options, selectedIndex } = event.target;
       const selectedValue = options[selectedIndex].value;
       this.state.currentPage = Number(selectedValue);
+
+      const statisticsBlock = document.querySelector('.statistics');
+      if (statisticsBlock) statisticsBlock.remove();
+      this.switchOnTrainingMode();
       this.renderMainGamePage(this.state.groupOfWords, this.state.currentPage);
     });
   }

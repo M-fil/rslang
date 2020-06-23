@@ -1,4 +1,5 @@
 import create, { urls } from '../../pathes';
+import Prelodaer from '../../../../preloader/preloader';
 
 const {
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL,
@@ -17,7 +18,7 @@ export default class ImageBlock {
   render() {
     this.container = create('div', 'game-page__word-info');
     const imageBlockHTML = create('div', 'word-info__image-block', '', this.container);
-    create(
+    this.translationHTML = create(
       'div',
       `word-info__translation${!this.isHeadenRecognition ? ' hidden' : ''}`,
       `${this.translation}`,
@@ -29,8 +30,8 @@ export default class ImageBlock {
     const image = new Image();
     image.src = this.image;
     image.onload = () => {
-      create('img', 'word-info__image', '', imageBlockHTML, ['src', this.image], ['alt', this.word]);
-      create(
+      this.imageHTML = create('img', 'word-info__image', '', imageBlockHTML, ['src', this.image], ['alt', this.word]);
+      this.wordInfoHTLM = create(
         'div',
         `word-info__speech-recognition${this.isHeadenRecognition ? ' hidden' : ''}`,
         '<i class="fas fa-microphone-alt"></i><span></span>',
@@ -39,5 +40,17 @@ export default class ImageBlock {
     };
 
     return this.container;
+  }
+
+  update(imageSrc, translation) {
+    this.prelodaer = new Prelodaer();
+    this.prelodaer.render();
+    this.prelodaer.show();
+
+    this.imageHTML.src = imageSrc;
+    this.imageHTML.onload = () => {
+      this.translationHTML.textContent = translation;
+      this.prelodaer.hide();
+    };
   }
 }
