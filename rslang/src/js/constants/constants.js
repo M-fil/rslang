@@ -66,6 +66,7 @@ const speakItConstants = {
   NEW_GAME_BUTTON: 'Новая Игра',
   NUMBER_OF_GROUPS: 6,
   NUMBER_OF_PAGES: 29,
+  WORDS_LIMIT_NUMBER: 10,
 };
 
 export {

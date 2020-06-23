@@ -1,10 +1,13 @@
 import create from '../../pathes';
 import WordCard from '../words/WordCard';
 import ImageBlock from '../imageBlock/ImageBlock';
-import Preloader from '../../../../preloader/preloader';
 
 import { getWords } from '../../pathes';
 import { speakItConstants } from '../../pathes';
+
+const {
+  WORDS_LIMIT_NUMBER,
+} = speakItConstants;
 
 export default class GamePage {
   constructor(pageNumber, groupNumber) {
@@ -28,7 +31,7 @@ export default class GamePage {
   async initWords() {
     try {
       const data = await getWords(this.pageNumber, this.groupNumber);
-      this.wordsList = data.slice(0, 10);
+      this.wordsList = data.slice(0, WORDS_LIMIT_NUMBER);
       this.renderWords();
       localStorage.setItem('currentWords', JSON.stringify(this.wordsList));
       document.querySelector('.loading').remove();

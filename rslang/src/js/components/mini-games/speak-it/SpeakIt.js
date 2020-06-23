@@ -2,6 +2,7 @@ import create, {
   getWords,
   wordsToLearnSelectConstants,
   urls,
+  speakItConstants,
 } from './pathes';
 
 import WordCard from './components/words/WordCard';
@@ -26,6 +27,10 @@ const {
   SELECT_OPTION_LEARNED_WORDS,
   SELECT_OPTION_WORDS_FROM_COLLECTIONS,
 } = wordsToLearnSelectConstants;
+
+const {
+  WORDS_LIMIT_NUMBER,
+} = speakItConstants;
 
 export default class SpeakIt {
   constructor() {
@@ -79,7 +84,7 @@ export default class SpeakIt {
       this.state.groupOfWords = 0;
       const data = await getWords(this.state.currentPage, this.state.groupOfWords);
       this.preloader.hide();
-      this.words = data.slice(0, 10).map((wordData) => ({
+      this.words = data.slice(0, WORDS_LIMIT_NUMBER).map((wordData) => ({
         ...wordData,
         word: wordData.word.toLowerCase(),
       }));
@@ -331,7 +336,7 @@ export default class SpeakIt {
     this.state.groupOfWords = groupNumber;
     this.state.currentPage = pageNumber;
     const wordsData = await getWords(pageNumber, groupNumber);
-    this.words = wordsData.slice(0, 10);
+    this.words = wordsData.slice(0, WORDS_LIMIT_NUMBER);
     document.querySelector('.game-page').remove();
     this.renderWords();
     const statistics = new StatisticsBlock(this.words);

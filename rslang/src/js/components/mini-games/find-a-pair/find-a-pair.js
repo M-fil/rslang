@@ -7,7 +7,7 @@ import {
 import create from '../../../utils/сreate';
 import shuffle from '../../../utils/shuffle';
 import wordsFilter from '../../../utils/wordsfilter';
-import Preloader from '../../preloader/Preloader';
+import Preloader from '../../preloader/preloader';
 
 const findAPairConst = {
   maxPages: 30,
