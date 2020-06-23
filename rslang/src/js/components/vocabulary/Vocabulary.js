@@ -1,6 +1,7 @@
 import create, {
   vocabularyConstants,
   getAllUserWords,
+  updateUserWord,
   playAudio,
   urls,
 } from './pathes';
@@ -10,6 +11,8 @@ import WordsToLearnVocabulary from './components/vocabulary-types/WordsToLearnVo
 import LearnedWordsVocabulary from './components/vocabulary-types/LearnedWordsVocabulary';
 import RemovedWords from './components/vocabulary-types/RemovedWords';
 import DifficultWordsVocabulary from './components/vocabulary-types/DifficultWordsVocabulary';
+import MainGame from '../main-game/MainGame';
+import Preloader from '../preloader/preloader';
 
 const {
   LEARNED_WORDS_TITLE,
@@ -48,12 +51,18 @@ class Vocabulary {
     this.sortWordsInVocabularies();
     this.activateVocabularyHeaderButtons();
     this.activateAudioButtons();
+    this.activateRestoreButtons();
 
     return this.container;
   }
 
+  updateWords(words) {
+    this.state.allUserWords = words;
+    this.sortWordsInVocabularies();
+  }
+
   async sortWordsInVocabularies() {
-    const { userId, token } = Vocabulary.getUserDataForAuthorization();
+    const { userId, token } = this.getUserDataForAuthorization();
     const allWords = await getAllUserWords(userId, token);
     this.state.allUserWords = allWords;
 
@@ -112,14 +121,65 @@ class Vocabulary {
     });
   }
 
+  activateRestoreButtons() {
+    document.addEventListener('click', async (event) => {
+      const target = event.target.closest('.word-item__restore-button');
+
+      if (target) {
+        try {
+          this.preloader = new Preloader();
+          this.preloader.render();
+          this.preloader.show();
+          const {
+            targetWordObject,
+            targetWordHTML,
+          } = this.getWordObjectByTargetElement(target);
+          const { difficulty, wordId } = targetWordObject;
+          const allData = JSON.parse(targetWordObject.optional.allData);
+
+          const { id, token } = this.state.userState;
+          console.log(this.state.userState);
+          const dataToUpdate = await MainGame.createWordDataForBackend(
+            allData, difficulty, true, WORDS_TO_LEARN_TITLE,
+          );
+          const data = await updateUserWord(id, wordId, dataToUpdate, token);
+          this.allWords = await getAllUserWords(id, token);
+
+          this.updateVocabularyAfterRestoreButtonClick(targetWordObject);
+          targetWordHTML.remove();
+          this.preloader.hide();
+          console.log('Added', data);
+          console.log(this.state.allWords);
+          console.log(this.state);
+        } catch (error) {
+          this.preloader.hide();
+        }
+      }
+    });
+  }
+
+  updateVocabularyAfterRestoreButtonClick(targetWordObject) {
+    const { removedWords, difficultWords } = this.state.vocabularies;
+
+    if (targetWordObject.optional.vocabulary === REMOVED_WORDS_TITLE) {
+      this.state.vocabularies.removedWords = removedWords
+        .filter((word) => word.wordId !== targetWordObject.wordId);
+      this.state.vocabularies.wordsToLearn.unshift(targetWordObject);
+    }
+
+    if (targetWordObject.optional.vocabulary === DIFFUCULT_WORDS_TITLE) {
+      this.state.vocabularies.difficultWords = difficultWords
+        .filter((word) => word.wordId !== targetWordObject.wordId);
+      this.state.vocabularies.wordsToLearn.unshift(targetWordObject);
+    }
+  }
+
   activateAudioButtons() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.word-item__audio');
 
       if (target) {
-        const wordCardHTML = target.closest('.vocabulary__word-item');
-        const targetWordId = wordCardHTML.dataset.vocabularyWordId;
-        const targetWordObject = this.state.allUserWords.find((word) => word.wordId === targetWordId);
+        const { targetWordObject } = this.getWordObjectByTargetElement(target);
         const allData = JSON.parse(targetWordObject.optional.allData);
         const source = `${WORDS_AUDIOS_URL}${allData.audio}`;
 
@@ -128,14 +188,24 @@ class Vocabulary {
     });
   }
 
-  static getUserDataForAuthorization() {
+  getWordObjectByTargetElement(target) {
+    const wordCardHTML = target.closest('.vocabulary__word-item');
+    const extraWordCardHTML = target.closest('.vocabulary__extra-word-item');
+    const targetWordId = (wordCardHTML && wordCardHTML.dataset.vocabularyWordId)
+      || (extraWordCardHTML && extraWordCardHTML.dataset.vocabularyWordId);
+    const targetWordObject = this.state.allUserWords.find((word) => word.wordId === targetWordId);
+
+    return { targetWordObject, targetWordHTML: wordCardHTML || extraWordCardHTML };
+  }
+
+  getUserDataForAuthorization() {
     const savedUserData = localStorage.getItem('user-data');
     if (savedUserData) {
       return JSON.parse(savedUserData);
     }
 
     return {
-      userId: this.userState.userId,
+      userId: this.userState.id,
       token: this.userState.token,
     };
   }

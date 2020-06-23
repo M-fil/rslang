@@ -6,6 +6,7 @@ class ExtraVocabulary extends MainVocabulary {
   constructor(title, words) {
     super(title, words);
     this.word = words;
+    this.title = title;
   }
 
   render() {
@@ -32,7 +33,7 @@ class ExtraVocabulary extends MainVocabulary {
         id, word: wordText, wordTranslate, transcription,
       } = JSON.parse(word.optional.allData);
       const wordItem = new ShortenVocabularyItem(
-        id, wordText, wordTranslate, transcription,
+        id, wordText, wordTranslate, transcription, this.title,
       );
       container.append(wordItem.render())
     });

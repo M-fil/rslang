@@ -5,6 +5,7 @@ import {
 } from '../../constants/constants';
 import {
   getAllUserWords,
+  updateUserWord,
 } from '../../service/service';
 import {
   playAudio,
@@ -16,4 +17,5 @@ export {
   urls,
   getAllUserWords,
   playAudio,
+  updateUserWord,
 };

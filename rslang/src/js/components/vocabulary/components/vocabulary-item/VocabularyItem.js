@@ -7,7 +7,7 @@ const {
 class VocabularyItem {
   constructor(
     id, word, wordTranslate, transcription,
-    textMeaning, textExample, image,
+    textMeaning, textExample, image, vocabularyType,
   ) {
     this.HTML = null;
     this.id = id;
@@ -17,12 +17,16 @@ class VocabularyItem {
     this.textMeaning = textMeaning;
     this.textExample = textExample;
     this.image = image;
+    this.vocabularyType = vocabularyType;
 
     this.audioElement = new Audio();
   }
 
   render() {
-    this.HTML = create('div', 'vocabulary__word-item', '', null, ['vocabularyWordId', this.id]);
+    this.HTML = create(
+      'div', 'vocabulary__word-item', '', null,
+      ['vocabularyWordId', this.id], ['vocabularyType', this.vocabularyType],
+    );
 
     create('div', 'word-item__main-container', this.renderMainContent(), this.HTML);
     const sentencesBlock = create('div', 'word-item__sentences', '', this.HTML);

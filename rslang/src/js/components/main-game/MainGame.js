@@ -83,7 +83,7 @@ class MainGame {
     this.state.isLoading = true;
 
     try {
-      this.state.userWords = await MainGame.getAllUserWordsFromBackend();
+      this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.state.userWords.map((item) => ({
         ...item,
         optional: {
@@ -150,13 +150,13 @@ class MainGame {
     return [...commonWords, ...otherWords];
   }
 
-  static async getAllUserWordsFromBackend() {
-    const { userId, token } = MainGame.getUserDataForAuthorization();
+  async getAllUserWordsFromBackend() {
+    const { userId, token } = this.getUserDataForAuthorization();
     const data = await getAllUserWords(userId, token);
     return data;
   }
 
-  static getUserDataForAuthorization() {
+  getUserDataForAuthorization() {
     const savedUserData = localStorage.getItem('user-data');
     if (savedUserData) {
       return JSON.parse(savedUserData);
@@ -326,8 +326,8 @@ class MainGame {
     const wordData = {
       id: currentWord.id,
       word: currentWord.word,
-      difficulty: estimation.text,
-      vocabulary,
+      difficulty: estimation.text || GOOD.text,
+      vocabulary: vocabulary || WORDS_TO_LEARN_TITLE,
       daysInterval: estimation.daysInterval,
       valuationDate: new Date(),
       allData: currentWord,
@@ -349,6 +349,7 @@ class MainGame {
     };
 
     if (isOnlyObject) {
+      console.log(dataToRecieve)
       return dataToRecieve;
     }
     const data = await createUserWord(userId, wordId, dataToRecieve, token);
@@ -408,7 +409,7 @@ class MainGame {
   }
 
   async checkWordAfterAgainButtonClick(currentWord) {
-    const { userId, token } = MainGame.getUserDataForAuthorization();
+    const { userId, token } = this.getUserDataForAuthorization();
     const userWordsTexts = this.state.userWords.map((word) => word.optional.word);
 
     if (userWordsTexts.includes(currentWord.word)) {
@@ -457,6 +458,7 @@ class MainGame {
       const currentWord = this.state.wordsToLearn[this.state.currentWordIndex];
       const wordFromBackend = this.state.userWords.length
         && this.state.userWords.find((word) => word.wordId === currentWord.id);
+      console.log()
       const buttonType = wordFromBackend && wordFromBackend.difficulty;
 
       if (event.target.classList.contains('main-game__remove-word')) {
@@ -472,17 +474,21 @@ class MainGame {
   }
 
   async addWordToTheVocabulary(vocabularyType = WORDS_TO_LEARN_TITLE, buttonType = GOOD.text) {
-    const userWordsTexts = this.state.userWords.map((word) => word.optional.word);
     const currentWord = this.state.wordsToLearn[this.state.currentWordIndex];
-    const { userId, token } = MainGame.getUserDataForAuthorization();
+    const userWordObject = this.state.userWords.find((word) => word.wordId === currentWord.id);
+    const { userId, token } = this.getUserDataForAuthorization();
 
-    if (userWordsTexts.includes(currentWord.word)) {
-      const data = MainGame.createWordDataForBackend(currentWord, buttonType, true, vocabularyType);
+    if (userWordObject) {
+      console.log('for update')
+      const data = await MainGame.createWordDataForBackend(currentWord, buttonType, true, vocabularyType);
+      console.log(data);
       await updateUserWord(userId, currentWord.id, data, token);
     } else {
-      await MainGame.createWordDataForBackend(currentWord, buttonType,false, vocabularyType);
+      console.log('for create')
+      await MainGame.createWordDataForBackend(currentWord, buttonType, false, vocabularyType);
     }
-    this.state.userWords = await MainGame.getAllUserWordsFromBackend();
+    this.state.userWords = await this.getAllUserWordsFromBackend();
+    console.log('this.state.userWords', this.state.userWords);
   }
 
   static checkWord(word) {

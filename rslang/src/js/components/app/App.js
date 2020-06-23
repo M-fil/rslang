@@ -45,12 +45,11 @@ class App {
   run() {
     this.container = create('main', 'main-content', '', document.body);
     this.checkIsUserAuthorized();
-    this.renderVocabulary();
   }
 
-  renderVocabulary() {
-    const vocabulary = new Vocabulary(this.state.user);
-    document.body.append(vocabulary.render());
+  renderVocabulary(userState) {
+    this.vocabulary = new Vocabulary(userState);
+    document.body.append(this.vocabulary.render());
   }
 
   activateAuthenticationForm() {
@@ -92,7 +91,8 @@ class App {
       };
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
-      App.renderMainGame();
+      App.renderMainGame(this.state.user);
+      this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -122,8 +122,10 @@ class App {
         ...this.state.user,
         id: data.id,
         email: data.email,
+        token: JSON.parse(savedUserData).token,
       };
       App.renderMainGame(this.state.user);
+      this.renderVocabulary(this.state.user);
     } catch (error) {
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;

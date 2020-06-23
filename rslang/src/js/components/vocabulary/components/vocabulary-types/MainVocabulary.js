@@ -55,6 +55,7 @@ class MainVocabulary {
           word.textMeaning,
           word.textExample,
           word.image,
+          this.vacabularyTitle,
         );
         container.append(wordItem.render());
       });
