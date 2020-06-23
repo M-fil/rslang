@@ -70,30 +70,25 @@ export default class MainBlock {
 
   createControlButtons() {
     const buttonsContainer = create('div', 'control-buttons_container');
+    const buttonStutMas = Object.values(this.buttonStat);
     for (let i = 0; i < GAME_BLOCK.controlButtons; i += 1) {
       let button = null;
       switch (i) {
         case 0:
           button = create('button', 'button-sintezise help-button', '', buttonsContainer);
-          if (this.buttonStat.sound) {
-            button.classList.add('active-button');
-          }
           break;
         case 1:
           button = create('button', 'button-trunslate help-button', '', buttonsContainer);
-          if (this.buttonStat.translate) {
-            button.classList.add('active-button');
-          }
           break;
         case 2:
           button = create('button', 'button-background help-button', '', buttonsContainer);
-          if (this.buttonStat.background) {
-            button.classList.add('active-button');
-          }
           break;
         default:
           button = create('button', 'button-logout help-button', '', buttonsContainer);
           break;
+      }
+      if (buttonStutMas[i] && (i + 1 !== GAME_BLOCK.controlButtons)) {
+        button.classList.add('active-button');
       }
     }
     return buttonsContainer;

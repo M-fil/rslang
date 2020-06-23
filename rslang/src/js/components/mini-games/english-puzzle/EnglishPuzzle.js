@@ -343,30 +343,42 @@ export default class EnglishPuzzle {
       viewElement([this.gameForm], [this.startMenu]);
     });
 
-    document.querySelector('.button-sintezise').addEventListener('click', () => {
+    document.querySelector('.button-sintezise').addEventListener('click', (event) => {
       const status = JSON.parse(localStorage.userSettings);
       if (status.sound) {
         status.sound = false;
         this.sinth.cancel();
-        document.querySelector('.sound-button').classList.remove('active-sintez');
+        event.target.classList.remove('active-sintez');
       } else {
         status.sound = true;
         this.sinth.resume();
-        document.querySelector('.sound-button').classList.add('active-sintez');
+        event.target.classList.add('active-sintez');
       }
       localStorage.userSettings = JSON.stringify(status);
     });
 
-    document.querySelector('.button-trunslate').addEventListener('click', () => {
+    document.querySelector('.button-trunslate').addEventListener('click', (event) => {
       const status = JSON.parse(localStorage.userSettings);
       if (status.translate) {
         status.translate = false;
-        document.querySelector('.translate-sentense').classList.remove('active-translate');
+        event.target.classList.remove('active-translate');
       } else {
         status.translate = true;
-        document.querySelector('.translate-sentense').classList.add('active-translate');
+        event.target.classList.add('active-translate');
       }
       this.showTranslate();
+      localStorage.userSettings = JSON.stringify(status);
+    });
+
+    document.querySelector('.button-background').addEventListener('click', (event) => {
+      const status = JSON.parse(localStorage.userSettings);
+      if (status.background) {
+        status.background = false;
+        event.target.classList.remove('active-background');
+      } else {
+        status.background = true;
+        event.target.classList.add('active-background');
+      }
       localStorage.userSettings = JSON.stringify(status);
     });
 
