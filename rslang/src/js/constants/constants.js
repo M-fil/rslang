@@ -60,6 +60,8 @@ const speakItConstants = {
   FILES_PATH: 'files/',
   START_GAME_DESCRIPTION_1: 'Нажимайте на слова, чтобы услышать их звучание.',
   START_GAME_DESCRIPTION_2: 'Нажмите на кнопку и произнесите слова в микрофон.',
+  START_GAME_DESCRIPTION_3: 'Если у Вас не получается правильно произнести слово, то Вы можете нажать кнопку',
+  START_GAME_DESCRIPTION_4: 'Тогда слово добавиться в список "Я не знаю" в статистике мини-игры',
   START_PAGE_BUTTON_TEXT: 'Старт',
   CORRECT_WORDS_TEXT: 'Я знаю',
   INCORRECT_WORDS_TEXT: 'Я не знаю',

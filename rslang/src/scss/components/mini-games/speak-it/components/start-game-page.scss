@@ -43,3 +43,9 @@
     border-color: $speak-it-standard-button-text-color;
   }
 }
+
+.start-page__paragraph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -90,6 +90,14 @@
   color: $speak-it-standard-button-text-color;
   background-color: $speak-it-standard-button-background;
 
+  &_start-page {
+    @include font(2.5rem, 3rem);
+    position: relative;
+    display: block;
+    margin: 5px;
+    box-shadow: 0 0 2px $speak-it-standard-button-text-color;
+  }
+
   &:hover {
     background-color: $speak-it-microphone-disabled-color;
   }
