@@ -210,6 +210,7 @@ export default class SpeakIt {
 
         const wordObject = this.words.find((word) => word.id === wordId);
         this.skippedWords.push(wordObject);
+        this.checkIsGameEnded();
       }
     });
   }
@@ -272,8 +273,6 @@ export default class SpeakIt {
       const resultHTML = document.querySelector('.word-info__speech-recognition span');
       const wordInfoHTML = document.querySelector('.game-page__word-info');
       const scoreHTML = document.querySelector('.score');
-      const statisticsHTML = document.querySelector('.statistics');
-      const overlayHTML = document.querySelector('.overlay');
 
       const pronouncedWords = transcript.trim().toLowerCase().split(' ');
       const guessedWord = this.words.find((word) => pronouncedWords.includes(word.word));
@@ -298,19 +297,24 @@ export default class SpeakIt {
         scoreHTML.textContent = `+${this.state.correct += 1}`;
         scoreHTML.classList.remove('hidden');
         SpeakIt.updateStatistics(guessedWord.word);
-
-        const numberOfCorrectWords = listOfWords.length - this.skippedWords.length;
-        console.log('numberOfCorrectWords', numberOfCorrectWords);
-        if (this.state.correct === numberOfCorrectWords) {
-          setTimeout(() => {
-            this.playAudio(SUCCESS_AUDIO_PATH);
-            statisticsHTML.classList.remove('hidden');
-            overlayHTML.classList.remove('hidden');
-            this.activateStatisticsButtons();
-          }, 1500);
-        }
+        this.checkIsGameEnded();
       }
     });
+  }
+
+  checkIsGameEnded() {
+    const statisticsHTML = document.querySelector('.statistics');
+    const overlayHTML = document.querySelector('.overlay');
+    const numberOfCorrectWords = this.words.length - this.skippedWords.length;
+
+    if (this.state.correct === numberOfCorrectWords) {
+      setTimeout(() => {
+        this.playAudio(SUCCESS_AUDIO_PATH);
+        statisticsHTML.classList.remove('hidden');
+        overlayHTML.classList.remove('hidden');
+        this.activateStatisticsButtons();
+      }, 1500);
+    }
   }
 
   static updateStatistics(target) {
@@ -385,6 +389,8 @@ export default class SpeakIt {
     Array.from(document.querySelectorAll('.word-card')).forEach((elem) => {
       elem.classList.remove('word-card_guessed');
       elem.classList.remove('word-card_selected');
+      elem.classList.remove('word-card_skipped');
+      elem.classList.remove('word-card_in-game');
     });
 
     this.disableMicro();
@@ -420,14 +426,18 @@ export default class SpeakIt {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.new-game-button');
       if (target) {
-        document.querySelector('.overlay').classList.add('hidden');
+        const overlayHTML = document.querySelector('.overlay');
+        const statisticsHTML = document.querySelector('.statistics')
+
+        overlayHTML.classList.add('hidden');
         document.body.style.overflow = 'auto';
 
         this.switchOnTrainingMode();
         SpeakIt.selectSingleElementFromList(document.querySelector('[data-nav-number="1"]'), 'navigation__item_selected');
         this.renderMainGamePage(this.state.groupOfWords);
-
-        document.querySelector('.statistics').remove();
+        if (statisticsHTML) {
+          statisticsHTML.remove();
+        }
       }
     });
   }
