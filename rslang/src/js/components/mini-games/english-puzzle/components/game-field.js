@@ -39,14 +39,9 @@ export default async function createCanvasElements(
           canvas.setAttribute('data-word', word);
 
           const ctx = canvas.getContext('2d');
-          let canvasWidth = (word.length * onePart) + extraWidth;
-
-          if (j === wordCount - 1) {
-            canvasWidth = imgWidth - widthCount;
-            widthCount += canvasWidth;
-          } else {
-            widthCount += canvasWidth;
-          }
+          const canvasWidth = (j === wordCount - 1) ? imgWidth - widthCount
+            : (word.length * onePart) + extraWidth;
+          widthCount += canvasWidth;
 
           const x1 = 0;
           const y1 = Math.round(canvasHeight / 3);
