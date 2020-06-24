@@ -23,7 +23,7 @@ import SettingsControls from './components/settings-controls/SettingsControls';
 import EstimateButtonsBlock from './components/estimate-buttons/EstimateButtonsBlock';
 import WordsSelectList from './components/words-select-list/WordsSelectList';
 import ProgressBar from './components/progress-bar/ProgressBar';
-import Preloader from '../preloader/preloader';
+import Preloader from '../preloader/Preloader';
 import FormControll from './components/form-control/FormControl';
 import Authentication from '../authentication/Authentication';
 
@@ -36,6 +36,7 @@ const {
   MIXED,
   ONLY_NEW_WORDS,
   ONLY_WORDS_TO_REPEAT,
+  ONLY_DIFFICULT_WORDS,
 } = wordsToLearnOptions;
 
 const {
@@ -69,6 +70,9 @@ class MainGame {
         isTranslationsEnabled: true,
       },
       userState,
+      settings: {
+        wordsPerDay: 20,
+      },
     };
   }
 
@@ -84,15 +88,7 @@ class MainGame {
 
     try {
       this.state.userWords = await this.getAllUserWordsFromBackend();
-      this.state.userWords = this.state.userWords.map((item) => ({
-        ...item,
-        optional: {
-          ...item.optional,
-          valuationDate: new Date(item.optional.valuationDate),
-          daysInterval: parseInt(item.optional.daysInterval, 10),
-          allData: JSON.parse(item.optional.allData),
-        },
-      }));
+      this.state.userWords = this.parseUserWordsData();
       const words = await getWords();
       this.state.wordsArray = words;
       this.state.wordsToLearn = this.selectWordsToLearn();
@@ -133,12 +129,24 @@ class MainGame {
     }
   }
 
+  parseUserWordsData() {
+    return this.state.userWords.map((item) => ({
+      ...item,
+      optional: {
+        ...item.optional,
+        valuationDate: new Date(item.optional.valuationDate),
+        daysInterval: parseInt(item.optional.daysInterval, 10),
+        allData: JSON.parse(item.optional.allData),
+      },
+    }));
+  }
+
   selectWordsToLearn() {
     const currentTime = new Date();
     const { wordsArray, userWords } = this.state;
     const wordsToRevise = userWords.filter((word) => {
       const { valuationDate, daysInterval } = word.optional;
-      const elapsedTime = addDaysToTheDate(1, new Date(2020, 5, 18));
+      const elapsedTime = addDaysToTheDate(daysInterval);
       const isNeedToRevise = elapsedTime < currentTime;
       return isNeedToRevise && valuationDate && daysInterval;
     });
@@ -154,6 +162,12 @@ class MainGame {
     const { userId, token } = this.getUserDataForAuthorization();
     const data = await getAllUserWords(userId, token);
     return data;
+  }
+
+  selectUserWordsByType(wordsType) {
+    return this.state.userWords
+      .filter((word) => word.optional.vocabulary === wordsType)
+      .map((word) => (word.optional ? word.optional.allData : word));
   }
 
   getUserDataForAuthorization() {
@@ -210,7 +224,7 @@ class MainGame {
       switch (selectedOptionValue) {
         case MIXED:
         default:
-          selectedArrayType = this.state.wordsToLearn;
+          selectedArrayType = this.selectWordsToLearn();
           break;
         case ONLY_NEW_WORDS:
           selectedArrayType = this.state.wordsToLearn;
@@ -218,9 +232,17 @@ class MainGame {
         case ONLY_WORDS_TO_REPEAT:
           selectedArrayType = this.state.wordsToLearn;
           break;
+        case ONLY_DIFFICULT_WORDS:
+          selectedArrayType = this.selectUserWordsByType(DIFFUCULT_WORDS_TITLE);
+          break;
       }
 
+      this.state.currentWordIndex = -1;
       this.state.wordsToLearn = selectedArrayType;
+      this.renderNextWordCard();
+      const { currentWordIndex, wordsToLearn } = this.state;
+      this.progressBar.updateSize(currentWordIndex, wordsToLearn.length);
+      console.log('wordsToLearn', wordsToLearn);
     });
   }
 
@@ -254,9 +276,13 @@ class MainGame {
     const mainContainer = document.querySelector('.main-game__main-container');
 
     const { currentWordIndex, wordsToLearn } = this.state;
+    console.log('words', wordsToLearn);
+    console.log('words2', this.state.wordsToLearn);
     const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
 
     if (currentWordIndex !== wordsToLearn.length) {
+      console.log(wordsToLearn[currentWordIndex]);
+      console.log('currentWordIndex', currentWordIndex);
       const trimedValue = inputHTML.value.trim().toLowerCase();
       const numberOfMistakes = MainGame.checkWord(wordsToLearn[currentWordIndex].word);
 
@@ -349,7 +375,7 @@ class MainGame {
     };
 
     if (isOnlyObject) {
-      console.log(dataToRecieve)
+      console.log(dataToRecieve);
       return dataToRecieve;
     }
     const data = await createUserWord(userId, wordId, dataToRecieve, token);
@@ -400,7 +426,9 @@ class MainGame {
     this.renderWordCard(wordsToLearn[this.state.currentWordIndex]);
     this.state.audio.pause();
     this.state.isAudioEnded = true;
-    this.estimateWords.removeFromDOM();
+    if (this.estimateWords) {
+      this.estimateWords.removeFromDOM();
+    }
     MainGame.toggleControlElements(false);
     MainGame.toggleVocabularyButtons(false);
     userAnswerHTML.innerHTML = '';
@@ -458,7 +486,7 @@ class MainGame {
       const currentWord = this.state.wordsToLearn[this.state.currentWordIndex];
       const wordFromBackend = this.state.userWords.length
         && this.state.userWords.find((word) => word.wordId === currentWord.id);
-      console.log()
+      console.log();
       const buttonType = wordFromBackend && wordFromBackend.difficulty;
 
       if (event.target.classList.contains('main-game__remove-word')) {
@@ -479,12 +507,12 @@ class MainGame {
     const { userId, token } = this.getUserDataForAuthorization();
 
     if (userWordObject) {
-      console.log('for update')
+      console.log('for update');
       const data = await MainGame.createWordDataForBackend(currentWord, buttonType, true, vocabularyType);
       console.log(data);
       await updateUserWord(userId, currentWord.id, data, token);
     } else {
-      console.log('for create')
+      console.log('for create');
       await MainGame.createWordDataForBackend(currentWord, buttonType, false, vocabularyType);
     }
     this.state.userWords = await this.getAllUserWordsFromBackend();

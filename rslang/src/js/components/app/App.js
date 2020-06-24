@@ -4,7 +4,7 @@ import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
-import Preloader from '../preloader/preloader';
+import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 
 import {

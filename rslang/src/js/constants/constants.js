@@ -43,6 +43,7 @@ const wordsToLearnOptions = {
   MIXED: 'Вперемешку',
   ONLY_NEW_WORDS: 'Только новые слова',
   ONLY_WORDS_TO_REPEAT: 'Только слова для повторения',
+  ONLY_DIFFICULT_WORDS: 'Только сложные слова',
 };
 
 const estimateButtonsTypes = {
