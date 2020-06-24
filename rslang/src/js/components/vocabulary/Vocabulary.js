@@ -12,7 +12,7 @@ import LearnedWordsVocabulary from './components/vocabulary-types/LearnedWordsVo
 import RemovedWords from './components/vocabulary-types/RemovedWords';
 import DifficultWordsVocabulary from './components/vocabulary-types/DifficultWordsVocabulary';
 import MainGame from '../main-game/MainGame';
-import Preloader from '../preloader/preloader';
+import Preloader from '../preloader/Preloader';
 
 const {
   LEARNED_WORDS_TITLE,
@@ -138,19 +138,15 @@ class Vocabulary {
           const allData = JSON.parse(targetWordObject.optional.allData);
 
           const { id, token } = this.state.userState;
-          console.log(this.state.userState);
           const dataToUpdate = await MainGame.createWordDataForBackend(
             allData, difficulty, true, WORDS_TO_LEARN_TITLE,
           );
-          const data = await updateUserWord(id, wordId, dataToUpdate, token);
-          this.allWords = await getAllUserWords(id, token);
+          await updateUserWord(id, wordId, dataToUpdate, token);
+          this.state.allUserWords = await getAllUserWords(id, token);
 
           this.updateVocabularyAfterRestoreButtonClick(targetWordObject);
           targetWordHTML.remove();
           this.preloader.hide();
-          console.log('Added', data);
-          console.log(this.state.allWords);
-          console.log(this.state);
         } catch (error) {
           this.preloader.hide();
         }
