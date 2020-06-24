@@ -161,6 +161,20 @@ const removeUserWord = async (userId, wordId, token) => {
   return content;
 };
 
+const getAggregatedWordsByFilter = async (userId, token, filter = '{"userWord":null}') => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/aggregatedWords?wordsPerPage=20&filter=${filter}`, {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+
+  const content = await rawResponse.json();
+  return content;
+}
+
 export {
   getWords,
   createUser,
@@ -171,4 +185,5 @@ export {
   getAllUserWords,
   updateUserWord,
   removeUserWord,
+  getAggregatedWordsByFilter,
 };

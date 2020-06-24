@@ -65,8 +65,11 @@ class Authentication {
       errorBlockHTML.remove();
     }
 
+    const authenticationForm = document.querySelector('.authentication__form');
     const errorBlock = create('span', 'error-block', message);
-    document.querySelector('.authentication__form').append(errorBlock);
+    if (authenticationForm) {
+      authenticationForm.append(errorBlock);
+    }
   }
 
   static async submitData(submitFunction) {

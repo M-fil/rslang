@@ -1,10 +1,10 @@
 import create from '../../../../utils/сreate';
-import { mainGameStrings } from '../../../../constants/constants';
+import { mainGameConstants } from '../../../../constants/constants';
 
 const {
   SETTINGS_AUTOPLABACK_TEXT,
   SETTINGS_TRANSLATIONS_LABEL_TEXT,
-} = mainGameStrings;
+} = mainGameConstants;
 
 class SettingsControls {
   constructor() {

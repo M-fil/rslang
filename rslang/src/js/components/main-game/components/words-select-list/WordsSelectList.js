@@ -1,9 +1,9 @@
 import create from '../../../../utils/сreate';
-import { mainGameStrings, wordsToLearnOptions } from '../../../../constants/constants';
+import { mainGameConstants, wordsToLearnOptions } from '../../../../constants/constants';
 
 const {
   WORDS_TYPES_SELECT_TITLE,
-} = mainGameStrings;
+} = mainGameConstants;
 
 class WordsSelectList {
   constructor() {

@@ -1,7 +1,7 @@
 import create from '../../../../utils/сreate';
 import { urls } from '../../../../constants/constants';
 
-import Preloader from '../../../preloader/preloader';
+import Preloader from '../../../preloader/Preloader';
 
 const {
   WORDS_IMAGES_URL,

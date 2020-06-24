@@ -29,7 +29,7 @@ const errorTypes = {
   USER_NOT_FOUND: 'Такого пользователя не существует. Пожалуйста, проверьте введенные данные.'
 };
 
-const mainGameStrings = {
+const mainGameConstants = {
   REMOVE_WORD_BUTTON: 'Снять с изучения',
   ADD_TO_DIFFICULT_WORDS: 'Добавить в сложные',
   NEXT_BUTTON: 'Дальше',
@@ -38,6 +38,8 @@ const mainGameStrings = {
   SETTINGS_TRANSLATIONS_LABEL_TEXT: 'Показывать переводы слова и предложений',
   WORDS_TYPES_SELECT_TITLE: 'Как изучать слова?',
   EMPTY_WORD_LIST: 'Данный список слов пуст.',
+  NUMBER_OF_WORD_GROUPS: 6,
+  NUMBER_OF_WORD_PAGES: 30,
 };
 
 const wordsToLearnOptions = {
@@ -99,7 +101,7 @@ export {
   findAPairText,
   authenticationTexts,
   errorTypes,
-  mainGameStrings,
+  mainGameConstants,
   estimateButtonsTypes,
   wordsToLearnOptions,
   vocabularyConstants,

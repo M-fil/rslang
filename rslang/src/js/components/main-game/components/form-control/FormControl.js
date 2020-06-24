@@ -1,10 +1,10 @@
 import create from '../../../../utils/сreate';
-import { mainGameStrings } from '../../../../constants/constants';
+import { mainGameConstants } from '../../../../constants/constants';
 
 const {
   NEXT_BUTTON,
   SHOW_ANSWER_BUTTON,
-} = mainGameStrings;
+} = mainGameConstants;
 
 class FormControll {
   constructor(word) {

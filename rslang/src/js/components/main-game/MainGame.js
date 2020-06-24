@@ -3,11 +3,12 @@ import {
   createUserWord,
   updateUserWord,
   getAllUserWords,
+  getAggregatedWordsByFilter,
 } from '../../service/service';
 import create from '../../utils/сreate';
 import {
   urls,
-  mainGameStrings,
+  mainGameConstants,
   wordsToLearnOptions,
   estimateButtonsTypes,
   vocabularyConstants,
@@ -30,7 +31,9 @@ const {
   REMOVE_WORD_BUTTON,
   ADD_TO_DIFFICULT_WORDS,
   EMPTY_WORD_LIST,
-} = mainGameStrings;
+  NUMBER_OF_WORD_GROUPS,
+  NUMBER_OF_WORD_PAGES,
+} = mainGameConstants;
 
 const {
   MIXED,
@@ -64,6 +67,7 @@ class MainGame {
       userWords: [],
       wordsToLearn: [],
       wordsArray: [],
+      newWords: [],
       audio: new Audio(),
       audios: [],
       isAudioEnded: true,
@@ -89,9 +93,13 @@ class MainGame {
     this.state.isLoading = true;
 
     try {
+      const { id, token } = this.state.userState;
       this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.parseUserWordsData();
       const words = await getWords();
+      const aggregatedWords = await getAggregatedWordsByFilter(id, token);
+      console.log(aggregatedWords);
+      this.state.newWords = aggregatedWords[0].paginatedResults;
       this.state.wordsArray = words;
       this.state.wordsToLearn = this.selectWordsToLearn();
       this.wordsDataLength = this.state.wordsToLearn.length;
@@ -131,6 +139,30 @@ class MainGame {
     }
   }
 
+  async getNewWords() {
+    const userWordsTexts = this.state.userWords.map((word) => word.optional.allData);
+    let finalArrayOfWords = [];
+    const arrayOfPromises = [];
+    let groupsCount = 0;
+    let pagesCount = 0;
+
+    const words = getWords(pagesCount, groupsCount);
+    const dontMathedWords = words.filter((word) => !userWordsTexts.includes(word.word));
+    finalArrayOfWords = [...finalArrayOfWords, ...dontMathedWords];
+
+    while (finalArrayOfWords.length !== this.state.wordsPerDay) {
+      if (pagesCount === NUMBER_OF_WORD_PAGES) {
+        pagesCount = 0;
+        groupsCount += 1;
+      }
+      if (groupsCount === NUMBER_OF_WORD_GROUPS) {
+        break;
+      }
+    }
+
+    return finalArrayOfWords;
+  }
+
   parseUserWordsData() {
     return this.state.userWords.map((item) => ({
       ...item,
@@ -163,9 +195,8 @@ class MainGame {
     const { wordsPerDay } = this.state.settings;
     const wordsToReviseTexts = wordsToRevise.map((word) => word.word);
     const commonWords = wordsArray.filter((word) => wordsToReviseTexts.includes(word.word));
-    const otherWords = wordsArray.filter((word) => !wordsToReviseTexts.includes(word.word));
 
-    return [...commonWords, ...otherWords].slice(0, wordsPerDay);
+    return [...commonWords, ...this.state.newWords].slice(0, wordsPerDay);
   }
 
   async getAllUserWordsFromBackend() {
@@ -187,7 +218,7 @@ class MainGame {
     }
 
     return {
-      userId: this.userState.userId,
+      userId: this.userState.id,
       token: this.userState.token,
     };
   }
@@ -364,7 +395,7 @@ class MainGame {
     currentWord, estimation, isOnlyObject = false, vocabulary = WORDS_TO_LEARN_TITLE,
   ) {
     const wordData = {
-      id: currentWord.id,
+      id: currentWord.id || currentWord._id,
       word: currentWord.word,
       difficulty: estimation.text || GOOD.text,
       vocabulary: vocabulary || WORDS_TO_LEARN_TITLE,
@@ -392,6 +423,8 @@ class MainGame {
       console.log(dataToRecieve);
       return dataToRecieve;
     }
+    console.log(userId);
+    console.log(wordId);
     const data = await createUserWord(userId, wordId, dataToRecieve, token);
     return data;
   }
@@ -470,21 +503,6 @@ class MainGame {
       this.renderWordCard(wordsToLearn[this.state.currentWordIndex]);
       inputHTML.focus();
     }
-  }
-
-  async checkWordAfterMistake(currentWord) {
-    const { userId, token } = this.getUserDataForAuthorization();
-    const userWordsTexts = this.state.userWords.map((word) => word.optional.word);
-    this.addWordToTheCurrentTraining();
-    /*if (userWordsTexts.includes(currentWord.word)) {
-      try {
-        await removeUserWord(userId, currentWord.id, token);
-      } catch (error) {
-        this.addWordToTheCurrentTraining();
-      }
-    } else {
-      this.addWordToTheCurrentTraining();
-    }*/
   }
 
   activateNextButton() {
