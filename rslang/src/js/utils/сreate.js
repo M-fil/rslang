@@ -9,7 +9,7 @@ export default function create(el, classNames, child, parent, ...dataAttr) {
   if (classNames) element.classList.add(...classNames.split(' '));
 
   if (child && Array.isArray(child)) {
-    child.forEach((childElement) => childElement && element.appendChild(childElement));
+    child.forEach((childElement) => childElement && element.append(childElement));
   } else if (child && typeof child === 'object') {
     element.appendChild(child);
   } else if (child && typeof child === 'string') {
