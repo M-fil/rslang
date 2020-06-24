@@ -1,5 +1,6 @@
 const urls = {
   WORDS_DATA_URL: 'https://afternoon-falls-25894.herokuapp.com/words?',
+  WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
 };
 
 const savannahConstants = {
@@ -12,6 +13,11 @@ const savannahConstants = {
   MODAL_WARNING: 'Если вы вернетесь к списку, ваши требования не будут сохранены',
   CLOSE_BUTTON: 'Закрыть',
   CANCEL_BUTTON: 'Отмена',
+  RANDOM_WORDS: 3,
+  LIVES: 5,
+  END_ANIMATION: 7000,
+  FRAME: 24,
+  DIVIDER: 20,
 };
 
 export {

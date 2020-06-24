@@ -47,21 +47,27 @@ body {
 
 .word {
   width: 200px;
-  height: 50px;
+  user-select: none;
 }
 .word_english {
   border: none;
+  height: 40px;
   background-color: transparent;
   color: cadetblue;
   font-size: 33px; 
+  text-align: center;
 }
 .word_russian {
+  height: 70px;
   color: green;
   font-size: 24px;
   cursor: pointer;
 }
 .word_correct {
   background-color: lightgreen;
+}
+.word_error {
+  background-color: palevioletred;
 }
 .english-line {
   position: absolute;
@@ -108,16 +114,26 @@ body {
 }
 .modal_text {
   background-color: white;
-  margin-top: 15%;
+  margin-top: 10%;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
   border: 1px solid black;
   border-radius: 5px;
   width: 30%;
+  overflow: auto;
+  max-height: 450px;
   text-align: center;
 }
 
 .modal_button {
   width: 53%;
+}
+.modal_words {
+  text-align: left;
+}
+
+.audio-pictures {
+  width: 20px;
+  cursor: pointer;
 }

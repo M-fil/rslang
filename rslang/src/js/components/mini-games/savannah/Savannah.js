@@ -1,6 +1,7 @@
 import create from '../../../utils/сreate';
 import {
   savannahConstants,
+  urls,
 } from '../../../constants/constants';
 import getWords from '../../../service/service';
 import Preloader from '../../preloader/Preloader';
@@ -16,7 +17,16 @@ const {
   MODAL_WARNING,
   CLOSE_BUTTON,
   CANCEL_BUTTON,
+  RANDOM_WORDS,
+  LIVES,
+  FRAME,
+  END_ANIMATION,
+  DIVIDER,
 } = savannahConstants;
+
+const {
+  WORDS_AUDIOS_URL,
+} = urls;
 
 export default class SavannahGame {
   constructor() {
@@ -34,8 +44,12 @@ export default class SavannahGame {
   render() {
     this.HTML = create('h2', 'game-name', 'Саванна', this.gameWindow);
     this.HTML = create('div', 'game-rules', RULES, this.gameWindow);
-    this.HTML = create('button', 'start-button', START_BUTTON, this.gameWindow);
+    this.startButton = create('button', 'start-button', START_BUTTON, this.gameWindow);
     this.exitButton = create('button', 'exit-button', 'X', this.body);
+    this.arrayBeforeClickWords = [];
+    this.startButton.addEventListener('click', () => {
+      this.reverseReport();
+    });
     return this.HTML;
   }
 
@@ -88,8 +102,10 @@ export default class SavannahGame {
     this.engRandomWords = this.data;
     this.engRandomWords = shuffle(this.data);
 
-    this.engBut = create('button', 'word word_english', this.engRandomWords[this.num].word, this.engLine);
+    this.engBut = create('span', 'word word_english', this.engRandomWords[this.num].word, this.engLine);
     this.engBut.setAttribute('data-translate', this.engRandomWords[this.num].wordTranslate);
+    this.arrayBeforeClickWords = this.engRandomWords[this.num];
+
     this.engBut.disabled = true;
     this.wordsTranslate = [];
     for (let i = 0; i < this.data.length; i += 1) {
@@ -110,8 +126,12 @@ export default class SavannahGame {
   async changeCard() {
     this.animatedWord();
     this.rusBut.forEach((rusButton) => {
-      rusButton.classList.remove('word_correct');
+      const disabledButton = rusButton;
+      disabledButton.classList.remove('word_correct');
+      disabledButton.classList.remove('word_error');
+      disabledButton.disabled = false;
     });
+    this.exitButton.disabled = false;
     if (this.num === this.data.length - 1) {
       this.num = 0;
       this.page += 1;
@@ -121,6 +141,7 @@ export default class SavannahGame {
     }
     if (this.page === MAX_PAGE) {
       this.group += 1;
+      this.page = 0;
       this.data = await getWords(this.page, this.group);
       this.engRandomWords = this.data;
       this.engRandomWords = shuffle(this.data);
@@ -131,6 +152,8 @@ export default class SavannahGame {
       this.num += 1;
       this.engBut.innerHTML = this.engRandomWords[this.num].word;
       this.engBut.setAttribute('data-translate', this.engRandomWords[this.num].wordTranslate);
+      this.arrayBeforeClickWords = this.engRandomWords[this.num];
+
       const randomData = this.data;
       const correctWord = randomData.find((word) => this.engBut.dataset.translate === word.wordTranslate);
 
@@ -138,8 +161,9 @@ export default class SavannahGame {
         .filter((word) => this.engBut.dataset.translate !== word.wordTranslate)
         .map((word) => word.wordTranslate);
 
-      randomTranslations = shuffle(randomTranslations).slice(0, 3);
-      this.wordsTranslate = [correctWord.wordTranslate, ...randomTranslations];
+      randomTranslations = shuffle(randomTranslations, RANDOM_WORDS);
+      const int = Math.round(Math.random());
+      this.wordsTranslate = (!int) ? [...randomTranslations, correctWord.wordTranslate] : [correctWord.wordTranslate, ...randomTranslations];
       this.wordTranslate = shuffle(this.wordsTranslate);
 
       for (let i = 0; i < this.rusBut.length; i += 1) {
@@ -156,25 +180,63 @@ export default class SavannahGame {
         clearInterval(this.timer);
         const englishWord = document.querySelector('.word_english');
         if (target.dataset.translate === englishWord.dataset.translate) {
-          this.playAudio('correct');
-          this.changeCard();
+          this.rightWords.push(this.arrayBeforeClickWords);
+          this.playAudio('./src/assets/audio/correct.mp3');
+          event.target.classList.add('word_correct');
+          this.errorTimer = setTimeout(async () => {
+            await this.changeCard();
+          }, 2000);
+          this.disabledButtons();
         } else {
+          event.target.classList.add('word_error');
+          this.wrongWords.push(this.arrayBeforeClickWords);
           this.errorWord();
-          if (this.error === 5) {
+          if (this.error === LIVES) {
             clearInterval(this.timer);
             clearTimeout(this.errorTimer);
             const statisticaContainer = create('div', 'modal', '', this.body);
             this.statisticaText = create('div', 'modal_text', '', statisticaContainer);
             this.statisticaTitle = create('h4', 'modal_title', 'Статистика', this.statisticaText);
+
+            this.statisticaWrongWordsText = create('p', 'modal_title', `Ошибок ${this.wrongWords.length}`, this.statisticaText);
+            this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
+            this.statisticaRightWordsText = create('p', 'modal_title', `Знаю ${this.rightWords.length}`, this.statisticaText);
+            this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
+
+            SavannahGame.statisticaWords(this.wrongWords, this.statisticaWrongWords);
+            SavannahGame.statisticaWords(this.rightWords, this.statisticaRightWords);
+            this.clickStatisticaAudio();
           }
         }
       }
     });
   }
 
-  playAudio(file) {
-    this.audio.src = `./src/assets/audio/${file}.mp3`;
-    this.audio.play();
+  static statisticaWords(arrayWords, container) {
+    arrayWords.forEach((word) => {
+      const everyString = create('p', '', '', container);
+      const picture = create('img', 'audio-pictures', '', everyString);
+      picture.src = './src/assets/images/statistica_sound.png';
+      this.audioPic = create('audio', '', '', everyString);
+      this.audioPic.setAttribute('data-audiosrc', word.audio);
+      everyString.innerHTML += `<b>${word.word}</b> - ${word.wordTranslate}<br>`;
+    });
+  }
+
+  clickStatisticaAudio() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.audio-pictures');
+      if (target) {
+        this.playAudio(`${WORDS_AUDIOS_URL}${event.target.nextSibling.dataset.audiosrc}`);
+      }
+    });
+  }
+
+  playAudio(source) {
+    if (this.audio.src === '' || this.audio.src !== source || this.audio.ended) {
+      this.audio.src = source;
+      this.audio.play();
+    }
   }
 
   offAudio() {
@@ -212,7 +274,7 @@ export default class SavannahGame {
   }
 
   changeLives() {
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < LIVES; i += 1) {
       this.live = create('img', 'live', '', this.lives);
       this.live.src = '/src/assets/images/heart_black.png';
     }
@@ -220,33 +282,39 @@ export default class SavannahGame {
   }
 
   animatedWord() {
-    const endAnimation = 7000;
-    const frame = 24;
     const start = Date.now();
     this.timer = setInterval(() => {
       const timePassed = Date.now() - start;
-      this.engLine.style.top = `${timePassed / frame}px`;
-      if (timePassed > endAnimation) {
+      this.engLine.style.top = `${timePassed / DIVIDER}px`;
+      if (timePassed > END_ANIMATION) {
         clearInterval(this.timer);
         this.errorWord();
       }
-    }, frame);
+    }, FRAME);
   }
 
   errorWord() {
     this.error += 1;
-    this.playAudio('error');
-
-    this.allLives[this.liveIndex].src = '/src/assets/images/heart_inherit.png';
-    this.liveIndex += 1;
+    this.playAudio('./src/assets/audio/error.mp3');
     this.rusBut.forEach((rusButton) => {
       if (rusButton.outerText === this.engRandomWords[this.num].wordTranslate) {
         rusButton.classList.add('word_correct');
       }
+      this.disabledButtons();
     });
+    this.allLives[this.liveIndex].src = '/src/assets/images/heart_inherit.png';
+    this.liveIndex += 1;
     clearInterval(this.timer);
     this.errorTimer = setTimeout(async () => {
       await this.changeCard();
     }, 2000);
+  }
+
+  disabledButtons() {
+    this.rusBut.forEach((rusButton) => {
+      const disabledButton = rusButton;
+      disabledButton.disabled = true;
+    });
+    this.exitButton.disabled = true;
   }
 }
