@@ -18,6 +18,7 @@ import {
 } from '../../../constants/constatntsForEP';
 import createCanvasElements from './components/game-field';
 import findPainting from './components/select-painting';
+import Preloader from '../../preloader/preloader';
 
 export default class EnglishPuzzle {
   constructor() {
@@ -42,6 +43,8 @@ export default class EnglishPuzzle {
     [this.body] = document.getElementsByTagName('body');
     this.wrapper = create('div', 'wrapper', [this.startMenu, this.gameForm, this.resultForm]);
     this.body.appendChild(this.wrapper);
+    this.preloader = new Preloader();
+    this.preloader.render();
 
     this.startMenuButtonAction();
     this.actionsOnSupportButtons();
@@ -50,10 +53,13 @@ export default class EnglishPuzzle {
 
   async getCardsAndStartGame() {
     try {
+      this.preloader.show();
       await this.getGameCards();
+      this.preloader.hide();
       this.gameStart();
       this.showTranslate();
       this.dragAndDropActions();
+      document.querySelector('.bonus-button').classList.remove('active-bonus');
     } catch (e) {
       console.error(e);
     }
@@ -97,6 +103,9 @@ export default class EnglishPuzzle {
           document.querySelector('.check-button'),
           document.querySelector('.show-result-button'),
         ]);
+      if (document.querySelector('.bonus-button').classList.contains('active-bonus')) {
+        viewElement([], [document.querySelector('.bonus-button')]);
+      }
     } else if (this.activeSentenseCounter + 1 === GAME_BLOCK.gameZoneRows) {
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
         const page = document.querySelector('.page');
@@ -106,6 +115,7 @@ export default class EnglishPuzzle {
           document.querySelector('.game-block_field--background'),
           document.querySelector('.continue-button'),
           document.querySelector('.result-button'),
+          document.querySelector('.bonus-button'),
         ], [
           document.querySelector('.game-block_field--puzzle-container'),
           document.querySelector('.check-button'),
@@ -140,6 +150,7 @@ export default class EnglishPuzzle {
     if (mistakeCounter === 0) {
       this.rightAnswers.push(this.actualSentenses[this.activeSentenseCounter]);
       this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter]);
+      document.querySelector('.bonus-button').classList.add('active-bonus');
       cardsWithAnswers.forEach((el) => {
         const elem = el;
         elem.classList.remove('active-card');
@@ -233,7 +244,10 @@ export default class EnglishPuzzle {
   static checkFieldCompletion() {
     const sentensBase = document.querySelector('.game-block_field--description');
     if (!sentensBase.hasChildNodes()) {
-      viewElement([document.querySelector('.show-result-button')], []);
+      viewElement([
+        document.querySelector('.show-result-button'),
+        document.querySelector('.bonus-button'),
+      ], []);
     }
   }
 
@@ -249,13 +263,19 @@ export default class EnglishPuzzle {
     painting[1].textContent = this.paintingText;
 
     for (let i = 0; i < RESULT_FORM.statusTitle.length; i += 1) {
-      const blockTitle = create('p', 'result-block_statistic--title', '', resultStatistic);
-      blockTitle.textContent = RESULT_FORM.statusTitle[i];
+      const titleBlock = create('div', 'result-block-title--block', '', resultStatistic);
+      const answersTitle = create('p', 'result-block_statistic--title', '', titleBlock);
+      const counter = create('div', 'result-block_statistic--counter', '', titleBlock);
+      answersTitle.textContent = RESULT_FORM.statusTitle[i];
       switch (i) {
         case 0:
+          counter.textContent = (this.rightAnswers.length) ? this.rightAnswers.length : 0;
+          counter.classList.add('result-block--incorrect');
           create('div', 'know-sentence-block', EnglishPuzzle.createResultRow(this.rightAnswers), resultStatistic);
           break;
         default:
+          counter.classList.add('result-block--correct');
+          counter.textContent = (this.falseAnswers.length) ? this.falseAnswers.length : 0;
           create('div', 'know-sentence-block', EnglishPuzzle.createResultRow(this.falseAnswers), resultStatistic);
           break;
       }
@@ -270,6 +290,16 @@ export default class EnglishPuzzle {
       return create('div', 'result-row', [dinamic, text]);
     });
     return sentenses;
+  }
+
+  additionalFunctionalForBonusButton() {
+    const sentensBase = document.querySelector('.game-block_field--description');
+    const gameFieldRow = document.querySelectorAll('.puzzle-row')[this.activeSentenseCounter];
+    if (sentensBase.childNodes.length) {
+      const bonusElement = this.activeSentenseForCheck[gameFieldRow.childNodes.length];
+      sentensBase.removeChild(bonusElement);
+      gameFieldRow.appendChild(bonusElement);
+    }
   }
 
   startMenuButtonAction() {
@@ -343,46 +373,44 @@ export default class EnglishPuzzle {
       viewElement([this.gameForm], [this.startMenu]);
     });
 
-    document.querySelector('.button-sintezise').addEventListener('click', (event) => {
+    document.querySelector('.button-sintezise').addEventListener('click', () => {
       const status = JSON.parse(localStorage.userSettings);
       if (status.sound) {
         status.sound = false;
         this.sinth.cancel();
-        event.target.classList.remove('active-sintez');
+        document.querySelector('.sound-button').classList.remove('active-sintez');
       } else {
         status.sound = true;
         this.sinth.resume();
-        event.target.classList.add('active-sintez');
+        document.querySelector('.sound-button').classList.add('active-sintez');
       }
       localStorage.userSettings = JSON.stringify(status);
     });
 
-    document.querySelector('.button-trunslate').addEventListener('click', (event) => {
+    document.querySelector('.button-trunslate').addEventListener('click', () => {
       const status = JSON.parse(localStorage.userSettings);
       if (status.translate) {
         status.translate = false;
-        event.target.classList.remove('active-translate');
+        document.querySelector('.translate-sentense').classList.remove('active-translate');
       } else {
         status.translate = true;
-        event.target.classList.add('active-translate');
+        document.querySelector('.translate-sentense').classList.add('active-translate');
       }
       this.showTranslate();
       localStorage.userSettings = JSON.stringify(status);
     });
 
-    document.querySelector('.button-background').addEventListener('click', (event) => {
+    document.querySelector('.button-background').addEventListener('click', () => {
       const status = JSON.parse(localStorage.userSettings);
       if (status.background) {
         status.background = false;
-        event.target.classList.remove('active-background');
       } else {
         status.background = true;
-        event.target.classList.add('active-background');
       }
       localStorage.userSettings = JSON.stringify(status);
     });
 
-    document.querySelector('.sound-button').addEventListener('click', (event) => {
+    document.querySelector('.sound-button').addEventListener('click', async (event) => {
       if (event.target.classList.contains('active-sintez')) {
         this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter]);
       }
@@ -404,7 +432,11 @@ export default class EnglishPuzzle {
   controlButtonsAction() {
     document.querySelector('.show-result-button').addEventListener('click', (event) => {
       this.showCorrectSentens();
-      viewElement([event.target, document.querySelector('.check-button')], [document.querySelector('.continue-button')]);
+      viewElement([
+        event.target,
+        document.querySelector('.check-button'),
+        document.querySelector('.bonus-button'),
+      ], [document.querySelector('.continue-button')]);
     });
 
     document.querySelector('.check-button').addEventListener('click', () => {
@@ -431,6 +463,12 @@ export default class EnglishPuzzle {
         document.querySelector('.check-button'),
         document.querySelector('.show-result-button'),
       ]);
+    });
+
+    document.querySelector('.bonus-button').addEventListener('click', (event) => {
+      this.additionalFunctionalForBonusButton();
+      event.target.classList.remove('active-bonus');
+      viewElement([event.target], []);
     });
 
     document.querySelector('.result-button_continue').addEventListener('click', () => {

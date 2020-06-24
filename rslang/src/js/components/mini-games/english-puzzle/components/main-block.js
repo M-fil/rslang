@@ -112,13 +112,16 @@ export default class MainBlock {
         case 3:
           gameButton.classList.add('result-button');
           break;
-        default:
+        case 4:
           gameButton.classList.add('repeat-button');
+          break;
+        default:
+          gameButton.classList.add('bonus-button');
           break;
       }
     }
     const masOfButtons = gameButtons.childNodes;
-    viewElement([masOfButtons[2], masOfButtons[3], masOfButtons[4]], []);
+    viewElement([masOfButtons[2], masOfButtons[3], masOfButtons[4], masOfButtons[5]], []);
     return gameButtons;
   }
 

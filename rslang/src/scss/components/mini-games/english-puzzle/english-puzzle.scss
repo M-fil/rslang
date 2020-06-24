@@ -162,9 +162,14 @@
 
 .sound-button::before, .result-row_sound::before {
     position: absolute;
-    left: 25%;
-    bottom: 20%;
+    left: 10%;
+    bottom: 10%;
     content: '\1F508';
+}
+
+.sound-button_active {
+    background-color: $english-puzzle-button-hover-background;
+    border-radius: 50%;
 }
 
 .translate-sentense {
@@ -311,6 +316,37 @@
     flex-direction: column;
     background-color: $english-puzzle-button-hover-shadow;
     border-radius: 10px;
+}
+
+.result-block-title--block {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.result-block_statistic--title {
+    margin: 0;
+    width: 80px;
+}
+
+.result-block_statistic--counter {
+    margin: 0;
+    width: 30px;
+    height: 20px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+}
+
+.result-block--correct {
+    background-color: $english-puzzle-right-cards;
+}
+
+.result-block--incorrect {
+    background-color: $english-puzzle-false-cards;
 }
 
 .result-block_title {
