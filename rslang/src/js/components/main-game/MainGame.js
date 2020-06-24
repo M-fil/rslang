@@ -139,30 +139,6 @@ class MainGame {
     }
   }
 
-  async getNewWords() {
-    const userWordsTexts = this.state.userWords.map((word) => word.optional.allData);
-    let finalArrayOfWords = [];
-    const arrayOfPromises = [];
-    let groupsCount = 0;
-    let pagesCount = 0;
-
-    const words = getWords(pagesCount, groupsCount);
-    const dontMathedWords = words.filter((word) => !userWordsTexts.includes(word.word));
-    finalArrayOfWords = [...finalArrayOfWords, ...dontMathedWords];
-
-    while (finalArrayOfWords.length !== this.state.wordsPerDay) {
-      if (pagesCount === NUMBER_OF_WORD_PAGES) {
-        pagesCount = 0;
-        groupsCount += 1;
-      }
-      if (groupsCount === NUMBER_OF_WORD_GROUPS) {
-        break;
-      }
-    }
-
-    return finalArrayOfWords;
-  }
-
   parseUserWordsData() {
     return this.state.userWords.map((item) => ({
       ...item,
@@ -189,14 +165,11 @@ class MainGame {
   }
 
   selectWordsToLearn() {
-    const { wordsArray } = this.state;
     const wordsToRevise = this.getWordsToRevise();
 
     const { wordsPerDay } = this.state.settings;
-    const wordsToReviseTexts = wordsToRevise.map((word) => word.word);
-    const commonWords = wordsArray.filter((word) => wordsToReviseTexts.includes(word.word));
-
-    return [...commonWords, ...this.state.newWords].slice(0, wordsPerDay);
+    this.state.newWords.slice(0, wordsToRevise.length);
+    return [...wordsToRevise, ...this.state.newWords].slice(0, wordsPerDay);
   }
 
   async getAllUserWordsFromBackend() {
@@ -268,7 +241,7 @@ class MainGame {
           selectedArrayType = this.selectWordsToLearn();
           break;
         case ONLY_NEW_WORDS:
-          selectedArrayType = this.state.wordsToLearn;
+          selectedArrayType = this.state.newWords;
           break;
         case ONLY_WORDS_TO_REPEAT:
           selectedArrayType = this.getWordsToRevise();
@@ -283,7 +256,7 @@ class MainGame {
       this.state.wordsToLearn = selectedArrayType;
       this.renderNextWordCard();
       const { wordsToLearn, learnedWordsToday } = this.state;
-      this.progressBar.updateSize(learnedWordsToday, wordsPerDay);
+      this.progressBar.updateSize(learnedWordsToday, wordsToLearn.length);
       console.log('wordsToLearn', wordsToLearn);
     });
   }

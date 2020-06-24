@@ -42,6 +42,14 @@ const mainGameConstants = {
   NUMBER_OF_WORD_PAGES: 30,
 };
 
+const dailyStatisticsConstants = {
+  TITLE: 'Серия завершена',
+  COMPLETED_CARDS_TEXT: 'Карточек завершено',
+  CORRECT_ANSWERS_TEXT: 'Правильные ответы',
+  NEW_WORDS_TEXT: 'Новые слова',
+  LONGEST_SERIES_OF_ANSWERS_TEXT: 'Саммая длинная серия правильных ответов',
+}
+
 const wordsToLearnOptions = {
   MIXED: 'Вперемешку',
   ONLY_NEW_WORDS: 'Только новые слова',
@@ -105,4 +113,5 @@ export {
   estimateButtonsTypes,
   wordsToLearnOptions,
   vocabularyConstants,
+  dailyStatisticsConstants,
 };
