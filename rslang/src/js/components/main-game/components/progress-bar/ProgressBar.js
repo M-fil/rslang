@@ -21,11 +21,11 @@ class ProgressBar {
   }
 
   updateSize(learnedWordsNumber, allWordsNumber) {
-    this.learnedWordsNumber = learnedWordsNumber;
+    this.learnedWordsNumber = learnedWordsNumber < 0 ? 0 : learnedWordsNumber;
     this.allWordsNumber = allWordsNumber;
-    this.startValueHTML.textContent = learnedWordsNumber;
+    this.startValueHTML.textContent = this.learnedWordsNumber;
     this.endValueHTML.textContent = allWordsNumber;
-    this.barLine.style.width = `${calculatePercentage(learnedWordsNumber, allWordsNumber)}%`;
+    this.barLine.style.width = `${calculatePercentage(this.learnedWordsNumber, allWordsNumber)}%`;
   }
 
   hide() {
