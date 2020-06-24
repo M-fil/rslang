@@ -27,6 +27,14 @@ class ProgressBar {
     this.endValueHTML.textContent = allWordsNumber;
     this.barLine.style.width = `${calculatePercentage(learnedWordsNumber, allWordsNumber)}%`;
   }
+
+  hide() {
+    this.HTML.classList.add('progress-bar_hidden');
+  }
+
+  show() {
+    this.HTML.classList.remove('progress-bar_hidden');
+  }
 }
 
 export default ProgressBar;

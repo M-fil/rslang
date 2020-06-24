@@ -30,6 +30,7 @@ import Authentication from '../authentication/Authentication';
 const {
   REMOVE_WORD_BUTTON,
   ADD_TO_DIFFICULT_WORDS,
+  EMPTY_WORD_LIST,
 } = mainGameStrings;
 
 const {
@@ -141,9 +142,9 @@ class MainGame {
     }));
   }
 
-  selectWordsToLearn() {
+  getWordsToRevise() {
     const currentTime = new Date();
-    const { wordsArray, userWords } = this.state;
+    const { userWords } = this.state;
     const wordsToRevise = userWords.filter((word) => {
       const { valuationDate, daysInterval } = word.optional;
       const elapsedTime = addDaysToTheDate(daysInterval);
@@ -151,11 +152,19 @@ class MainGame {
       return isNeedToRevise && valuationDate && daysInterval;
     });
 
+    return wordsToRevise;
+  }
+
+  selectWordsToLearn() {
+    const { wordsArray } = this.state;
+    const wordsToRevise = this.getWordsToRevise();
+
+    const { wordsPerDay } = this.state.settings;
     const wordsToReviseTexts = wordsToRevise.map((word) => word.word);
     const commonWords = wordsArray.filter((word) => wordsToReviseTexts.includes(word.word));
     const otherWords = wordsArray.filter((word) => !wordsToReviseTexts.includes(word.word));
 
-    return [...commonWords, ...otherWords];
+    return [...commonWords, ...otherWords].slice(0, wordsPerDay);
   }
 
   async getAllUserWordsFromBackend() {
@@ -230,7 +239,7 @@ class MainGame {
           selectedArrayType = this.state.wordsToLearn;
           break;
         case ONLY_WORDS_TO_REPEAT:
-          selectedArrayType = this.state.wordsToLearn;
+          selectedArrayType = this.getWordsToRevise();
           break;
         case ONLY_DIFFICULT_WORDS:
           selectedArrayType = this.selectUserWordsByType(DIFFUCULT_WORDS_TITLE);
@@ -416,24 +425,42 @@ class MainGame {
     });
   }
 
+  static showMessage() {
+    const mainGameMessage = document.querySelector('.main-game__message');
+    if (mainGameMessage) {
+      mainGameMessage.remove();
+    }
+
+    return create('div', 'main-game__message', EMPTY_WORD_LIST);
+  }
+
   renderNextWordCard() {
     const userAnswerHTML = document.querySelector('.word-card__user-answer');
     const inputHTML = document.querySelector('.word-card__input');
     const { wordsToLearn } = this.state;
-
     MainGame.removeWordCardFromDOM();
-    this.state.currentWordIndex += 1;
-    this.renderWordCard(wordsToLearn[this.state.currentWordIndex]);
-    this.state.audio.pause();
-    this.state.isAudioEnded = true;
     if (this.estimateWords) {
       this.estimateWords.removeFromDOM();
     }
+    this.state.audio.pause();
+    this.state.isAudioEnded = true;
     MainGame.toggleControlElements(false);
     MainGame.toggleVocabularyButtons(false);
     userAnswerHTML.innerHTML = '';
     userAnswerHTML.classList.remove('word-card__user-answer_translucent');
-    inputHTML.focus();
+
+    if (!wordsToLearn.length) {
+      const mainContainer = document.querySelector('.main-game__main-container');
+      mainContainer.append(MainGame.showMessage());
+      this.progressBar.hide();
+      this.formControl.hide();
+    } else {
+      this.state.currentWordIndex += 1;
+      this.progressBar.show();
+      this.formControl.show();
+      this.renderWordCard(wordsToLearn[this.state.currentWordIndex]);
+      inputHTML.focus();
+    }
   }
 
   async checkWordAfterAgainButtonClick(currentWord) {
@@ -483,22 +510,25 @@ class MainGame {
 
   activateVocabularyButtons() {
     document.addEventListener('click', async (event) => {
-      const currentWord = this.state.wordsToLearn[this.state.currentWordIndex];
-      const wordFromBackend = this.state.userWords.length
-        && this.state.userWords.find((word) => word.wordId === currentWord.id);
-      console.log();
-      const buttonType = wordFromBackend && wordFromBackend.difficulty;
-
       if (event.target.classList.contains('main-game__remove-word')) {
+        const buttonType = this.getButtonTypeOfCurrentWord();
         await this.addWordToTheVocabulary(REMOVED_WORDS_TITLE, buttonType);
         this.renderNextWordCard();
       }
 
       if (event.target.classList.contains('main-game__add-to-difficult')) {
+        const buttonType = this.getButtonTypeOfCurrentWord();
         await this.addWordToTheVocabulary(DIFFUCULT_WORDS_TITLE, buttonType);
         this.renderNextWordCard();
       }
     });
+  }
+
+  getButtonTypeOfCurrentWord() {
+    const currentWord = this.state.wordsToLearn[this.state.currentWordIndex];
+    const wordFromBackend = this.state.userWords.length
+      && this.state.userWords.find((word) => word.wordId === currentWord.id);
+    return wordFromBackend && wordFromBackend.difficulty;
   }
 
   async addWordToTheVocabulary(vocabularyType = WORDS_TO_LEARN_TITLE, buttonType = GOOD.text) {
@@ -637,7 +667,9 @@ class MainGame {
 
   static removeWordCardFromDOM() {
     const wordCardHTML = document.querySelector('.main-game__word-card');
-    wordCardHTML.remove();
+    if (wordCardHTML) {
+      wordCardHTML.remove();
+    }
   }
 
   setAudiosForWords(currentWord) {

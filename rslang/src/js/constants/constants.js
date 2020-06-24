@@ -37,6 +37,7 @@ const mainGameStrings = {
   SETTINGS_AUTOPLABACK_TEXT: 'Автопроизношение',
   SETTINGS_TRANSLATIONS_LABEL_TEXT: 'Показывать переводы слова и предложений',
   WORDS_TYPES_SELECT_TITLE: 'Как изучать слова?',
+  EMPTY_WORD_LIST: 'Данный список слов пуст.',
 };
 
 const wordsToLearnOptions = {

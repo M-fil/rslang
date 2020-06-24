@@ -9,6 +9,10 @@
   margin: 0 20px;
 }
 
+.main-game__message {
+  text-align: center;
+}
+
 .main-game__controls {
   display: flex;
   justify-content: space-between;
@@ -46,6 +50,10 @@
   align-items: center;
   justify-content: center;
   margin: 0 10px;
+
+  &_hidden {
+    display: none;
+  }
 }
 
 .main-game__form-buttons {

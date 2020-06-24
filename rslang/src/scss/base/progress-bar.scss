@@ -4,6 +4,10 @@
   align-items: center;
 
   width: 100%;
+
+  &_hidden {
+    display: none;
+  }
 }
 
 .progress-bar__background {

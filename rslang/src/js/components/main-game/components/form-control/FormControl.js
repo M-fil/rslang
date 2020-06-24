@@ -50,6 +50,14 @@ class FormControll {
       ['type', buttonType],
     );
   }
+
+  hide() {
+    this.HTML.classList.add('main-game__form_hidden');
+  }
+
+  show() {
+    this.HTML.classList.remove('main-game__form_hidden');
+  }
 }
 
 export default FormControll;
