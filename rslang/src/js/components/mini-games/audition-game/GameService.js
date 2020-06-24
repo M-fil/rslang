@@ -1,32 +1,39 @@
 /* eslint-disable class-methods-use-this */
 import GameDataService from './GameDataService';
+import GameStatistic from './GameStatistic';
 import create from '../../../utils/сreate';
 import { auditionGameVariables } from '../../../constants/constants';
 
 export default class GameService {
-  async init(lives, roundsAll, currentRound) {
+  async init(lives, roundsAll, currentRound, roundResults) {
     const gameDataService = new GameDataService();
-    this.data = await gameDataService.mapping();
+    const data = await gameDataService.mapping();
     this.answers = document.querySelector('.answers');
-    this.arr = this.data.array;
-    const mainWord = this.data.mainWordToAsk;
+    this.arr = data.array;
+    const mainWord = data.mainWordToAsk;
+    console.log("MAIN WORD:",mainWord)
     this.createPossibleWords(this.arr, this.answers);
     const audio = new Audio(`${auditionGameVariables.mainAudioPath}${mainWord.audio}`);
     audio.play();
-    this.mainEventHandler(lives, mainWord, roundsAll, currentRound);
+    this.mainEventHandler(lives, mainWord, roundsAll, currentRound, roundResults);
+    
     this.idkBtnHandler(audio);
     this.closeBtnHandler();
     this.progressBarHandler(roundsAll, currentRound);
     this.bgRandomize();
+    this.keyboardEventsHandler();
   }
 
-  nextRound(lives, roundsAll, currentRound) {
+  nextRound(lives, roundsAll, currentRound, roundResults) {
     if (lives > 0 && currentRound !== roundsAll) {
+      console.log(roundResults);
       let curr = currentRound;
       curr += 1;
-      this.init(lives, roundsAll, curr);
+      this.init(lives, roundsAll, curr, roundResults);
     } else {
-      document.querySelector('.startScreen').classList.toggle('hide');
+      const gameStats=new GameStatistic();
+      gameStats.statistics(roundResults);
+      // document.querySelector('.startScreen').classList.toggle('hide');
       document.querySelector('.progress').style.width = '0%';
       document.querySelector('body').className = '';
     }
@@ -34,7 +41,7 @@ export default class GameService {
 
   createPossibleWords(arrayOfWords, answersBlock) {
     for (let i = 0; i < 5; i += 1) {
-      create('div', 'element', `${i + 1}.${arrayOfWords[i].translate}`, answersBlock);
+      create('div', `element Digit${i + 1}`, `${i + 1}.${arrayOfWords[i]?.translate}`, answersBlock);
     }
   }
 
@@ -44,9 +51,9 @@ export default class GameService {
     }
   }
 
-  mainEventHandler(lives, mainWord, roundsAll, currentRound) {
+  mainEventHandler(lives, mainWord, roundsAll, currentRound, roundResults) {
     document.querySelector('.answers').addEventListener('click', (event) => {
-      if (event.target.classList.contains('element') && !event.target.classList.contains('unchecked') && !event.target.classList.contains('checked')) {
+     if (event.target.classList.contains('element') && !event.target.classList.contains('unchecked') && !event.target.classList.contains('checked')) {
         const nextBtn = document.querySelector('.nextBtn');
         nextBtn.innerHTML = auditionGameVariables.arrowSymbol;
         event.target.classList.toggle('checked');
@@ -56,22 +63,34 @@ export default class GameService {
           event.target.innerHTML = `${auditionGameVariables.checkMark}${event.target.innerText}`;
           const audioRoundResult = new Audio(auditionGameVariables.correctSound);
           audioRoundResult.play();
-          this.nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound);
+          //const res = 'correct';
+          roundResults.push({'result':'correct','word':mainWord});
+          this.nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound, roundResults);
+          //return {'result':'correct','word':mainWord};
         } else {
           const audioRoundResult = new Audio(auditionGameVariables.errorSound);
           audioRoundResult.play();
           event.target.classList.toggle('line-through');
-          this.nextRoundEventHandler(nextBtn, --lives, roundsAll, currentRound);
+          roundResults.push({'result':'fail','word':mainWord});
+          this.nextRoundEventHandler(nextBtn, --lives, roundsAll, currentRound, roundResults);
+         // return {'result':'fail','word':mainWord};
         }
       }
     });
   }
 
-  nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound) {
+  nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound, roundResults) {
     nextBtn.addEventListener('click', () => {
       document.querySelector('.container').remove();
-      this.nextRound(lives, roundsAll, currentRound);
-    });
+      this.nextRound(lives, roundsAll, currentRound, roundResults);
+    },{once:true});
+    document.addEventListener('keydown', (event) => {
+     if(event.code === 'Enter'&&document.querySelector('.nextBtn')?.innerText !== 'Не знаю'){
+      //document.querySelector('.container').remove();
+      //this.nextRound(lives, roundsAll, currentRound);
+        nextBtn.click();
+    }
+    },{once:true});
   }
 
   idkBtnHandler(audio) {
@@ -123,4 +142,30 @@ export default class GameService {
       document.querySelector('.modal').remove();
     });
   }
+  keyboardEventsHandler(){    
+    document.addEventListener('keydown',(event) =>{
+      const choose = document.querySelector(`.${event.code}`);
+      const normal = ['Digit1','Digit2','Digit3','Digit4','Digit5'];
+      if(normal.includes(event.code)){
+        choose.click();
+      }
+    });
+  }
+/*  keyboardEventsHandler(lives, mainWord, roundsAll, currentRound){
+    
+    document.addEventListener('keydown',(event) =>{
+      console.log("EVENT:",event);
+      const choose = document.querySelector(`.${event.code}`);
+      const normal = ['Digit1','Digit2','Digit3','Digit4','Digit5'];
+      if(normal.includes(event.code)){
+        this.SAME(choose, lives, mainWord, roundsAll, currentRound);
+      }
+      else  if(event.code !== 'Enter' || document.querySelector('.checked')===null){
+      this.keyboardEventsHandler(lives, mainWord, roundsAll, currentRound);
+        console.log("NUL");
+    }
+    },{once:true});
+    
+  }*/
+  
 }

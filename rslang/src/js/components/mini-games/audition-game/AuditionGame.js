@@ -7,9 +7,10 @@ export default class AuditionGame {
     this.gameService = new GameService();
     const gameStartScreen = new StartGameScreen();
     const gameStartButton = gameStartScreen.createStartScreen();
+    const roundResults = [];
     gameStartButton.addEventListener('click', async () => {
       document.querySelector('.startScreen').classList.toggle('hide');
-      this.gameService.init(lives, roundsAll, 1);
+      this.gameService.init(lives, roundsAll, 1, roundResults);
       this.progressBar = create('div', 'progress', '', document.querySelector('body'));
     });
   }

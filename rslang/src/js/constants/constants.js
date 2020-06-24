@@ -3,6 +3,8 @@ const urls = {
 };
 
 const auditionGameVariables = {
+  Lives: 5,
+  Rounds: 5,
   gameTitle: 'Аудиовызов',
   gameDescription: 'Тренировка улучшает восприятие английской речи на слух.',
   gameStartBtn: 'Начать',
