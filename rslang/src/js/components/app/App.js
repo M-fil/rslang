@@ -5,6 +5,7 @@ import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/preloader';
+import Vocabulary from '../vocabulary/Vocabulary';
 
 import {
   createUser,
@@ -45,6 +46,11 @@ class App {
   run() {
     this.container = create('main', 'main-content', '', document.body);
     this.checkIsUserAuthorized();
+  }
+
+  renderVocabulary(userState) {
+    this.vocabulary = new Vocabulary(userState);
+    document.body.append(this.vocabulary.render());
   }
 
   activateAuthenticationForm() {
@@ -91,7 +97,8 @@ class App {
       };
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
-      App.renderMainGame();
+      App.renderMainGame(this.state.user);
+      this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -125,6 +132,7 @@ class App {
         ...this.state.user,
         id: data.id,
         email: data.email,
+        token: JSON.parse(savedUserData).token,
       };
       App.renderMainGame(this.state.user);
       this.prelodaer.hide();

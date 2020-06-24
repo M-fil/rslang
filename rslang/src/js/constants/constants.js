@@ -82,6 +82,16 @@ const findAPairText = {
   newGameButton: 'Сыграть снова',
 };
 
+const vocabularyConstants = {
+  NUMBER_OF_WORDS_TEXT: 'Всего слов (выучено сегодня):',
+  LEARNED_WORDS_TITLE: 'Выученные слова',
+  WORDS_TO_LEARN_TITLE: 'Слова для изучения',
+  REMOVED_WORDS_TITLE: 'Удаленные слова',
+  DIFFUCULT_WORDS_TITLE: 'Сложные слова',
+  RESTORE_BUTTON_TEXT: 'Восстановить',
+  EMPTY_VOCABULARY_MESSAGE: 'Словарь пуст.'
+};
+
 export {
   urls,
   findAPairText,
@@ -90,4 +100,5 @@ export {
   mainGameStrings,
   estimateButtonsTypes,
   wordsToLearnOptions,
+  vocabularyConstants,
 };
