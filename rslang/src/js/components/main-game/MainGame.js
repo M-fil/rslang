@@ -20,6 +20,10 @@ import {
   calculatePercentage,
 } from '../../utils/calculations';
 
+import {
+  addWordToTheVocabulary,
+} from '../../utils/words-functions';
+
 import WordCard from './components/word-card/WordCard';
 import SettingsControls from './components/settings-controls/SettingsControls';
 import EstimateButtonsBlock from './components/estimate-buttons/EstimateButtonsBlock';
@@ -57,7 +61,6 @@ const {
   WORDS_TO_LEARN_TITLE,
   REMOVED_WORDS_TITLE,
   DIFFUCULT_WORDS_TITLE,
-  NEW_WORDS_TITLE,
 } = vocabularyConstants;
 
 class MainGame {
@@ -74,7 +77,7 @@ class MainGame {
       lastGameWinDate: null,
       userWords: [],
       wordsToLearn: [],
-      wordsArray: [],
+      currentWordsArray: [],
       newWords: [],
       audio: new Audio(),
       audios: [],
@@ -137,19 +140,20 @@ class MainGame {
         this.preloader.hide();
       } else {
         const { learnedWordsToday } = this.state;
-        console.log('learnedWordsToday', learnedWordsToday)
+        console.log('learnedWordsToday', learnedWordsToday);
         const { wordsPerDay } = this.state.settings;
         const mainGameMainContainer = create('div', 'main-game__main-container');
         const mainGameControls = MainGame.renderMainGameControls();
         this.progressBar = new ProgressBar(learnedWordsToday, wordsPerDay);
         const message = MainGame.showMessage(DAILY_NORM_IS_COMPLETED);
-        mainGameMainContainer.append(message)
+        mainGameMainContainer.append(message);
         mainGameHTML.append(
           mainGameControls,
           mainGameMainContainer,
           this.progressBar.render(),
         );
         MainGame.toggleVocabularyButtons(false);
+        this.activateAllInteractiveElements();
       }
     } catch (error) {
       Authentication.createErrorBlock(error.message);
@@ -229,23 +233,27 @@ class MainGame {
   }
 
   async resetStatisticsIfNewDay() {
-    const { userId, token } = this.getUserDataForAuthorization();
-    const statistics = await getStatistics(userId, token);
-    console.log(statistics);
-    const data = JSON.parse(statistics.optional.mainGame);
-    let date = new Date(data.lastGameWinDate).setHours(0, 0, 0);
-
-    const currentDate = new Date();
-    date = addDaysToTheDate(1, new Date(date));
-    console.log('date', date);
-
-    if (currentDate > date) {
-      console.log('TRUE');
-      this.state.isNormCompleted = true;
-      this.state.lastGameWinDate = null;
-      this.state.correctAnswersNumber = 0;
-      this.state.learnedWordsToday = 0;
-
+    try {
+      const { userId, token } = this.getUserDataForAuthorization();
+      const statistics = await getStatistics(userId, token);
+      console.log(statistics);
+      const data = JSON.parse(statistics.optional.mainGame);
+      let date = new Date(data.lastGameWinDate).setHours(0, 0, 0);
+  
+      const currentDate = new Date();
+      date = addDaysToTheDate(1, new Date(date));
+      console.log('date', date);
+  
+      if (currentDate > date) {
+        console.log('TRUE');
+        this.state.isNormCompleted = true;
+        this.state.lastGameWinDate = null;
+        this.state.correctAnswersNumber = 0;
+        this.state.learnedWordsToday = 0;
+  
+        await this.setStatisticsData();
+      }
+    } catch (error) {
       await this.setStatisticsData();
     }
   }
@@ -445,13 +453,13 @@ class MainGame {
             this.state.longestSeriesOfAnswers += 1;
           }
           this.state.learnedWordsToday += 1;
+          this.state.correctAnswersNumber += 1;
           const { wordsPerDay } = this.state.settings;
           const { learnedWordsToday } = this.state;
           this.progressBar.updateSize(learnedWordsToday, wordsPerDay);
         }
         this.estimateWords = new EstimateButtonsBlock();
         mainContainer.append(this.estimateWords.render());
-        this.state.correctAnswersNumber += 1;
       } else {
         this.state.mistakesInCurrentWord += 1;
         this.state.allNumberOfMistakes += 1;
@@ -488,44 +496,6 @@ class MainGame {
     const currentWord = wordsToLearn[currentWordIndex];
     this.state.wordsToLearn.push(currentWord);
     this.progressBar.updateSize(learnedWordsToday, wordsPerDay);
-  }
-
-  static async createWordDataForBackend(
-    currentWord, estimation, isOnlyObject = false, vocabulary = WORDS_TO_LEARN_TITLE,
-  ) {
-    const wordData = {
-      id: currentWord.id || currentWord._id,
-      word: currentWord.word,
-      difficulty: estimation.text || GOOD.text,
-      vocabulary: vocabulary || WORDS_TO_LEARN_TITLE,
-      daysInterval: estimation.daysInterval,
-      valuationDate: new Date(),
-      allData: currentWord,
-    };
-    const savedUserData = JSON.parse(localStorage.getItem('user-data'));
-    const { userId, token } = savedUserData;
-    const {
-      id: wordId, word, difficulty, daysInterval, valuationDate, allData,
-    } = wordData;
-    const dataToRecieve = {
-      difficulty,
-      optional: {
-        word,
-        daysInterval,
-        vocabulary,
-        valuationDate: valuationDate.toString(),
-        allData: JSON.stringify(allData),
-      },
-    };
-
-    if (isOnlyObject) {
-      console.log(dataToRecieve);
-      return dataToRecieve;
-    }
-    console.log(userId);
-    console.log(wordId);
-    const data = await createUserWord(userId, wordId, dataToRecieve, token);
-    return data;
   }
 
   activateEstimateButtons() {
@@ -669,18 +639,9 @@ class MainGame {
 
   async addWordToTheVocabulary(vocabularyType = WORDS_TO_LEARN_TITLE, buttonType = GOOD.text, wordToAdd) {
     const currentWord = wordToAdd || this.state.wordsToLearn[this.state.currentWordIndex];
-    const userWordObject = this.state.userWords.find((word) => word.wordId === currentWord.id);
     const { userId, token } = this.getUserDataForAuthorization();
 
-    if (userWordObject) {
-      console.log('for update');
-      const data = await MainGame.createWordDataForBackend(currentWord, buttonType, true, vocabularyType);
-      console.log(data);
-      await updateUserWord(userId, currentWord.id, data, token);
-    } else {
-      console.log('for create');
-      await MainGame.createWordDataForBackend(currentWord, buttonType, false, vocabularyType);
-    }
+    await addWordToTheVocabulary(vocabularyType, buttonType, currentWord, { userId, token });
     this.state.userWords = await this.getAllUserWordsFromBackend();
     this.state.mistakesInCurrentWord = 0;
     console.log('this.state.userWords', this.state.userWords);
