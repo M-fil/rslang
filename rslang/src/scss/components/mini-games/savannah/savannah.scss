@@ -93,8 +93,34 @@ body {
   position: absolute;
   top: 25px;
   right: 150px;
-  width: 200px;
+  max-width: 400px;
 }
+.add-lives-number {
+  position: absolute;
+  top: 80px;
+  right: 250px;
+  font-size: 40px;
+  color: crimson;
+  opacity: 0;
+}
+
+.show-number-live {
+  animation: appearance 4s ease-in-out;
+}
+
+@keyframes appearance {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
 .live {
   width: 40px;
   height: 40px;

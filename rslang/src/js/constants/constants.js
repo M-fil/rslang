@@ -18,6 +18,10 @@ const savannahConstants = {
   END_ANIMATION: 7000,
   FRAME: 24,
   DIVIDER: 20,
+  ADD_LIVES: 5,
+  ERROR_STAT: 'Ошибок',
+  CORRECT_STAT: 'Знаю',
+  STAT: 'Статистика',
 };
 
 export {

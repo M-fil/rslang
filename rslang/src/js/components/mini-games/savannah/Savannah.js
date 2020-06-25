@@ -22,6 +22,10 @@ const {
   FRAME,
   END_ANIMATION,
   DIVIDER,
+  ADD_LIVES,
+  ERROR_STAT,
+  CORRECT_STAT,
+  STAT,
 } = savannahConstants;
 
 const {
@@ -89,17 +93,18 @@ export default class SavannahGame {
     this.rightWords = [];
     this.wrongWords = [];
     this.keyboardClick();
+    this.correctWordNumber = 0;
+    this.countLives = 0;
   }
 
   crateCardsData() {
     this.exitButton.classList.remove('none');
     this.preloader.hide();
     this.num = 0;
-    const container = document.querySelector('.container');
-    this.lives = create('div', 'lives', '', container);
-    this.offSound = create('button', 'sound sound_on', 'Off', container);
-    this.engLine = create('div', 'english-line', '', container);
-    this.rusLine = create('div', 'russian-line', '', container);
+    this.lives = create('div', 'lives', '', this.container);
+    this.offSound = create('button', 'sound sound_on', 'Off', this.container);
+    this.engLine = create('div', 'english-line', '', this.container);
+    this.rusLine = create('div', 'russian-line', '', this.container);
     this.engRandomWords = this.data;
     this.engRandomWords = shuffle(this.data);
 
@@ -125,6 +130,7 @@ export default class SavannahGame {
       russianBut.setAttribute('data-translate', butTranslate);
       this.wordNumber = create('span', 'word_number', keyboardNumber.toString(), russianBut);
     });
+    this.plusLive = create('span', 'add-lives-number', '+1 &#9829;', this.container);
   }
 
   async changeCard() {
@@ -184,6 +190,7 @@ export default class SavannahGame {
     const englishWord = document.querySelector('.word_english');
     const engTranslate = englishWord.dataset.translate;
     if (target.dataset.translate === engTranslate) {
+      this.correctWordNumber += 1;
       this.rightWords.push(this.arrayBeforeClickWords);
       this.playAudio('./src/assets/audio/correct.mp3');
       target.classList.add('word_correct');
@@ -191,20 +198,23 @@ export default class SavannahGame {
         await this.changeCard();
       }, 2000);
       this.disabledButtons();
+      if (this.correctWordNumber === ADD_LIVES) {
+        this.addLives();
+      }
     } else {
+      this.correctWordNumber = 0;
       target.classList.add('word_error');
-      this.wrongWords.push(this.arrayBeforeClickWords);
       this.errorWord();
-      if (this.error === LIVES) {
+      if (this.error === (LIVES + this.countLives)) {
         clearInterval(this.timer);
         clearTimeout(this.errorTimer);
         const statisticaContainer = create('div', 'modal', '', this.body);
         this.statisticaText = create('div', 'modal_text', '', statisticaContainer);
-        this.statisticaTitle = create('h4', 'modal_title', 'Статистика', this.statisticaText);
+        this.statisticaTitle = create('h4', 'modal_title', `${STAT}`, this.statisticaText);
 
-        this.statisticaWrongWordsText = create('p', 'modal_title', `Ошибок ${this.wrongWords.length}`, this.statisticaText);
+        this.statisticaWrongWordsText = create('p', 'modal_title', `${ERROR_STAT} ${this.wrongWords.length}`, this.statisticaText);
         this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
-        this.statisticaRightWordsText = create('p', 'modal_title', `Знаю ${this.rightWords.length}`, this.statisticaText);
+        this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${this.rightWords.length}`, this.statisticaText);
         this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
 
         SavannahGame.statisticaWords(this.wrongWords, this.statisticaWrongWords);
@@ -298,7 +308,18 @@ export default class SavannahGame {
       this.live = create('img', 'live', '', this.lives);
       this.live.src = '/src/assets/images/heart_black.png';
     }
-    this.allLives = document.querySelectorAll('.live');
+  }
+
+  addLives() {
+    this.live = create('img', 'live', '', this.lives);
+    this.live.src += '/src/assets/images/heart_black.png';
+    this.countLives += 1;
+    this.correctWordNumber = 0;
+    this.plusLive = document.querySelector('.add-lives-number');
+    this.plusLive.classList.add('show-number-live');
+    setTimeout(() => {
+      this.plusLive.classList.remove('show-number-live');
+    }, 3000);
   }
 
   animatedWord() {
@@ -314,16 +335,18 @@ export default class SavannahGame {
   }
 
   errorWord() {
+    this.allLives = document.querySelectorAll('.live');
     this.error += 1;
     this.playAudio('./src/assets/audio/error.mp3');
     this.rusBut.forEach((rusButton) => {
-      if (rusButton.outerText === this.engRandomWords[this.num].wordTranslate) {
+      if (rusButton.dataset.translate === this.engRandomWords[this.num].wordTranslate) {
         rusButton.classList.add('word_correct');
       }
       this.disabledButtons();
     });
     this.allLives[this.liveIndex].src = '/src/assets/images/heart_inherit.png';
     this.liveIndex += 1;
+    this.wrongWords.push(this.arrayBeforeClickWords);
     clearInterval(this.timer);
     this.errorTimer = setTimeout(async () => {
       await this.changeCard();
