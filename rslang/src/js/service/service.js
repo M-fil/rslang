@@ -71,6 +71,7 @@ const getUserById = async (id, token) => {
 };
 
 const setUserSettings = async (userId, body, token) => {
+  let content = false;
   const rawResponse = await fetch(`${GET_USER_URL}${userId}/settings`, {
     method: 'PUT',
     withCredentials: true,
@@ -82,11 +83,12 @@ const setUserSettings = async (userId, body, token) => {
     body: JSON.stringify(body),
   });
 
-  const content = await rawResponse.json();
+  if (rawResponse.status === 200) content = await rawResponse.json();
   return content;
 };
 
 const getUserSettings = async (userId, token) => {
+  let content = false;
   const rawResponse = await fetch(`${GET_USER_URL}${userId}/settings`, {
     method: 'GET',
     withCredentials: true,
@@ -97,7 +99,7 @@ const getUserSettings = async (userId, token) => {
     },
   });
 
-  const content = await rawResponse.json();
+  content = await rawResponse.json();
   return content;
 };
 
