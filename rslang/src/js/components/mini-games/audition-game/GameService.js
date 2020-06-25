@@ -16,7 +16,6 @@ export default class GameService {
     const audio = new Audio(`${auditionGameVariables.mainAudioPath}${mainWord.audio}`);
     audio.play();
     this.mainEventHandler(lives, mainWord, roundsAll, currentRound, roundResults);
-    
     this.idkBtnHandler(audio);
     this.closeBtnHandler();
     this.progressBarHandler(roundsAll, currentRound);
@@ -33,7 +32,6 @@ export default class GameService {
     } else {
       const gameStats=new GameStatistic();
       gameStats.statistics(roundResults);
-      // document.querySelector('.startScreen').classList.toggle('hide');
       document.querySelector('.progress').style.width = '0%';
       document.querySelector('body').className = '';
     }
@@ -63,17 +61,14 @@ export default class GameService {
           event.target.innerHTML = `${auditionGameVariables.checkMark}${event.target.innerText}`;
           const audioRoundResult = new Audio(auditionGameVariables.correctSound);
           audioRoundResult.play();
-          //const res = 'correct';
           roundResults.push({'result':'correct','word':mainWord});
           this.nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound, roundResults);
-          //return {'result':'correct','word':mainWord};
         } else {
           const audioRoundResult = new Audio(auditionGameVariables.errorSound);
           audioRoundResult.play();
           event.target.classList.toggle('line-through');
           roundResults.push({'result':'fail','word':mainWord});
           this.nextRoundEventHandler(nextBtn, --lives, roundsAll, currentRound, roundResults);
-         // return {'result':'fail','word':mainWord};
         }
       }
     });
@@ -85,9 +80,7 @@ export default class GameService {
       this.nextRound(lives, roundsAll, currentRound, roundResults);
     },{once:true});
     document.addEventListener('keydown', (event) => {
-     if(event.code === 'Enter'&&document.querySelector('.nextBtn')?.innerText !== 'Не знаю'){
-      //document.querySelector('.container').remove();
-      //this.nextRound(lives, roundsAll, currentRound);
+     if(event.code === 'Enter' && document.querySelector('.nextBtn')?.innerText !== 'Не знаю'){
         nextBtn.click();
     }
     },{once:true});
@@ -151,21 +144,4 @@ export default class GameService {
       }
     });
   }
-/*  keyboardEventsHandler(lives, mainWord, roundsAll, currentRound){
-    
-    document.addEventListener('keydown',(event) =>{
-      console.log("EVENT:",event);
-      const choose = document.querySelector(`.${event.code}`);
-      const normal = ['Digit1','Digit2','Digit3','Digit4','Digit5'];
-      if(normal.includes(event.code)){
-        this.SAME(choose, lives, mainWord, roundsAll, currentRound);
-      }
-      else  if(event.code !== 'Enter' || document.querySelector('.checked')===null){
-      this.keyboardEventsHandler(lives, mainWord, roundsAll, currentRound);
-        console.log("NUL");
-    }
-    },{once:true});
-    
-  }*/
-  
 }
