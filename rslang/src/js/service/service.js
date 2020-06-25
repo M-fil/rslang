@@ -161,8 +161,43 @@ const removeUserWord = async (userId, wordId, token) => {
   return content;
 };
 
-const getAggregatedWordsByFilter = async (userId, token, filter = '{"userWord":null}') => {
-  const rawResponse = await fetch(`${GET_USER_URL}${userId}/aggregatedWords?wordsPerPage=20&filter=${filter}`, {
+const getAggregatedWordsByFilter = async (
+  userId, token, wordsPerPage, filter = '{"userWord":null}',
+) => {
+  const rawResponse = await fetch(
+    `${GET_USER_URL}${userId}/aggregatedWords?wordsPerPage=${wordsPerPage}&filter=${filter}`,
+    {
+      method: 'GET',
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    },
+  );
+
+  const content = await rawResponse.json();
+  return content;
+};
+
+const updateStatistics = async (userId, token, body) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/statistics`, {
+    method: 'PUT',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  const content = await rawResponse.json();
+  return content;
+};
+
+const getStatistics = async (userId, token) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/statistics`, {
     method: 'GET',
     withCredentials: true,
     headers: {
@@ -173,7 +208,7 @@ const getAggregatedWordsByFilter = async (userId, token, filter = '{"userWord":n
 
   const content = await rawResponse.json();
   return content;
-}
+};
 
 export {
   getWords,
@@ -186,4 +221,6 @@ export {
   updateUserWord,
   removeUserWord,
   getAggregatedWordsByFilter,
+  updateStatistics,
+  getStatistics,
 };

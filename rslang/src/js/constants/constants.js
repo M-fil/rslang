@@ -38,6 +38,7 @@ const mainGameConstants = {
   SETTINGS_TRANSLATIONS_LABEL_TEXT: 'Показывать переводы слова и предложений',
   WORDS_TYPES_SELECT_TITLE: 'Как изучать слова?',
   EMPTY_WORD_LIST: 'Данный список слов пуст.',
+  DAILY_NORM_IS_COMPLETED: 'Поздравляем, дневная норма слов выполнена! На сегодня слов для изучения больше нет.',
   NUMBER_OF_WORD_GROUPS: 6,
   NUMBER_OF_WORD_PAGES: 30,
 };
@@ -45,9 +46,10 @@ const mainGameConstants = {
 const dailyStatisticsConstants = {
   TITLE: 'Серия завершена',
   COMPLETED_CARDS_TEXT: 'Карточек завершено',
-  CORRECT_ANSWERS_TEXT: 'Правильные ответы',
+  CORRECT_ANSWERS_PERCENTAGE_TEXT: 'Процент правильных ответов',
   NEW_WORDS_TEXT: 'Новые слова',
   LONGEST_SERIES_OF_ANSWERS_TEXT: 'Саммая длинная серия правильных ответов',
+  GO_TO_THE_MAIN_PAGE: 'Перейти на главную',
 }
 
 const wordsToLearnOptions = {
@@ -100,6 +102,7 @@ const vocabularyConstants = {
   WORDS_TO_LEARN_TITLE: 'Слова для изучения',
   REMOVED_WORDS_TITLE: 'Удаленные слова',
   DIFFUCULT_WORDS_TITLE: 'Сложные слова',
+  NEW_WORDS_TITLE: 'Новые слова',
   RESTORE_BUTTON_TEXT: 'Восстановить',
   EMPTY_VOCABULARY_MESSAGE: 'Словарь пуст.'
 };

@@ -7,6 +7,7 @@ const {
   CORRECT_ANSWERS_PERCENTAGE_TEXT,
   NEW_WORDS_TEXT,
   LONGEST_SERIES_OF_ANSWERS_TEXT,
+  GO_TO_THE_MAIN_PAGE,
 } = dailyStatisticsConstants;
 
 class DailyStatistics {
@@ -22,18 +23,20 @@ class DailyStatistics {
   }
 
   render() {
-    this.HTML = create('div', 'daily-statistics');
-    create('div', 'daily-statistics__title', TITLE, this.HTML);
+    this.HTML = create('div', 'daily-statistics__overlay');
+    this.statisticsBlock = create('div', 'daily-statistics', '', this.HTML)
+    create('div', 'daily-statistics__title', TITLE, this.statisticsBlock);
+    this.content = create('div', 'daily-statistics__content', '', this.statisticsBlock);
     this.renderParameter(COMPLETED_CARDS_TEXT, this.completedCardsNumber);
-    this.renderParameter(CORRECT_ANSWERS_PERCENTAGE_TEXT, this.correctAnswersPercentage);
+    this.renderParameter(CORRECT_ANSWERS_PERCENTAGE_TEXT, this.correctAnswersPercentage, '%');
     this.renderParameter(NEW_WORDS_TEXT, this.newWordsNumber);
     this.renderParameter(LONGEST_SERIES_OF_ANSWERS_TEXT, this.longestSeriesOfAnswers);
-
+    create('button', 'daily-statistics__button', GO_TO_THE_MAIN_PAGE, this.statisticsBlock);
     return this.HTML;
   }
 
-  renderParameter(text, value) {
-    create('div', 'daily-statistics__parameter', `${text}: ${value}`, this.HTML);
+  renderParameter(text, value, extraStringValue = '') {
+    create('div', 'daily-statistics__parameter', `${text}: ${value}${extraStringValue}`, this.content);
   }
 }
 
