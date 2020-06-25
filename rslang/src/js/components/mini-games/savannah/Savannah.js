@@ -40,29 +40,28 @@ export default class SavannahGame {
     this.gameWindow = create('div', 'start-game-window', '', this.container);
     this.numberReverse = create('span', 'number-reverse', '', this.container);
     this.preloader = new Preloader();
-    this.allWords = document.querySelectorAll('.word');
     this.audio = new Audio();
     this.error = 0;
   }
 
   render() {
-    this.HTML = create('h2', 'game-name', 'Саванна', this.gameWindow);
-    this.HTML = create('div', 'game-rules', RULES, this.gameWindow);
+    this.allWords = document.querySelectorAll('.word');
+    create('h2', 'game-name', 'Саванна', this.gameWindow);
+    create('div', 'game-rules', RULES, this.gameWindow);
     this.startButton = create('button', 'start-button', START_BUTTON, this.gameWindow);
     this.exitButton = create('button', 'exit-button', 'X', this.body);
     this.arrayBeforeClickWords = [];
     this.startButton.addEventListener('click', () => {
       this.reverseReport();
     });
-    return this.HTML;
+    this.preloader.render();
   }
 
   reverseReport() {
-    this.exitButton.classList.add('none');
+    SavannahGame.changeDisplay(this.exitButton, 'none');
     const startGameWindow = document.querySelector('.start-game-window');
-    startGameWindow.style.display = 'none';
-    this.numberReverse.style.display = 'block';
-    this.preloader.render();
+    SavannahGame.changeDisplay(startGameWindow, 'none');
+    SavannahGame.changeDisplay(this.numberReverse, 'block');
     this.preloader.show();
     let timeLeft = SAVANNAH_SECONDS_COUNT;
     this.numberReverse.innerHTML = timeLeft;
@@ -80,7 +79,7 @@ export default class SavannahGame {
   async mainGame() {
     this.page = 0;
     this.group = 0;
-    this.numberReverse.style.display = 'none';
+    SavannahGame.changeDisplay(this.numberReverse, 'none');
     this.data = await getWords(this.page, this.group);
     this.crateCardsData();
     this.wordClick();
@@ -98,7 +97,7 @@ export default class SavannahGame {
   }
 
   crateCardsData() {
-    this.exitButton.classList.remove('none');
+    SavannahGame.changeDisplay(this.exitButton, 'block');
     this.preloader.hide();
     this.num = 0;
     this.lives = create('div', 'lives', '', this.container);
@@ -209,6 +208,7 @@ export default class SavannahGame {
         clearInterval(this.timer);
         clearTimeout(this.errorTimer);
         const statisticaContainer = create('div', 'modal', '', this.body);
+        SavannahGame.changeDisplay(statisticaContainer, 'block');
         this.statisticaText = create('div', 'modal_text', '', statisticaContainer);
         this.statisticaTitle = create('h4', 'modal_title', `${STAT}`, this.statisticaText);
 
@@ -284,21 +284,21 @@ export default class SavannahGame {
   }
 
   modalWindow() {
-    const modal = create('div', 'modal none', '', this.body);
+    const modal = create('div', 'modal', '', this.body);
     const modalText = create('div', 'modal_text', '', modal);
     this.modalTitle = create('h4', 'modal_title', MODAL_TITLE, modalText);
     this.modalWarning = create('p', 'modal_warning', MODAL_WARNING, modalText);
     this.modalClose = create('button', 'modal_button close_button', CLOSE_BUTTON, modalText);
     this.modalCancel = create('button', 'modal_button cancel_button', CANCEL_BUTTON, modalText);
     this.exitButton.addEventListener('click', () => {
-      modal.classList.remove('none');
+      SavannahGame.changeDisplay(modal, 'block');
       clearInterval(this.timer);
     });
     this.modalClose.addEventListener('click', () => {
-      modal.classList.add('none');
+      SavannahGame.changeDisplay(modal, 'none');
     });
     this.modalCancel.addEventListener('click', () => {
-      modal.classList.add('none');
+      SavannahGame.changeDisplay(modal, 'none');
       this.animatedWord();
     });
   }
@@ -359,5 +359,14 @@ export default class SavannahGame {
       disabledButton.disabled = true;
     });
     this.exitButton.disabled = true;
+  }
+
+  static changeDisplay(element, event) {
+    const el = element;
+    if (event === 'none') {
+      el.style.display = 'none';
+    } else {
+      el.style.display = 'block';
+    }
   }
 }
