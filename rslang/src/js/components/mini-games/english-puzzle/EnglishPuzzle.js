@@ -77,6 +77,7 @@ export default class EnglishPuzzle {
     this.rightAnswers = [];
     this.falseAnswers = [];
     this.activeSentenseCounter = 0;
+    this.activeRow = document.querySelectorAll('.puzzle-row')[this.activeSentenseCounter];
 
     document.querySelectorAll('.puzzle-row').forEach((el) => cleanParentNode(el));
     document.querySelector('.game-block_field--background').style.backgroundImage = `url(${imageUrl})`;
@@ -95,6 +96,7 @@ export default class EnglishPuzzle {
   async switchGamePageOrLvl() {
     if (this.activeSentenseCounter + 1 < GAME_BLOCK.gameZoneRows) {
       this.activeSentenseCounter += 1;
+      this.activeRow = document.querySelectorAll('.puzzle-row')[this.activeSentenseCounter];
       this.gameStart();
       this.showTranslate();
       this.dragAndDropActions();
@@ -154,8 +156,8 @@ export default class EnglishPuzzle {
       cardsWithAnswers.forEach((el) => {
         const elem = el;
         elem.classList.remove('active-card');
-        elem.draggable = 'false';
-        this.dropped = null;
+        elem.removeAttribute('draggable');
+        elem.removeEventListener('click', this.cardClickAction);
       });
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
         viewElement([
@@ -188,17 +190,17 @@ export default class EnglishPuzzle {
 
   showCorrectSentens() {
     const sentensBase = document.querySelector('.game-block_field--description');
-    const gameFieldRow = document.querySelectorAll('.puzzle-row')[this.activeSentenseCounter];
 
     cleanParentNode(sentensBase);
-    cleanParentNode(gameFieldRow);
+    cleanParentNode(this.activeRow);
 
     this.falseAnswers.push(this.actualSentenses[this.activeSentenseCounter]);
     this.activeSentenseForCheck.forEach((el) => {
       const elem = el;
       elem.classList.remove('active-card');
-      elem.draggable = 'false';
-      gameFieldRow.appendChild(elem);
+      elem.removeAttribute('draggable');
+      elem.removeEventListener('click', this.cardClickAction);
+      this.activeRow.appendChild(elem);
     });
   }
 
@@ -294,11 +296,10 @@ export default class EnglishPuzzle {
 
   additionalFunctionalForBonusButton() {
     const sentensBase = document.querySelector('.game-block_field--description');
-    const gameFieldRow = document.querySelectorAll('.puzzle-row')[this.activeSentenseCounter];
     if (sentensBase.childNodes.length) {
-      const bonusElement = this.activeSentenseForCheck[gameFieldRow.childNodes.length];
+      const bonusElement = this.activeSentenseForCheck[this.activeRow.childNodes.length];
       sentensBase.removeChild(bonusElement);
-      gameFieldRow.appendChild(bonusElement);
+      this.activeRow.appendChild(bonusElement);
     }
   }
 
@@ -309,12 +310,18 @@ export default class EnglishPuzzle {
     });
   }
 
-  dragAndDropActions() {
-    const activeRow = document.querySelectorAll('.puzzle-row')[this.activeSentenseCounter];
+  cardClickAction(ev) {
+    if (!ev.target.data) {
+      this.dropped = ev.target;
+    }
+    this.activeRow.appendChild(this.dropped);
+    this.activeRow.classList.remove('row-hover');
+    EnglishPuzzle.checkFieldCompletion();
+  }
 
+  dragAndDropActions() {
     function dragOver(ev) {
       ev.preventDefault();
-      this.placeForDrope = ev.target;
     }
 
     function dragEnter(ev) {
@@ -332,24 +339,18 @@ export default class EnglishPuzzle {
           this.dropped = event.target;
         }
       });
-      el.addEventListener('click', (event) => {
-        if (!event.target.data) {
-          this.dropped = event.target;
-        }
-        activeRow.appendChild(this.dropped);
-        EnglishPuzzle.checkFieldCompletion();
-      });
+      el.addEventListener('click', (this.cardClickAction).bind(this));
     });
 
-    activeRow.addEventListener('drop', (event) => {
+    this.activeRow.addEventListener('drop', (event) => {
       event.preventDefault();
-      activeRow.appendChild(this.dropped);
+      this.activeRow.appendChild(this.dropped);
       EnglishPuzzle.checkFieldCompletion();
       event.target.classList.remove('row-hover');
     });
-    activeRow.addEventListener('dragover', dragOver);
-    activeRow.addEventListener('dragenter', dragEnter);
-    activeRow.addEventListener('dragleave', dragLeave);
+    this.activeRow.addEventListener('dragover', dragOver);
+    this.activeRow.addEventListener('dragenter', dragEnter);
+    this.activeRow.addEventListener('dragleave', dragLeave);
 
     document.querySelector('.game-block_field--description').addEventListener('drop', (event) => {
       event.preventDefault();
