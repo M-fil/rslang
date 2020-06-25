@@ -1,7 +1,7 @@
 function simpleShuffle() {
     return  Math.round(Math.random()) - 0.5;
 }
-function shuffle(array) {
+function shuffleAudition(array) {
     for (let i = 0; i < array.length - 1; i++) {
         let j = i + Math.floor(Math.random() * (array.length - i));
 
@@ -11,9 +11,25 @@ function shuffle(array) {
     }
     return array.sort(()=>Math.random()-0.5);
 }
-
-  export {
-    simpleShuffle,
-    shuffle,
-  };
   
+function shuffle(array, requiredLenth) {
+  const shuffledArr = array;
+  let length = shuffledArr.length;
+  let buffer;
+  let index;
+
+  while (length) {
+    length -= 1;
+    index = Math.floor(Math.random() * length);
+    buffer = shuffledArr[length];
+    shuffledArr[length] = shuffledArr[index];
+    shuffledArr[index] = buffer;
+  }
+
+  return (requiredLenth) ? shuffledArr.slice(0, requiredLenth) : shuffledArr;
+}
+export {
+  simpleShuffle,
+  shuffle,
+  shuffleAudition,
+};
