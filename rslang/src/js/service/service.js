@@ -70,7 +70,7 @@ const getUserById = async (id, token) => {
   return content;
 };
 
-const setUserSettings = async (userId, body, token) => {
+const setUserSettings = async (userId, token, body) => {
   let content = false;
   const rawResponse = await fetch(`${GET_USER_URL}${userId}/settings`, {
     method: 'PUT',
@@ -99,7 +99,7 @@ const getUserSettings = async (userId, token) => {
     },
   });
 
-  content = await rawResponse.json();
+  if (rawResponse.status === 200) content = await rawResponse.json();
   return content;
 };
 
