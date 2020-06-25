@@ -70,9 +70,42 @@ const getUserById = async (id, token) => {
   return content;
 };
 
+const setUserSettings = async (userId, body, token) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/settings`, {
+    method: 'PUT',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  const content = await rawResponse.json();
+  return content;
+};
+
+const getUserSettings = async (userId, token) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/settings`, {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const content = await rawResponse.json();
+  return content;
+};
+
 export {
   getWords,
   createUser,
   loginUser,
   getUserById,
+  setUserSettings,
+  getUserSettings,
 };
