@@ -178,6 +178,10 @@
 
 .main-game__progress-bar-line {
   background-color: $standard-progress-bar-line-color;
+
+  &_completed {
+    background-color: $completed-progress-bar-line-color;
+  }
 }
 
 .daily-statistics__overlay {

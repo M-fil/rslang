@@ -1,5 +1,10 @@
 import create from '../../../../utils/сreate';
 import { calculatePercentage } from '../../../../utils/calculations';
+import { mainGameConstants } from '../../../../constants/constants';
+
+const {
+  HIGHEST_PERCENTAGE_STRING,
+} = mainGameConstants;
 
 class ProgressBar {
   constructor(learnedWordsNumber, allWordsNumber) {
@@ -17,6 +22,10 @@ class ProgressBar {
     this.endValueHTML = create('div', 'progress-bar__number progress-bar__number-end', String(this.allWordsNumber), this.HTML);
     this.barLine.style.width = `${this.barWidthInPercents}%`;
 
+    if (this.learnedWordsNumber === this.allWordsNumber) {
+      this.barLine.classList.add('main-game__progress-bar-line_completed');
+      this.barLine.style.width = HIGHEST_PERCENTAGE_STRING;
+    }
     return this.HTML;
   }
 
@@ -25,7 +34,14 @@ class ProgressBar {
     this.allWordsNumber = allWordsNumber;
     this.startValueHTML.textContent = this.learnedWordsNumber;
     this.endValueHTML.textContent = allWordsNumber;
-    this.barLine.style.width = `${calculatePercentage(this.learnedWordsNumber, allWordsNumber)}%`;
+
+    if (learnedWordsNumber === allWordsNumber) {
+      this.barLine.classList.add('main-game__progress-bar-line_completed');
+      this.barLine.style.width = HIGHEST_PERCENTAGE_STRING;
+    } else {
+      this.barLine.style.width = `${calculatePercentage(this.learnedWordsNumber, allWordsNumber)}%`;
+      this.barLine.classList.remove('main-game__progress-bar-line_completed');
+    }
   }
 
   hide() {

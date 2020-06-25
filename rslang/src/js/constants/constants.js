@@ -30,8 +30,10 @@ const errorTypes = {
 };
 
 const mainGameConstants = {
-  REMOVE_WORD_BUTTON: 'Снять с изучения',
+  REMOVE_WORD_BUTTON: 'Удалить',
   ADD_TO_DIFFICULT_WORDS: 'Добавить в сложные',
+  ADD_TO_DIFFICULT_WORDS_CLICKED: 'Добавлено',
+  REMOVE_WORD_BUTTON_CLICKED: 'Удалено',
   NEXT_BUTTON: 'Дальше',
   SHOW_ANSWER_BUTTON: 'Показать ответ',
   SETTINGS_AUTOPLABACK_TEXT: 'Автопроизношение',
@@ -41,6 +43,7 @@ const mainGameConstants = {
   DAILY_NORM_IS_COMPLETED: 'Поздравляем, дневная норма слов выполнена! На сегодня слов для изучения больше нет.',
   NUMBER_OF_WORD_GROUPS: 6,
   NUMBER_OF_WORD_PAGES: 30,
+  HIGHEST_PERCENTAGE_STRING: '100%',
 };
 
 const dailyStatisticsConstants = {

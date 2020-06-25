@@ -9,7 +9,7 @@ import {
 } from '../service/service';
 
 const {
-  HARD, 
+  GOOD, 
 } = estimateButtonsTypes;
 
 const {
@@ -47,15 +47,15 @@ const createWordDataForBackend = (
 };
 
 const addWordToTheVocabulary = async (
-  vocabularyType = WORDS_TO_LEARN_TITLE, buttonType = HARD.text, wordToAdd, userData,
+  vocabularyType = WORDS_TO_LEARN_TITLE, buttonType = GOOD.text, wordToAdd, userData,
 ) => {
   const { userId, token } = userData;
   try {
     const data = await createWordDataForBackend(wordToAdd, buttonType, vocabularyType);
-    await updateUserWord(userId, wordToAdd.id, data, token);
+    await updateUserWord(userId, data.optional.wordId, data, token);
   } catch (error) {
     const data = await createWordDataForBackend(wordToAdd, buttonType, vocabularyType);
-    await createUserWord(userId, wordToAdd.id, data, token);
+    await createUserWord(userId, data.optional.wordId, data, token);
   }
 };
 
