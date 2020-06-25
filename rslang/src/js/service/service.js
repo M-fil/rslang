@@ -70,9 +70,44 @@ const getUserById = async (id, token) => {
   return content;
 };
 
+const setUserSettings = async (userId, token, body) => {
+  let content = false;
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/settings`, {
+    method: 'PUT',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (rawResponse.status === 200) content = await rawResponse.json();
+  return content;
+};
+
+const getUserSettings = async (userId, token) => {
+  let content = false;
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/settings`, {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (rawResponse.status === 200) content = await rawResponse.json();
+  return content;
+};
+
 export {
   getWords,
   createUser,
   loginUser,
   getUserById,
+  setUserSettings,
+  getUserSettings,
 };

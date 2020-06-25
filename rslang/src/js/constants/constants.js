@@ -38,9 +38,57 @@ const findAPairText = {
   newGameButton: 'Сыграть снова',
 };
 
+const settingsText = {
+  title: 'Настройки',
+  tabList: {
+    mainGame: 'Main Game',
+    dictionary: 'Dictionary',
+    findapair: 'Find a pair Game',
+  },
+  form: {
+    submitButton: 'Сохранить',
+  },
+  tabs: {
+    mainGame: {
+      maxCardsPerDay: 'Количество карточек в день',
+      newCardsPerDay: 'Количество новых карточек в день',
+      showTranslateWord: 'Отображать перевод',
+      showWordMeaning: 'Отображать значение слова',
+      showWordExample: 'Отображать пример со словом',
+      showTranscription: 'Отображать транскрипцию',
+      showImageAssociations: 'Отображать изображение',
+      showButtonAgain: 'Отображать кнопку "Снова"',
+      showButtonShowAnswer: 'Отображать кнопку "Показать ответ"',
+      showButtonShowDelete: 'Отображать кнопку "Удалить"',
+      showButtonShowHard: 'Отображать кнопку "Сложные"',
+      showButtons: 'Отображать кнопки "Снова", "Легко", "Хорошо", "Трудно" для слов',
+      showButtonShowEasy: 'Отображать кнопк "Легко"',
+      mainIntervalEasy: 'Интервал повторения "Легко"',
+      showButtonShowNormal: 'Отображать кнопку "Хорошо"',
+      mainIntervalNormal: 'Интервал повторения "Хорошо"',
+      showButtonShowDifficult: 'Отображать кнопку "Трудно"',
+      mainIntervalDifficult: 'Интервал повторения "Трудно"',
+    },
+    dictionary: {
+      audioExample: 'Отображать "Аудио пример"',
+      translateWord: 'Отображать перевод',
+      wordMeaning: 'Отображать значение слова',
+      wordExample: 'Отображать пример со словом',
+      transcription: 'Отображать транскрипцию',
+      imageAssociations: 'Отображать изображение',
+    },
+    findapair: {
+      delayBeforeClosingCard: 'Задержка при закрытии карточек',
+      showCardsTextOnStart: 'Показывать текст карточек при старте игры',
+      showingCardsTime: 'Время показа карточек',
+    },
+  },
+};
+
 export {
   urls,
   findAPairText,
   authenticationTexts,
   errorTypes,
+  settingsText,
 };
