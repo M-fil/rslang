@@ -26,7 +26,7 @@ const errorTypes = {
   USER_ALREADY_EXISTS: 'пользователь с такими данными уже существует',
   STATUS_200: 200,
   USER_IS_NOT_AUTHORIZED: 'Пользователь не авторизирован',
-  USER_NOT_FOUND: 'Такого пользователя не существует. Пожалуйста, проверьте введенные данные.'
+  USER_NOT_FOUND: 'Такого пользователя не существует. Пожалуйста, проверьте введенные данные.',
 };
 
 const mainGameConstants = {
@@ -53,7 +53,7 @@ const dailyStatisticsConstants = {
   NEW_WORDS_TEXT: 'Новые слова',
   LONGEST_SERIES_OF_ANSWERS_TEXT: 'Саммая длинная серия правильных ответов',
   GO_TO_THE_MAIN_PAGE: 'Перейти на главную',
-}
+};
 
 const wordsToLearnOptions = {
   MIXED: 'Вперемешку',
@@ -107,7 +107,7 @@ const vocabularyConstants = {
   DIFFUCULT_WORDS_TITLE: 'Сложные слова',
   NEW_WORDS_TITLE: 'Новые слова',
   RESTORE_BUTTON_TEXT: 'Восстановить',
-  EMPTY_VOCABULARY_MESSAGE: 'Словарь пуст.'
+  EMPTY_VOCABULARY_MESSAGE: 'Словарь пуст.',
 };
 
 export {

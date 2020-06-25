@@ -5,7 +5,7 @@ const playAudio = (source, audio) => {
     audio.src = source;
     audio.play();
   }
-}
+};
 
 export {
   playAudio,

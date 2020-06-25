@@ -35,7 +35,7 @@ class ExtraVocabulary extends MainVocabulary {
       const wordItem = new ShortenVocabularyItem(
         id, wordText, wordTranslate, transcription, this.title,
       );
-      container.append(wordItem.render())
+      container.append(wordItem.render());
     });
 
     return container;

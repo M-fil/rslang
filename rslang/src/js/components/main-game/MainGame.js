@@ -113,9 +113,7 @@ class MainGame {
       await this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.parseUserWordsData();
-      console.log(this.state.userWords);
 
-      console.log('this.state.learnedWordsToday', this.state.learnedWordsToday);
       if (!this.state.isNormCompleted) {
         await this.setNewWords();
         this.state.wordsToLearn = await this.selectWordsToLearn();
@@ -153,7 +151,6 @@ class MainGame {
         this.preloader.hide();
       } else {
         const { learnedWordsToday } = this.state;
-        console.log('learnedWordsToday', learnedWordsToday);
         const { wordsPerDay } = this.state.settings;
         const mainGameMainContainer = create('div', 'main-game__main-container');
         const mainGameControls = MainGame.renderMainGameControls();
@@ -203,7 +200,6 @@ class MainGame {
     try {
       const { userId, token } = this.getUserDataForAuthorization();
       const statistics = await getStatistics(userId, token);
-      console.log('statistics', statistics);
       const {
         learnedWordsToday,
         correctAnswersNumber,
@@ -275,7 +271,6 @@ class MainGame {
 
     this.state.newWords = newWords[0].paginatedResults
       .slice(0, newWordLength);
-    console.log('this.state.newWords', this.state.newWords);
   }
 
   async selectWordsToLearn() {
@@ -289,7 +284,6 @@ class MainGame {
   async getAllUserWordsFromBackend() {
     const { userId, token } = this.getUserDataForAuthorization();
     const data = await getAllUserWords(userId, token);
-    console.log(data);
     return data;
   }
 
@@ -333,7 +327,9 @@ class MainGame {
 
     if (this.state.currentWordsType === ONLY_DIFFICULT_WORDS) {
       const { learnedWordsNumber } = this.state.difficultWordsState;
-      const percentOfCorrectAnswers = calculatePercentage(learnedWordsNumber, currentWordsArray.length);
+      const percentOfCorrectAnswers = calculatePercentage(
+        learnedWordsNumber, currentWordsArray.length,
+      );
       this.dailyStatistics = new DailyStatistics(
         currentWordsArray.length, percentOfCorrectAnswers, null, longestSeriesOfAnswers,
       );
@@ -399,11 +395,8 @@ class MainGame {
           break;
         }
         case selectedOptionValue === ONLY_WORDS_TO_REPEAT && !isNormCompleted: {
-          console.log('HRERE');
           this.state.userWords = await this.getAllUserWordsFromBackend();
-          console.log(this.state.userWords, 'this.state.userWords');
           selectedArrayType = this.getWordsToRevise();
-          console.log('selectedArrayType', selectedArrayType);
           break;
         }
         case selectedOptionValue === ONLY_DIFFICULT_WORDS: {
@@ -419,7 +412,6 @@ class MainGame {
 
       this.state.currentWordsType = selectedOptionValue;
       this.state.currentWordsArray = selectedArrayType;
-      console.log('this.state.currentWordsArray', this.state.currentWordsArray);
       const wordCardHTML = document.querySelector('.main-game__word-card');
       const mainGameContainer = document.querySelector('.main-game__main-container');
       const mainGameMessage = document.querySelector('.main-game__message');
@@ -429,7 +421,8 @@ class MainGame {
           let { currentWordIndex } = this.state;
           currentWordIndex = currentWordIndex < 0 ? 0 : currentWordIndex;
           const currentWordObject = this.state.currentWordsArray[currentWordIndex];
-          const currentWord = (currentWordObject && currentWordObject.word) || currentWordObject.optional.word;
+          const currentWord = (currentWordObject && currentWordObject.word)
+            || currentWordObject.optional.word;
           const wordCard = MainGame.createWordCard(this.state.currentWordsArray[currentWordIndex]);
           this.formControl = new FormControll(currentWord);
 
@@ -477,13 +470,9 @@ class MainGame {
     const mainContainer = document.querySelector('.main-game__main-container');
 
     const { currentWordIndex, currentWordsArray } = this.state;
-    console.log('words', currentWordsArray);
-    console.log('words2', this.state.currentWordsArray);
     const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
 
     if (currentWordIndex !== currentWordsArray.length) {
-      console.log(currentWordsArray[currentWordIndex]);
-      console.log('currentWordIndex', currentWordIndex);
       const trimedValue = inputHTML.value.trim().toLowerCase();
       const numberOfMistakes = MainGame.checkWord(currentWordsArray[currentWordIndex].word);
 
@@ -514,7 +503,7 @@ class MainGame {
           this.state.correctAnswersNumber += 1;
           this.state.learnedWordsToday += 1;
           const { wordsPerDay } = this.state.settings;
-          const { learnedWordsToday, currentWordsArray } = this.state;
+          const { learnedWordsToday } = this.state;
 
           if (this.state.currentWordsType === ONLY_DIFFICULT_WORDS) {
             this.state.difficultWordsState.learnedWordsNumber += 1;
@@ -576,17 +565,14 @@ class MainGame {
     const { learnedWordsToday } = this.state;
 
     return learnedWordsToday === this.state.currentWordsArray.length
-      || learnedWordsNumber === this.state.currentWordsArray.length
+      || learnedWordsNumber === this.state.currentWordsArray.length;
   }
 
   activateEstimateButtons() {
     document.addEventListener('click', async (event) => {
-      console.log('click');
       if (event.target.classList.contains('main-game__estimate-button')) {
-        console.log('this.state.currentWordIndex', this.state.currentWordIndex);
-        console.log('.this.state.currentWordsArray', this.state.currentWordsArray);
         await this.checkIfDailyNormCompleted();
-        
+
         const { currentWordIndex, currentWordsArray } = this.state;
         if (currentWordIndex !== currentWordsArray.length) {
           const targetElementAppraisal = event.target.dataset.buttonAprraisal;
@@ -595,7 +581,9 @@ class MainGame {
             case AGAIN.text: {
               const { learnedWordsToday, mistakesInCurrentWord } = this.state;
               if (mistakesInCurrentWord === 0) {
-                this.state.learnedWordsToday = (learnedWordsToday - 1 < 0) ? 0 : learnedWordsToday - 1;
+                this.state.learnedWordsToday = (learnedWordsToday - 1 < 0)
+                  ? 0
+                  : learnedWordsToday - 1;
               }
               this.addWordToTheCurrentTraining();
               this.state.mistakesInCurrentWord = 0;
@@ -620,7 +608,6 @@ class MainGame {
           this.renderNextWordCard();
         }
 
-        console.log('this.state.learnedWordsToday', this.state.learnedWordsToday);
         await this.setStatisticsData();
       }
     });
@@ -647,11 +634,12 @@ class MainGame {
     this.state.isAudioEnded = true;
     MainGame.toggleVocabularyButtons(false);
 
-    console.log(this.checkIfCurrentWordIsNotLast(), currentWordsArray.length);
-    if (!currentWordsArray.length || currentWordIndex === currentWordsArray.length - 1) {
-      console.log('HREER')
+    if (
+      !currentWordsArray.length || currentWordIndex === currentWordsArray.length - 1
+    ) {
       const mainContainer = document.querySelector('.main-game__main-container');
-      const message = this.state.isNormCompleted && this.state.currentWordsType !== ONLY_DIFFICULT_WORDS
+      const message = this.state.isNormCompleted
+      && this.state.currentWordsType !== ONLY_DIFFICULT_WORDS
         ? DAILY_NORM_IS_COMPLETED
         : EMPTY_WORD_LIST;
       mainContainer.append(MainGame.showMessage(message));
@@ -659,7 +647,6 @@ class MainGame {
         this.formControl.hide();
       }
     } else {
-      console.log('NOOO')
       MainGame.toggleControlElements(false);
       userAnswerHTML.innerHTML = '';
       userAnswerHTML.classList.remove('word-card__user-answer_translucent');

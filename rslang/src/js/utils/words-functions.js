@@ -9,7 +9,7 @@ import {
 } from '../service/service';
 
 const {
-  GOOD, 
+  GOOD,
 } = estimateButtonsTypes;
 
 const {

@@ -24,7 +24,7 @@ class DailyStatistics {
 
   render() {
     this.HTML = create('div', 'daily-statistics__overlay');
-    this.statisticsBlock = create('div', 'daily-statistics', '', this.HTML)
+    this.statisticsBlock = create('div', 'daily-statistics', '', this.HTML);
     create('div', 'daily-statistics__title', TITLE, this.statisticsBlock);
     this.content = create('div', 'daily-statistics__content', '', this.statisticsBlock);
     this.renderParameter(COMPLETED_CARDS_TEXT, this.completedCardsNumber);
