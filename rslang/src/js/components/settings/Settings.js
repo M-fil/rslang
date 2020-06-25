@@ -6,7 +6,7 @@ import {
   setUserSettings,
   getUserSettings,
 } from '../../service/service';
-import ModalForm from '../modal-form/modalform';
+import ModalWindow from '../modal-window/modalwindow';
 import Preloader from '../preloader/Preloader';
 
 export default class Settings {
@@ -20,7 +20,7 @@ export default class Settings {
     Settings.exists = true;
     Settings.instance = this;
 
-    this.modalForm = new ModalForm('settings__modal', 'settings_modal', settingsText.title);
+    this.modalWindow = new ModalWindow('settings__modal', 'settings_modal', settingsText.title);
     this.preloader = new Preloader();
   }
 
@@ -49,7 +49,7 @@ export default class Settings {
       form,
     ]);
 
-    this.modalForm.setContent(div);
+    this.modalWindow.setContent(div);
   }
 
   static renderTabList() {
@@ -188,11 +188,11 @@ export default class Settings {
   }
 
   openSettingsWindow() {
-    this.modalForm.openModal();
+    this.modalWindow.openModal();
   }
 
   closeSettingsWindow() {
-    this.modalForm.closeModal();
+    this.modalWindow.closeModal();
     this.preloader.hide();
   }
 
