@@ -1,6 +1,6 @@
 export default function shuffle(array, requiredLenth) {
   const shuffledArr = array;
-  let { length } = shuffledArr;
+  let length = shuffledArr.length;
   let buffer;
   let index;
 
