@@ -219,9 +219,11 @@ export default class EnglishPuzzle {
     }).join(' ');
   }
 
-  speachActiveSentens(words) {
+  speachActiveSentens(words, target) {
     const sentense = EnglishPuzzle.createCorrectSentence(words);
     const message = new SpeechSynthesisUtterance(sentense);
+    message.onstart = () => target.classList.add('active-sound');
+    message.onend = () => target.classList.remove('active-sound');
     const voices = this.sinth.getVoices().filter((el) => el.lang === GAME_BLOCK.langEn)[1];
     message.voice = voices;
     this.sinth.speak(message);
@@ -379,6 +381,7 @@ export default class EnglishPuzzle {
       if (status.sound) {
         status.sound = false;
         this.sinth.cancel();
+        document.querySelector('.sound-button').classList.remove('active-sound');
         document.querySelector('.sound-button').classList.remove('active-sintez');
       } else {
         status.sound = true;
@@ -413,7 +416,7 @@ export default class EnglishPuzzle {
 
     document.querySelector('.sound-button').addEventListener('click', async (event) => {
       if (event.target.classList.contains('active-sintez')) {
-        this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter]);
+        this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter], event.target);
       }
     });
 
@@ -480,7 +483,13 @@ export default class EnglishPuzzle {
   actionForResultSounds() {
     document.querySelectorAll('.result-row').forEach((el) => {
       const components = el.childNodes;
-      components[0].addEventListener('click', () => this.speachActiveSentens(components[1].textContent));
+      components[0].addEventListener('click', (event) => {
+        this.speachActiveSentens(components[1].textContent, event.target);
+        if (event.target.classList.contains('active-sound')) {
+          this.sinth.cancel();
+          event.target.classList.remove('active-sound');
+        }
+      });
     });
   }
 }
