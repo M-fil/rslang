@@ -1,6 +1,6 @@
 import create from '../../utils/сreate';
 
-export default class ModalForm {
+export default class ModalWindow {
   constructor(classNames, id, title) {
     this.id = id;
 
