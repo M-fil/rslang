@@ -3,7 +3,7 @@ import {
   savannahConstants,
   urls,
 } from '../../../constants/constants';
-import getWords from '../../../service/service';
+import { getWords } from '../../../service/service';
 import Preloader from '../../preloader/Preloader';
 import shuffle from '../../../utils/shuffle';
 
