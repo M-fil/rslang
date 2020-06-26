@@ -25,16 +25,20 @@ export default class Settings {
 
     Settings.exists = true;
     Settings.instance = this;
+    this.initialized = false;
 
     this.modalWindow = new ModalWindow('settings__modal', 'settings_modal', settingsText.title);
     this.preloader = new Preloader();
   }
 
   async init() {
-    await this.loadSettings();
+    if (!this.initialized) {
+      this.initialized = true;
+      await this.loadSettings();
 
-    this.renderSettingsWindow();
-    this.preloader.render();
+      this.renderSettingsWindow();
+      this.preloader.render();
+    }
   }
 
   renderSettingsWindow() {
@@ -156,7 +160,6 @@ export default class Settings {
   }
 
   static createNumberTabElement(name, label, value, disabled = false, clickHandler, ...attributes) {
-    console.log(attributes);
     const InputElement = create('input', 'settings-form__input', undefined, undefined, ['type', 'number'], ['name', name], ['value', value], ...attributes);
     InputElement.disabled = disabled;
     if (clickHandler) {
