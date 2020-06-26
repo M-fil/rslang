@@ -70,44 +70,23 @@ export default class Settings {
   }
 
   renderMainTab() {
-    const newCardsPerDayInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'number'], ['name', 'newMainCardsPerDay'], ['value', this.options.main.newCardsPerDay]);
-    newCardsPerDayInput.addEventListener('click', (event) => {
+    const newCardsPerDay = Settings.createNumberTabElement('newMainCardsPerDay', settingsText.tabs.mainGame.newCardsPerDay, this.options.main.newCardsPerDay, false, (event) => {
       const maxCardsEl = document.querySelector('.settings-form__input[name=maxMainCardsPerDay]');
       const newCards = Number(event.target.value);
       const maxCardsMin = newCards + SettingsConst.differenceBetweenNewAndMax;
       maxCardsEl.setAttribute('min', maxCardsMin);
       if (Number(maxCardsEl.value) < (maxCardsMin)) maxCardsEl.value = maxCardsMin;
     });
-    const newCardsPerDay = create('label', 'settings-form__label', [`${settingsText.tabs.mainGame.newCardsPerDay}: `, newCardsPerDayInput]);
-    const maxCardsPerDayInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'number'], ['name', 'maxMainCardsPerDay'], ['value', this.options.main.maxCardsPerDay], ['min', this.options.main.newCardsPerDay + 5]);
-    const maxCardsPerDay = create('label', 'settings-form__label', [`${settingsText.tabs.mainGame.maxCardsPerDay}: `, maxCardsPerDayInput]);
-    const TranslateWordInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isMainShowTranslateWord']);
-    TranslateWordInput.checked = this.options.main.showTranslateWord;
-    const TranslateWord = create('label', 'settings-form__label', [TranslateWordInput, ` ${settingsText.tabs.mainGame.showTranslateWord}`]);
-    const WordMeaningInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isMainShowWordMeaning']);
-    WordMeaningInput.checked = this.options.main.showWordMeaning;
-    const WordMeaning = create('label', 'settings-form__label', [WordMeaningInput, ` ${settingsText.tabs.mainGame.showWordMeaning}`]);
-    const WordExampleInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isMainShowWordExample']);
-    WordExampleInput.checked = this.options.main.showWordExample;
-    const WordExample = create('label', 'settings-form__label', [WordExampleInput, ` ${settingsText.tabs.mainGame.showWordExample}`]);
-    const TranscriptionInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isMainShowTranscription']);
-    TranscriptionInput.checked = this.options.main.showTranscription;
-    const Transcription = create('label', 'settings-form__label', [TranscriptionInput, ` ${settingsText.tabs.mainGame.showTranscription}`]);
-    const ImageAssociationsInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isMainShowImageAssociations']);
-    ImageAssociationsInput.checked = this.options.main.showImageAssociations;
-    const ImageAssociations = create('label', 'settings-form__label', [ImageAssociationsInput, ` ${settingsText.tabs.mainGame.showImageAssociations}`]);
-    const ButtonShowAnswerInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isMainShowButtonShowAnswer']);
-    ButtonShowAnswerInput.checked = this.options.main.showButtonShowAnswer;
-    const ButtonShowAnswer = create('label', 'settings-form__label', [ButtonShowAnswerInput, ` ${settingsText.tabs.mainGame.showButtonShowAnswer}`]);
-    const ButtonDeleteInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isMainShowButtonDelete']);
-    ButtonDeleteInput.checked = this.options.main.showButtonDelete;
-    const ButtonDelete = create('label', 'settings-form__label', [ButtonDeleteInput, ` ${settingsText.tabs.mainGame.showButtonShowDelete}`]);
-    const ButtonHardInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isMainShowButtonHard']);
-    ButtonHardInput.checked = this.options.main.showButtonHard;
-    const ButtonHard = create('label', 'settings-form__label', [ButtonHardInput, ` ${settingsText.tabs.mainGame.showButtonShowHard}`]);
-    const ButtonsEasyDifficultInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isMainShowButtons']);
-    ButtonsEasyDifficultInput.checked = this.options.main.showButtons;
-    ButtonsEasyDifficultInput.addEventListener('click', (event) => {
+    const maxCardsPerDay = Settings.createNumberTabElement('maxMainCardsPerDay', settingsText.tabs.mainGame.maxCardsPerDay, this.options.main.maxCardsPerDay, false, undefined, ['min', this.options.main.newCardsPerDay + SettingsConst.differenceBetweenNewAndMax]);
+    const TranslateWord = Settings.createCheckboxTabElement('isMainShowTranslateWord', settingsText.tabs.mainGame.showTranslateWord, this.options.main.showTranslateWord);
+    const WordMeaning = Settings.createCheckboxTabElement('isMainShowWordMeaning', settingsText.tabs.mainGame.showWordMeaning, this.options.main.showWordMeaning);
+    const WordExample = Settings.createCheckboxTabElement('isMainShowWordExample', settingsText.tabs.mainGame.showWordExample, this.options.main.showWordExample);
+    const Transcription = Settings.createCheckboxTabElement('isMainShowTranscription', settingsText.tabs.mainGame.showTranscription, this.options.main.showTranscription);
+    const ImageAssociations = Settings.createCheckboxTabElement('isMainShowImageAssociations', settingsText.tabs.mainGame.showImageAssociations, this.options.main.showImageAssociations);
+    const ButtonShowAnswer = Settings.createCheckboxTabElement('isMainShowButtonShowAnswer', settingsText.tabs.mainGame.showButtonShowAnswer, this.options.main.showButtonShowAnswer);
+    const ButtonDelete = Settings.createCheckboxTabElement('isMainShowButtonDelete', settingsText.tabs.mainGame.showButtonShowDelete, this.options.main.showButtonDelete);
+    const ButtonHard = Settings.createCheckboxTabElement('isMainShowButtonHard', settingsText.tabs.mainGame.showButtonShowHard, this.options.main.showButtonHard);
+    const ButtonsEasyDifficult = Settings.createCheckboxTabElement('isMainShowButtons', settingsText.tabs.mainGame.showButtons, this.options.main.showButtons, (event) => {
       const easyEl = document.querySelector('.settings-form__input[name=mainIntervalEasy]');
       const normalEl = document.querySelector('.settings-form__input[name=mainIntervalNormal]');
       const difficultEl = document.querySelector('.settings-form__input[name=mainIntervalDifficult]');
@@ -115,19 +94,9 @@ export default class Settings {
       normalEl.disabled = !event.target.checked;
       difficultEl.disabled = !event.target.checked;
     });
-    const ButtonsEasyDifficult = create('label', 'settings-form__label', [ButtonsEasyDifficultInput, ` ${settingsText.tabs.mainGame.showButtons}`]);
-    const intervalEasyInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'number'], ['name', 'mainIntervalEasy'], ['value', this.options.main.intervalEasy], ['min', this.options.main.intervalNormal + 1]);
-    intervalEasyInput.disabled = !this.options.main.showButtons;
-    intervalEasyInput.addEventListener('click', Settings.intervalLimitsHandler);
-    const intervalEasy = create('label', 'settings-form__label', [`${settingsText.tabs.mainGame.mainIntervalEasy}: `, intervalEasyInput]);
-    const intervalNormalInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'number'], ['name', 'mainIntervalNormal'], ['value', this.options.main.intervalNormal], ['min', this.options.main.intervalDifficult + 1]);
-    intervalNormalInput.disabled = !this.options.main.showButtons;
-    intervalNormalInput.addEventListener('click', Settings.intervalLimitsHandler);
-    const intervalNormal = create('label', 'settings-form__label', [`${settingsText.tabs.mainGame.mainIntervalNormal}: `, intervalNormalInput]);
-    const intervalDifficultInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'number'], ['name', 'mainIntervalDifficult'], ['value', this.options.main.intervalDifficult]);
-    intervalDifficultInput.disabled = !this.options.main.showButtons;
-    intervalDifficultInput.addEventListener('click', Settings.intervalLimitsHandler);
-    const intervalDifficult = create('label', 'settings-form__label', [`${settingsText.tabs.mainGame.mainIntervalDifficult}: `, intervalDifficultInput]);
+    const intervalEasy = Settings.createNumberTabElement('mainIntervalEasy', settingsText.tabs.mainGame.mainIntervalEasy, this.options.main.intervalEasy, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', this.options.main.intervalNormal + SettingsConst.minStepBetweenEasyAndNormal]);
+    const intervalNormal = Settings.createNumberTabElement('mainIntervalNormal', settingsText.tabs.mainGame.mainIntervalNormal, this.options.main.intervalNormal, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', this.options.main.intervalDifficult + SettingsConst.minStepBetweenNormalAndDifficult]);
+    const intervalDifficult = Settings.createNumberTabElement('mainIntervalDifficult', settingsText.tabs.mainGame.mainIntervalDifficult, this.options.main.intervalDifficult, !this.options.main.showButtons, Settings.intervalLimitsHandler);
 
     const div = create('div', 'settings-tabs__item settings-tabs__item_active', [
       newCardsPerDay,
@@ -150,24 +119,12 @@ export default class Settings {
   }
 
   renderDictionaryTab() {
-    const AudioExampleInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isDictionaryShowAudioExample']);
-    AudioExampleInput.checked = this.options.dictionary.showAudioExample;
-    const AudioExample = create('label', 'settings-form__label', [AudioExampleInput, ` ${settingsText.tabs.dictionary.audioExample}`]);
-    const TranslateWordInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isDictionaryShowTranslateWord']);
-    TranslateWordInput.checked = this.options.dictionary.showTranslateWord;
-    const TranslateWord = create('label', 'settings-form__label', [TranslateWordInput, ` ${settingsText.tabs.dictionary.translateWord}`]);
-    const WordMeaningInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isDictionaryShowWordMeaning']);
-    WordMeaningInput.checked = this.options.dictionary.showWordMeaning;
-    const WordMeaning = create('label', 'settings-form__label', [WordMeaningInput, ` ${settingsText.tabs.dictionary.wordMeaning}`]);
-    const WordExampleInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isDictionaryShowWordExample']);
-    WordExampleInput.checked = this.options.dictionary.showWordExample;
-    const WordExample = create('label', 'settings-form__label', [WordExampleInput, ` ${settingsText.tabs.dictionary.wordExample}`]);
-    const TranscriptionInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isDictionaryShowTranscription']);
-    TranscriptionInput.checked = this.options.dictionary.showTranscription;
-    const Transcription = create('label', 'settings-form__label', [TranscriptionInput, ` ${settingsText.tabs.dictionary.transcription}`]);
-    const ImageAssociationsInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'isDictionaryShowImageAssociations']);
-    ImageAssociationsInput.checked = this.options.dictionary.showImageAssociations;
-    const ImageAssociations = create('label', 'settings-form__label', [ImageAssociationsInput, ` ${settingsText.tabs.dictionary.imageAssociations}`]);
+    const AudioExample = Settings.createCheckboxTabElement('isDictionaryShowAudioExample', settingsText.tabs.dictionary.audioExample, this.options.dictionary.showAudioExample);
+    const TranslateWord = Settings.createCheckboxTabElement('isDictionaryShowTranslateWord', settingsText.tabs.dictionary.translateWord, this.options.dictionary.showTranslateWord);
+    const WordMeaning = Settings.createCheckboxTabElement('isDictionaryShowWordMeaning', settingsText.tabs.dictionary.wordMeaning, this.options.dictionary.showWordMeaning);
+    const WordExample = Settings.createCheckboxTabElement('isDictionaryShowWordExample', settingsText.tabs.dictionary.wordExample, this.options.dictionary.showWordExample);
+    const Transcription = Settings.createCheckboxTabElement('isDictionaryShowTranscription', settingsText.tabs.dictionary.transcription, this.options.dictionary.showTranscription);
+    const ImageAssociations = Settings.createCheckboxTabElement('isDictionaryShowImageAssociations', settingsText.tabs.dictionary.imageAssociations, this.options.dictionary.showImageAssociations);
 
     const div = create('div', 'settings-tabs__item', [AudioExample, TranslateWord, WordMeaning, WordExample, Transcription, ImageAssociations], undefined, ['tabId', 2]);
 
@@ -175,23 +132,39 @@ export default class Settings {
   }
 
   renderFindAPairTab() {
-    const delayBeforeClosingInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'number'], ['name', 'delayBeforeClosingCard'], ['value', this.options.findapair.delayBeforeClosingCard]);
-    const delayBeforeClosing = create('label', 'settings-form__label', [`${settingsText.tabs.findapair.delayBeforeClosingCard}: `, delayBeforeClosingInput]);
-
-    const cardTextOnStartInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', 'showCardsTextOnStart']);
-    cardTextOnStartInput.checked = this.options.findapair.cardTextOnStart;
-    cardTextOnStartInput.addEventListener('click', (event) => {
+    const delayBeforeClosing = Settings.createNumberTabElement('delayBeforeClosingCard', settingsText.tabs.findapair.delayBeforeClosingCard, this.options.findapair.delayBeforeClosingCard);
+    const cardTextOnStart = Settings.createCheckboxTabElement('showCardsTextOnStart', settingsText.tabs.findapair.showCardsTextOnStart, this.options.findapair.showCardsTextOnStart, (event) => {
       const elem = document.querySelector('.settings-form__input[name=showingCardsTime]');
       elem.disabled = !event.target.checked;
     });
-    const cardTextOnStart = create('label', 'settings-form__label', [cardTextOnStartInput, ` ${settingsText.tabs.findapair.showCardsTextOnStart}`]);
-    const showingCardsTimeInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'number'], ['name', 'showingCardsTime'], ['value', this.options.findapair.showingCardsTime]);
-    showingCardsTimeInput.disabled = !this.options.findapair.cardTextOnStart;
-    const showingCardsTime = create('label', 'settings-form__label', [`${settingsText.tabs.findapair.showingCardsTime}: `, showingCardsTimeInput]);
+    const showingCardsTime = Settings.createNumberTabElement('showingCardsTime', settingsText.tabs.findapair.showingCardsTime, this.options.findapair.showingCardsTime, !this.options.findapair.showCardsTextOnStart);
 
     const div = create('div', 'settings-tabs__item', [delayBeforeClosing, cardTextOnStart, showingCardsTime], undefined, ['tabId', 3]);
 
     return div;
+  }
+
+  static createCheckboxTabElement(name, label, checked, clickHandler) {
+    const InputElement = create('input', 'settings-form__input', undefined, undefined, ['type', 'checkbox'], ['name', name]);
+    InputElement.checked = checked;
+    if (clickHandler) {
+      InputElement.addEventListener('click', clickHandler);
+    }
+    const LabelElement = create('label', 'settings-form__label', [InputElement, ` ${label}`]);
+
+    return LabelElement;
+  }
+
+  static createNumberTabElement(name, label, value, disabled = false, clickHandler, ...attributes) {
+    console.log(attributes);
+    const InputElement = create('input', 'settings-form__input', undefined, undefined, ['type', 'number'], ['name', name], ['value', value], ...attributes);
+    InputElement.disabled = disabled;
+    if (clickHandler) {
+      InputElement.addEventListener('click', clickHandler);
+    }
+    const LabelElement = create('label', 'settings-form__label', [`${label}: `, InputElement]);
+
+    return LabelElement;
   }
 
   openSettingsWindow() {
@@ -320,8 +293,8 @@ export default class Settings {
       },
       findapair: {
         delayBeforeClosingCard: Number(form.querySelector('.settings-form__input[name=delayBeforeClosingCard]').value),
-        showCardsTextOnStart: true,
-        showingCardsTime: 1000,
+        showCardsTextOnStart: form.querySelector('.settings-form__input[name=showCardsTextOnStart]').checked,
+        showingCardsTime: Number(form.querySelector('.settings-form__input[name=showingCardsTime]').value),
       },
     };
     await this.saveSettings();
