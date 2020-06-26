@@ -52,11 +52,9 @@ class FormControll {
   }
 
   hide() {
-    this.HTML.classList.add('main-game__form_hidden');
-  }
-
-  show() {
-    this.HTML.classList.remove('main-game__form_hidden');
+    if (this.HTML) {
+      this.HTML.remove();
+    }
   }
 }
 
