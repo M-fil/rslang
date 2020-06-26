@@ -19,7 +19,6 @@ const getWords = async (page = 0, group = 0) => {
   return data;
 };
 
-export default getWords;
 const createUser = async (user) => {
   const rawResponse = await fetch(CREATE_USER_URL, {
     method: 'POST',

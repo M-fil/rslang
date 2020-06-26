@@ -1,5 +1,3 @@
-$shadow-color: rgba(0,0,0,0.6);
-
 body {
   font-size: 20px;
   line-height: 1.2;
@@ -16,7 +14,7 @@ body {
 .start-game-window {
   width: 50%;
   padding: 10px 15px;
-  border: 1px solid black;
+  border: 1px solid $savannah-border-black;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
@@ -41,7 +39,7 @@ body {
   position: absolute;
   top: calc(50% - 35px);
   left: calc(50% - 15px);
-  color: green;
+  color: $savannah-number-reverse;
   font-size: 50px;
 }
 
@@ -52,29 +50,29 @@ body {
 }
 .word_english {
   border: none;
-  color: cadetblue;
+  color: $savannah-english-word;
   font-size: 40px; 
   text-align: center;
 }
 .word_russian {
   position: relative;
   height: 70px;
-  color: green;
+  color: $savannah-russian-word;
   font-size: 22px;
   cursor: pointer;
-  border: 1px solid steelblue;
+  border: 1px solid $savannah-russian-word-border;
 }
 .word_number {
   position: absolute;
   top: 30%;
   left: 3%;
-  color: skyblue;
+  color: $savannah-russian-word-number;
 }
 .word_correct {
-  background-color: lightgreen;
+  background-color: $savannah-word-correct;
 }
 .word_error {
-  background-color: palevioletred;
+  background-color: $savannah-word-error;
 }
 .english-line {
   position: absolute;
@@ -100,7 +98,7 @@ body {
   top: 80px;
   right: 250px;
   font-size: 40px;
-  color: crimson;
+  color: $savannah-plus-lives;
   opacity: 0;
 }
 
@@ -127,10 +125,10 @@ body {
 }
 
 .sound_off {
-  background-color: green;
+  background-color: $savannah-background-sound-off;
 }
 .sound_on {
-  background-color: white;
+  background-color: $savannah-background-white;
 }
 .modal {
   display: none;
@@ -141,15 +139,15 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: $shadow-color;
+  background-color: $savannah-shadow-color;
 }
 .modal_text {
-  background-color: white;
+  background-color: $savannah-background-white;
   margin-top: 10%;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
-  border: 1px solid black;
+  border: 1px solid $savannah-border-black;
   border-radius: 5px;
   width: 30%;
   overflow: auto;

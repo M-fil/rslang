@@ -26,6 +26,13 @@ const {
   ERROR_STAT,
   CORRECT_STAT,
   STAT,
+  PLUS_LIVE,
+  AUDIO_CORRECT,
+  AUDIO_ERROR,
+  STAT_IMAGE_AUDIO,
+  LIVES_IMAGE_BLACK,
+  LIVES_IMAGE_INHERIT,
+  MAX_WORDS,
 } = savannahConstants;
 
 const {
@@ -129,7 +136,7 @@ export default class SavannahGame {
       russianBut.setAttribute('data-translate', butTranslate);
       this.wordNumber = create('span', 'word_number', keyboardNumber.toString(), russianBut);
     });
-    this.plusLive = create('span', 'add-lives-number', '+1 &#9829;', this.container);
+    this.plusLive = create('span', 'add-lives-number', PLUS_LIVE, this.container);
   }
 
   async changeCard() {
@@ -191,7 +198,7 @@ export default class SavannahGame {
     if (target.dataset.translate === engTranslate) {
       this.correctWordNumber += 1;
       this.rightWords.push(this.arrayBeforeClickWords);
-      this.playAudio('./src/assets/audio/correct.mp3');
+      this.playAudio(AUDIO_CORRECT);
       target.classList.add('word_correct');
       this.errorTimer = setTimeout(async () => {
         await this.changeCard();
@@ -200,28 +207,35 @@ export default class SavannahGame {
       if (this.correctWordNumber === ADD_LIVES) {
         this.addLives();
       }
+      if ((this.rightWords.length + this.wrongWords.length) === MAX_WORDS) {
+        this.createStatistics();
+      }
     } else {
       this.correctWordNumber = 0;
       target.classList.add('word_error');
       this.errorWord();
-      if (this.error === (LIVES + this.countLives)) {
-        clearInterval(this.timer);
-        clearTimeout(this.errorTimer);
-        const statisticaContainer = create('div', 'modal', '', this.body);
-        SavannahGame.changeDisplay(statisticaContainer, 'block');
-        this.statisticaText = create('div', 'modal_text', '', statisticaContainer);
-        this.statisticaTitle = create('h4', 'modal_title', `${STAT}`, this.statisticaText);
-
-        this.statisticaWrongWordsText = create('p', 'modal_title', `${ERROR_STAT} ${this.wrongWords.length}`, this.statisticaText);
-        this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
-        this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${this.rightWords.length}`, this.statisticaText);
-        this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
-
-        SavannahGame.statisticaWords(this.wrongWords, this.statisticaWrongWords);
-        SavannahGame.statisticaWords(this.rightWords, this.statisticaRightWords);
-        this.clickStatisticaAudio();
+      if (this.error === (LIVES + this.countLives) || (this.rightWords.length + this.wrongWords.length) === MAX_WORDS) {
+        this.createStatistics();
       }
     }
+  }
+
+  createStatistics() {
+    clearInterval(this.timer);
+    clearTimeout(this.errorTimer);
+    const statisticaContainer = create('div', 'modal', '', this.body);
+    SavannahGame.changeDisplay(statisticaContainer, 'block');
+    this.statisticaText = create('div', 'modal_text', '', statisticaContainer);
+    this.statisticaTitle = create('h4', 'modal_title', `${STAT}`, this.statisticaText);
+
+    this.statisticaWrongWordsText = create('p', 'modal_title', `${ERROR_STAT} ${this.wrongWords.length}`, this.statisticaText);
+    this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
+    this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${this.rightWords.length}`, this.statisticaText);
+    this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
+
+    SavannahGame.statisticaWords(this.wrongWords, this.statisticaWrongWords);
+    SavannahGame.statisticaWords(this.rightWords, this.statisticaRightWords);
+    this.clickStatisticaAudio();
   }
 
   wordClick() {
@@ -246,7 +260,7 @@ export default class SavannahGame {
     arrayWords.forEach((word) => {
       const everyString = create('p', '', '', container);
       const picture = create('img', 'audio-pictures', '', everyString);
-      picture.src = './src/assets/images/statistica_sound.png';
+      picture.src = STAT_IMAGE_AUDIO;
       this.audioPic = create('audio', '', '', everyString);
       this.audioPic.setAttribute('data-audiosrc', word.audio);
       everyString.innerHTML += `<b>${word.word}</b> - ${word.wordTranslate}<br>`;
@@ -306,13 +320,13 @@ export default class SavannahGame {
   changeLives() {
     for (let i = 0; i < LIVES; i += 1) {
       this.live = create('img', 'live', '', this.lives);
-      this.live.src = '/src/assets/images/heart_black.png';
+      this.live.src = LIVES_IMAGE_BLACK;
     }
   }
 
   addLives() {
     this.live = create('img', 'live', '', this.lives);
-    this.live.src += '/src/assets/images/heart_black.png';
+    this.live.src += LIVES_IMAGE_BLACK;
     this.countLives += 1;
     this.correctWordNumber = 0;
     this.plusLive = document.querySelector('.add-lives-number');
@@ -337,14 +351,14 @@ export default class SavannahGame {
   errorWord() {
     this.allLives = document.querySelectorAll('.live');
     this.error += 1;
-    this.playAudio('./src/assets/audio/error.mp3');
+    this.playAudio(AUDIO_ERROR);
     this.rusBut.forEach((rusButton) => {
       if (rusButton.dataset.translate === this.engRandomWords[this.num].wordTranslate) {
         rusButton.classList.add('word_correct');
       }
       this.disabledButtons();
     });
-    this.allLives[this.liveIndex].src = '/src/assets/images/heart_inherit.png';
+    this.allLives[this.liveIndex].src = LIVES_IMAGE_INHERIT;
     this.liveIndex += 1;
     this.wrongWords.push(this.arrayBeforeClickWords);
     clearInterval(this.timer);
