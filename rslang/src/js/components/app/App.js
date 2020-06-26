@@ -133,7 +133,7 @@ class App {
         email: data.email,
         token: JSON.parse(savedUserData).token,
       };
-      App.renderMainGame(this.state.user);
+      await App.renderMainGame(this.state.user);
       this.prelodaer.hide();
     } catch (error) {
       localStorage.setItem('user-data', '');
@@ -145,9 +145,9 @@ class App {
     }
   }
 
-  static renderMainGame(userState) {
+  static async renderMainGame(userState) {
     const mainGame = new MainGame(userState);
-    mainGame.render('.main-content');
+    await mainGame.render('.main-content');
   }
 
   renderToggleAuthentication() {

@@ -33,7 +33,7 @@ class WordsSelectList {
   }
 
   enable() {
-    this.select.removeAttribute('disabled'); 
+    this.select.removeAttribute('disabled');
   }
 }
 

@@ -1,8 +1,6 @@
 import create from '../../../../utils/сreate';
 import { urls } from '../../../../constants/constants';
 
-import Preloader from '../../../preloader/Preloader';
-
 const {
   WORDS_IMAGES_URL,
 } = urls;
@@ -38,12 +36,8 @@ class WordCard {
 
     const wordImage = new Image();
     wordImage.src = `${WORDS_IMAGES_URL}${this.image}`;
-    this.preloader = new Preloader();
-    this.preloader.render();
-    this.preloader.show();
     wordImage.onload = () => {
       imageBlock.innerHTML = `<img src="${wordImage.src}" alt="${this.word}" />`;
-      this.preloader.hide();
     };
 
     this.HTML = create(
