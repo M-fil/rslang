@@ -13,8 +13,8 @@ export default async function createCanvasElements(
     const img = new Image();
     img.src = src;
     img.onload = () => {
-      const imgWidth = img.width;
-      const imgHeight = img.height;
+      const imgWidth = img.naturalWidth;
+      const imgHeight = img.naturalHeight;
       const groupsWords = wordsList.map((word) => word.split(' '));
       const groupsRow = groupsWords.length;
       const EXTRA_WIDTH_VALUE = parseInt(PUZZLE_PROPERTIES.extraWidthValue, 10);

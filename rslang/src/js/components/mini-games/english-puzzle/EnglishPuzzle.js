@@ -220,10 +220,11 @@ export default class EnglishPuzzle {
   }
 
   speachActiveSentens(words, target) {
+    const targetEl = target || document.querySelector('.sound-button');
     const sentense = EnglishPuzzle.createCorrectSentence(words);
     const message = new SpeechSynthesisUtterance(sentense);
-    message.onstart = () => target.classList.add('active-sound');
-    message.onend = () => target.classList.remove('active-sound');
+    message.onstart = () => targetEl.classList.add('active-sound');
+    message.onend = () => targetEl.classList.remove('active-sound');
     const voices = this.sinth.getVoices().filter((el) => el.lang === GAME_BLOCK.langEn)[1];
     message.voice = voices;
     this.sinth.speak(message);
@@ -426,6 +427,7 @@ export default class EnglishPuzzle {
         document.querySelector('.result-button'),
         document.querySelector('.continue-button'),
         document.querySelector('.repeat-button'),
+        this.startMenu,
       ], [
         document.querySelector('.check-button'),
         document.querySelector('.show-result-button'),
