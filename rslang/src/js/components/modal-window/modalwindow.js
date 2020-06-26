@@ -21,12 +21,16 @@ export default class ModalWindow {
 
   openModal() {
     const modal = document.querySelector(`#${this.id}`);
-    if (modal) modal.classList.remove('modal-block_hidden');
+    if (modal) {
+      modal.classList.remove('modal-block_hidden');
+    }
   }
 
   closeModal() {
     const modal = document.querySelector(`#${this.id}`);
-    if (modal) modal.classList.add('modal-block_hidden');
+    if (modal) {
+      modal.classList.add('modal-block_hidden');
+    }
   }
 
   clickHandler(event) {
