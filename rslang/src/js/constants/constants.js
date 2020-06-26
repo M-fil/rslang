@@ -39,6 +39,9 @@ const findAPairText = {
 };
 
 const auditionGameVariables = {
+  maxPages:29,
+  maxGroups:5,
+  possibleWordsAmount:5,
   Lives: 5,
   Rounds: 5,
   gameTitle: 'Аудиовызов',

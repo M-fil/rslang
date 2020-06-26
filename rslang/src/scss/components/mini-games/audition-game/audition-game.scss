@@ -1,16 +1,25 @@
-body{
-    font-size: 4rem;
+html,body{
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+.audition-game__wrapper{
+ height: 100%;
+ width: 100%;
+ margin: 0;
+  font-size: 4rem;
     background: rgb(2,0,36);
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(88,9,121,1) 58%, rgba(255,0,206,1) 100%);
 }
-.answers{
+.audition-game__answers{
     display: flex;
     justify-content: space-between;
-    position: absolute;
-    top: 45%;
+    position: relative;
+    top: 10%;
+    left: -50%;
     
 }
-.element{
+.audition-game__element{
     border: 1px solid black;
     font-size: 24px;
     line-height: 30px;
@@ -24,11 +33,15 @@ body{
     cursor: pointer;
     margin: 0 20px;
 }
-.game{
+.audition-game__game{
     margin: 0 auto;
-    max-width: 600px;
+    height: 100%;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    max-width: 1080px;
 }
-.gameName{
+.audition-game__title{
     font-size: 40px;
     font-weight: 300;
     line-height: 1;
@@ -39,18 +52,15 @@ body{
     -webkit-font-smoothing: antialiased;
     letter-spacing: 13px;
 }
-.gameDesc{
+.audition-game__description{
     margin: 0 auto 58px;
     font-size: 18px;
     line-height: 24px;
     font-weight: 300;
     color: white;
 }
-.gameStartButton{
+.audition-game__button__start{
     cursor: pointer;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
     font-size: 24px;
     font-weight: 300;
     line-height: 1;
@@ -63,14 +73,15 @@ body{
     border-radius: 4px;
     transition: all .15s ease;
 }
-.startScreen{
+.audition-game__startScreen{
+    text-align: center;
     margin: 14% auto;
 }
 .hide{
     display: none;
 }
-.container{
-  height: 90vh;
+.audition-game__container{
+  height: 100%;
 }
 .statistic{
   line-height: normal;
@@ -78,19 +89,28 @@ body{
 .alarmDesc{
   line-height: normal;
 }
-.audioPulse{
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    right: 50%;
-    width: 150px;
-    height: 150px;
-    color: gray;
-    font-family: Roboto;
-    background:url("https://psv4.userapi.com/c856528/u106151900/docs/d5/cbb2cd905626/audio.png?extra=WkoXkuoHCbjsCc5_frZiKM0kwKTuclLooYdbvx9OjoDMknCaKfm_TsxTxUUjkO5hYxtfhANH7nUpVN90bMbqX7wW5LfIoXeibLc0p1ifK3hHrAglZIcxurA7-VOZr0zM9Rki_bFF6Okg");
-    background-size: contain;
-    border-radius: 50%;
-    animation: radial-pulse 1s infinite;
+.audition-game__correctanswer{
+  position: relative;
+  left: -50%;
+  margin-bottom: 0;
+  color: white;
+  line-height: 0;
+}
+.audition-game__audio__pulse{
+  margin: 0 auto;
+  position: relative;
+  left: -50%;
+  margin-top: 21%;
+  width: 150px;
+  height: 150px;
+  color: gray;
+  font-family: Roboto;
+  background: url('https://psv4.userapi.com/c856528/u106151900/docs/d5/465145c1b9eb/audio.png?extra=OQ8RQtFvwJrR2IiaqlBoUwv-xEITOssBMpYTCc03-L6JLUaBm_0pueQ1x3gt6HJ5xTg6XJJsNojxJC3d68v3tEZZtD4FBUjPinqnCyxjmqFwyWb5U2k7a1HcvU8mExfy61HuuDd417FGttnty_RV4GyMGg');
+  background-size: cover;
+  border-radius: 50%;
+  animation: radial-pulse 1s infinite;
+  display: block;
+  background-repeat: no-repeat;
 }
 @keyframes radial-pulse {
     0% {
@@ -108,11 +128,10 @@ span{
     text-decoration: line-through;
     opacity: 1;
 }
-.nextBtn{
-    position: absolute;
-    top: 70%;
-    left: 50%;
-    right: 50%;
+.audition-game__button__next{
+    margin: 20% auto;
+    position: relative;
+    left: -50%;
     cursor: pointer;
     font-size: 4.5rem;
     font-weight: 300;
@@ -133,6 +152,7 @@ span{
     opacity: .5;
 }
 .close {
+    z-index: 1;
     cursor:pointer;
     position: absolute;
     right: 32px;
@@ -195,7 +215,7 @@ span{
   }
   .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%; 

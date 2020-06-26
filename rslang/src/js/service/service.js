@@ -27,7 +27,6 @@ const getWordsAdditionalInfo = async (word) => {
 	}
 });
 const data = await response.json();
-console.log(data);
 return data;
 }
 const createUser = async (user) => {
