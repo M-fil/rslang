@@ -9,6 +9,12 @@ import {
 import ModalWindow from '../modal-window/modalwindow';
 import Preloader from '../preloader/Preloader';
 
+const SettingsConst = {
+  differenceBetweenNewAndMax: 5,
+  minStepBetweenEasyAndNormal: 1,
+  minStepBetweenNormalAndDifficult: 1,
+};
+
 export default class Settings {
   constructor(userData) {
     if (Settings.exists) {
@@ -68,8 +74,9 @@ export default class Settings {
     newCardsPerDayInput.addEventListener('click', (event) => {
       const maxCardsEl = document.querySelector('.settings-form__input[name=maxMainCardsPerDay]');
       const newCards = Number(event.target.value);
-      maxCardsEl.setAttribute('min', newCards + 5);
-      if (Number(maxCardsEl.value) < (newCards + 5)) maxCardsEl.value = newCards + 5;
+      const maxCardsMin = newCards + SettingsConst.differenceBetweenNewAndMax;
+      maxCardsEl.setAttribute('min', maxCardsMin);
+      if (Number(maxCardsEl.value) < (maxCardsMin)) maxCardsEl.value = maxCardsMin;
     });
     const newCardsPerDay = create('label', 'settings-form__label', [`${settingsText.tabs.mainGame.newCardsPerDay}: `, newCardsPerDayInput]);
     const maxCardsPerDayInput = create('input', 'settings-form__input', undefined, undefined, ['type', 'number'], ['name', 'maxMainCardsPerDay'], ['value', this.options.main.maxCardsPerDay], ['min', this.options.main.newCardsPerDay + 5]);
@@ -209,38 +216,44 @@ export default class Settings {
     const res = await getUserSettings(this.user.userId, this.user.token);
     if (res) this.options = res.optional;
     else {
-      this.options = {
-        main: {
-          newCardsPerDay: 20,
-          maxCardsPerDay: 25,
-          showTranslateWord: true,
-          showWordMeaning: true,
-          showWordExample: true,
-          showTranscription: true,
-          showImageAssociations: true,
-          showButtonShowAnswer: true,
-          showButtonDelete: true,
-          showButtonHard: true,
-          showButtons: true,
-          intervalEasy: 9,
-          intervalNormal: 6,
-          intervalDifficult: 3,
-        },
-        dictionary: {
-          showAudioExample: true,
-          showTranslateWord: true,
-          showWordMeaning: true,
-          showWordExample: true,
-          showTranscription: true,
-          showImageAssociations: true,
-        },
-        findapair: {
-          delayBeforeClosingCard: 500,
-          showCardsTextOnStart: true,
-          showingCardsTime: 1000,
-        },
-      };
+      this.options = Settings.defaultSettingsOptions();
     }
+  }
+
+  static defaultSettingsOptions() {
+    const options = {
+      main: {
+        newCardsPerDay: 20,
+        maxCardsPerDay: 25,
+        showTranslateWord: true,
+        showWordMeaning: true,
+        showWordExample: true,
+        showTranscription: true,
+        showImageAssociations: true,
+        showButtonShowAnswer: true,
+        showButtonDelete: true,
+        showButtonHard: true,
+        showButtons: true,
+        intervalEasy: 9,
+        intervalNormal: 6,
+        intervalDifficult: 3,
+      },
+      dictionary: {
+        showAudioExample: true,
+        showTranslateWord: true,
+        showWordMeaning: true,
+        showWordExample: true,
+        showTranscription: true,
+        showImageAssociations: true,
+      },
+      findapair: {
+        delayBeforeClosingCard: 500,
+        showCardsTextOnStart: true,
+        showingCardsTime: 1000,
+      },
+    };
+
+    return options;
   }
 
   getSettings() {
@@ -259,14 +272,16 @@ export default class Settings {
     const easyNum = Number(easyEl.value);
     let normalNum = Number(normalEl.value);
 
-    if (normalNum <= difficultNum) {
-      normalNum = difficultNum + 1;
+    if (normalNum <= difficultNum + SettingsConst.minStepBetweenNormalAndDifficult) {
+      normalNum = difficultNum + SettingsConst.minStepBetweenNormalAndDifficult;
       normalEl.value = normalNum;
     }
-    if (easyNum <= normalNum) easyEl.value = normalNum + 1;
+    if (easyNum <= normalNum + SettingsConst.minStepBetweenEasyAndNormal) {
+      easyEl.value = normalNum + SettingsConst.minStepBetweenEasyAndNormal;
+    }
 
-    normalEl.setAttribute('min', difficultNum + 1);
-    easyEl.setAttribute('min', normalNum + 1);
+    normalEl.setAttribute('min', difficultNum + SettingsConst.minStepBetweenNormalAndDifficult);
+    easyEl.setAttribute('min', normalNum + SettingsConst.minStepBetweenEasyAndNormal);
   }
 
   formSubmitHandler(event) {
@@ -314,7 +329,8 @@ export default class Settings {
   }
 
   static openTabsHandler(event) {
-    if (event.target.tagName === 'LI') {
+    const TAB_ELEMENT = 'LI';
+    if (event.target.tagName === TAB_ELEMENT) {
       const element = event.target;
       const id = element.dataset.tabId;
       const tabsList = document.querySelectorAll('.settings-tabs-list__item');
