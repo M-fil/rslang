@@ -8,18 +8,25 @@ const {
 } = estimateButtonsTypes;
 
 class EstimateButtonsBlock {
-  constructor() {
+  constructor(settings) {
     this.HTML = null;
+    this.settings = settings;
   }
 
   render() {
+    const {
+      intervalEasy,
+      intervalNormal,
+      intervalDifficult,
+    } = this.settings;
+
     this.HTML = create(
       'div', 'main-game__estimate-buttons',
       [
-        new EstimateButton('again', AGAIN.text, AGAIN.time).render(),
-        new EstimateButton('hard', HARD.text, HARD.time).render(),
-        new EstimateButton('good', GOOD.text, GOOD.time).render(),
-        new EstimateButton('easy', EASY.text, EASY.time).render(),
+        new EstimateButton('again', AGAIN.text, '').render(),
+        new EstimateButton('hard', HARD.text, intervalDifficult).render(),
+        new EstimateButton('good', GOOD.text, intervalNormal).render(),
+        new EstimateButton('easy', EASY.text, intervalEasy).render(),
       ],
     );
 

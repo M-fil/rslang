@@ -9,27 +9,46 @@ import {
 } from '../service/service';
 
 const {
-  GOOD,
+  GOOD, HARD, EASY,
 } = estimateButtonsTypes;
 
 const {
   WORDS_TO_LEARN_TITLE,
 } = vocabularyConstants;
 
+const getDaysIntervalByEstimation = (estimation, mainSettings) => {
+  const {
+    intervalEasy,
+    intervalNormal,
+    intervalDifficult,
+  } = mainSettings;
+
+  switch (estimation) {
+    case EASY:
+    default:
+      return intervalEasy
+    case GOOD:
+      return intervalNormal
+    case HARD:
+      return intervalDifficult
+  }
+}
+
 const createWordDataForBackend = (
-  currentWord, estimation, vocabulary = WORDS_TO_LEARN_TITLE,
+  currentWord, estimation, vocabulary = WORDS_TO_LEARN_TITLE, mainSettings,
 ) => {
+  const daysInterval = getDaysIntervalByEstimation(estimation, mainSettings);
   const wordData = {
     id: currentWord.id || currentWord._id,
     word: currentWord.word,
     difficulty: estimation.text || GOOD.text,
     vocabulary: vocabulary || WORDS_TO_LEARN_TITLE,
-    daysInterval: estimation.daysInterval,
+    daysInterval,
     valuationDate: new Date(),
     allData: currentWord,
   };
   const {
-    id: wordId, word, difficulty, daysInterval, valuationDate, allData,
+    id: wordId, word, difficulty, valuationDate, allData,
   } = wordData;
   const dataToRecieve = {
     difficulty,
@@ -47,14 +66,15 @@ const createWordDataForBackend = (
 };
 
 const addWordToTheVocabulary = async (
-  vocabularyType = WORDS_TO_LEARN_TITLE, buttonType = GOOD.text, wordToAdd, userData,
+  vocabularyType = WORDS_TO_LEARN_TITLE, buttonType = GOOD.text,
+  wordToAdd, userData, mainSettings,
 ) => {
   const { userId, token } = userData;
   try {
-    const data = await createWordDataForBackend(wordToAdd, buttonType, vocabularyType);
+    const data = await createWordDataForBackend(wordToAdd, buttonType, vocabularyType, mainSettings);
     await updateUserWord(userId, data.optional.wordId, data, token);
   } catch (error) {
-    const data = await createWordDataForBackend(wordToAdd, buttonType, vocabularyType);
+    const data = await createWordDataForBackend(wordToAdd, buttonType, vocabularyType, mainSettings);
     await createUserWord(userId, data.optional.wordId, data, token);
   }
 };

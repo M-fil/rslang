@@ -195,7 +195,6 @@ export default class Settings {
     this.options = Settings.defaultSettingsOptions();
     if (res) this.options = res.optional;
     else {
-      console.log('here')
       this.options = Settings.defaultSettingsOptions();
       await this.saveSettings();
     }

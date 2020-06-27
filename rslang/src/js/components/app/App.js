@@ -85,7 +85,6 @@ class App {
               email: data.email,
             },
           };
-          await this.initSettings();
           await this.signInUser();
           this.prelodaer.hide();
         } catch (error) {
@@ -109,6 +108,7 @@ class App {
       };
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
+      await this.initSettings();
       App.renderMainGame(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);

@@ -1,9 +1,11 @@
 import create from '../../../../utils/сreate';
 import { mainGameConstants } from '../../../../constants/constants';
+import MainGame from '../../MainGame';
 
 const {
   NEXT_BUTTON,
   SHOW_ANSWER_BUTTON,
+  CONTINUE_BUTTON,
 } = mainGameConstants;
 
 class FormControll {
@@ -22,11 +24,19 @@ class FormControll {
     const inputWrapper = create('div', 'word-card__input-wrapper', [this.inputHTML, userAnswerHTML]);
     this.inputHTML.style.width = this.getInputCSSWidth();
 
-    const buttonsContainer = create('div', 'main-game__form-buttons', [showAnswerButton, nextButton]);
+    this.buttonsContainer = create(
+      'div', 'main-game__form-buttons',
+      [this.showButtonShowAnswer ? showAnswerButton : '', nextButton],
+    );
     const inputContainer = create('div', 'word-card__input-container', inputWrapper);
 
-    this.HTML = create('form', 'main-game__form', [inputContainer, buttonsContainer]);
+    this.HTML = create('form', 'main-game__form', [inputContainer, this.buttonsContainer]);
     return this.HTML;
+  }
+
+  renderContinueButton() {
+    const button = FormControll.renderButton('continue-button', CONTINUE_BUTTON);
+    this.buttonsContainer.append(button);
   }
 
   updateInputWidth(newWord) {

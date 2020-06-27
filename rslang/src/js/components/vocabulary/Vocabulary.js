@@ -26,7 +26,7 @@ const {
 } = urls;
 
 class Vocabulary {
-  constructor(userState) {
+  constructor(userState, settings) {
     this.container = null;
     this.audio = new Audio();
 
@@ -39,6 +39,7 @@ class Vocabulary {
         difficultWords: [],
       },
       userState,
+      settings,
     };
   }
 
@@ -139,7 +140,7 @@ class Vocabulary {
 
           const { id, token } = this.state.userState;
           const dataToUpdate = await createWordDataForBackend(
-            allData, difficulty, true, WORDS_TO_LEARN_TITLE,
+            allData, difficulty, true, WORDS_TO_LEARN_TITLE, this.state.settings,
           );
           await updateUserWord(id, wordId, dataToUpdate, token);
           this.state.allUserWords = await getAllUserWords(id, token);

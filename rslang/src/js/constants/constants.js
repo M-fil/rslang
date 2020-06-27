@@ -35,6 +35,7 @@ const mainGameConstants = {
   ADD_TO_DIFFICULT_WORDS_CLICKED: 'Добавлено',
   REMOVE_WORD_BUTTON_CLICKED: 'Удалено',
   NEXT_BUTTON: 'Дальше',
+  CONTINUE_BUTTON: 'Продолжить',
   SHOW_ANSWER_BUTTON: 'Показать ответ',
   SETTINGS_AUTOPLABACK_TEXT: 'Автопроизношение',
   SETTINGS_TRANSLATIONS_LABEL_TEXT: 'Показывать переводы слова и предложений',
@@ -44,6 +45,7 @@ const mainGameConstants = {
   NUMBER_OF_WORD_GROUPS: 6,
   NUMBER_OF_WORD_PAGES: 30,
   HIGHEST_PERCENTAGE_STRING: '100%',
+  DAYS_CONTRACTION: 'дн',
 };
 
 const dailyStatisticsConstants = {
@@ -65,22 +67,15 @@ const wordsToLearnOptions = {
 const estimateButtonsTypes = {
   AGAIN: {
     text: 'Снова',
-    time: '10 мин',
   },
   HARD: {
     text: 'Трудно',
-    time: '13 дн',
-    daysInterval: 13,
   },
   GOOD: {
     text: 'Хорошо',
-    time: '1.5 мес',
-    daysInterval: 45,
   },
   EASY: {
     text: 'Легко',
-    time: '3 мес',
-    daysInterval: 90,
   },
 };
 

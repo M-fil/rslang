@@ -117,6 +117,7 @@ class MainGame {
       await this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.parseUserWordsData();
+      console.log(this.state.userWords.map((word) => word.optional.word))
 
       if (!this.state.isNormCompleted) {
         await this.setNewWords();
@@ -153,6 +154,7 @@ class MainGame {
         this.activateVocabularyButtons();
         this.activateWordsToLearnSelect();
         this.activateEstimateButtons();
+        this.activateContinueButton();
         MainGame.toggleVocabularyButtons(false);
       } else {
         const { learnedWordsToday } = this.state;
@@ -179,8 +181,14 @@ class MainGame {
   }
 
   async addWordsToLearnToTheVocabulary() {
-    const arrayOfPromises = this.state.wordsToLearn.map((word) => this.addWordToTheVocabulary(WORDS_TO_LEARN_TITLE, GOOD.text, word));
-    await Promise.all(arrayOfPromises);
+    const { wordsPerDay } = this.state.settings;
+    const { learnedWordsToday } = this.state;
+    const wordsToLearnLength = this.state.wordsToLearn.length + learnedWordsToday;
+    console.log('wordsToLearnLength', wordsToLearnLength);
+    if (wordsToLearnLength < wordsPerDay) {
+      const arrayOfPromises = this.state.wordsToLearn.map((word) => this.addWordToTheVocabulary(WORDS_TO_LEARN_TITLE, GOOD.text, word));
+      await Promise.all(arrayOfPromises);
+    }
   }
 
   parseUserWordsData() {
@@ -512,13 +520,14 @@ class MainGame {
 
       if ((numberOfMistakes === 0 && trimedValue.length) || isForShowAnswerButton) {
         const { mistakesInCurrentWord } = this.state;
+        const { showButtons } = this.state.settings.optional.main;
         sentencesWords.forEach((word) => {
           word.classList.add('word-card__sentence-word_visible');
         });
         inputHTML.value = '';
         userAnswerHTML.classList.remove('word-card__user-answer_translucent');
         userAnswerHTML.classList.add('word-card__user-answer_visible');
-        MainGame.toggleControlElements();
+        this.toggleControlElements();
         MainGame.toggleVocabularyButtons();
 
         if (mistakesInCurrentWord > 0) {
@@ -541,9 +550,16 @@ class MainGame {
           } else {
             this.progressBar.updateSize(learnedWordsToday, wordsPerDay);
           }
+          if (!showButtons && this.formControl) {
+            this.formControl.renderContinueButton();
+          }
         }
-        this.estimateWords = new EstimateButtonsBlock();
-        mainContainer.append(this.estimateWords.render());
+
+        if (showButtons) {
+          const { main } = this.state.settings.optional;
+          this.estimateWords = new EstimateButtonsBlock(main);
+          mainContainer.append(this.estimateWords.render());
+        }
       } else {
         this.state.mistakesInCurrentWord += 1;
         this.state.allNumberOfMistakes += 1;
@@ -556,19 +572,35 @@ class MainGame {
     }
   }
 
-  static toggleControlElements(isToDisable = true) {
+  activateContinueButton() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.main-game__continue-button');
+
+      if (target) {
+        const continueButton = document.querySelector('.main-game__continue-button');
+        this.addWordToTheVocabulary(LEARNED_WORDS_TITLE);
+        this.wordsSelectList.enable();
+        this.renderNextWordCard();
+        this.state.audio.pause();
+        continueButton.remove();
+      }
+    });
+  }
+
+  toggleControlElements(isToDisable = true) {
+    const { showAnswerButton } = this.state.settings.optional.main;
     const inputHTML = document.querySelector('.word-card__input');
     const nextButtonHTML = document.querySelector('.main-game__next-button');
-    const showAnswerButton = document.querySelector('.main-game__show-answer-button');
+    const showAnswerButtonHTML = document.querySelector('.main-game__show-answer-button');
 
     if (isToDisable) {
       inputHTML.setAttribute('disabled', 'disabled');
       nextButtonHTML.setAttribute('disabled', 'disabled');
-      showAnswerButton.setAttribute('disabled', 'disabled');
+      showAnswerButton && showAnswerButtonHTML.setAttribute('disabled', 'disabled');
     } else {
       inputHTML.removeAttribute('disabled', 'disabled');
       nextButtonHTML.removeAttribute('disabled', 'disabled');
-      showAnswerButton.removeAttribute('disabled', 'disabled');
+      showAnswerButton && showAnswerButtonHTML.removeAttribute('disabled', 'disabled');
     }
   }
 
@@ -659,7 +691,6 @@ class MainGame {
     if (this.estimateWords) {
       this.estimateWords.removeFromDOM();
     }
-    this.state.audio.pause();
     this.state.isAudioEnded = true;
     MainGame.toggleVocabularyButtons(false);
 
@@ -677,7 +708,7 @@ class MainGame {
         this.formControl.hide();
       }
     } else {
-      MainGame.toggleControlElements(false);
+      this.toggleControlElements(false);
       userAnswerHTML.innerHTML = '';
       userAnswerHTML.classList.remove('word-card__user-answer_translucent');
 
@@ -689,19 +720,23 @@ class MainGame {
   }
 
   activateNextButton() {
-    document.addEventListener('submit', (event) => {
+    document.addEventListener('submit', async (event) => {
       if (event.target.classList.contains('main-game__form')) {
         event.preventDefault();
         this.switchToTheNextWordCard();
+        await this.setStatisticsData();
       }
     });
   }
 
   activateShowAnswerButton() {
-    const showAnswerButton = document.querySelector('.main-game__show-answer-button');
+    const { showAnswerButton } = this.state.settings.optional.main;
+    if (!showAnswerButton) return;
 
-    showAnswerButton.addEventListener('click', () => {
+    const showAnswerButtonHTML = document.querySelector('.main-game__show-answer-button');
+    showAnswerButtonHTML.addEventListener('click', async () => {
       this.switchToTheNextWordCard(true);
+      await this.setStatisticsData();
     });
   }
 
@@ -779,10 +814,13 @@ class MainGame {
   async addWordToTheVocabulary(
     vocabularyType = WORDS_TO_LEARN_TITLE, buttonType = GOOD.text, wordToAdd,
   ) {
+    const { main } = this.state.settings.optional;
     const currentWord = wordToAdd || this.state.currentWordsArray[this.state.currentWordIndex];
     const { userId, token } = this.getUserDataForAuthorization();
 
-    await addWordToTheVocabulary(vocabularyType, buttonType, currentWord, { userId, token });
+    await addWordToTheVocabulary(
+      vocabularyType, buttonType, currentWord, { userId, token }, main,
+    );
     this.state.userWords = await this.getAllUserWordsFromBackend();
     this.state.mistakesInCurrentWord = 0;
   }
