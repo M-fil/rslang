@@ -30,6 +30,12 @@ class WordsToLearnSelect {
     return this.HTML;
   }
 
+  selectIndexByValue(value) {
+    console.log(this.select.options);
+    const index = Array.from(this.select.options).findIndex((option) => option.value === value);
+    this.select.selectedIndex = index;
+  }
+
   renderOption(optionText) {
     return create(
       'option',

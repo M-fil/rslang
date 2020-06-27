@@ -5,7 +5,7 @@ const urls = {
   GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
-  DEAFAULT_SPEAKIT_WORD_IMAGE_URL: 'https://raw.githubusercontent.com/rolling-scopes-school/m-fil-RS2020Q1/speakit/speakit/src/assets/english.jpg?token=ANOB63H6THJPRBEB42AFKMK67BOEW',
+  DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
   CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
   INCORRECT_AUDIO_PATH: './src/assets/audio/error.mp3',
   SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',

@@ -13,7 +13,7 @@ import ButtonsBlock from './components/buttons/ButtonsBlock';
 import MicrophoneButton from './components/buttons/MicrophoneButton';
 import StatisticsBlock from './components/statistics/StatisticsBlock';
 import WordsToLearnSelect from '../common/WordsToLearnSelect';
-import Preloader from '../../preloader/preloader';
+import Preloader from '../../preloader/Preloader';
 
 const {
   WORDS_IMAGES_URL,
@@ -40,6 +40,7 @@ export default class SpeakIt {
     this.recognition = SpeakIt.createSpeechRecongnition();
 
     this.state = {
+      currentWordsType: SELECT_OPTION_LEARNED_WORDS,
       gameStarted: false,
       currentPage: 0,
       groupOfWords: 0,
@@ -101,14 +102,14 @@ export default class SpeakIt {
       this.acitavateRecognition();
       this.activateSoundForStatisticsWords();
       this.acivateSkipButtons();
-      SpeakIt.activateWordsToLearnSelect();
+      this.activateWordsToLearnSelect();
 
       this.recognition.addEventListener('end', this.recognition.start);
       this.recognition.start();
     });
   }
 
-  static renderNavigation() {
+  renderNavigation() {
     this.wordToLearnSelect = new WordsToLearnSelect('speak-it');
     this.navigation = new Navigation();
 
@@ -135,7 +136,23 @@ export default class SpeakIt {
   }
 
   renderWordsOnThePage() {
-    SpeakIt.renderNavigation();
+    const wordsType = localStorage.getItem('speak-it-words-type');
+    console.log(wordsType)
+    switch (wordsType) {
+      case SELECT_OPTION_LEARNED_WORDS:
+      default:
+        this.renderSpeacifiedWordsType();
+        this.wordToLearnSelect.selectIndexByValue(SELECT_OPTION_LEARNED_WORDS);
+        break;
+      case SELECT_OPTION_WORDS_FROM_COLLECTIONS:
+        this.renderSpeacifiedWordsType();
+        this.wordToLearnSelect.selectIndexByValue(SELECT_OPTION_WORDS_FROM_COLLECTIONS);
+        break;
+    };
+  }
+
+  renderSpeacifiedWordsType() {
+    this.renderNavigation();
     this.renderWords();
     const statistics = new StatisticsBlock(this.words);
     document.body.append(statistics.render());
@@ -165,11 +182,11 @@ export default class SpeakIt {
     });
   }
 
-  static activateWordsToLearnSelect() {
+  activateWordsToLearnSelect() {
     const select = document.querySelector('.speak-it__learn-words-select');
     const defaultSelectValue = select.options[select.options.selectedIndex].value;
 
-    if (defaultSelectValue === SELECT_OPTION_LEARNED_WORDS) {
+    if (defaultSelectValue === SELECT_OPTION_LEARNED_WORDS && this.navigation) {
       this.navigation.hide();
     }
 
@@ -177,6 +194,8 @@ export default class SpeakIt {
       const { options, selectedIndex } = event.target;
       const selectedValue = options[selectedIndex].value;
 
+      this.state.currentWordsType = selectedValue;
+      localStorage.setItem('speak-it-words-type', this.state.currentWordsType);
       switch (selectedValue) {
         case SELECT_OPTION_LEARNED_WORDS:
         default: {
@@ -216,8 +235,9 @@ export default class SpeakIt {
   }
 
   startGame() {
-    document.querySelector('.start-game-button').addEventListener('click', () => {
-      if (!this.state.gameStarted) {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.start-game-button');
+      if (!this.state.gameStarted && target) {
         const wordCardsHTML = document.querySelectorAll('.word-card');
         const wordsToLearnSelectHTML = document.querySelector('.speak-it__learn-words-select');
         this.state.gameStarted = true;
@@ -406,11 +426,14 @@ export default class SpeakIt {
   }
 
   activateStatisticsBlock() {
-    document.querySelector('.result-button').addEventListener('click', () => {
-      document.querySelector('.statistics').classList.remove('hidden');
-      document.querySelector('.overlay').classList.remove('hidden');
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.result-button');
 
-      this.activateStatisticsButtons();
+      if (target) {
+        document.querySelector('.statistics').classList.remove('hidden');
+        document.querySelector('.overlay').classList.remove('hidden');
+        this.activateStatisticsButtons();
+      }
     });
   }
 
@@ -453,8 +476,12 @@ export default class SpeakIt {
   }
 
   activateRestartButton() {
-    document.querySelector('.restart-button').addEventListener('click', () => {
-      this.switchOnTrainingMode();
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.restart-button');
+
+      if (target) {
+        this.switchOnTrainingMode();
+      }
     });
   }
 

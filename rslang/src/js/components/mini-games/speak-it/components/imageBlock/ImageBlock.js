@@ -1,5 +1,5 @@
 import create, { urls } from '../../pathes';
-import Prelodaer from '../../../../preloader/preloader';
+import Prelodaer from '../../../../preloader/Preloader';
 
 const {
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL,
