@@ -64,7 +64,6 @@ class MainGame {
     this.state = {
       currentWordIndex: 0,
       mistakesInCurrentWord: 0,
-      allNumberOfMistakes: 0,
       learnedWordsToday: 0,
       longestSeriesOfAnswers: 0,
       longestSeriesIndicator: 0,
@@ -113,6 +112,7 @@ class MainGame {
       this.state.userWords = this.parseUserWordsData();
 
       if (!this.state.isNormCompleted) {
+        this.state.currentWordIndex = this.state.learnedWordsToday;
         await this.setNewWords();
         this.state.wordsToLearn = await this.selectWordsToLearn();
         await this.addWordsToLearnToTheVocabulary();
@@ -131,15 +131,13 @@ class MainGame {
         const mainGameMainContainer = create(
           'div', 'main-game__main-container', [wordCard.render(), this.formControl.render()],
         );
-
         mainGameHTML.append(
           mainGameControls,
           mainGameMainContainer,
           this.progressBar.render(),
         );
+        this.formControl.inputHTML.focus();
 
-        const wordCardInput = document.querySelector('.word-card__input');
-        wordCardInput.focus();
         this.activateGameSettingsEvents();
         this.activateNextButton();
         this.activateShowAnswerButton();
@@ -344,7 +342,7 @@ class MainGame {
   renderDailyStatistics() {
     const { wordsPerDay } = this.state.settings;
     const {
-      newWords, longestSeriesOfAnswers, correctAnswersNumber, currentWordsArray,
+      newWords, longestSeriesOfAnswers, currentWordsArray,
     } = this.state;
 
     if (this.state.currentWordsType === ONLY_DIFFICULT_WORDS) {
@@ -356,7 +354,8 @@ class MainGame {
         currentWordsArray.length, percentOfCorrectAnswers, null, longestSeriesOfAnswers,
       );
     } else {
-      const percentOfCorrectAnswers = calculatePercentage(correctAnswersNumber, wordsPerDay);
+      const correctAnswers = wordsPerDay - (currentWordsArray.length - wordsPerDay);
+      const percentOfCorrectAnswers = calculatePercentage(correctAnswers, wordsPerDay);
       this.dailyStatistics = new DailyStatistics(
         wordsPerDay, percentOfCorrectAnswers, newWords.length, longestSeriesOfAnswers,
       );
@@ -534,14 +533,17 @@ class MainGame {
 
         if (mistakesInCurrentWord > 0) {
           this.addWordToTheCurrentTraining();
+          this.state.longestSeriesIndicator += 1;
         } else {
-          this.state.longestSeriesIndicator = 0;
           if (this.state.longestSeriesIndicator === 0) {
             this.state.longestSeriesOfAnswers += 1;
+            this.state.longestSeriesIndicator = 0;
           }
+          this.state.longestSeriesIndicator = 0;
           this.state.correctAnswersNumber += 1;
           this.state.learnedWordsToday += 1;
           this.wordsSelectList.disable();
+          userAnswerHTML.classList.remove('word-card__user-answer_translucent');
           const { wordsPerDay } = this.state.settings;
           const { learnedWordsToday } = this.state;
 
@@ -563,8 +565,8 @@ class MainGame {
           mainContainer.append(this.estimateWords.render());
         }
       } else {
+        userAnswerHTML.classList.add('word-card__user-answer_visible');
         this.state.mistakesInCurrentWord += 1;
-        this.state.allNumberOfMistakes += 1;
         this.state.longestSeriesIndicator += 1;
         inputHTML.value = '';
         setTimeout(() => {
@@ -630,9 +632,9 @@ class MainGame {
   checkIfCurrentWordIsNotLast() {
     const { learnedWordsNumber } = this.state.difficultWordsState;
     const { learnedWordsToday, currentWordsArray } = this.state;
+    const { wordsPerDay } = this.state.settings;
 
-    return learnedWordsToday === currentWordsArray.length
-      || learnedWordsNumber === currentWordsArray.length;
+    return learnedWordsToday === wordsPerDay || learnedWordsNumber === currentWordsArray.length - 1;
   }
 
   activateEstimateButtons() {
@@ -693,7 +695,6 @@ class MainGame {
 
   renderNextWordCard() {
     const userAnswerHTML = document.querySelector('.word-card__user-answer');
-    const inputHTML = document.querySelector('.word-card__input');
     MainGame.removeWordCardFromDOM();
     if (this.estimateWords) {
       this.estimateWords.removeFromDOM();
@@ -722,7 +723,6 @@ class MainGame {
       this.state.currentWordIndex += 1;
       this.progressBar.show();
       this.renderWordCard(currentWordsArray[this.state.currentWordIndex]);
-      inputHTML.focus();
     }
   }
 
