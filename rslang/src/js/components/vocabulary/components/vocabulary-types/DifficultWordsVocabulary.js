@@ -7,8 +7,8 @@ const {
 } = vocabularyConstants;
 
 class DifficultWordsVocabulary extends ExtraVocabulary {
-  constructor(words) {
-    super(DIFFUCULT_WORDS_TITLE, words);
+  constructor(words, dictionary) {
+    super(DIFFUCULT_WORDS_TITLE, words, dictionary);
   }
 }
 

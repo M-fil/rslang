@@ -59,9 +59,10 @@ class App {
     console.log('settings', this.state.settings);
   }
 
-  renderVocabulary(userState) {
+  async renderVocabulary(userState) {
     this.vocabulary = new Vocabulary(userState);
-    document.body.append(this.vocabulary.render());
+    const html = await this.vocabulary.render('body');
+    document.body.append(html);
   }
 
   activateAuthenticationForm() {
@@ -109,7 +110,7 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      App.renderMainGame(this.state.user);
+      await App.renderMainGame(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -146,12 +147,12 @@ class App {
         token: JSON.parse(savedUserData).token,
       };
       await this.initSettings();
-      this.renderVocabulary(this.state.user);
       await App.renderMainGame(this.state.user);
-      this.prelodaer.hide();
+      await this.renderVocabulary(this.state.user);
     } catch (error) {
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
+      this.container.innerHTML = '';
       this.renderAuthenticationBlock('authorization');
       this.renderToggleAuthentication();
       this.activateAuthenticationForm();

@@ -6,6 +6,7 @@ import {
 import {
   getAllUserWords,
   updateUserWord,
+  getUserSettings,
 } from '../../service/service';
 import {
   playAudio,
@@ -22,4 +23,5 @@ export {
   playAudio,
   updateUserWord,
   createWordDataForBackend,
+  getUserSettings,
 };

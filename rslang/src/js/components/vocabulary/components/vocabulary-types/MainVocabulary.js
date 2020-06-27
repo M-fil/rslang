@@ -7,10 +7,11 @@ const {
 } = vocabularyConstants;
 
 class MainVocabulary {
-  constructor(vacabularyTitle, words) {
+  constructor(vacabularyTitle, words, settings) {
     this.container = null;
     this.vacabularyTitle = vacabularyTitle;
     this.words = words;
+    this.settings = settings;
   }
 
   render() {
@@ -56,6 +57,7 @@ class MainVocabulary {
           word.textExample,
           word.image,
           this.vacabularyTitle,
+          this.settings,
         );
         container.append(wordItem.render());
       });

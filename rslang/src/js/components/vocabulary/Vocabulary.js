@@ -5,6 +5,7 @@ import create, {
   playAudio,
   urls,
   createWordDataForBackend,
+  getUserSettings,
 } from './pathes';
 
 import VocabularyHeader from './components/vocabulary-header/VocabularyHeader';
@@ -26,7 +27,7 @@ const {
 } = urls;
 
 class Vocabulary {
-  constructor(userState, settings) {
+  constructor(userState) {
     this.container = null;
     this.audio = new Audio();
 
@@ -40,22 +41,28 @@ class Vocabulary {
         difficultWords: [],
       },
       userState,
-      settings,
+      settings: {},
     };
   }
 
-  render() {
+  async render() {
     this.container = create('div', 'vocabulary');
     const vocabularyHeader = new VocabularyHeader();
     this.container.append(vocabularyHeader.render());
     this.mainContentHTML = create('div', 'vocabulary__main-content', '', this.container);
 
-    this.sortWordsInVocabularies();
+    await this.setSettings();
+    await this.sortWordsInVocabularies();
     this.activateVocabularyHeaderButtons();
     this.activateAudioButtons();
     this.activateRestoreButtons();
 
     return this.container;
+  }
+
+  async setSettings() {
+    const { id, token } = this.state.userState;
+    this.state.settings = await getUserSettings(id, token);
   }
 
   updateWords(words) {
@@ -73,7 +80,9 @@ class Vocabulary {
     this.state.vocabularies.removedWords = this.getWordsByVocabularyType(REMOVED_WORDS_TITLE);
     this.state.vocabularies.difficultWords = this.getWordsByVocabularyType(DIFFUCULT_WORDS_TITLE);
 
-    const vocabulary = new WordsToLearnVocabulary(this.state.vocabularies.wordsToLearn);
+    const { dictionary } = this.state.settings.optional;
+    const { wordsToLearn } = this.state.vocabularies;
+    const vocabulary = new WordsToLearnVocabulary(wordsToLearn, dictionary);
     this.renderVocabulary(vocabulary);
   }
 
@@ -100,25 +109,27 @@ class Vocabulary {
         this.preloader.render();
         this.preloader.show();
         await this.sortWordsInVocabularies();
+        const { dictionary } = this.state.settings.optional;
+        console.log('dictionary', dictionary)
         switch (targetVocabularyType) {
           case WORDS_TO_LEARN_TITLE:
           default: {
-            const vocabulary = new WordsToLearnVocabulary(wordsToLearn);
+            const vocabulary = new WordsToLearnVocabulary(wordsToLearn, dictionary);
             this.renderVocabulary(vocabulary);
             break;
           }
           case LEARNED_WORDS_TITLE: {
-            const vocabulary = new LearnedWordsVocabulary(learnedWords);
+            const vocabulary = new LearnedWordsVocabulary(learnedWords, dictionary);
             this.renderVocabulary(vocabulary);
             break;
           }
           case REMOVED_WORDS_TITLE: {
-            const vocabulary = new RemovedWords(removedWords);
+            const vocabulary = new RemovedWords(removedWords, dictionary);
             this.renderVocabulary(vocabulary);
             break;
           }
           case DIFFUCULT_WORDS_TITLE: {
-            const vocabulary = new DifficultWordsVocabulary(difficultWords);
+            const vocabulary = new DifficultWordsVocabulary(difficultWords, dictionary);
             this.renderVocabulary(vocabulary);
             break;
           }
@@ -181,8 +192,9 @@ class Vocabulary {
   activateAudioButtons() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.word-item__audio');
+      const { showAudioExample } = this.state.settings.optional.dictionary;
 
-      if (target) {
+      if (target && showAudioExample) {
         const { targetWordObject } = this.getWordObjectByTargetElement(target);
         const allData = JSON.parse(targetWordObject.optional.allData);
         const source = `${WORDS_AUDIOS_URL}${allData.audio}`;

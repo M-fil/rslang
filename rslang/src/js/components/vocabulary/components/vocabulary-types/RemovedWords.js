@@ -6,8 +6,8 @@ const {
 } = vocabularyConstants;
 
 class RemovedWords extends ExtraVocabulary {
-  constructor(words) {
-    super(REMOVED_WORDS_TITLE, words);
+  constructor(words, dictionary) {
+    super(REMOVED_WORDS_TITLE, words, dictionary);
   }
 }
 

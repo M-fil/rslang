@@ -6,8 +6,8 @@ const {
 } = vocabularyConstants;
 
 class LearnedWordsVocabulary extends MainVocabulary {
-  constructor(words) {
-    super(LEARNED_WORDS_TITLE, words);
+  constructor(words, dictionary) {
+    super(LEARNED_WORDS_TITLE, words, dictionary);
   }
 }
 

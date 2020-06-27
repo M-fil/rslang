@@ -171,7 +171,6 @@ class MainGame {
     } catch (error) {
       console.log(error);
       Authentication.createErrorBlock(error.message);
-      this.preloader.hide();
     }
   }
 
@@ -818,6 +817,7 @@ class MainGame {
     this.renderNextWordCard();
     await this.setStatisticsData();
     this.wordsSelectList.enable();
+    this.state.audio.pause();
 
     setTimeout(() => {
       target.textContent = buttonText;
