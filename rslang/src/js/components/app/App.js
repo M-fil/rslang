@@ -12,6 +12,7 @@ import {
   createUser,
   loginUser,
   getUserById,
+  getUserSettings,
 } from '../../service/service';
 import {
   errorTypes,
@@ -49,9 +50,13 @@ class App {
     this.checkIsUserAuthorized();
   }
 
-  initSettings() {
+  async initSettings() {
     const settings = new Settings(this.state.user);
-    await s
+    await settings.init();
+
+    const { id, token } = this.state.user;
+    this.state.settings = await getUserSettings(id, token);
+    console.log('settings', this.state.settings);
   }
 
   renderVocabulary(userState) {
@@ -80,6 +85,7 @@ class App {
               email: data.email,
             },
           };
+          await this.initSettings();
           await this.signInUser();
           this.prelodaer.hide();
         } catch (error) {
@@ -139,6 +145,7 @@ class App {
         email: data.email,
         token: JSON.parse(savedUserData).token,
       };
+      await this.initSettings();
       await App.renderMainGame(this.state.user);
       this.prelodaer.hide();
     } catch (error) {

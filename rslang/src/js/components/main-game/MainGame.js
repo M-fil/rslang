@@ -3,6 +3,7 @@ import {
   getAggregatedWordsByFilter,
   updateStatistics,
   getStatistics,
+  getUserSettings,
 } from '../../service/service';
 import create from '../../utils/сreate';
 import {
@@ -106,9 +107,12 @@ class MainGame {
     document.querySelector(elementQuery).append(mainGameHTML);
 
     try {
+      const { userId, token } = this.getUserDataForAuthorization();
       this.preloader = new Preloader();
       this.preloader.render();
       this.preloader.show();
+      this.state.settings = await getUserSettings(userId, token);
+      console.log('this.state.settings', this.state.settings)
       await this.resetStatisticsIfNewDay();
       await this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
@@ -167,6 +171,7 @@ class MainGame {
       }
       this.preloader.hide();
     } catch (error) {
+      console.log(error);
       Authentication.createErrorBlock(error.message);
       this.preloader.hide();
     }
@@ -215,6 +220,7 @@ class MainGame {
       this.state.correctAnswersNumber = parseInt(correctAnswersNumber, 10);
       this.state.isNormCompleted = JSON.parse(isNormCompleted);
     } catch (error) {
+      console.log(error);
       this.state.correctAnswersNumber = 0;
     }
   }
@@ -258,6 +264,7 @@ class MainGame {
         await this.resetStatistics();
       }
     } catch (error) {
+      console.log(error);
       this.state.isNormCompleted = false;
       await this.setStatisticsData();
     }
@@ -266,13 +273,14 @@ class MainGame {
   async setNewWords() {
     const wordsToRevise = this.getWordsToRevise();
     const { userId, token } = this.getUserDataForAuthorization();
-    const { newWordsPerDay, wordsPerDay } = this.state.settings;
+    const { wordsPerDay } = this.state.settings;
+    const { newCardsPerDay } = this.state.settings.optional.main;
     const { learnedWordsToday } = this.state;
 
-    const wordsToGet = wordsToRevise.length ? newWordsPerDay : wordsPerDay;
+    const wordsToGet = wordsToRevise.length ? newCardsPerDay : wordsPerDay;
     const filter = `{"userWord.optional.vocabulary":"${WORDS_TO_LEARN_TITLE}"}`;
     const newWordLength = wordsToRevise.length
-      ? newWordsPerDay - learnedWordsToday
+      ? newCardsPerDay - learnedWordsToday
       : wordsToGet - learnedWordsToday;
 
     let newWords = await getAggregatedWordsByFilter(userId, token, wordsToGet, filter);
@@ -286,8 +294,9 @@ class MainGame {
 
   async selectWordsToLearn() {
     const wordsToRevise = this.getWordsToRevise();
-    const { wordsPerDay, newWordsPerDay } = this.state.settings;
-    const wordsToReviseLength = wordsPerDay - newWordsPerDay;
+    const { wordsPerDay } = this.state.settings;
+    const { newCardsPerDay } = this.state.settings.optional.main;
+    const wordsToReviseLength = wordsPerDay - newCardsPerDay;
 
     return [...this.state.newWords, ...wordsToRevise.slice(0, wordsToReviseLength)];
   }
