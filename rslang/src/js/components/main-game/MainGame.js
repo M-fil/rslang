@@ -128,10 +128,11 @@ class MainGame {
         const { learnedWordsToday } = this.state;
         const { wordsPerDay } = this.state.settings;
         const currentWord = this.state.currentWordsArray[currentWordIndex].word;
+        const { showButtonShowAnswer } = this.state.settings.optional.main;
 
-        const wordCard = MainGame.createWordCard(this.state.currentWordsArray[currentWordIndex]);
+        const wordCard = this.createWordCard(this.state.currentWordsArray[currentWordIndex]);
         const mainGameControls = this.renderMainGameControls();
-        this.formControl = new FormControll(currentWord);
+        this.formControl = new FormControll(currentWord, showButtonShowAnswer);
         this.progressBar = new ProgressBar(learnedWordsToday, wordsPerDay);
         const mainGameMainContainer = create(
           'div', 'main-game__main-container', [wordCard.render(), this.formControl.render()],
@@ -330,10 +331,12 @@ class MainGame {
     const gameSettingsBlock = new SettingsControls();
     const vocabularyButtons = MainGame.renderVocabularyButtons();
     this.wordsSelectList = new WordsSelectList();
+    const exitButton = create('button', 'main-game__exit-button', '<i class="fas fa-times"></i>')
     container.append(
       gameSettingsBlock.render(),
       vocabularyButtons,
       this.wordsSelectList.render(),
+      exitButton,
     );
 
     return container;
@@ -365,7 +368,7 @@ class MainGame {
   }
 
   renderWordCard(currentWordCard) {
-    const wordCard = MainGame.createWordCard(currentWordCard);
+    const wordCard = this.createWordCard(currentWordCard);
     this.setAudiosForWords(currentWordCard);
     document.querySelector('.main-game__main-container').prepend(wordCard.render());
 
@@ -445,8 +448,9 @@ class MainGame {
           const currentWordObject = this.state.currentWordsArray[currentWordIndex];
           const currentWord = (currentWordObject && currentWordObject.word)
             || currentWordObject.optional.word;
-          const wordCard = MainGame.createWordCard(this.state.currentWordsArray[currentWordIndex]);
-          this.formControl = new FormControll(currentWord);
+          const wordCard = this.createWordCard(this.state.currentWordsArray[currentWordIndex]);
+          const { showButtonShowAnswer } = this.state.settings.optional.main;
+          this.formControl = new FormControll(currentWord, showButtonShowAnswer);
 
           mainGameContainer.append(wordCard.render(), this.formControl.render());
           mainGameMessage.remove();
@@ -474,6 +478,9 @@ class MainGame {
   }
 
   toggleWordCardTranslation() {
+    const { showTranslateWord } = this.state.settings.optional.main;
+    if (!showTranslateWord) return;
+
     const wordTransaltionHTML = document.querySelector('.word-card__translation');
     if (this.state.gameSetting.isTranslationsEnabled) {
       wordTransaltionHTML.classList.remove('word-card__translation_hidden');
@@ -879,7 +886,21 @@ class MainGame {
     }
   }
 
-  static createWordCard(currentWord) {
+  createWordCard(currentWord) {
+    const {
+      showTranslateWord,
+      showWordMeaning,
+      showWordExample,
+      showTranscription,
+      showImageAssociations,
+    } = this.state.settings.optional.main;
+    const wordCardSettings = {
+      showTranslateWord,
+      showWordMeaning,
+      showWordExample,
+      showTranscription,
+      showImageAssociations,
+    }
     const wordCard = new WordCard(
       currentWord.id || currentWord._id,
       currentWord.word,
@@ -888,8 +909,10 @@ class MainGame {
       currentWord.textMeaningTranslate,
       currentWord.textExample,
       currentWord.textExampleTranslate,
+      currentWord.transcription,
       currentWord.audio,
       currentWord.image,
+      wordCardSettings,
     );
 
     return wordCard;

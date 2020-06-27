@@ -7,9 +7,10 @@ const {
 } = mainGameConstants;
 
 class FormControll {
-  constructor(word) {
+  constructor(word, showButtonShowAnswer) {
     this.HTML = null;
     this.word = word;
+    this.showButtonShowAnswer = showButtonShowAnswer;
   }
 
   render() {

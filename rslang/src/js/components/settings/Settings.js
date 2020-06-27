@@ -189,9 +189,13 @@ export default class Settings {
   }
 
   async loadSettings() {
+    this.options = Settings.defaultSettingsOptions();
+    await this.saveSettings();
     const res = await getUserSettings(this.user.id, this.user.token);
+    this.options = Settings.defaultSettingsOptions();
     if (res) this.options = res.optional;
     else {
+      console.log('here')
       this.options = Settings.defaultSettingsOptions();
       await this.saveSettings();
     }
