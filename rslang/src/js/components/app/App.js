@@ -56,7 +56,6 @@ class App {
 
     const { id, token } = this.state.user;
     this.state.settings = await getUserSettings(id, token);
-    console.log('settings', this.state.settings);
   }
 
   async renderVocabulary(userState) {

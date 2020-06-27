@@ -26,13 +26,13 @@ const getDaysIntervalByEstimation = (estimation, mainSettings) => {
   switch (estimation) {
     case EASY:
     default:
-      return intervalEasy
+      return intervalEasy;
     case GOOD:
-      return intervalNormal
+      return intervalNormal;
     case HARD:
-      return intervalDifficult
+      return intervalDifficult;
   }
-}
+};
 
 const createWordDataForBackend = (
   currentWord, estimation, vocabulary = WORDS_TO_LEARN_TITLE, mainSettings,
@@ -71,10 +71,14 @@ const addWordToTheVocabulary = async (
 ) => {
   const { userId, token } = userData;
   try {
-    const data = await createWordDataForBackend(wordToAdd, buttonType, vocabularyType, mainSettings);
+    const data = await createWordDataForBackend(
+      wordToAdd, buttonType, vocabularyType, mainSettings,
+    );
     await updateUserWord(userId, data.optional.wordId, data, token);
   } catch (error) {
-    const data = await createWordDataForBackend(wordToAdd, buttonType, vocabularyType, mainSettings);
+    const data = await createWordDataForBackend(
+      wordToAdd, buttonType, vocabularyType, mainSettings,
+    );
     await createUserWord(userId, data.optional.wordId, data, token);
   }
 };

@@ -110,7 +110,7 @@ class Vocabulary {
         this.preloader.show();
         await this.sortWordsInVocabularies();
         const { dictionary } = this.state.settings.optional;
-        console.log('dictionary', dictionary)
+
         switch (targetVocabularyType) {
           case WORDS_TO_LEARN_TITLE:
           default: {

@@ -38,7 +38,6 @@ class WordCard {
     }
     const imageBlock = create('div', 'word-card__image-block');
 
-
     if (showImageAssociations) {
       const wordImage = new Image();
       wordImage.src = `${WORDS_IMAGES_URL}${this.image}`;

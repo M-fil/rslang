@@ -107,12 +107,10 @@ class MainGame {
       this.preloader.render();
       this.preloader.show();
       this.state.settings = await getUserSettings(userId, token);
-      console.log('this.state.settings', this.state.settings)
       await this.resetStatisticsIfNewDay();
       await this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.parseUserWordsData();
-      console.log(this.state.userWords.map((word) => word.optional.word))
 
       if (!this.state.isNormCompleted) {
         await this.setNewWords();
@@ -169,7 +167,6 @@ class MainGame {
       }
       this.preloader.hide();
     } catch (error) {
-      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -177,12 +174,12 @@ class MainGame {
   async addWordsToLearnToTheVocabulary() {
     const { wordsPerDay } = this.state.settings;
     const { learnedWordsToday } = this.state;
-    const filteredUserWords = this.state.userWords.filter((word) => word.optional.vocabulary === WORDS_TO_LEARN_TITLE);
+    const filteredUserWords = this.state.userWords
+      .filter((word) => word.optional.vocabulary === WORDS_TO_LEARN_TITLE);
     const wordsToLearnLength = filteredUserWords.length + learnedWordsToday;
-    console.log('arr', filteredUserWords);
-    console.log('wordsToLearnLength', wordsToLearnLength);
     if (wordsToLearnLength < wordsPerDay) {
-      const arrayOfPromises = this.state.wordsToLearn.map((word) => this.addWordToTheVocabulary(WORDS_TO_LEARN_TITLE, GOOD.text, word));
+      const arrayOfPromises = this.state.wordsToLearn
+        .map((word) => this.addWordToTheVocabulary(WORDS_TO_LEARN_TITLE, GOOD.text, word));
       await Promise.all(arrayOfPromises);
     }
   }
@@ -225,7 +222,6 @@ class MainGame {
       this.state.correctAnswersNumber = parseInt(correctAnswersNumber, 10);
       this.state.isNormCompleted = JSON.parse(isNormCompleted);
     } catch (error) {
-      console.log(error);
       this.state.correctAnswersNumber = 0;
     }
   }
@@ -269,7 +265,6 @@ class MainGame {
         await this.resetStatistics();
       }
     } catch (error) {
-      console.log(error);
       this.state.isNormCompleted = false;
       await this.setStatisticsData();
     }
@@ -335,7 +330,7 @@ class MainGame {
     const gameSettingsBlock = new SettingsControls();
     const vocabularyButtons = this.renderVocabularyButtons();
     this.wordsSelectList = new WordsSelectList();
-    const exitButton = create('button', 'main-game__exit-button', '<i class="fas fa-times"></i>')
+    const exitButton = create('button', 'main-game__exit-button', '<i class="fas fa-times"></i>');
     container.append(
       gameSettingsBlock.render(),
       vocabularyButtons,
@@ -603,11 +598,15 @@ class MainGame {
     if (isToDisable) {
       inputHTML.setAttribute('disabled', 'disabled');
       nextButtonHTML.setAttribute('disabled', 'disabled');
-      showButtonShowAnswer && showAnswerButtonHTML.setAttribute('disabled', 'disabled');
+      if (showButtonShowAnswer) {
+        showAnswerButtonHTML.setAttribute('disabled', 'disabled');
+      }
     } else {
       inputHTML.removeAttribute('disabled', 'disabled');
       nextButtonHTML.removeAttribute('disabled', 'disabled');
-      showButtonShowAnswer && showAnswerButtonHTML.removeAttribute('disabled', 'disabled');
+      if (showButtonShowAnswer) {
+        showAnswerButtonHTML.removeAttribute('disabled', 'disabled');
+      }
     }
   }
 
@@ -737,28 +736,21 @@ class MainGame {
     });
   }
 
-  activateExitButton() {
+  static activateExitButton() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.main-game__exit-button');
-      if (target) {
-        console.log('exit');
-      }
+      if (target) {}
     });
   }
 
   activateShowAnswerButton() {
-    console.log('START')
     const { showButtonShowAnswer } = this.state.settings.optional.main;
-    console.log('showButtonShowAnswer', showButtonShowAnswer)
-    console.log(this.state.settings);
     if (!showButtonShowAnswer) return;
 
     document.addEventListener('click', async (event) => {
-      console.log('click')
       const target = event.target.closest('.main-game__show-answer-button');
 
       if (target) {
-        console.log(target)
         this.switchToTheNextWordCard(true);
         await this.setStatisticsData();
       }
@@ -774,11 +766,19 @@ class MainGame {
     const addToDifficultsButton = document.querySelector('.main-game__add-to-difficult');
 
     if (isToShow) {
-      showButtonDelete && removeWordButton.removeAttribute('disabled');
-      showButtonHard && addToDifficultsButton.removeAttribute('disabled');
+      if (showButtonDelete) {
+        removeWordButton.removeAttribute('disabled');
+      }
+      if (showButtonHard) {
+        addToDifficultsButton.removeAttribute('disabled');
+      }
     } else {
-      showButtonDelete && removeWordButton.setAttribute('disabled', 'disabled');
-      showButtonHard && addToDifficultsButton.setAttribute('disabled', 'disabled');
+      if (showButtonDelete) {
+        removeWordButton.setAttribute('disabled', 'disabled');
+      }
+      if (showButtonHard) {
+        addToDifficultsButton.setAttribute('disabled', 'disabled');
+      }
     }
   }
 
@@ -973,7 +973,7 @@ class MainGame {
       showWordExample,
       showTranscription,
       showImageAssociations,
-    }
+    };
     const wordCard = new WordCard(
       currentWord.id || currentWord._id,
       currentWord.word,

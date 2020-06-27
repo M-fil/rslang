@@ -23,7 +23,6 @@ class ExtraVocabulary extends MainVocabulary {
   renderVocabularyItems() {
     const container = create('div', 'vocabulary__words-list');
 
-    console.log('this.settings', this.settings);
     if (!this.words.length) {
       const messageHTML = MainVocabulary.getEmptyVocabularyMessage();
       container.append(messageHTML);
