@@ -28,10 +28,11 @@ class VocabularyItem {
       ['vocabularyWordId', this.id], ['vocabularyType', this.vocabularyType],
     );
 
-    create('div', 'word-item__main-container', this.renderMainContent(), this.HTML);
+    const mainHTML = this.renderMainContent();
     const sentencesBlock = create('div', 'word-item__sentences', '', this.HTML);
     create('div', 'word-item__sentence', this.textMeaning, sentencesBlock);
     create('div', 'word-item__sentence', this.textExample, sentencesBlock);
+    create('div', 'word-item__main-container', [mainHTML, sentencesBlock], this.HTML);
 
     const imageBlock = create('div', 'word-item__image-block', '', this.HTML);
     imageBlock.style.backgroundImage = `url(${WORDS_IMAGES_URL}${this.image})`;
@@ -41,14 +42,14 @@ class VocabularyItem {
 
   renderMainContent() {
     const volumeIcon = create('i', 'fas fa-volume-up word-item__icon');
-    const audioBlock = create('div', 'word-item__audio', volumeIcon);
+    create('div', 'word-item__audio', volumeIcon, this.HTML);
 
     const mainHTML = create('div', 'word-item__main');
     const mainInfoHTML = create('div', 'word-item__main-info', '', mainHTML);
     create('div', 'word-item__word', `${this.word} - ${this.wordTranslate}`, mainInfoHTML);
     create('div', 'word-item__transcription', this.transcription, mainInfoHTML);
 
-    return [audioBlock, mainHTML];
+    return mainHTML;
   }
 }
 

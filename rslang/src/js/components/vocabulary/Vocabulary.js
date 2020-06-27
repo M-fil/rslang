@@ -32,6 +32,7 @@ class Vocabulary {
 
     this.state = {
       allUserWords: [],
+      currentVocabulary: WORDS_TO_LEARN_TITLE,
       vocabularies: {
         wordsToLearn: [],
         learnedWords: [],
@@ -67,16 +68,16 @@ class Vocabulary {
     const allWords = await getAllUserWords(userId, token);
     this.state.allUserWords = allWords;
 
-    this.state.vocabularies.wordsToLearn = this.getWordByVocabularyType(WORDS_TO_LEARN_TITLE);
-    this.state.vocabularies.learnedWords = this.getWordByVocabularyType(LEARNED_WORDS_TITLE);
-    this.state.vocabularies.removedWords = this.getWordByVocabularyType(REMOVED_WORDS_TITLE);
-    this.state.vocabularies.difficultWords = this.getWordByVocabularyType(DIFFUCULT_WORDS_TITLE);
+    this.state.vocabularies.wordsToLearn = this.getWordsByVocabularyType(WORDS_TO_LEARN_TITLE);
+    this.state.vocabularies.learnedWords = this.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
+    this.state.vocabularies.removedWords = this.getWordsByVocabularyType(REMOVED_WORDS_TITLE);
+    this.state.vocabularies.difficultWords = this.getWordsByVocabularyType(DIFFUCULT_WORDS_TITLE);
 
     const vocabulary = new WordsToLearnVocabulary(this.state.vocabularies.wordsToLearn);
     this.renderVocabulary(vocabulary);
   }
 
-  getWordByVocabularyType(vocabularyType) {
+  getWordsByVocabularyType(vocabularyType) {
     return this.state.allUserWords.filter((word) => word.optional.vocabulary === vocabularyType);
   }
 
@@ -87,14 +88,18 @@ class Vocabulary {
   }
 
   activateVocabularyHeaderButtons() {
-    document.addEventListener('click', (event) => {
+    document.addEventListener('click', async (event) => {
       const target = event.target.closest('.vocabulary__header-item');
-      if (target) {
-        const targetVocabularyType = target.dataset.vocabularyType;
+      const targetVocabularyType = target && target.dataset.vocabularyType;
+      if (target && targetVocabularyType !== this.state.currentVocabulary) {
         const {
           wordsToLearn, learnedWords, removedWords, difficultWords,
         } = this.state.vocabularies;
 
+        this.preloader = new Preloader();
+        this.preloader.render();
+        this.preloader.show();
+        await this.sortWordsInVocabularies();
         switch (targetVocabularyType) {
           case WORDS_TO_LEARN_TITLE:
           default: {
@@ -118,6 +123,8 @@ class Vocabulary {
             break;
           }
         }
+        this.state.currentVocabulary = targetVocabularyType;
+        this.preloader.hide();
       }
     });
   }

@@ -146,6 +146,7 @@ class App {
         token: JSON.parse(savedUserData).token,
       };
       await this.initSettings();
+      this.renderVocabulary(this.state.user);
       await App.renderMainGame(this.state.user);
       this.prelodaer.hide();
     } catch (error) {

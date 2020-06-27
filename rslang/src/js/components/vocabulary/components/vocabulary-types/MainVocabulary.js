@@ -26,7 +26,7 @@ class MainVocabulary {
   renderVocabularyTitle() {
     const titleContainer = create('div', 'vocabulary__title-container');
     create('div', 'vocabulary__title', this.vacabularyTitle, titleContainer);
-    create('div', 'vocabulary__words-count', `${NUMBER_OF_WORDS_TEXT}${this.words.length}(10)`, titleContainer);
+    create('div', 'vocabulary__words-count', `${NUMBER_OF_WORDS_TEXT}: ${this.words.length}`, titleContainer);
 
     return titleContainer;
   }
@@ -48,7 +48,7 @@ class MainVocabulary {
       .map((word) => JSON.parse(word.optional.allData))
       .forEach((word) => {
         const wordItem = new VocabularyItem(
-          word.id,
+          word.id || word._id,
           word.word,
           word.wordTranslate,
           word.transcription,

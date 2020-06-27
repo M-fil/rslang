@@ -29,11 +29,13 @@ class ExtraVocabulary extends MainVocabulary {
     }
 
     this.words.forEach((word) => {
+      const allData = JSON.parse(word.optional.allData);
+      const wordId = word.wordId || allData.id || allData._id;
       const {
-        id, word: wordText, wordTranslate, transcription,
-      } = JSON.parse(word.optional.allData);
+        word: wordText, wordTranslate, transcription,
+      } = allData;
       const wordItem = new ShortenVocabularyItem(
-        id, wordText, wordTranslate, transcription, this.title,
+        wordId, wordText, wordTranslate, transcription, this.title,
       );
       container.append(wordItem.render());
     });

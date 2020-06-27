@@ -7,7 +7,10 @@
   @include font(2rem);
 
   display: flex;
-  align-items: center;
+
+  width: 75%;
+  border-bottom: 3px solid;
+  margin-bottom: 20px;
 }
 
 .vocabulary__title-container {
@@ -28,21 +31,11 @@
   align-items: center;
 }
 
-.vocabulary__word-item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  width: 75%;
-  border-bottom: 3px solid;
-  margin-bottom: 20px;
-}
-
 .word-item__main-container {
   display: flex;
-  justify-content: space-between;
-
-  width: 100%;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-grow: 1;
 }
 
 .word-item__main {
@@ -73,8 +66,20 @@
 
 .word-item__audio {
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
 }
 
 .word-item__icon {
   font-size: 3rem;
+}
+
+.word-item__image-block {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  width: 100px;
+  height: 100px;
 }

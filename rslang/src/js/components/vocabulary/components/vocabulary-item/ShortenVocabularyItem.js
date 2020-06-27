@@ -17,9 +17,9 @@ class ShortenVocabularyItem extends VocabularyItem {
       'div', 'vocabulary__extra-word-item', '', null,
       ['vocabularyWordId', this.id], ['vocabularyType', this.vocabularyType],
     );
-    const [audioBlock, mainHTML] = this.renderMainContent();
+    const mainHTML = this.renderMainContent();
     const restoreButtonHTML = create('button', 'word-item__restore-button', RESTORE_BUTTON_TEXT);
-    this.HTML.append(audioBlock, mainHTML, restoreButtonHTML);
+    this.HTML.append(mainHTML, restoreButtonHTML);
 
     return this.HTML;
   }

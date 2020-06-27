@@ -95,7 +95,7 @@ const findAPairText = {
 };
 
 const vocabularyConstants = {
-  NUMBER_OF_WORDS_TEXT: 'Всего слов (выучено сегодня):',
+  NUMBER_OF_WORDS_TEXT: 'Всего слов',
   LEARNED_WORDS_TITLE: 'Выученные слова',
   WORDS_TO_LEARN_TITLE: 'Слова для изучения',
   REMOVED_WORDS_TITLE: 'Удаленные слова',
