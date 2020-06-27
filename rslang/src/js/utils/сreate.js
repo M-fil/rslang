@@ -9,7 +9,7 @@ export default function create(el, classNames, child, parent, ...dataAttr) {
   if (classNames) element.classList.add(...classNames.split(' '));
 
   if (child && Array.isArray(child)) {
-    child.forEach((childElement) => childElement && element.appendChild(childElement));
+    child.forEach((childElement) => childElement && element.append(childElement));
   } else if (child && typeof child === 'object') {
     element.appendChild(child);
   } else if (child && typeof child === 'string') {
@@ -25,7 +25,7 @@ export default function create(el, classNames, child, parent, ...dataAttr) {
       if (attrValue === '') {
         element.setAttribute(attrName, '');
       }
-      if (attrName.match(/value|href|for|target|id|title|placeholder|cols|name|rows|autocorrect|type|src|alt|spellcheck/)) {
+      if (attrName.match(/value|href|for|target|id|title|placeholder|cols|name|rows|autocorrect|type|spellcheck|checked|method|action|min/)) {
         element.setAttribute(attrName, attrValue);
       } else {
         element.dataset[attrName] = attrValue;

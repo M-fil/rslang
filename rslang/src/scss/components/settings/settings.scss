@@ -1,0 +1,55 @@
+.settings {
+  width: 320px;
+}
+
+.settings-tabs-list {
+  list-style: none;
+  display: flex;
+  justify-content: normal;
+  width: 320px;
+  padding: 0;
+}
+
+.settings-tabs-list__item {
+  display: block;
+  width: 50px;
+  @include font(1.5rem);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.settings-tabs-list__item_active {
+  width: 120px;
+  text-align: center;
+}
+
+.settings-tabs__item {
+  display: none;
+  text-align: left;
+}
+
+.settings-tabs__item_active {
+  display: block;
+}
+
+.settings-form__label {
+  display: block;
+  margin-left: 5px;
+  @include font(1.5rem);
+}
+
+.settings-form__input[type=number] {
+  width: 45px;
+  text-align: end;
+}
+
+.settings-form__input[type=checkbox] {
+  margin: 0;
+}
+
+.settings-form {
+  text-align: center;
+}
