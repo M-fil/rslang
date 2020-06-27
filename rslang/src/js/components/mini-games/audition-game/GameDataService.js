@@ -5,7 +5,7 @@ import { auditionGameVariables } from '../../../constants/constants';
 
 export default class GameDataService {
   async mapping(currentRound) {
-    const curr=currentRound <= auditionGameVariables.maxGroups && currentRound > 0 ? currentRound - 1 : Math.floor(Math.random() * Math.floor(auditionGameVariables.maxGroups));
+    const curr = currentRound <= auditionGameVariables.maxGroups && currentRound > 0 ? currentRound - 1 : Math.floor(Math.random() * Math.floor(auditionGameVariables.maxGroups));
     this.data = await getWords(Math.floor(Math.random() * Math.floor(auditionGameVariables.maxPages)), curr);
     this.shuffledValue = this.data.sort(simpleShuffle);
     const wrapper = document.querySelector('.audition-game__wrapper');
@@ -19,13 +19,14 @@ export default class GameDataService {
     const wordsInfo = [];
     for (let i = 0; i < this.shuffledValue.length - 1; i += 1) {
       const test = await getWordsAdditionalInfo(this.shuffledValue[i].word);
-      const partOfSpeech = test.results !== undefined ? test?.results[0]?.partOfSpeech : 'IDK';
-      if(this.shuffledValue[i]?.wordTranslate !== undefined)
-      wordsInfo.push({
-        word: this.shuffledValue[i].word, translate: this.shuffledValue[i].wordTranslate, audio: this.shuffledValue[i].audio, partOfSpeech, image: this.shuffledValue[i].image
-      });
+      const partOfSpeech = test.results ? test?.results[0]?.partOfSpeech : 'IDK';
+      if (this.shuffledValue[i]?.wordTranslate) {
+        wordsInfo.push({
+          word: this.shuffledValue[i].word, translate: this.shuffledValue[i].wordTranslate, audio: this.shuffledValue[i].audio, partOfSpeech, image: this.shuffledValue[i].image,
+        });
+      }
     }
-    const filteredWordsInfo = wordsInfo.filter((word) => word.partOfSpeech === 'noun');
+    const filteredWordsInfo = wordsInfo.filter((word) => word.partOfSpeech === auditionGameVariables.noun);
     const possibleAnswers = filteredWordsInfo.slice(0, auditionGameVariables.possibleWordsAmount);
     const mainWordToAsk = possibleAnswers[0];
     const shuffledPossibleAnswers = shuffle(possibleAnswers);
