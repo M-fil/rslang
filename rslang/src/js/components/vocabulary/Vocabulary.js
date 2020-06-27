@@ -4,6 +4,7 @@ import create, {
   updateUserWord,
   playAudio,
   urls,
+  createWordDataForBackend,
 } from './pathes';
 
 import VocabularyHeader from './components/vocabulary-header/VocabularyHeader';
@@ -11,7 +12,6 @@ import WordsToLearnVocabulary from './components/vocabulary-types/WordsToLearnVo
 import LearnedWordsVocabulary from './components/vocabulary-types/LearnedWordsVocabulary';
 import RemovedWords from './components/vocabulary-types/RemovedWords';
 import DifficultWordsVocabulary from './components/vocabulary-types/DifficultWordsVocabulary';
-import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/Preloader';
 
 const {
@@ -138,7 +138,7 @@ class Vocabulary {
           const allData = JSON.parse(targetWordObject.optional.allData);
 
           const { id, token } = this.state.userState;
-          const dataToUpdate = await MainGame.createWordDataForBackend(
+          const dataToUpdate = await createWordDataForBackend(
             allData, difficulty, true, WORDS_TO_LEARN_TITLE,
           );
           await updateUserWord(id, wordId, dataToUpdate, token);

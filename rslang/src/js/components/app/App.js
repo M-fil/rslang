@@ -6,6 +6,7 @@ import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
+import Settings from '../settings/Settings';
 
 import {
   createUser,
@@ -46,6 +47,11 @@ class App {
   run() {
     this.container = create('main', 'main-content', '', document.body);
     this.checkIsUserAuthorized();
+  }
+
+  initSettings() {
+    const settings = new Settings(this.state.user);
+    await s
   }
 
   renderVocabulary(userState) {

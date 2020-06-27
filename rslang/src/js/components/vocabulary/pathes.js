@@ -10,6 +10,9 @@ import {
 import {
   playAudio,
 } from '../../utils/audio';
+import {
+  createWordDataForBackend,
+} from '../../utils/words-functions';
 
 export default create;
 export {
@@ -18,4 +21,5 @@ export {
   getAllUserWords,
   playAudio,
   updateUserWord,
+  createWordDataForBackend,
 };
