@@ -82,11 +82,19 @@ export default class Settings {
       if (Number(maxCardsEl.value) < (maxCardsMin)) maxCardsEl.value = maxCardsMin;
     });
     const maxCardsPerDay = Settings.createNumberTabElement('maxMainCardsPerDay', settingsText.tabs.mainGame.maxCardsPerDay, this.options.main.maxCardsPerDay, false, undefined, ['min', this.options.main.newCardsPerDay + SettingsConst.differenceBetweenNewAndMax]);
-    const TranslateWord = Settings.createCheckboxTabElement('isMainShowTranslateWord', settingsText.tabs.mainGame.showTranslateWord, this.options.main.showTranslateWord);
-    const WordMeaning = Settings.createCheckboxTabElement('isMainShowWordMeaning', settingsText.tabs.mainGame.showWordMeaning, this.options.main.showWordMeaning);
-    const WordExample = Settings.createCheckboxTabElement('isMainShowWordExample', settingsText.tabs.mainGame.showWordExample, this.options.main.showWordExample);
-    const Transcription = Settings.createCheckboxTabElement('isMainShowTranscription', settingsText.tabs.mainGame.showTranscription, this.options.main.showTranscription);
-    const ImageAssociations = Settings.createCheckboxTabElement('isMainShowImageAssociations', settingsText.tabs.mainGame.showImageAssociations, this.options.main.showImageAssociations);
+    const TranslateWord = Settings.createCheckboxTabElement('isMainShowTranslateWord', settingsText.tabs.mainGame.showTranslateWord, this.options.main.showTranslateWord, Settings.checkboxMainControllerHandler);
+    const WordMeaning = Settings.createCheckboxTabElement('isMainShowWordMeaning', settingsText.tabs.mainGame.showWordMeaning, this.options.main.showWordMeaning, Settings.checkboxMainControllerHandler);
+    const WordExample = Settings.createCheckboxTabElement('isMainShowWordExample', settingsText.tabs.mainGame.showWordExample, this.options.main.showWordExample, Settings.checkboxMainControllerHandler);
+    const Transcription = Settings.createCheckboxTabElement('isMainShowTranscription', settingsText.tabs.mainGame.showTranscription, this.options.main.showTranscription, Settings.checkboxMainControllerHandler);
+    const ImageAssociations = Settings.createCheckboxTabElement('isMainShowImageAssociations', settingsText.tabs.mainGame.showImageAssociations, this.options.main.showImageAssociations, Settings.checkboxMainControllerHandler);
+    Settings.checkboxMainController(
+      TranslateWord,
+      WordMeaning,
+      WordExample,
+      Transcription,
+      ImageAssociations,
+    );
+
     const ButtonShowAnswer = Settings.createCheckboxTabElement('isMainShowButtonShowAnswer', settingsText.tabs.mainGame.showButtonShowAnswer, this.options.main.showButtonShowAnswer);
     const ButtonDelete = Settings.createCheckboxTabElement('isMainShowButtonDelete', settingsText.tabs.mainGame.showButtonShowDelete, this.options.main.showButtonDelete);
     const ButtonHard = Settings.createCheckboxTabElement('isMainShowButtonHard', settingsText.tabs.mainGame.showButtonShowHard, this.options.main.showButtonHard);
@@ -258,6 +266,47 @@ export default class Settings {
 
     normalEl.setAttribute('min', difficultNum + SettingsConst.minStepBetweenNormalAndDifficult);
     easyEl.setAttribute('min', normalNum + SettingsConst.minStepBetweenEasyAndNormal);
+  }
+
+  static checkboxMainController(...args) {
+    let showTranslateWord;
+    let showWordMeaning;
+    let showWordExample;
+    let showTranscription;
+    let showImageAssociations;
+    if (!args.length) {
+      const form = document.querySelector('#settings-form');
+      showTranslateWord = form.querySelector('.settings-form__input[name=isMainShowTranslateWord]');
+      showWordMeaning = form.querySelector('.settings-form__input[name=isMainShowWordMeaning]');
+      showWordExample = form.querySelector('.settings-form__input[name=isMainShowWordExample]');
+      showTranscription = form.querySelector('.settings-form__input[name=isMainShowTranscription]');
+      showImageAssociations = form.querySelector('.settings-form__input[name=isMainShowImageAssociations]');
+    } else {
+      [
+        showTranslateWord,
+        showWordMeaning,
+        showWordExample,
+        showTranscription,
+        showImageAssociations,
+      ] = args;
+      showTranslateWord = showTranslateWord.querySelector('.settings-form__input[name=isMainShowTranslateWord]');
+      showWordMeaning = showWordMeaning.querySelector('.settings-form__input[name=isMainShowWordMeaning]');
+      showWordExample = showWordExample.querySelector('.settings-form__input[name=isMainShowWordExample]');
+      showTranscription = showTranscription.querySelector('.settings-form__input[name=isMainShowTranscription]');
+      showImageAssociations = showImageAssociations.querySelector('.settings-form__input[name=isMainShowImageAssociations]');
+    }
+
+    if (!showWordMeaning.checked && !showWordExample.checked
+      && !showTranscription.checked && !showImageAssociations.checked) {
+      showTranslateWord.checked = true;
+      showTranslateWord.disabled = true;
+    } else {
+      showTranslateWord.disabled = false;
+    }
+  }
+
+  static checkboxMainControllerHandler() {
+    Settings.checkboxMainController();
   }
 
   formSubmitHandler(event) {
