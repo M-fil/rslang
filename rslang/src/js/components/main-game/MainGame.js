@@ -155,7 +155,7 @@ class MainGame {
         this.activateWordsToLearnSelect();
         this.activateEstimateButtons();
         this.activateContinueButton();
-        MainGame.toggleVocabularyButtons(false);
+        this.toggleVocabularyButtons(false);
       } else {
         const { learnedWordsToday } = this.state;
         const { wordsPerDay } = this.state.settings;
@@ -170,7 +170,7 @@ class MainGame {
           this.progressBar.render(),
         );
         this.activateWordsToLearnSelect();
-        MainGame.toggleVocabularyButtons(false);
+        this.toggleVocabularyButtons(false);
       }
       this.preloader.hide();
     } catch (error) {
@@ -337,7 +337,7 @@ class MainGame {
   renderMainGameControls() {
     const container = create('div', 'main-game__controls');
     const gameSettingsBlock = new SettingsControls();
-    const vocabularyButtons = MainGame.renderVocabularyButtons();
+    const vocabularyButtons = this.renderVocabularyButtons();
     this.wordsSelectList = new WordsSelectList();
     const exitButton = create('button', 'main-game__exit-button', '<i class="fas fa-times"></i>')
     container.append(
@@ -386,10 +386,21 @@ class MainGame {
     this.toggleWordCardTranslation();
   }
 
-  static renderVocabularyButtons() {
-    const removeWordButton = FormControll.renderButton('remove-word', REMOVE_WORD_BUTTON);
-    const addToDifficultButton = FormControll.renderButton('add-to-difficult', ADD_TO_DIFFICULT_WORDS);
-    const container = create('div', 'word-card__vocabulary-buttons', [removeWordButton, addToDifficultButton]);
+  renderVocabularyButtons() {
+    const {
+      showButtonDelete,
+      showButtonHard,
+    } = this.state.settings.optional.main;
+
+    const container = create('div', 'word-card__vocabulary-buttons');
+    if (showButtonDelete) {
+      const removeWordButton = FormControll.renderButton('remove-word', REMOVE_WORD_BUTTON);
+      container.append(removeWordButton);
+    }
+    if (showButtonHard) {
+      const addToDifficultButton = FormControll.renderButton('add-to-difficult', ADD_TO_DIFFICULT_WORDS);
+      container.append(addToDifficultButton);
+    }
 
     return container;
   }
@@ -528,7 +539,7 @@ class MainGame {
         userAnswerHTML.classList.remove('word-card__user-answer_translucent');
         userAnswerHTML.classList.add('word-card__user-answer_visible');
         this.toggleControlElements();
-        MainGame.toggleVocabularyButtons();
+        this.toggleVocabularyButtons();
 
         if (mistakesInCurrentWord > 0) {
           this.addWordToTheCurrentTraining();
@@ -668,6 +679,7 @@ class MainGame {
 
           this.wordsSelectList.enable();
           this.renderNextWordCard();
+          this.state.audio.pause();
         }
 
         await this.setStatisticsData();
@@ -692,7 +704,7 @@ class MainGame {
       this.estimateWords.removeFromDOM();
     }
     this.state.isAudioEnded = true;
-    MainGame.toggleVocabularyButtons(false);
+    this.toggleVocabularyButtons(false);
 
     const { currentWordsArray, currentWordIndex } = this.state;
     if (
@@ -740,31 +752,39 @@ class MainGame {
     });
   }
 
-  static toggleVocabularyButtons(isToShow = true) {
+  toggleVocabularyButtons(isToShow = true) {
+    const {
+      showButtonDelete,
+      showButtonHard,
+    } = this.state.settings.optional.main;
     const removeWordButton = document.querySelector('.main-game__remove-word');
     const addToDifficultsButton = document.querySelector('.main-game__add-to-difficult');
 
     if (isToShow) {
-      removeWordButton.removeAttribute('disabled');
-      addToDifficultsButton.removeAttribute('disabled');
+      showButtonDelete && removeWordButton.removeAttribute('disabled');
+      showButtonHard && addToDifficultsButton.removeAttribute('disabled');
     } else {
-      removeWordButton.setAttribute('disabled', 'disabled');
-      addToDifficultsButton.setAttribute('disabled', 'disabled');
+      showButtonDelete && removeWordButton.setAttribute('disabled', 'disabled');
+      showButtonHard && addToDifficultsButton.setAttribute('disabled', 'disabled');
     }
   }
 
   activateVocabularyButtons() {
     document.addEventListener('click', async (event) => {
+      const {
+        showButtonDelete,
+        showButtonHard,
+      } = this.state.settings.optional.main;
       const removeWordTarget = event.target.closest('.main-game__remove-word');
       const addToDifficultTarget = event.target.closest('.main-game__add-to-difficult');
 
-      if (removeWordTarget) {
+      if (removeWordTarget && showButtonDelete) {
         await this.renderWordAfterVocabularyButtonClick(
           removeWordTarget, REMOVED_WORDS_TITLE,
           REMOVE_WORD_BUTTON, REMOVE_WORD_BUTTON_CLICKED,
         );
       }
-      if (addToDifficultTarget) {
+      if (addToDifficultTarget && showButtonHard) {
         await this.renderWordAfterVocabularyButtonClick(
           addToDifficultTarget, DIFFUCULT_WORDS_TITLE,
           ADD_TO_DIFFICULT_WORDS, ADD_TO_DIFFICULT_WORDS_CLICKED,

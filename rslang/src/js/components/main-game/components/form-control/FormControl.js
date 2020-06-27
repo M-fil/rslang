@@ -1,6 +1,5 @@
 import create from '../../../../utils/сreate';
 import { mainGameConstants } from '../../../../constants/constants';
-import MainGame from '../../MainGame';
 
 const {
   NEXT_BUTTON,
