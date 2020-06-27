@@ -1,5 +1,4 @@
-import create from '../../../../utils/сreate';
-import { urls } from '../../../../constants/constants';
+import create, { urls } from '../../pathes';
 
 const {
   WORDS_IMAGES_URL,

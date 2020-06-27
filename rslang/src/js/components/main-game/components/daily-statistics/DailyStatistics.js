@@ -1,5 +1,4 @@
-import create from '../../../../utils/сreate';
-import { dailyStatisticsConstants } from '../../../../constants/constants';
+import create, { dailyStatisticsConstants } from '../../pathes';
 
 const {
   TITLE,

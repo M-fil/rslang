@@ -1,5 +1,4 @@
-import create from '../../../../utils/сreate';
-import { mainGameConstants } from '../../../../constants/constants';
+import create, { mainGameConstants } from '../../pathes';
 
 const {
   NEXT_BUTTON,

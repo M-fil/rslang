@@ -12,16 +12,11 @@ import {
   wordsToLearnOptions,
   estimateButtonsTypes,
   vocabularyConstants,
-} from '../../constants/constants';
-import {
   checkIsManyMistakes,
   addDaysToTheDate,
   calculatePercentage,
-} from '../../utils/calculations';
-
-import {
   addWordToTheVocabulary,
-} from '../../utils/words-functions';
+} from './pathes';
 
 import WordCard from './components/word-card/WordCard';
 import SettingsControls from './components/settings-controls/SettingsControls';
@@ -737,6 +732,15 @@ class MainGame {
         event.preventDefault();
         this.switchToTheNextWordCard();
         await this.setStatisticsData();
+      }
+    });
+  }
+
+  activateExitButton() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.main-game__exit-button');
+      if (target) {
+        console.log('exit');
       }
     });
   }

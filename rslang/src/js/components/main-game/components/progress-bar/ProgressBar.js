@@ -1,6 +1,7 @@
-import create from '../../../../utils/сreate';
-import { calculatePercentage } from '../../../../utils/calculations';
-import { mainGameConstants } from '../../../../constants/constants';
+import create, {
+  calculatePercentage,
+  mainGameConstants,
+} from '../../pathes';
 
 const {
   HIGHEST_PERCENTAGE_STRING,

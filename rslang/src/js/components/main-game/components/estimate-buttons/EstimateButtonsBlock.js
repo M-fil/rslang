@@ -1,5 +1,4 @@
-import create from '../../../../utils/сreate';
-import { estimateButtonsTypes } from '../../../../constants/constants';
+import create, { estimateButtonsTypes } from '../../pathes';
 
 import EstimateButton from './EstimateButton';
 

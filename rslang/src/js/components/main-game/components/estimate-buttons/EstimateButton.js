@@ -1,5 +1,4 @@
-import create from '../../../../utils/сreate';
-import { mainGameConstants, estimateButtonsTypes } from '../../../../constants/constants';
+import create, { mainGameConstants, estimateButtonsTypes } from '../../pathes';
 
 const {
   AGAIN,

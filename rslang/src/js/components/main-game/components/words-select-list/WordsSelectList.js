@@ -1,5 +1,7 @@
-import create from '../../../../utils/сreate';
-import { mainGameConstants, wordsToLearnOptions } from '../../../../constants/constants';
+import create, {
+  wordsToLearnOptions,
+  mainGameConstants,
+} from '../../pathes';
 
 const {
   WORDS_TYPES_SELECT_TITLE,
