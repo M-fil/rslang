@@ -6,7 +6,7 @@ const urls = {
   mainAudioPath: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/',
   correctSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/correct.mp3',
   errorSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3',
-  WORDS_DATA_URL:'https://wordsapiv1.p.rapidapi.com/words/',
+  WORDS_DATA_URL_ADDITIONAL:'https://wordsapiv1.p.rapidapi.com/words/',
 };
 
 const authenticationTexts = {
