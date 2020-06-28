@@ -5,6 +5,7 @@ const {
   CREATE_USER_URL,
   LOGIN_USER_URL,
   GET_USER_URL,
+  WORDS_DATA_URL_ADDITIONAL,
 } = urls;
 
 const {
@@ -19,7 +20,7 @@ const getWords = async (page = 0, group = 0) => {
   return data;
 };
 const getWordsAdditionalInfo = async (word) => {
-  const response = await fetch(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
+  const response = await fetch(`${WORDS_DATA_URL_ADDITIONAL}${word}`, {
 	"method": "GET",
 	"headers": {
 		"x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
