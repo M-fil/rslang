@@ -1,3 +1,4 @@
+@import "constants";
 html,body{
   height: 100%;
   width: 100%;
@@ -8,8 +9,8 @@ html,body{
  width: 100%;
  margin: 0;
   font-size: 4rem;
-    background: rgb(2,0,36);
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(88,9,121,1) 58%, rgba(255,0,206,1) 100%);
+    background: $audition-game__wrapperColor1;
+    background: linear-gradient(90deg, $audition-game__wrapperColor1 0%, $audition-game__wrapperColor2 58%, $audition-game__wrapperColor3 100%);
 }
 .audition-game__answers{
     display: flex;
@@ -46,7 +47,7 @@ html,body{
     font-weight: 300;
     line-height: 1;
     margin-bottom: 60px;
-    color: #6cffde;
+    color: $colorTitle;
     opacity: .8;
     text-transform: uppercase;
     -webkit-font-smoothing: antialiased;
@@ -57,7 +58,7 @@ html,body{
     font-size: 18px;
     line-height: 24px;
     font-weight: 300;
-    color: white;
+    color: $textColor;
 }
 .audition-game__button__start{
     cursor: pointer;
@@ -68,8 +69,8 @@ html,body{
     padding: 19px 15px 21px;
     text-decoration: none!important;
     min-width: 162px;
-    color: #fff!important;
-    background: #00c49d;
+    color: $textColor !important;
+    background: $startBtn;
     border-radius: 4px;
     transition: all .15s ease;
 }
@@ -93,7 +94,7 @@ html,body{
   position: relative;
   left: -50%;
   margin-bottom: 0;
-  color: white;
+  color: $textColor;
   line-height: 0;
 }
 .audition-game__audio__pulse{
@@ -103,9 +104,7 @@ html,body{
   margin-top: 21%;
   width: 150px;
   height: 150px;
-  color: gray;
-  font-family: Roboto;
-  background: url('https://psv4.userapi.com/c856528/u106151900/docs/d5/465145c1b9eb/audio.png?extra=OQ8RQtFvwJrR2IiaqlBoUwv-xEITOssBMpYTCc03-L6JLUaBm_0pueQ1x3gt6HJ5xTg6XJJsNojxJC3d68v3tEZZtD4FBUjPinqnCyxjmqFwyWb5U2k7a1HcvU8mExfy61HuuDd417FGttnty_RV4GyMGg');
+  background: url($audioPNG);
   background-size: cover;
   border-radius: 50%;
   animation: radial-pulse 1s infinite;
@@ -114,15 +113,15 @@ html,body{
 }
 @keyframes radial-pulse {
     0% {
-      box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 0 0px $shadow1;
     }
    
     100% {
-      box-shadow: 0 0 0 40px rgba(0, 0, 0, 0);
+      box-shadow: 0 0 0 40px $shadow2;
     }
 }
 span{
-    color: green;
+    color: $green;
 }
 .line-through{
     text-decoration: line-through;
@@ -140,10 +139,45 @@ span{
     padding: 19px 15px 21px;
     text-decoration: none !important;
     min-width: 162px;
-    color: #fff !important;
-    background: lightpink;
+    color: $textColor !important;
+    background: $nextBtnBg;
     border-radius: 4px;
     white-space: nowrap;
+}
+.audition-game__hint__container{
+  position: absolute;
+  left: 62px;
+  top: 20px;
+}
+.audition-game__hint__button{
+  width: 53px;
+  height: 38px;
+  filter: invert(1);
+  background-image: url($bulb);
+  background-position: 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+  position: relative;
+}
+.audition-game__sound__container{
+    position: absolute;
+    left: 27px;
+    top: 27px;
+}
+.audition-game__sound__button{
+    width: 23px;
+    height: 24px;
+    background-image: url($soundBtn);
+    background-position: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    position: relative;
+}
+.audition-game__sound__buttonMuted{
+    background-image: url($soundBtnMuted);
+    width: 24px;
 }
 .checked{
     opacity: 1;
@@ -170,7 +204,7 @@ span{
     content: ' ';
     height: 33px;
     width: 2px;
-    background-color: #333;
+    background-color: $closeBg;
   }
   .close:before {
     transform: rotate(45deg);
@@ -184,23 +218,23 @@ span{
       left: 0;
       width: 0%;
       height: 4px;
-      background-color: white;
+      background-color: $progressBar;
   }
   .bg1{
-    background: rgb(32,91,12);
-    background: linear-gradient(90deg, rgba(32,91,12,1) 0%, rgba(97,9,121,1) 58%, rgba(255,0,206,1) 100%);
+    background:$bg1_1;
+    background: linear-gradient(90deg, $bg1_1 0%, $bg1_2 58%, $bg1_3 100%);
   }
   .bg2{
-    background: rgb(89,91,12);
-    background: linear-gradient(90deg, rgba(89,91,12,1) 0%, rgba(153,42,184,1) 58%, rgba(192,0,255,1) 100%);
+    background: $bg2_1;
+    background: linear-gradient(90deg, $bg2_1 0%, $bg2_2 58%, $bg2_3 100%);
   }
   .bg3{
-    background: rgb(182,104,20);
-    background: linear-gradient(90deg, rgba(182,104,20,1) 0%, rgba(153,42,184,1) 58%, rgba(199,15,15,1) 100%);
+    background: $bg3_1;
+    background: linear-gradient(90deg, $bg3_1 0%, $bg3_2 58%, $bg3_3 100%);
   }
   .bg4{
-    background: rgb(176,182,20);
-    background: linear-gradient(90deg, rgba(176,182,20,1) 0%, rgba(42,166,184,1) 58%, rgba(173,199,15,1) 100%);
+    background: $bg4_1;
+    background: linear-gradient(90deg, $bg4_1 0%,  $bg4_2 58%, $bg4_3 100%);
   }
   .modal {
     position: fixed; 
@@ -210,41 +244,40 @@ span{
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+    background-color: $modalBg;
   }
   .modal-content {
-    background-color: #fefefe;
+    background-color: $modal-contentBg;
     margin: 5% auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: 1px solid $modal-contentBorder;
     width: 80%; 
   }
   .agreeToClose{
-    background-color: #7892c2;
+    background-color: $agreeToCloseBtnBg;
     border-radius: 28px;
-    border: 1px solid #4e6096;
+    border: 1px solid $agreeToCloseBtnBorder;
     display: inline-block;
     cursor: pointer;
-    color: #ffffff;
+    color: $textColor;
     font-size: 17px;
     padding: 16px 31px;
     text-decoration: none;
-    text-shadow: 0px 1px 0px #283966;
+    text-shadow: 0px 1px 0px $textShadow;
     display: block;
     margin: 2vw auto;
   }
   .cancelToClose{
-    background-color: #7892c2;
+    background-color: $cancelToCloseBtnBg;
     border-radius: 28px;
-    border: 1px solid #4e6096;
+    border: 1px solid $cancelToCloseBtnBorder;
     display: inline-block;
     cursor: pointer;
-    color: #ffffff;
+    color: $textColor;
     font-size: 17px;
     padding: 16px 31px;
     text-decoration: none;
-    text-shadow: 0px 1px 0px #283966;
+    text-shadow: 0px 1px 0px $textShadow;
     display: block;
     margin: 2vw auto;
   }

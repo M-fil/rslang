@@ -1,21 +1,26 @@
 import create from '../../../utils/сreate';
-import { urls,auditionGameVariables } from '../../../constants/constants';
+import { urls, auditionGameVariables } from '../../../constants/constants';
 
 export default class GameStatistic {
   statistics(resultObj) {
-    const correctArray = resultObj.filter((res) => res.result === auditionGameVariables.correct);
+    this.correctArray = resultObj.filter((res) => res.result === auditionGameVariables.correct);
     const failArray = resultObj.filter((res) => res.result === auditionGameVariables.fail);
+    const idkArray = resultObj.filter((res) => res.result === auditionGameVariables.IDK);
     const wrapper = document.querySelector('.audition-game__wrapper');
     const modal = create('div', 'modal', '', wrapper);
     const modalContent = create('div', 'modal-content', '', modal);
     create('h2', 'alarmMessage', auditionGameVariables.statist, modalContent);
     create('p', 'alarmDesc', auditionGameVariables.know, modalContent);
-    for (let i = 0; i < correctArray.length; i++) {
-      create('div', 'statistic', `${correctArray[i].word.word}-${correctArray[i].word.translate}`, modalContent, ['audio', correctArray[i].word.audio]);
+    for (let i = 0; i < this.correctArray.length; i++) {
+      create('div', 'statistic', `${this.correctArray[i].word.word}-${this.correctArray[i].word.translate}`, modalContent, ['audio', this.correctArray[i].word.audio]);
     }
     create('p', 'alarmDesc', auditionGameVariables.errors, modalContent);
     for (let i = 0; i < failArray.length; i++) {
       create('div', 'statistic', `${failArray[i].word.word}-${failArray[i].word.translate}`, modalContent, ['audio', failArray[i].word.audio]);
+    }
+    create('p', 'alarmDesc', auditionGameVariables.idkBtn, modalContent);
+    for (let i = 0; i < idkArray.length; i++) {
+      create('div', 'statistic', `${idkArray[i].word.word}-${idkArray[i].word.translate}`, modalContent, ['audio', idkArray[i].word.audio]);
     }
     create('button', 'cancelToClose', auditionGameVariables.cancel, modalContent);
     this.closeEventHandler();

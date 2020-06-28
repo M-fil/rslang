@@ -2,6 +2,7 @@
 import GameDataService from './GameDataService';
 import GameStatistic from './GameStatistic';
 import create from '../../../utils/сreate';
+import { shuffle } from '../../../utils/shuffle';
 import { urls, auditionGameVariables } from '../../../constants/constants';
 import Preloader from '../../preloader/Preloader';
 
@@ -13,12 +14,15 @@ export default class GameService {
   preloaderInit() {
     this.preloader = new Preloader();
     this.preloader.render();
+    this.isMuted = false;
+    this.isHintAvailable = true;
+    this.correctAnswersCounter = 0;
   }
 
   async initRound(lives, roundsAll, currentRound, roundResults) {
     this.preloader.show();
     const gameDataService = new GameDataService();
-    const data = await gameDataService.mapping(currentRound);
+    const data = await gameDataService.mapping(currentRound, this.isMuted);
     const answers = document.querySelector('.audition-game__answers');
     const arr = data.array;
     const mainWord = data.mainWordToAsk;
@@ -26,13 +30,17 @@ export default class GameService {
     const audio = new Audio(`${urls.mainAudioPath}${mainWord.audio}`);
     audio.play();
     this.preloader.hide();
+    this.sound = document.querySelector('.audition-game__sound__button');
     document.querySelector('.audition-game__container').classList.remove('hide');
     this.mainEventHandler(lives, mainWord, roundsAll, currentRound, roundResults);
-    this.idkBtnHandler(audio);
+    this.idkBtnHandler(lives, mainWord, roundsAll, currentRound, roundResults);
+    this.repeatAudioHandler(audio);
     this.closeBtnHandler();
     this.progressBarHandler(roundsAll, currentRound);
     this.bgRandomize();
     this.keyboardEventsHandler();
+    this.soundHandler();
+    this.hintHandler(mainWord);
   }
 
   nextRound(lives, roundsAll, currentRound, roundResults) {
@@ -43,7 +51,7 @@ export default class GameService {
     } else {
       const gameStats = new GameStatistic();
       gameStats.statistics(roundResults);
-      document.querySelector('.progress').style.width = '0%';
+      document.querySelector('.progress').style.width = auditionGameVariables.zeroPercent;
       document.querySelector('.audition-game__wrapper').className = 'audition-game__wrapper';
     }
   }
@@ -73,14 +81,18 @@ export default class GameService {
         if (event.target.innerText.includes(mainWord.translate)) {
           event.target.innerHTML = `${auditionGameVariables.checkMark}${event.target.innerText}`;
           const audioRoundResult = new Audio(urls.correctSound);
-          audioRoundResult.play();
-          roundResults.push({ result: 'correct', word: mainWord });
+          if (!this.sound.classList.contains('audition-game__sound__buttonMuted')) audioRoundResult.play();
+          roundResults.push({ result: auditionGameVariables.correct, word: mainWord });
+          this.correctAnswersCounter += 1;
+          if (this.correctAnswersCounter > 2) this.isHintAvailable = true;
+
           this.nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound, roundResults);
         } else {
+          this.correctAnswersCounter = 0;
           const audioRoundResult = new Audio(urls.errorSound);
-          audioRoundResult.play();
+          if (!this.sound.classList.contains('audition-game__sound__buttonMuted')) audioRoundResult.play();
           event.target.classList.toggle('line-through');
-          roundResults.push({ result: 'fail', word: mainWord });
+          roundResults.push({ result: auditionGameVariables.fail, word: mainWord });
           this.nextRoundEventHandler(nextBtn, --lives, roundsAll, currentRound, roundResults);
         }
       }
@@ -93,17 +105,57 @@ export default class GameService {
       this.nextRound(lives, roundsAll, currentRound, roundResults);
     }, { once: true });
     document.addEventListener('keydown', (event) => {
-      if (event.code === 'Enter' && document.querySelector('.audition-game__button__next')?.innerText !== auditionGameVariables.idkBtn) {
+      if (event.code === auditionGameVariables.Enter && document.querySelector('.audition-game__button__next')?.innerText !== auditionGameVariables.idkBtn) {
         nextBtn.click();
       }
     }, { once: true });
   }
 
-  idkBtnHandler(audio) {
-    document.querySelector('.audition-game__button__next').addEventListener('click', (event) => {
+  idkBtnHandler(lives, mainWord, roundsAll, currentRound, roundResults) {
+    const idkButton = document.querySelector('.audition-game__button__next');
+    idkButton.addEventListener('click', (event) => {
       if (event.target.innerText === auditionGameVariables.idkBtn) {
-        audio.play();
+        this.correctAnswersCounter = 0;
+        const nextBtn = document.querySelector('.audition-game__button__next');
+        nextBtn.innerHTML = auditionGameVariables.arrowSymbol;
+        document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.translate}`;
+        document.querySelector('.audition-game__audio__pulse').style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
+        const elements = document.querySelectorAll('.audition-game__element');
+        this.designUncheckedPossibleWords(elements);
+        setTimeout(() => {
+          roundResults.push({ result: auditionGameVariables.IDK, word: mainWord });
+          this.nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound, roundResults);
+          idkButton.click();
+        }, 3000);
       }
+    });
+  }
+
+  hintHandler(mainWord) {
+    document.querySelector('.audition-game__hint__button').addEventListener('click', () => {
+      if (this.isHintAvailable) {
+        this.correctAnswersCounter = 0;
+        const elements = Array.from(document.querySelectorAll('.audition-game__element'));
+        let cnt = 0;
+        const el = shuffle(elements);
+        for (let i = 0; i < el.length; i += 1) {
+          if (!el[i].innerText.includes(mainWord.translate)) {
+            cnt += 1;
+            el[i].classList.add('unchecked');
+            el[i].classList.add('line-through');
+            if (cnt === 2) {
+              break;
+            }
+          }
+        }
+      }
+      this.isHintAvailable = false;
+    });
+  }
+
+  repeatAudioHandler(audio) {
+    document.querySelector('.audition-game__audio__pulse').addEventListener('click', () => {
+      if (!this.sound.classList.contains('audition-game__sound__buttonMuted')) audio.play();
     });
   }
 
@@ -118,7 +170,7 @@ export default class GameService {
   }
 
   bgRandomize() {
-    const bg = ['bg1', 'bg2', 'bg3', 'bg4'];
+    const { bg } = auditionGameVariables;
     bg.sort(() => Math.random() - 0.5);
     const wrapper = document.querySelector('.audition-game__wrapper');
     wrapper.className = 'audition-game__wrapper';
@@ -142,7 +194,7 @@ export default class GameService {
       document.querySelector('.audition-game__startScreen').classList.toggle('hide');
       document.querySelector('.modal').remove();
       document.querySelector('.audition-game__wrapper').className = 'audition-game__wrapper';
-      document.querySelector('.progress').style.width = '0%';
+      document.querySelector('.progress').style.width = auditionGameVariables.zeroPercent;
     });
     document.querySelector('.cancelToClose').addEventListener('click', () => {
       document.querySelector('.modal').remove();
@@ -152,10 +204,16 @@ export default class GameService {
   keyboardEventsHandler() {
     document.addEventListener('keydown', (event) => {
       const choose = document.querySelector(`.${event.code}`);
-      const normal = ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5'];
-      if (normal.includes(event.code)) {
+      if (auditionGameVariables.digits.includes(event.code)) {
         choose.click();
       }
+    });
+  }
+
+  soundHandler() {
+    document.querySelector('.audition-game__sound__button').addEventListener('click', (event) => {
+      event.target.classList.toggle('audition-game__sound__buttonMuted');
+      this.isMuted = !this.isMuted;
     });
   }
 }

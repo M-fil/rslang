@@ -63,6 +63,11 @@ const auditionGameVariables = {
   statist: 'Статистика',
   know: 'Знаю',
   errors: 'Ошибок',
+  IDK: 'IDK',
+  zeroPercent: '0%',
+  Enter: 'Enter',
+  bg: ['bg1', 'bg2', 'bg3', 'bg4'],
+  digits: ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5'],
 };
 export {
   urls,
