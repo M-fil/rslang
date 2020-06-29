@@ -5,6 +5,7 @@ const urls = {
   GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 const authenticationTexts = {
@@ -159,7 +160,7 @@ const modalConstants = {
   CANCEL_BUTTON: 'Отмена',
 };
 
-const statistics = {
+const shortTermStatisticsConstants = {
   ERROR_STAT: 'Ошибок',
   CORRECT_STAT: 'Знаю',
   STAT_TITLE: 'Статистика',
@@ -179,5 +180,5 @@ export {
   dailyStatisticsConstants,
   settingsText,
   modalConstants,
-  statistics,
+  shortTermStatisticsConstants,
 };

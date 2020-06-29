@@ -1,7 +1,7 @@
 import create from '../../../utils/сreate';
 import ModalWindow from './ModalWindow';
 import {
-  statistics,
+  shortTermStatisticsConstants,
   urls,
 } from '../../../constants/constants';
 
@@ -9,12 +9,12 @@ const {
   ERROR_STAT,
   CORRECT_STAT,
   STAT_TITLE,
-  STAT_IMAGE_AUDIO,
   STAT_CLOSE,
-} = statistics;
+} = shortTermStatisticsConstants;
 
 const {
   WORDS_AUDIOS_URL,
+  STAT_IMAGE_AUDIO,
 } = urls;
 
 export default class ShortTermStatistics extends ModalWindow {
