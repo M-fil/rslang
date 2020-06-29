@@ -16,6 +16,12 @@ const authenticationTexts = {
   REGISTER_BUTTON_TEXT: 'Создать',
 };
 
+const wordsToLearnSelectConstants = {
+  SELECT_TITLE: 'Какие слова учить?',
+  SELECT_OPTION_LEARNED_WORDS: 'Уже изученные слова',
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS: 'Слова из коллекций',
+};
+
 const errorTypes = {
   EMPTY_FIELD: 'Пароль и почта должны быть заполнены.',
   INCORRECT_VALUES: 'Поля заполнены неверно.',
@@ -163,4 +169,5 @@ export {
   vocabularyConstants,
   dailyStatisticsConstants,
   settingsText,
+  wordsToLearnSelectConstants,
 };
