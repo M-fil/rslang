@@ -29,6 +29,7 @@ const {
   PLUS_LIVE,
   AUDIO_CORRECT,
   AUDIO_ERROR,
+  AUDIO_BONUS,
   STAT_IMAGE_AUDIO,
   LIVES_IMAGE_BLACK,
   LIVES_IMAGE_INHERIT,
@@ -232,7 +233,7 @@ export default class SavannahGame {
     this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
     this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${this.rightWords.length}`, this.statisticaText);
     this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
-
+    this.audio.muted = false;
     SavannahGame.statisticaWords(this.wrongWords, this.statisticaWrongWords);
     SavannahGame.statisticaWords(this.rightWords, this.statisticaRightWords);
     this.clickStatisticaAudio();
@@ -329,6 +330,7 @@ export default class SavannahGame {
     this.live.src += LIVES_IMAGE_BLACK;
     this.countLives += 1;
     this.correctWordNumber = 0;
+    this.playAudio(AUDIO_BONUS);
     this.plusLive = document.querySelector('.add-lives-number');
     this.plusLive.classList.add('show-number-live');
     setTimeout(() => {
