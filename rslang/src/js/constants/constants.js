@@ -23,6 +23,7 @@ const savannahConstants = {
   CORRECT_STAT: 'Знаю',
   STAT: 'Статистика',
   PLUS_LIVE: '+1 &#9829',
+  AUDIO_TICKING: './src/assets/audio/clock_ticking_loop.mp3',
   AUDIO_CORRECT: './src/assets/audio/correct.mp3',
   AUDIO_ERROR: './src/assets/audio/error.mp3',
   AUDIO_BONUS: './src/assets/audio/bonus.mp3',

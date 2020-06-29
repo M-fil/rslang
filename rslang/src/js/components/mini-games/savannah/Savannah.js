@@ -30,6 +30,7 @@ const {
   AUDIO_CORRECT,
   AUDIO_ERROR,
   AUDIO_BONUS,
+  AUDIO_TICKING,
   STAT_IMAGE_AUDIO,
   LIVES_IMAGE_BLACK,
   LIVES_IMAGE_INHERIT,
@@ -66,6 +67,7 @@ export default class SavannahGame {
   }
 
   reverseReport() {
+    this.playAudio(AUDIO_TICKING);
     SavannahGame.changeDisplay(this.exitButton, 'none');
     const startGameWindow = document.querySelector('.start-game-window');
     SavannahGame.changeDisplay(startGameWindow, 'none');
@@ -102,6 +104,7 @@ export default class SavannahGame {
     this.keyboardClick();
     this.correctWordNumber = 0;
     this.countLives = 0;
+    this.pauseAudio();
   }
 
   crateCardsData() {
@@ -282,6 +285,10 @@ export default class SavannahGame {
       this.audio.src = source;
       this.audio.play();
     }
+  }
+
+  pauseAudio() {
+    this.audio.pause();
   }
 
   offAudio() {
