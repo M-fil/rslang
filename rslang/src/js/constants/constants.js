@@ -154,8 +154,8 @@ const settingsText = {
 
 const modalConstants = {
   MODAL_TITLE: 'Тренировка не закончена!',
-  MODAL_WARNING: 'Если вы вернетесь к списку, ваши требования не будут сохранены',
-  CLOSE_BUTTON: 'Закрыть',
+  MODAL_WARNING: 'Если вы вернетесь к списку, ваш прогресс не будет сохранен',
+  CLOSE_BUTTON: 'Всё равно закрыть',
   CANCEL_BUTTON: 'Отмена',
 };
 
