@@ -2,10 +2,10 @@ import create, {
   vocabularyConstants,
   getAllUserWords,
   updateUserWord,
+  createUserWord,
   playAudio,
   urls,
-  createWordDataForBackend,
-  getUserSettings,
+  estimateButtonsTypes,
 } from './pathes';
 
 import VocabularyHeader from './components/vocabulary-header/VocabularyHeader';
@@ -14,6 +14,7 @@ import LearnedWordsVocabulary from './components/vocabulary-types/LearnedWordsVo
 import RemovedWords from './components/vocabulary-types/RemovedWords';
 import DifficultWordsVocabulary from './components/vocabulary-types/DifficultWordsVocabulary';
 import Preloader from '../preloader/Preloader';
+import Settings from '../settings/Settings';
 
 const {
   LEARNED_WORDS_TITLE,
@@ -26,11 +27,20 @@ const {
   WORDS_AUDIOS_URL,
 } = urls;
 
+const {
+  GOOD, EASY, HARD,
+} = estimateButtonsTypes;
+
 class Vocabulary {
   constructor(userState) {
+    if (typeof Vocabulary.instance === 'object') {
+      return Vocabulary.instance;
+    }
     this.container = null;
     this.audio = new Audio();
+    this.settings = new Settings();
 
+    Vocabulary.instance = this;
     this.state = {
       allUserWords: [],
       currentVocabulary: WORDS_TO_LEARN_TITLE,
@@ -41,8 +51,13 @@ class Vocabulary {
         difficultWords: [],
       },
       userState,
-      settings: {},
     };
+    return this;
+  }
+
+  async init() {
+    await this.settings.init();
+    await this.sortWordsInVocabularies();
   }
 
   async render() {
@@ -51,8 +66,7 @@ class Vocabulary {
     this.container.append(vocabularyHeader.render());
     this.mainContentHTML = create('div', 'vocabulary__main-content', '', this.container);
 
-    await this.setSettings();
-    await this.sortWordsInVocabularies();
+    this.renderInitialVocabulary();
     this.activateVocabularyHeaderButtons();
     this.activateAudioButtons();
     this.activateRestoreButtons();
@@ -60,9 +74,70 @@ class Vocabulary {
     return this.container;
   }
 
-  async setSettings() {
+  getDaysIntervalByEstimation(estimation) {
+    const {
+      intervalEasy,
+      intervalNormal,
+      intervalDifficult,
+    } = this.settings.getSettingsByGroup('main');
+
+    switch (estimation) {
+      case EASY:
+      default:
+        return intervalEasy;
+      case GOOD:
+        return intervalNormal;
+      case HARD:
+        return intervalDifficult;
+    }
+  }
+
+  createWordDataForBackend(
+    currentWord, estimation, vocabulary = WORDS_TO_LEARN_TITLE,
+  ) {
+    const daysInterval = this.getDaysIntervalByEstimation(estimation);
+    const wordData = {
+      id: currentWord.id || currentWord._id,
+      word: currentWord.word,
+      difficulty: estimation.text || GOOD.text,
+      vocabulary,
+      daysInterval,
+      valuationDate: new Date(),
+      allData: currentWord,
+    };
+    const {
+      id: wordId, word, difficulty, valuationDate, allData,
+    } = wordData;
+    const dataToRecieve = {
+      difficulty,
+      optional: {
+        wordId,
+        word,
+        daysInterval,
+        vocabulary,
+        valuationDate: valuationDate.toString(),
+        allData: JSON.stringify(allData),
+      },
+    };
+
+    return dataToRecieve;
+  }
+
+  async addWordToTheVocabulary(
+    word, vocabularyType = WORDS_TO_LEARN_TITLE, estimation = GOOD.text,
+  ) {
     const { id, token } = this.state.userState;
-    this.state.settings = await getUserSettings(id, token);
+    try {
+      const data = await this.createWordDataForBackend(word, estimation, vocabularyType);
+      const { wordId } = data.optional;
+      await updateUserWord(id, wordId, data, token);
+      await this.sortWordsInVocabularies();
+    } catch (error) {
+      const data = await this.createWordDataForBackend(word, estimation, vocabularyType);
+      const { wordId } = data.optional;
+      await createUserWord(id, wordId, data, token);
+      await this.sortWordsInVocabularies();
+    }
   }
 
   updateWords(words) {
@@ -71,16 +146,31 @@ class Vocabulary {
   }
 
   async sortWordsInVocabularies() {
-    const { userId, token } = this.getUserDataForAuthorization();
-    const allWords = await getAllUserWords(userId, token);
+    const { id, token } = this.state.userState;
+    const allWords = await getAllUserWords(id, token);
     this.state.allUserWords = allWords;
+    this.state.allUserWords = this.parseUserWordsData();
 
     this.state.vocabularies.wordsToLearn = this.getWordsByVocabularyType(WORDS_TO_LEARN_TITLE);
     this.state.vocabularies.learnedWords = this.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
     this.state.vocabularies.removedWords = this.getWordsByVocabularyType(REMOVED_WORDS_TITLE);
     this.state.vocabularies.difficultWords = this.getWordsByVocabularyType(DIFFUCULT_WORDS_TITLE);
+  }
 
-    const { dictionary } = this.state.settings.optional;
+  parseUserWordsData() {
+    return this.state.allUserWords.map((item) => ({
+      ...item,
+      optional: {
+        ...item.optional,
+        valuationDate: new Date(item.optional.valuationDate),
+        daysInterval: parseInt(item.optional.daysInterval, 10),
+        allData: JSON.parse(item.optional.allData),
+      },
+    }));
+  }
+
+  renderInitialVocabulary() {
+    const dictionary = this.settings.getSettingsByGroup('dictionary');
     const { wordsToLearn } = this.state.vocabularies;
     const vocabulary = new WordsToLearnVocabulary(wordsToLearn, dictionary);
     this.renderVocabulary(vocabulary);
@@ -88,6 +178,20 @@ class Vocabulary {
 
   getWordsByVocabularyType(vocabularyType) {
     return this.state.allUserWords.filter((word) => word.optional.vocabulary === vocabularyType);
+  }
+
+  getAllVocabulariesData() {
+    return this.state.vocabularies;
+  }
+
+  getVocabularyWordsLength(vocabularyType) {
+    return this.state.allUserWords
+      .filter((word) => word.optional.vocabulary === vocabularyType)
+      .length;
+  }
+
+  getAllUserWordsLength() {
+    return this.state.allUserWords.length;
   }
 
   renderVocabulary(vocabularyClass) {
@@ -109,7 +213,7 @@ class Vocabulary {
         this.preloader.render();
         this.preloader.show();
         await this.sortWordsInVocabularies();
-        const { dictionary } = this.state.settings.optional;
+        const dictionary = this.settings.getSettingsByGroup('dictionary');
 
         switch (targetVocabularyType) {
           case WORDS_TO_LEARN_TITLE:
@@ -153,14 +257,10 @@ class Vocabulary {
             targetWordObject,
             targetWordHTML,
           } = this.getWordObjectByTargetElement(target);
-          const { difficulty, wordId } = targetWordObject;
-          const allData = JSON.parse(targetWordObject.optional.allData);
+          const { valuationDate } = targetWordObject.optional;
 
           const { id, token } = this.state.userState;
-          const dataToUpdate = await createWordDataForBackend(
-            allData, difficulty, true, WORDS_TO_LEARN_TITLE, this.state.settings,
-          );
-          await updateUserWord(id, wordId, dataToUpdate, token);
+          await this.addWordToTheVocabulary(targetWordObject, WORDS_TO_LEARN_TITLE, valuationDate);
           this.state.allUserWords = await getAllUserWords(id, token);
 
           this.updateVocabularyAfterRestoreButtonClick(targetWordObject);
@@ -192,11 +292,11 @@ class Vocabulary {
   activateAudioButtons() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.word-item__audio');
-      const { showAudioExample } = this.state.settings.optional.dictionary;
+      const { showAudioExample } = this.settings.getSettingsByGroup('dictionary');
 
       if (target && showAudioExample) {
         const { targetWordObject } = this.getWordObjectByTargetElement(target);
-        const allData = JSON.parse(targetWordObject.optional.allData);
+        const { allData } = targetWordObject.optional;
         const source = `${WORDS_AUDIOS_URL}${allData.audio}`;
 
         playAudio(source, this.audio);
@@ -212,18 +312,6 @@ class Vocabulary {
     const targetWordObject = this.state.allUserWords.find((word) => word.wordId === targetWordId);
 
     return { targetWordObject, targetWordHTML: wordCardHTML || extraWordCardHTML };
-  }
-
-  getUserDataForAuthorization() {
-    const savedUserData = localStorage.getItem('user-data');
-    if (savedUserData) {
-      return JSON.parse(savedUserData);
-    }
-
-    return {
-      userId: this.userState.id,
-      token: this.userState.token,
-    };
   }
 }
 

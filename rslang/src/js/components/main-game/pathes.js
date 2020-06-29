@@ -12,9 +12,6 @@ import {
   checkIsManyMistakes,
   addDaysToTheDate,
 } from '../../utils/calculations';
-import {
-  addWordToTheVocabulary,
-} from '../../utils/words-functions';
 
 export default create;
 export {
@@ -27,5 +24,4 @@ export {
   wordsToLearnOptions,
   vocabularyConstants,
   urls,
-  addWordToTheVocabulary,
 };

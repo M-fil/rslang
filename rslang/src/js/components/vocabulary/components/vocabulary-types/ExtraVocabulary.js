@@ -30,7 +30,7 @@ class ExtraVocabulary extends MainVocabulary {
     }
 
     this.words.forEach((word) => {
-      const allData = JSON.parse(word.optional.allData);
+      const { allData } = word.optional;
       const wordId = word.wordId || allData.id || allData._id;
       const {
         word: wordText, wordTranslate, transcription,
