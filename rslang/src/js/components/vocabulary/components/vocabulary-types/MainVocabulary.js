@@ -45,7 +45,6 @@ class MainVocabulary {
       return container;
     }
 
-    console.log('WORSD', this.words)
     this.words
       .map((word) => word.optional.allData)
       .forEach((word) => {

@@ -876,7 +876,7 @@ class MainGame {
   ) {
     const currentWord = wordToAdd || this.state.currentWordsArray[this.state.currentWordIndex];
 
-    await this.vocabulary.addWordToTheVocabulary(currentWord, vocabularyType, estimation)
+    await this.vocabulary.addWordToTheVocabulary(currentWord, vocabularyType, estimation);
     this.state.userWords = await this.getAllUserWordsFromBackend();
     this.state.mistakesInCurrentWord = 0;
   }
