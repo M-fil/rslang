@@ -159,6 +159,14 @@ const modalConstants = {
   CANCEL_BUTTON: 'Отмена',
 };
 
+const statistics = {
+  ERROR_STAT: 'Ошибок',
+  CORRECT_STAT: 'Знаю',
+  STAT_TITLE: 'Статистика',
+  STAT_CLOSE: 'Закрыть',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
+};
+
 export {
   urls,
   findAPairText,
@@ -171,4 +179,5 @@ export {
   dailyStatisticsConstants,
   settingsText,
   modalConstants,
+  statistics,
 };
