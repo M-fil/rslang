@@ -49,6 +49,7 @@ export default class SpeakIt {
     this.learnedWords = [];
     this.audio = new Audio();
     this.recognition = SpeakIt.createSpeechRecongnition();
+    this.settings = new Settings();
 
     this.state = {
       currentWordsType: SELECT_OPTION_LEARNED_WORDS,
@@ -103,6 +104,8 @@ export default class SpeakIt {
       this.preloader.render();
       this.preloader.show();
 
+      await this.settings.init();
+      console.log('settings', this.settings.getSettings());
       await this.renderWordsOnThePage();
       this.wordCardClickEvent();
       this.startGame();
@@ -286,10 +289,11 @@ export default class SpeakIt {
   }
 
   acivateSkipButtons() {
-    document.addEventListener('click', (event) => {
+    document.addEventListener('click', async (event) => {
       const target = event.target.closest('.word-card__skip-word-button');
 
       if (target) {
+        await addWordToTheVocabulary();
         const wordCardHTML = target.closest('.word-card');
         const wordId = Number(wordCardHTML.dataset.wordId);
         wordCardHTML.classList.add('word-card_skipped');
