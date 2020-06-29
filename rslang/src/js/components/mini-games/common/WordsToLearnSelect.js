@@ -7,7 +7,7 @@ const {
   SELECT_TITLE,
   SELECT_OPTION_LEARNED_WORDS,
   SELECT_OPTION_WORDS_FROM_COLLECTIONS,
-} = wordsToLearnSelectConstants; 
+} = wordsToLearnSelectConstants;
 
 class WordsToLearnSelect {
   constructor(containerClassNameType) {
@@ -31,9 +31,10 @@ class WordsToLearnSelect {
   }
 
   selectIndexByValue(value) {
-    console.log(this.select.options);
-    const index = Array.from(this.select.options).findIndex((option) => option.value === value);
-    this.select.selectedIndex = index;
+    const options = Array.from(this.select.options);
+    const item = options.find((option) => option.value === value);
+    options.forEach((option) => option.removeAttribute('selected'));
+    item.setAttribute('selected', '');
   }
 
   renderOption(optionText) {

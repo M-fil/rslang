@@ -5,7 +5,6 @@ const urls = {
   GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
-<<<<<<< HEAD
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
   CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
   INCORRECT_AUDIO_PATH: './src/assets/audio/error.mp3',
@@ -16,8 +15,6 @@ const wordsToLearnSelectConstants = {
   SELECT_TITLE: 'Какие слова учить?',
   SELECT_OPTION_LEARNED_WORDS: 'Уже изученные слова',
   SELECT_OPTION_WORDS_FROM_COLLECTIONS: 'Слова из коллекций',
-=======
->>>>>>> develop
 };
 
 const authenticationTexts = {

@@ -3,6 +3,10 @@ import create, {
   wordsToLearnSelectConstants,
   urls,
   speakItConstants,
+  getRandomInteger,
+  addWordToTheVocabulary,
+  getAggregatedWordsByFilter,
+  vocabularyConstants,
 } from './pathes';
 
 import WordCard from './components/words/WordCard';
@@ -14,6 +18,7 @@ import MicrophoneButton from './components/buttons/MicrophoneButton';
 import StatisticsBlock from './components/statistics/StatisticsBlock';
 import WordsToLearnSelect from '../common/WordsToLearnSelect';
 import Preloader from '../../preloader/Preloader';
+import Settings from '../../settings/Settings';
 
 const {
   WORDS_IMAGES_URL,
@@ -32,10 +37,16 @@ const {
   WORDS_LIMIT_NUMBER,
 } = speakItConstants;
 
+const {
+  LEARNED_WORDS_TITLE,
+} = vocabularyConstants;
+
 export default class SpeakIt {
-  constructor() {
+  constructor(userState) {
+    this.currentArrayOfWords = [];
     this.words = [];
     this.skippedWords = [];
+    this.learnedWords = [];
     this.audio = new Audio();
     this.recognition = SpeakIt.createSpeechRecongnition();
 
@@ -47,6 +58,7 @@ export default class SpeakIt {
       correct: 0,
       isMicroDisabled: true,
       isNavSwitched: false,
+      userState,
     };
   }
 
@@ -59,6 +71,14 @@ export default class SpeakIt {
     const main = create('div', 'speak-it__main', '', document.body);
     const startGamePage = new StartGamePage();
     create('div', 'main-container__wrapper', [startGamePage.render()], main);
+  }
+
+  async getLearnedWords() {
+    const filter = `{"userWord.optional.vocabulary":"${LEARNED_WORDS_TITLE}"}`;
+    const { id, token } = this.state.userState;
+    const words = await getAggregatedWordsByFilter(id, token, WORDS_LIMIT_NUMBER, filter);
+    this.learnedWords = words[0].paginatedResults;
+    console.log('this.learnedWords', this.learnedWords);
   }
 
   playAudio(source) {
@@ -82,16 +102,8 @@ export default class SpeakIt {
       this.preloader = new Preloader();
       this.preloader.render();
       this.preloader.show();
-      this.state.currentPage = 0;
-      this.state.groupOfWords = 0;
-      const data = await getWords(this.state.currentPage, this.state.groupOfWords);
-      this.preloader.hide();
-      this.words = data.slice(0, WORDS_LIMIT_NUMBER).map((wordData) => ({
-        ...wordData,
-        word: wordData.word.toLowerCase(),
-      }));
 
-      this.renderWordsOnThePage();
+      await this.renderWordsOnThePage();
       this.wordCardClickEvent();
       this.startGame();
       this.activateRestartButton();
@@ -110,6 +122,7 @@ export default class SpeakIt {
   }
 
   renderNavigation() {
+    const { currentWordsType } = this.state;
     this.wordToLearnSelect = new WordsToLearnSelect('speak-it');
     this.navigation = new Navigation();
 
@@ -118,50 +131,92 @@ export default class SpeakIt {
       [this.wordToLearnSelect.render(), this.navigation.render()],
       document.querySelector('.main-container__wrapper'),
     );
+
+    if (currentWordsType === SELECT_OPTION_LEARNED_WORDS) {
+      this.navigation.hide();
+    } 
+  }
+
+
+  async getColectionWords() {
+    this.state.currentPage = getRandomInteger();
+    this.state.groupOfWords = 0;
+    const data = await getWords(this.state.currentPage, this.state.groupOfWords);
+    this.words = SpeakIt.prepareWordsData(data);
+  }
+
+  static prepareWordsData(words) {
+    return words.slice(0, WORDS_LIMIT_NUMBER).map((wordData) => ({
+      ...wordData,
+      word: wordData.word.toLowerCase(),
+    }));
   }
 
   renderWords() {
+    const gamePageHTML = document.querySelector('.game-page');
     const container = create('div', 'game-page');
     const wordsContainer = create('div', 'game-page__words', '', container);
 
+    if (gamePageHTML) {
+      gamePageHTML.remove();
+    }
     this.imageBlock = new ImageBlock();
     container.prepend(this.imageBlock.render());
 
-    this.words.forEach((word) => {
-      const wordCard = new WordCard(word.id, word.word, word.transcription);
+    this.currentArrayOfWords.forEach((word) => {
+      console.log(word);
+      const wordCard = new WordCard(word.id || word._id, word.word, word.transcription);
       wordsContainer.append(wordCard.render());
     });
 
     document.querySelector('.navigation').after(container);
   }
 
-  renderWordsOnThePage() {
+  async renderWordsOnThePage() {
     const wordsType = localStorage.getItem('speak-it-words-type');
-    console.log(wordsType)
+    this.saveCurrentWordsType(wordsType);
+    this.preloader.show();
     switch (wordsType) {
       case SELECT_OPTION_LEARNED_WORDS:
-      default:
-        this.renderSpeacifiedWordsType();
+      default: {
+        this.renderNavigation();
+        await this.renderLearnedWords();
         this.wordToLearnSelect.selectIndexByValue(SELECT_OPTION_LEARNED_WORDS);
         break;
-      case SELECT_OPTION_WORDS_FROM_COLLECTIONS:
-        this.renderSpeacifiedWordsType();
+      }
+      case SELECT_OPTION_WORDS_FROM_COLLECTIONS: {
+        await this.getColectionWords();
+        this.currentArrayOfWords = this.words;
+        this.renderNavigation();
         this.wordToLearnSelect.selectIndexByValue(SELECT_OPTION_WORDS_FROM_COLLECTIONS);
+        this.renderSpeacifiedWordsType();
         break;
-    };
+      }
+    }
+    console.log('this.currentArrayOfWords', this.currentArrayOfWords)
+    const mainContainerWrapper = document.querySelector('.main-container__wrapper');
+    mainContainerWrapper.append(new ButtonsBlock().render());
+    this.preloader.hide();
   }
 
   renderSpeacifiedWordsType() {
-    this.renderNavigation();
     this.renderWords();
-    const statistics = new StatisticsBlock(this.words);
+    const statistics = new StatisticsBlock(this.currentArrayOfWords);
     document.body.append(statistics.render());
 
     const currentNavItem = document.querySelector(`[data-nav-number="${this.state.groupOfWords + 1}"]`);
     SpeakIt.selectSingleElementFromList(currentNavItem, 'navigation__item_selected');
 
     document.querySelector('.microphone-button').classList.remove('hidden');
-    document.querySelector('.main-container__wrapper').append(new ButtonsBlock().render());
+  }
+
+  async renderLearnedWords() {
+    await this.getLearnedWords();
+    this.learnedWords = SpeakIt.prepareWordsData(this.learnedWords);
+    this.currentArrayOfWords = this.learnedWords;
+    this.renderWords(this.learnedWords);
+    const statistics = new StatisticsBlock(this.currentArrayOfWords);
+    document.body.append(statistics.render());
   }
 
   wordCardClickEvent() {
@@ -170,12 +225,12 @@ export default class SpeakIt {
 
       if (target && !this.state.gameStarted) {
         SpeakIt.selectSingleElementFromList(target, 'word-card_selected');
-        const clickedWord = this.words.find((word) => word.word === target.dataset.word);
+        const clickedWord = this.currentArrayOfWords.find((word) => (word.id || word._id) === target.dataset.wordId);
         const translation = clickedWord.wordTranslate;
         this.playAudio(`${WORDS_AUDIOS_URL}${clickedWord.audio}`);
-  
+
         let currentImage = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
-  
+
         currentImage = `${WORDS_IMAGES_URL}${clickedWord.image}`;
         this.imageBlock.update(currentImage, translation);
       }
@@ -190,24 +245,34 @@ export default class SpeakIt {
       this.navigation.hide();
     }
 
-    select.addEventListener('change', (event) => {
+    select.addEventListener('change', async (event) => {
       const { options, selectedIndex } = event.target;
       const selectedValue = options[selectedIndex].value;
 
-      this.state.currentWordsType = selectedValue;
-      localStorage.setItem('speak-it-words-type', this.state.currentWordsType);
+      this.preloader.show();
+      this.saveCurrentWordsType(selectedValue);
       switch (selectedValue) {
         case SELECT_OPTION_LEARNED_WORDS:
         default: {
+          await this.renderLearnedWords();
           this.navigation.hide();
           break;
         }
         case SELECT_OPTION_WORDS_FROM_COLLECTIONS: {
+          await this.getColectionWords();
+          this.currentArrayOfWords = this.words;
+          this.renderSpeacifiedWordsType();
           this.navigation.show();
           break;
         }
       }
+      this.preloader.hide();
     });
+  }
+
+  saveCurrentWordsType(selectedValue) {
+    this.state.currentWordsType = selectedValue;
+    localStorage.setItem('speak-it-words-type', this.state.currentWordsType);
   }
 
   static selectSingleElementFromList(target, selectedClass) {
@@ -215,7 +280,9 @@ export default class SpeakIt {
       elem.classList.remove(selectedClass);
     });
 
-    target.classList.add(selectedClass);
+    if (target) {
+      target.classList.add(selectedClass);
+    }
   }
 
   acivateSkipButtons() {
@@ -227,7 +294,7 @@ export default class SpeakIt {
         const wordId = Number(wordCardHTML.dataset.wordId);
         wordCardHTML.classList.add('word-card_skipped');
 
-        const wordObject = this.words.find((word) => word.id === wordId);
+        const wordObject = this.currentArrayOfWords.find((word) => word.id === wordId);
         this.skippedWords.push(wordObject);
         this.checkIsGameEnded();
       }
@@ -272,7 +339,7 @@ export default class SpeakIt {
   }
 
   acitavateRecognition() {
-    const listOfWords = this.words.map((word) => word.word.toLowerCase());
+    const listOfWords = this.currentArrayOfWords.map((word) => word.word.toLowerCase());
 
     window.SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
     const recognitionList = new SpeechGrammarList();
@@ -295,14 +362,14 @@ export default class SpeakIt {
       const scoreHTML = document.querySelector('.score');
 
       const pronouncedWords = transcript.trim().toLowerCase().split(' ');
-      const guessedWord = this.words.find((word) => pronouncedWords.includes(word.word));
+      const guessedWord = this.currentArrayOfWords.find((word) => pronouncedWords.includes(word.word));
       const currentWordHTML = document.querySelector(`[data-word="${(guessedWord && guessedWord.word) || ''}"]`);
       if (resultHTML) {
         resultHTML.textContent = transcript;
       }
 
       if (
-        guessedWord && currentWordHTML 
+        guessedWord && currentWordHTML
         && !currentWordHTML.classList.contains('word-card_guessed')
         && !currentWordHTML.classList.contains('word-card_skipped')
       ) {
@@ -325,7 +392,7 @@ export default class SpeakIt {
   checkIsGameEnded() {
     const statisticsHTML = document.querySelector('.statistics');
     const overlayHTML = document.querySelector('.overlay');
-    const numberOfCorrectWords = this.words.length - this.skippedWords.length;
+    const numberOfCorrectWords = this.currentArrayOfWords.length - this.skippedWords.length;
 
     if (this.state.correct === numberOfCorrectWords) {
       setTimeout(() => {
@@ -351,7 +418,6 @@ export default class SpeakIt {
 
   activateNavigation() {
     const navigationHTML = document.querySelector('.navigation');
-    const pagesSelectHTML = document.querySelector('.navigation__pages-list');
 
     navigationHTML.addEventListener('click', (event) => {
       if (event.target.classList.contains('navigation__item')) {
@@ -363,19 +429,10 @@ export default class SpeakIt {
         if (statisticsBlock) statisticsBlock.remove();
 
         SpeakIt.selectSingleElementFromList(event.target, 'navigation__item_selected');
-        this.renderMainGamePage(this.state.groupOfWords - 1);
+        const randomPage = getRandomInteger();
+        console.log('randomPage', randomPage);
+        this.renderMainGamePage(this.state.groupOfWords - 1, randomPage);
       }
-    });
-
-    pagesSelectHTML.addEventListener('change', (event) => {
-      const { options, selectedIndex } = event.target;
-      const selectedValue = options[selectedIndex].value;
-      this.state.currentPage = Number(selectedValue);
-
-      const statisticsBlock = document.querySelector('.statistics');
-      if (statisticsBlock) statisticsBlock.remove();
-      this.switchOnTrainingMode();
-      this.renderMainGamePage(this.state.groupOfWords, this.state.currentPage);
     });
   }
 
@@ -384,10 +441,10 @@ export default class SpeakIt {
     this.state.groupOfWords = groupNumber;
     this.state.currentPage = pageNumber;
     const wordsData = await getWords(pageNumber, groupNumber);
-    this.words = wordsData.slice(0, WORDS_LIMIT_NUMBER);
+    this.currentArrayOfWords = wordsData.slice(0, WORDS_LIMIT_NUMBER);
     document.querySelector('.game-page').remove();
     this.renderWords();
-    const statistics = new StatisticsBlock(this.words);
+    const statistics = new StatisticsBlock(this.currentArrayOfWords);
     document.body.append(statistics.render());
     this.activateStatisticsBlock();
     this.acitavateRecognition();
@@ -450,7 +507,7 @@ export default class SpeakIt {
       const target = event.target.closest('.new-game-button');
       if (target) {
         const overlayHTML = document.querySelector('.overlay');
-        const statisticsHTML = document.querySelector('.statistics')
+        const statisticsHTML = document.querySelector('.statistics');
 
         overlayHTML.classList.add('hidden');
         document.body.style.overflow = 'auto';
@@ -469,7 +526,7 @@ export default class SpeakIt {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.statistics__word');
       if (target) {
-        const wordObject = this.words.find((word) => word.word === target.dataset.scoreWord);
+        const wordObject = this.currentArrayOfWords.find((word) => word.word === target.dataset.scoreWord);
         this.playAudio(`${WORDS_AUDIOS_URL}${wordObject.audio}`);
       }
     });

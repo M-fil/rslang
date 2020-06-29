@@ -4,7 +4,6 @@ const {
   GAME_COMPLEXITY,
   DESCRIPTION_OF_LEVELS,
   NUMBER_OF_GROUPS,
-  NUMBER_OF_PAGES,
 } = speakItConstants;
 
 export default class Navigation {
@@ -23,16 +22,8 @@ export default class Navigation {
         ['title', `${GAME_COMPLEXITY}: ${i + 1}.\n${DESCRIPTION_OF_LEVELS}`],
       );
     }
-    this.renderSelectOfPages();
 
     return this.container;
-  }
-
-  renderSelectOfPages() {
-    const arrayOfPagesOptions = Array.from({ length: NUMBER_OF_PAGES })
-      .map((_, index) => index + 1)
-      .map((option) => create('option', 'navigation__option', String(option), null, ['value', option]));
-    create('select', 'navigation__pages-list', arrayOfPagesOptions, this.container);
   }
 
   hide() {

@@ -8,6 +8,8 @@ import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 
+import SpeakIt from '../mini-games/speak-it/SpeakIt';
+
 import {
   createUser,
   loginUser,
@@ -64,6 +66,11 @@ class App {
     document.body.append(html);
   }
 
+  renderSpeakItGame() {
+    this.speakIt = new SpeakIt(this.state.user);
+    this.speakIt.run();
+  }
+
   activateAuthenticationForm() {
     document.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -88,6 +95,7 @@ class App {
           await this.signInUser();
           this.prelodaer.hide();
         } catch (error) {
+          console.log(error);
           this.prelodaer.hide();
           Authentication.createErrorBlock(error.message);
         }
@@ -109,8 +117,9 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
+      this.renderSpeakItGame();
     } catch (error) {
+      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -146,9 +155,10 @@ class App {
         token: JSON.parse(savedUserData).token,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      this.renderSpeakItGame();
+      this.prelodaer.hide();
     } catch (error) {
+      console.log(error);
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';

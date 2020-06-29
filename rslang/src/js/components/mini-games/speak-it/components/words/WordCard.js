@@ -13,6 +13,7 @@ export default class WordCard {
   }
 
   render() {
+    console.log(this.id, this.word, this.transcription)
     this.card = create('div', 'word-card', '', null, ['word', this.word], ['wordId', this.id]);
 
     create('button', 'word-card__skip-word-button', SKIP_BUTTON, this.card);
