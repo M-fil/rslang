@@ -62,7 +62,8 @@ class App {
 
   async renderVocabulary(userState) {
     this.vocabulary = new Vocabulary(userState);
-    const html = await this.vocabulary.render('body');
+    await this.vocabulary.init();
+    const html = await this.vocabulary.render();
     document.body.append(html);
   }
 
