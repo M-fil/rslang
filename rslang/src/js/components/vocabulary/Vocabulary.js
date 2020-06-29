@@ -14,6 +14,7 @@ import LearnedWordsVocabulary from './components/vocabulary-types/LearnedWordsVo
 import RemovedWords from './components/vocabulary-types/RemovedWords';
 import DifficultWordsVocabulary from './components/vocabulary-types/DifficultWordsVocabulary';
 import Preloader from '../preloader/Preloader';
+import Settings from '../settings/Settings';
 
 const {
   LEARNED_WORDS_TITLE,
@@ -28,9 +29,14 @@ const {
 
 class Vocabulary {
   constructor(userState) {
+    if (typeof Vocabulary.instance === 'object') {
+      return Vocabulary.instance;
+    }
     this.container = null;
     this.audio = new Audio();
+    this.settings = new Settings();
 
+    Vocabulary.instance = this;
     this.state = {
       allUserWords: [],
       currentVocabulary: WORDS_TO_LEARN_TITLE,
@@ -41,8 +47,13 @@ class Vocabulary {
         difficultWords: [],
       },
       userState,
-      settings: {},
     };
+    return this;
+  }
+
+  async init() {
+    await this.settings.init();
+    await this.sortWordsInVocabularies();
   }
 
   async render() {
@@ -51,18 +62,11 @@ class Vocabulary {
     this.container.append(vocabularyHeader.render());
     this.mainContentHTML = create('div', 'vocabulary__main-content', '', this.container);
 
-    await this.setSettings();
-    await this.sortWordsInVocabularies();
     this.activateVocabularyHeaderButtons();
     this.activateAudioButtons();
     this.activateRestoreButtons();
 
     return this.container;
-  }
-
-  async setSettings() {
-    const { id, token } = this.state.userState;
-    this.state.settings = await getUserSettings(id, token);
   }
 
   updateWords(words) {
@@ -80,7 +84,7 @@ class Vocabulary {
     this.state.vocabularies.removedWords = this.getWordsByVocabularyType(REMOVED_WORDS_TITLE);
     this.state.vocabularies.difficultWords = this.getWordsByVocabularyType(DIFFUCULT_WORDS_TITLE);
 
-    const { dictionary } = this.state.settings.optional;
+    const dictionary = this.settings.getSettingsByGroup('dictionary');
     const { wordsToLearn } = this.state.vocabularies;
     const vocabulary = new WordsToLearnVocabulary(wordsToLearn, dictionary);
     this.renderVocabulary(vocabulary);
@@ -109,7 +113,7 @@ class Vocabulary {
         this.preloader.render();
         this.preloader.show();
         await this.sortWordsInVocabularies();
-        const { dictionary } = this.state.settings.optional;
+        const dictionary = this.settings.getSettingsByGroup('dictionary');
 
         switch (targetVocabularyType) {
           case WORDS_TO_LEARN_TITLE:
@@ -158,7 +162,7 @@ class Vocabulary {
 
           const { id, token } = this.state.userState;
           const dataToUpdate = await createWordDataForBackend(
-            allData, difficulty, true, WORDS_TO_LEARN_TITLE, this.state.settings,
+            allData, difficulty, true, WORDS_TO_LEARN_TITLE, this.settings.getSettings(),
           );
           await updateUserWord(id, wordId, dataToUpdate, token);
           this.state.allUserWords = await getAllUserWords(id, token);
@@ -192,7 +196,7 @@ class Vocabulary {
   activateAudioButtons() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.word-item__audio');
-      const { showAudioExample } = this.state.settings.optional.dictionary;
+      const { showAudioExample } = this.settings.getSettingsByGroup('dictionary');
 
       if (target && showAudioExample) {
         const { targetWordObject } = this.getWordObjectByTargetElement(target);
