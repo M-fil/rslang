@@ -10,7 +10,6 @@ import {
   getAggregatedWordsByFilter,
 } from '../../../service/service';
 import getRandomInteger from '../../../utils/random';
-import { addWordToTheVocabulary } from '../../../utils/words-functions';
 
 export {
   speakItConstants,
@@ -18,7 +17,6 @@ export {
   urls,
   wordsToLearnSelectConstants,
   getRandomInteger,
-  addWordToTheVocabulary,
   getAggregatedWordsByFilter,
 };
 export { getWords };

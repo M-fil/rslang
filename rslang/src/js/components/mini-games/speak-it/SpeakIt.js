@@ -4,7 +4,6 @@ import create, {
   urls,
   speakItConstants,
   getRandomInteger,
-  addWordToTheVocabulary,
   getAggregatedWordsByFilter,
   vocabularyConstants,
 } from './pathes';
@@ -19,6 +18,7 @@ import StatisticsBlock from './components/statistics/StatisticsBlock';
 import WordsToLearnSelect from '../common/WordsToLearnSelect';
 import Preloader from '../../preloader/Preloader';
 import Settings from '../../settings/Settings';
+import Vocabulary from '../../vocabulary/Vocabulary';
 
 const {
   WORDS_IMAGES_URL,
@@ -39,6 +39,7 @@ const {
 
 const {
   LEARNED_WORDS_TITLE,
+  WORDS_TO_LEARN_TITLE,
 } = vocabularyConstants;
 
 export default class SpeakIt {
@@ -49,7 +50,8 @@ export default class SpeakIt {
     this.learnedWords = [];
     this.audio = new Audio();
     this.recognition = SpeakIt.createSpeechRecongnition();
-    this.settings = new Settings();
+    this.settings = new Settings(userState);
+    this.vocabulary = new Vocabulary(userState);
 
     this.state = {
       currentWordsType: SELECT_OPTION_LEARNED_WORDS,
@@ -72,14 +74,6 @@ export default class SpeakIt {
     const main = create('div', 'speak-it__main', '', document.body);
     const startGamePage = new StartGamePage();
     create('div', 'main-container__wrapper', [startGamePage.render()], main);
-  }
-
-  async getLearnedWords() {
-    const filter = `{"userWord.optional.vocabulary":"${LEARNED_WORDS_TITLE}"}`;
-    const { id, token } = this.state.userState;
-    const words = await getAggregatedWordsByFilter(id, token, WORDS_LIMIT_NUMBER, filter);
-    this.learnedWords = words[0].paginatedResults;
-    console.log('this.learnedWords', this.learnedWords);
   }
 
   playAudio(source) {
@@ -105,7 +99,7 @@ export default class SpeakIt {
       this.preloader.show();
 
       await this.settings.init();
-      console.log('settings', this.settings.getSettings());
+      await this.vocabulary.init();
       await this.renderWordsOnThePage();
       this.wordCardClickEvent();
       this.startGame();
@@ -116,7 +110,7 @@ export default class SpeakIt {
       this.activateStatisticsBlock();
       this.acitavateRecognition();
       this.activateSoundForStatisticsWords();
-      this.acivateSkipButtons();
+      this.activateSkipButtons();
       this.activateWordsToLearnSelect();
 
       this.recognition.addEventListener('end', this.recognition.start);
@@ -137,22 +131,14 @@ export default class SpeakIt {
 
     if (currentWordsType === SELECT_OPTION_LEARNED_WORDS) {
       this.navigation.hide();
-    } 
+    }
   }
-
 
   async getColectionWords() {
     this.state.currentPage = getRandomInteger();
     this.state.groupOfWords = 0;
-    const data = await getWords(this.state.currentPage, this.state.groupOfWords);
-    this.words = SpeakIt.prepareWordsData(data);
-  }
-
-  static prepareWordsData(words) {
-    return words.slice(0, WORDS_LIMIT_NUMBER).map((wordData) => ({
-      ...wordData,
-      word: wordData.word.toLowerCase(),
-    }));
+    this.words = await getWords(this.state.currentPage, this.state.groupOfWords);
+    this.words = this.words.slice(0, WORDS_LIMIT_NUMBER);
   }
 
   renderWords() {
@@ -167,9 +153,13 @@ export default class SpeakIt {
     container.prepend(this.imageBlock.render());
 
     this.currentArrayOfWords.forEach((word) => {
-      console.log(word);
-      const wordCard = new WordCard(word.id || word._id, word.word, word.transcription);
-      wordsContainer.append(wordCard.render());
+      if (word.optional) {
+        const { transcription } = word.optional.allData;
+        this.wordCard = new WordCard(word.wordId, word.optional.word, transcription);
+      } else {
+        this.wordCard = new WordCard(word.id || word._id, word.word, word.transcription);
+      }
+      wordsContainer.append(this.wordCard.render());
     });
 
     document.querySelector('.navigation').after(container);
@@ -183,7 +173,7 @@ export default class SpeakIt {
       case SELECT_OPTION_LEARNED_WORDS:
       default: {
         this.renderNavigation();
-        await this.renderLearnedWords();
+        this.renderLearnedWords();
         this.wordToLearnSelect.selectIndexByValue(SELECT_OPTION_LEARNED_WORDS);
         break;
       }
@@ -196,7 +186,7 @@ export default class SpeakIt {
         break;
       }
     }
-    console.log('this.currentArrayOfWords', this.currentArrayOfWords)
+    console.log('this.currentArrayOfWords', this.currentArrayOfWords);
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
     mainContainerWrapper.append(new ButtonsBlock().render());
     this.preloader.hide();
@@ -213,9 +203,8 @@ export default class SpeakIt {
     document.querySelector('.microphone-button').classList.remove('hidden');
   }
 
-  async renderLearnedWords() {
-    await this.getLearnedWords();
-    this.learnedWords = SpeakIt.prepareWordsData(this.learnedWords);
+  renderLearnedWords() {
+    this.learnedWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
     this.currentArrayOfWords = this.learnedWords;
     this.renderWords(this.learnedWords);
     const statistics = new StatisticsBlock(this.currentArrayOfWords);
@@ -228,13 +217,15 @@ export default class SpeakIt {
 
       if (target && !this.state.gameStarted) {
         SpeakIt.selectSingleElementFromList(target, 'word-card_selected');
-        const clickedWord = this.currentArrayOfWords.find((word) => (word.id || word._id) === target.dataset.wordId);
-        const translation = clickedWord.wordTranslate;
-        this.playAudio(`${WORDS_AUDIOS_URL}${clickedWord.audio}`);
+        const clickedWord = this.currentArrayOfWords
+          .find((word) => (word.wordId || word.id || word._id) === target.dataset.wordId);
+        const { wordTranslate, audio, image } = clickedWord.optional.allData;
+        const translation = clickedWord.wordTranslate || wordTranslate;
+        this.playAudio(`${WORDS_AUDIOS_URL}${audio || clickedWord.audio}`);
 
         let currentImage = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
 
-        currentImage = `${WORDS_IMAGES_URL}${clickedWord.image}`;
+        currentImage = `${WORDS_IMAGES_URL}${image || clickedWord.image}`;
         this.imageBlock.update(currentImage, translation);
       }
     });
@@ -288,12 +279,11 @@ export default class SpeakIt {
     }
   }
 
-  acivateSkipButtons() {
+  activateSkipButtons() {
     document.addEventListener('click', async (event) => {
       const target = event.target.closest('.word-card__skip-word-button');
 
       if (target) {
-        await addWordToTheVocabulary();
         const wordCardHTML = target.closest('.word-card');
         const wordId = Number(wordCardHTML.dataset.wordId);
         wordCardHTML.classList.add('word-card_skipped');
@@ -301,6 +291,8 @@ export default class SpeakIt {
         const wordObject = this.currentArrayOfWords.find((word) => word.id === wordId);
         this.skippedWords.push(wordObject);
         this.checkIsGameEnded();
+        await this.vocabulary.addWordToTheVocabulary(wordObject, WORDS_TO_LEARN_TITLE);
+        console.log('WORDS_TO_LEARN_TITLE', this.vocabulary.getWordsByVocabularyType(WORDS_TO_LEARN_TITLE));
       }
     });
   }
@@ -343,7 +335,12 @@ export default class SpeakIt {
   }
 
   acitavateRecognition() {
-    const listOfWords = this.currentArrayOfWords.map((word) => word.word.toLowerCase());
+    const listOfWords = this.currentArrayOfWords.map((word) => {
+      const item = (word.word && word.word.toLowerCase())
+       || word.optional.word.toLowerCase();
+      return item;
+    });
+    console.log('this.listOfWords', listOfWords);
 
     window.SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
     const recognitionList = new SpeechGrammarList();
