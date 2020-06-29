@@ -152,6 +152,13 @@ const settingsText = {
   },
 };
 
+const modalConstants = {
+  MODAL_TITLE: 'Тренировка не закончена!',
+  MODAL_WARNING: 'Если вы вернетесь к списку, ваши требования не будут сохранены',
+  CLOSE_BUTTON: 'Закрыть',
+  CANCEL_BUTTON: 'Отмена',
+};
+
 export {
   urls,
   findAPairText,
@@ -163,4 +170,5 @@ export {
   vocabularyConstants,
   dailyStatisticsConstants,
   settingsText,
+  modalConstants,
 };
