@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import '../scss/style.scss';
 
-import SpeakIt from './components/mini-games/speak-it/SpeakIt';
+import App from './components/app/App';
 
-new SpeakIt().run();
+const app = new App();
+app.run();

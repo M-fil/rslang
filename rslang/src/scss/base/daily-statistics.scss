@@ -1,0 +1,48 @@
+
+.daily-statistics__overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  background: $daily-statistics-overlay-background;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.daily-statistics {
+  @include font(2rem);
+
+  color: $daily-statistics-text-color;
+  background-color: $daily-statistics-background;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border: $daily-statistics-text-color;
+  border-radius: 20px;
+  width: 50vmax;
+  height: 50vmin;
+  padding: 20px;
+}
+
+.daily-statistics__title {
+  @include font(3rem);
+  margin-bottom: 30px;
+}
+
+.daily-statistics__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.main-game__exit-button {
+  width: 30px;
+  height: 30px;
+}
