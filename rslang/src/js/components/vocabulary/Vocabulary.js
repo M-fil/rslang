@@ -184,6 +184,16 @@ class Vocabulary {
     return this.state.vocabularies;
   }
 
+  getVocabularyWordsLength(vocabularyType) {
+    return this.state.allUserWords
+      .filter((word) => word.optional.vocabulary === vocabularyType)
+      .length;
+  }
+
+  getAllUserWordsLength() {
+    return this.state.allUserWords.length;
+  }
+
   renderVocabulary(vocabularyClass) {
     const vocabulary = vocabularyClass;
     this.mainContentHTML.innerHTML = '';
