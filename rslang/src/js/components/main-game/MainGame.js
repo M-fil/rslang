@@ -3,7 +3,6 @@ import {
   getAggregatedWordsByFilter,
   updateStatistics,
   getStatistics,
-  getUserSettings,
 } from '../../service/service';
 import create from '../../utils/сreate';
 import {
@@ -15,7 +14,6 @@ import {
   checkIsManyMistakes,
   addDaysToTheDate,
   calculatePercentage,
-  addWordToTheVocabulary,
 } from './pathes';
 
 import WordCard from './components/word-card/WordCard';
@@ -27,6 +25,8 @@ import Preloader from '../preloader/Preloader';
 import FormControll from './components/form-control/FormControl';
 import Authentication from '../authentication/Authentication';
 import DailyStatistics from './components/daily-statistics/DailyStatistics';
+import Vocabulary from '../vocabulary/Vocabulary';
+import Settings from '../settings/Settings';
 
 const {
   REMOVE_WORD_BUTTON,
@@ -61,6 +61,9 @@ const {
 
 class MainGame {
   constructor(userState) {
+    this.vocabulary = null;
+    this.settings = null;
+
     this.state = {
       currentWordIndex: 0,
       mistakesInCurrentWord: 0,
@@ -87,10 +90,6 @@ class MainGame {
         isTranslationsEnabled: true,
       },
       userState,
-      settings: {
-        newWordsPerDay: 3,
-        wordsPerDay: 3,
-      },
     };
   }
 
@@ -101,11 +100,12 @@ class MainGame {
     document.querySelector(elementQuery).append(mainGameHTML);
 
     try {
-      const { userId, token } = this.getUserDataForAuthorization();
       this.preloader = new Preloader();
       this.preloader.render();
       this.preloader.show();
-      this.state.settings = await getUserSettings(userId, token);
+
+      await this.initSettings();
+      await this.initVocabulary();
       await this.resetStatisticsIfNewDay();
       await this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
@@ -120,14 +120,13 @@ class MainGame {
         this.setAudiosForWords(this.state.currentWordsArray[currentWordIndex]);
 
         const { learnedWordsToday } = this.state;
-        const { wordsPerDay } = this.state.settings;
+        const { maxCardsPerDay, showButtonShowAnswer } = this.settings.getSettingsByGroup('main');
         const currentWord = this.state.currentWordsArray[currentWordIndex].word;
-        const { showButtonShowAnswer } = this.state.settings.optional.main;
 
         const wordCard = this.createWordCard(this.state.currentWordsArray[currentWordIndex]);
         const mainGameControls = this.renderMainGameControls();
         this.formControl = new FormControll(currentWord, showButtonShowAnswer);
-        this.progressBar = new ProgressBar(learnedWordsToday, wordsPerDay);
+        this.progressBar = new ProgressBar(learnedWordsToday, maxCardsPerDay);
         const mainGameMainContainer = create(
           'div', 'main-game__main-container', [wordCard.render(), this.formControl.render()],
         );
@@ -149,10 +148,10 @@ class MainGame {
         this.toggleVocabularyButtons(false);
       } else {
         const { learnedWordsToday } = this.state;
-        const { wordsPerDay } = this.state.settings;
+        const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
         const mainGameMainContainer = create('div', 'main-game__main-container');
         const mainGameControls = this.renderMainGameControls();
-        this.progressBar = new ProgressBar(learnedWordsToday, wordsPerDay);
+        this.progressBar = new ProgressBar(learnedWordsToday, maxCardsPerDay);
         const message = MainGame.showMessage(DAILY_NORM_IS_COMPLETED);
         mainGameMainContainer.append(message);
         mainGameHTML.append(
@@ -176,13 +175,23 @@ class MainGame {
     }
   }
 
+  async initVocabulary() {
+    this.vocabulary = new Vocabulary(this.state.userState);
+    await this.vocabulary.init();
+  }
+
+  async initSettings() {
+    this.settings = new Settings(this.state.userState);
+    await this.settings.init();
+  }
+
   async addWordsToLearnToTheVocabulary() {
-    const { wordsPerDay } = this.state.settings;
+    const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
     const { learnedWordsToday } = this.state;
     const filteredUserWords = this.state.userWords
       .filter((word) => word.optional.vocabulary === WORDS_TO_LEARN_TITLE);
     const wordsToLearnLength = filteredUserWords.length + learnedWordsToday;
-    if (wordsToLearnLength < wordsPerDay) {
+    if (wordsToLearnLength < maxCardsPerDay) {
       const arrayOfPromises = this.state.wordsToLearn
         .map((word) => this.addWordToTheVocabulary(WORDS_TO_LEARN_TITLE, GOOD.text, word));
       await Promise.all(arrayOfPromises);
@@ -255,7 +264,7 @@ class MainGame {
   }
 
   async resetStatistics() {
-    this.state.isNormCompleted = true;
+    this.state.isNormCompleted = false;
     this.state.lastGameWinDate = null;
     this.state.correctAnswersNumber = 0;
     this.state.learnedWordsToday = 0;
@@ -286,11 +295,10 @@ class MainGame {
   async setNewWords() {
     const wordsToRevise = this.getWordsToRevise();
     const { userId, token } = this.getUserDataForAuthorization();
-    const { wordsPerDay } = this.state.settings;
-    const { newCardsPerDay } = this.state.settings.optional.main;
+    const { maxCardsPerDay, newCardsPerDay } = this.settings.getSettingsByGroup('main');
     const { learnedWordsToday } = this.state;
 
-    const wordsToGet = wordsToRevise.length ? newCardsPerDay : wordsPerDay;
+    const wordsToGet = wordsToRevise.length ? newCardsPerDay : maxCardsPerDay;
     const filter = `{"userWord.optional.vocabulary":"${WORDS_TO_LEARN_TITLE}"}`;
     const newWordLength = wordsToRevise.length
       ? newCardsPerDay - learnedWordsToday
@@ -306,9 +314,8 @@ class MainGame {
 
   async selectWordsToLearn() {
     const wordsToRevise = this.getWordsToRevise();
-    const { wordsPerDay } = this.state.settings;
-    const { newCardsPerDay } = this.state.settings.optional.main;
-    const wordsToReviseLength = wordsPerDay - newCardsPerDay;
+    const { maxCardsPerDay, newCardsPerDay } = this.settings.getSettingsByGroup('main');
+    const wordsToReviseLength = maxCardsPerDay - newCardsPerDay;
 
     return [...this.state.newWords, ...wordsToRevise.slice(0, wordsToReviseLength)];
   }
@@ -332,8 +339,8 @@ class MainGame {
     }
 
     return {
-      userId: this.userState.id,
-      token: this.userState.token,
+      userId: this.state.userState.id,
+      token: this.state.userState.token,
     };
   }
 
@@ -354,11 +361,10 @@ class MainGame {
   }
 
   renderDailyStatistics() {
-    const { wordsPerDay } = this.state.settings;
+    const { maxCardsPerDay, newCardsPerDay } = this.settings.getSettingsByGroup('main');
     const {
-      correctAnswersNumber, longestSeriesOfAnswers, currentWordsArray, currentWordsType,
+      correctAnswersNumber, longestSeriesOfAnswers, currentWordsType,
     } = this.state;
-    const { newCardsPerDay } = this.state.settings.optional.main;
 
     if (currentWordsType === ONLY_DIFFICULT_WORDS) {
       const difficultWordsLength = this.selectUserWordsByType(DIFFUCULT_WORDS_TITLE).length;
@@ -371,9 +377,9 @@ class MainGame {
       );
     } else {
       this.state.isNormCompleted = true;
-      const percentOfCorrectAnswers = calculatePercentage(correctAnswersNumber, wordsPerDay);
+      const percentOfCorrectAnswers = calculatePercentage(correctAnswersNumber, maxCardsPerDay);
       this.dailyStatistics = new DailyStatistics(
-        wordsPerDay, percentOfCorrectAnswers, newCardsPerDay, longestSeriesOfAnswers,
+        maxCardsPerDay, percentOfCorrectAnswers, newCardsPerDay, longestSeriesOfAnswers,
       );
     }
 
@@ -393,10 +399,7 @@ class MainGame {
   }
 
   renderVocabularyButtons() {
-    const {
-      showButtonDelete,
-      showButtonHard,
-    } = this.state.settings.optional.main;
+    const { showButtonDelete, showButtonHard } = this.settings.getSettingsByGroup('main');
 
     const container = create('div', 'word-card__vocabulary-buttons');
     if (showButtonDelete) {
@@ -426,10 +429,11 @@ class MainGame {
     selectHTML.addEventListener('change', async (event) => {
       const { options } = event.target;
       const { isNormCompleted } = this.state;
-      const { wordsPerDay } = this.state.settings;
+      const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
+
       const selectedOptionValue = options[options.selectedIndex].value;
       let selectedArrayType = [];
-      let numberOfWords = wordsPerDay;
+      let numberOfWords = maxCardsPerDay;
       let completedWordsNumber = this.state.learnedWordsToday;
       this.state.currentWordsType = selectedOptionValue;
 
@@ -476,7 +480,7 @@ class MainGame {
           const currentWord = (currentWordObject && currentWordObject.word)
             || (currentWordObject && currentWordObject.optional.word);
           const wordCard = this.createWordCard(this.state.currentWordsArray[currentWordIndex]);
-          const { showButtonShowAnswer } = this.state.settings.optional.main;
+          const { showButtonShowAnswer } = this.settings.getSettingsByGroup('main');
           this.formControl = new FormControll(currentWord, showButtonShowAnswer);
 
           mainGameContainer.append(wordCard.render(), this.formControl.render());
@@ -505,7 +509,7 @@ class MainGame {
   }
 
   toggleWordCardTranslation() {
-    const { showTranslateWord } = this.state.settings.optional.main;
+    const { showTranslateWord } = this.settings.getSettingsByGroup('main');
     if (!showTranslateWord) return;
 
     const wordTransaltionHTML = document.querySelector('.word-card__translation');
@@ -539,7 +543,7 @@ class MainGame {
 
       if ((numberOfMistakes === 0 && trimedValue.length) || isForShowAnswerButton) {
         const { mistakesInCurrentWord, currentWordsType } = this.state;
-        const { showButtons } = this.state.settings.optional.main;
+        const { showButtons } = this.settings.getSettingsByGroup('main');
         sentencesWords.forEach((word) => {
           word.classList.add('word-card__sentence-word_visible');
         });
@@ -562,7 +566,7 @@ class MainGame {
           this.state.learnedWordsToday += 1;
           this.wordsSelectList.disable();
           userAnswerHTML.classList.remove('word-card__user-answer_translucent');
-          const { wordsPerDay } = this.state.settings;
+          const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
           const { learnedWordsToday } = this.state;
 
           if (currentWordsType === ONLY_DIFFICULT_WORDS) {
@@ -570,7 +574,7 @@ class MainGame {
             const { learnedWordsNumber } = this.state.difficultWordsState;
             this.progressBar.updateSize(learnedWordsNumber, currentWordsArray.length);
           } else {
-            this.progressBar.updateSize(learnedWordsToday, wordsPerDay);
+            this.progressBar.updateSize(learnedWordsToday, maxCardsPerDay);
           }
           if ((!showButtons || currentWordsType === ONLY_DIFFICULT_WORDS) && this.formControl) {
             this.formControl.renderContinueButton();
@@ -578,7 +582,7 @@ class MainGame {
         }
 
         if (showButtons && currentWordsType !== ONLY_DIFFICULT_WORDS) {
-          const { main } = this.state.settings.optional;
+          const main = this.settings.getSettingsByGroup('main');
           this.estimateWords = new EstimateButtonsBlock(main);
           mainContainer.append(this.estimateWords.render());
         }
@@ -618,7 +622,7 @@ class MainGame {
   }
 
   toggleControlElements(isToDisable = true) {
-    const { showButtonShowAnswer } = this.state.settings.optional.main;
+    const { showButtonShowAnswer } = this.settings.getSettingsByGroup('main');
     const inputHTML = document.querySelector('.word-card__input');
     const nextButtonHTML = document.querySelector('.main-game__next-button');
     const showAnswerButtonHTML = document.querySelector('.main-game__show-answer-button');
@@ -640,7 +644,7 @@ class MainGame {
 
   addWordToTheCurrentTraining() {
     const { currentWordsArray, currentWordIndex } = this.state;
-    const { wordsPerDay } = this.state.settings;
+    const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
     const { learnedWordsToday } = this.state;
 
     const currentWord = currentWordsArray[currentWordIndex];
@@ -651,17 +655,17 @@ class MainGame {
       const { learnedWordsNumber } = this.state.difficultWordsState;
       this.progressBar.updateSize(learnedWordsNumber, currentWordsArray.length);
     } else {
-      this.progressBar.updateSize(learnedWordsToday, wordsPerDay);
+      this.progressBar.updateSize(learnedWordsToday, maxCardsPerDay);
     }
   }
 
   checkIfCurrentWordIsNotLast() {
     const { learnedWordsNumber } = this.state.difficultWordsState;
     const { learnedWordsToday } = this.state;
-    const { wordsPerDay } = this.state.settings;
+    const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
     const difficultWordsLength = this.selectUserWordsByType(DIFFUCULT_WORDS_TITLE);
 
-    return learnedWordsToday === wordsPerDay || learnedWordsNumber === difficultWordsLength - 1;
+    return learnedWordsToday === maxCardsPerDay || learnedWordsNumber === difficultWordsLength - 1;
   }
 
   activateEstimateButtons() {
@@ -771,7 +775,7 @@ class MainGame {
   }
 
   activateShowAnswerButton() {
-    const { showButtonShowAnswer } = this.state.settings.optional.main;
+    const { showButtonShowAnswer } = this.settings.getSettingsByGroup('main');
     if (!showButtonShowAnswer) return;
 
     document.addEventListener('click', async (event) => {
@@ -785,10 +789,7 @@ class MainGame {
   }
 
   toggleVocabularyButtons(isToShow = true) {
-    const {
-      showButtonDelete,
-      showButtonHard,
-    } = this.state.settings.optional.main;
+    const { showButtonDelete, showButtonHard } = this.settings.getSettingsByGroup('main');
     const removeWordButton = document.querySelector('.main-game__remove-word');
     const addToDifficultsButton = document.querySelector('.main-game__add-to-difficult');
 
@@ -811,10 +812,7 @@ class MainGame {
 
   activateVocabularyButtons() {
     document.addEventListener('click', async (event) => {
-      const {
-        showButtonDelete,
-        showButtonHard,
-      } = this.state.settings.optional.main;
+      const { showButtonDelete, showButtonHard } = this.settings.getSettingsByGroup('main');
       const removeWordTarget = event.target.closest('.main-game__remove-word');
       const addToDifficultTarget = event.target.closest('.main-game__add-to-difficult');
 
@@ -874,15 +872,11 @@ class MainGame {
   }
 
   async addWordToTheVocabulary(
-    vocabularyType = WORDS_TO_LEARN_TITLE, buttonType = GOOD.text, wordToAdd,
+    vocabularyType = WORDS_TO_LEARN_TITLE, estimation = GOOD.text, wordToAdd,
   ) {
-    const { main } = this.state.settings.optional;
     const currentWord = wordToAdd || this.state.currentWordsArray[this.state.currentWordIndex];
-    const { userId, token } = this.getUserDataForAuthorization();
 
-    await addWordToTheVocabulary(
-      vocabularyType, buttonType, currentWord, { userId, token }, main,
-    );
+    await this.vocabulary.addWordToTheVocabulary(currentWord, vocabularyType, estimation)
     this.state.userWords = await this.getAllUserWordsFromBackend();
     this.state.mistakesInCurrentWord = 0;
   }
@@ -994,7 +988,7 @@ class MainGame {
       showWordExample,
       showTranscription,
       showImageAssociations,
-    } = this.state.settings.optional.main;
+    } = this.settings.getSettingsByGroup('main');
     const wordCardSettings = {
       showTranslateWord,
       showWordMeaning,

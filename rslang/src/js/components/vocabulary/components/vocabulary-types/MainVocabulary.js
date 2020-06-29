@@ -45,8 +45,9 @@ class MainVocabulary {
       return container;
     }
 
+    console.log('WORSD', this.words)
     this.words
-      .map((word) => JSON.parse(word.optional.allData))
+      .map((word) => word.optional.allData)
       .forEach((word) => {
         const wordItem = new VocabularyItem(
           word.id || word._id,

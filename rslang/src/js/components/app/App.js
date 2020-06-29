@@ -60,7 +60,8 @@ class App {
 
   async renderVocabulary(userState) {
     this.vocabulary = new Vocabulary(userState);
-    const html = await this.vocabulary.render('body');
+    await this.vocabulary.init();
+    const html = await this.vocabulary.render();
     document.body.append(html);
   }
 
@@ -110,6 +111,7 @@ class App {
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
       await App.renderMainGame(this.state.user);
+      await this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
