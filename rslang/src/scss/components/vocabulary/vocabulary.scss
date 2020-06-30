@@ -1,0 +1,85 @@
+.vocabulary__header {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.vocabulary__word-item {
+  @include font(2rem);
+
+  display: flex;
+
+  width: 75%;
+  border-bottom: 3px solid;
+  margin-bottom: 20px;
+}
+
+.vocabulary__title-container {
+  text-align: center;
+}
+
+.vocabulary__title {
+  @include font(3.5rem, 4rem);
+}
+
+.vocabulary__words-count {
+  @include font(1.6rem, 2rem);
+}
+
+.vocabulary__words-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.word-item__main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-grow: 1;
+}
+
+.word-item__main {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.word-item__main-info {
+  display: flex;
+}
+
+.word-item__sentences {
+  width: 100%;
+  text-align: center;
+}
+
+.vocabulary__extra-word-item {
+  @include font(2rem);
+
+  display: flex;
+  justify-content: space-between;
+
+  width: 50%;
+  margin-bottom: 20px;
+  border-bottom: 3px solid;
+}
+
+.word-item__audio {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+}
+
+.word-item__icon {
+  font-size: 3rem;
+}
+
+.word-item__image-block {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  width: 100px;
+  height: 100px;
+}

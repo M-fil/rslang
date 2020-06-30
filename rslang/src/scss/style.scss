@@ -4,10 +4,15 @@
 
 @import "./base/base.scss";
 @import "./base/preloader.scss";
+@import "./base/modal-window.scss";
+@import "./base/short-statistics.scss";
+@import "./base/progress-bar.scss";
+@import "./base/daily-statistics.scss";
 
 @import "./components/about-team/about-team.scss";
 @import "./components/authentication/authorization.scss";
 @import "./components/authentication/registration.scss";
+@import "./components/main-game/main-game.scss";
 @import "./components/mini-games/audition-game/audition-game.scss";
 @import "./components/mini-games/english-puzzle/english-puzzle.scss";
 @import "./components/mini-games/find-a-pair/find-a-pair.scss";

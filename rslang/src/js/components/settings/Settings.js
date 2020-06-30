@@ -193,22 +193,26 @@ export default class Settings {
       optional: this.options,
     };
 
-    await setUserSettings(this.user.userId, this.user.token, body);
+    await setUserSettings(this.user.id, this.user.token, body);
   }
 
   async loadSettings() {
-    const res = await getUserSettings(this.user.userId, this.user.token);
+    this.options = Settings.defaultSettingsOptions();
+    await this.saveSettings();
+    const res = await getUserSettings(this.user.id, this.user.token);
+    this.options = Settings.defaultSettingsOptions();
     if (res) this.options = res.optional;
     else {
       this.options = Settings.defaultSettingsOptions();
+      await this.saveSettings();
     }
   }
 
   static defaultSettingsOptions() {
     const options = {
       main: {
-        newCardsPerDay: 20,
-        maxCardsPerDay: 25,
+        newCardsPerDay: 7,
+        maxCardsPerDay: 10,
         showTranslateWord: true,
         showWordMeaning: true,
         showWordExample: true,

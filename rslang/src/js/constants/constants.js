@@ -1,8 +1,12 @@
+const MAIN_URL = 'https://afternoon-falls-25894.herokuapp.com/';
 const urls = {
-  WORDS_DATA_URL: 'https://afternoon-falls-25894.herokuapp.com/words?',
-  CREATE_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users',
-  LOGIN_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/signin',
-  GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
+  WORDS_DATA_URL: `${MAIN_URL}words?`,
+  CREATE_USER_URL: `${MAIN_URL}users`,
+  LOGIN_USER_URL: `${MAIN_URL}signin`,
+  GET_USER_URL: `${MAIN_URL}users/`,
+  WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
+  WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 const authenticationTexts = {
@@ -20,7 +24,61 @@ const errorTypes = {
   PASSWORD_REQUIRMENTS: 'Пароль должен содержать не менее 8 символов, как минимум одну прописную букву, одну заглавную букву, одну цифру и один спецсимвол',
   INCORRECT_EMAIL: 'email введен неверно.',
   ERROR_417: 417,
+  ERROR_404: 404,
   USER_ALREADY_EXISTS: 'пользователь с такими данными уже существует',
+  STATUS_200: 200,
+  USER_IS_NOT_AUTHORIZED: 'Пользователь не авторизирован',
+  USER_NOT_FOUND: 'Такого пользователя не существует. Пожалуйста, проверьте введенные данные.',
+};
+
+const mainGameConstants = {
+  REMOVE_WORD_BUTTON: 'Удалить',
+  ADD_TO_DIFFICULT_WORDS: 'Добавить в сложные',
+  ADD_TO_DIFFICULT_WORDS_CLICKED: 'Добавлено',
+  REMOVE_WORD_BUTTON_CLICKED: 'Удалено',
+  NEXT_BUTTON: 'Дальше',
+  CONTINUE_BUTTON: 'Продолжить',
+  SHOW_ANSWER_BUTTON: 'Показать ответ',
+  SETTINGS_AUTOPLABACK_TEXT: 'Автопроизношение',
+  SETTINGS_TRANSLATIONS_LABEL_TEXT: 'Показывать переводы слова и предложений',
+  WORDS_TYPES_SELECT_TITLE: 'Как изучать слова?',
+  EMPTY_WORD_LIST: 'Данный список слов пуст.',
+  DAILY_NORM_IS_COMPLETED: 'Поздравляем, дневная норма слов выполнена! На сегодня слов для изучения больше нет.',
+  NUMBER_OF_WORD_GROUPS: 6,
+  NUMBER_OF_WORD_PAGES: 30,
+  HIGHEST_PERCENTAGE_STRING: '100%',
+  DAYS_CONTRACTION: 'дн',
+};
+
+const dailyStatisticsConstants = {
+  TITLE: 'Серия завершена',
+  COMPLETED_CARDS_TEXT: 'Карточек завершено',
+  CORRECT_ANSWERS_PERCENTAGE_TEXT: 'Процент правильных ответов',
+  NEW_WORDS_TEXT: 'Новые слова',
+  LONGEST_SERIES_OF_ANSWERS_TEXT: 'Саммая длинная серия правильных ответов',
+  GO_TO_THE_MAIN_PAGE: 'Перейти на главную',
+};
+
+const wordsToLearnOptions = {
+  MIXED: 'Вперемешку',
+  ONLY_NEW_WORDS: 'Только новые слова',
+  ONLY_WORDS_TO_REPEAT: 'Только слова для повторения',
+  ONLY_DIFFICULT_WORDS: 'Только сложные слова',
+};
+
+const estimateButtonsTypes = {
+  AGAIN: {
+    text: 'Снова',
+  },
+  HARD: {
+    text: 'Трудно',
+  },
+  GOOD: {
+    text: 'Хорошо',
+  },
+  EASY: {
+    text: 'Легко',
+  },
 };
 
 const findAPairText = {
@@ -36,6 +94,17 @@ const findAPairText = {
   resultText: 'Раунд завершен',
   nextLevel: 'Уровень игры',
   newGameButton: 'Сыграть снова',
+};
+
+const vocabularyConstants = {
+  NUMBER_OF_WORDS_TEXT: 'Всего слов',
+  LEARNED_WORDS_TITLE: 'Выученные слова',
+  WORDS_TO_LEARN_TITLE: 'Слова для изучения',
+  REMOVED_WORDS_TITLE: 'Удаленные слова',
+  DIFFUCULT_WORDS_TITLE: 'Сложные слова',
+  NEW_WORDS_TITLE: 'Новые слова',
+  RESTORE_BUTTON_TEXT: 'Восстановить',
+  EMPTY_VOCABULARY_MESSAGE: 'Словарь пуст.',
 };
 
 const settingsText = {
@@ -85,6 +154,7 @@ const settingsText = {
   },
 };
 
+
 const statisticsText = {
   tabtitels: {
     shortterm: 'Краткосрочная',
@@ -106,6 +176,21 @@ const statisticsText = {
     correctAnswers: 'Правильны ответов',
     wrongAnswers: 'Ошибок',
   },
+}
+
+const modalConstants = {
+  MODAL_TITLE: 'Тренировка не закончена!',
+  MODAL_WARNING: 'Если вы вернетесь к списку, ваш прогресс не будет сохранен',
+  CLOSE_BUTTON: 'Всё равно закрыть',
+  CANCEL_BUTTON: 'Отмена',
+};
+
+const shortTermStatisticsConstants = {
+  ERROR_STAT: 'Ошибок',
+  CORRECT_STAT: 'Знаю',
+  STAT_TITLE: 'Статистика',
+  STAT_CLOSE: 'Закрыть',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 export {
@@ -113,6 +198,13 @@ export {
   findAPairText,
   authenticationTexts,
   errorTypes,
+  mainGameConstants,
+  estimateButtonsTypes,
+  wordsToLearnOptions,
+  vocabularyConstants,
+  dailyStatisticsConstants,
   settingsText,
   statisticsText,
+  modalConstants,
+  shortTermStatisticsConstants,
 };
