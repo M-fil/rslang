@@ -1,8 +1,9 @@
+const MAIN_URL = 'https://afternoon-falls-25894.herokuapp.com/';
 const urls = {
-  WORDS_DATA_URL: 'https://afternoon-falls-25894.herokuapp.com/words?',
-  CREATE_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users',
-  LOGIN_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/signin',
-  GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
+  WORDS_DATA_URL: `${MAIN_URL}words?`,
+  CREATE_USER_URL: `${MAIN_URL}users`,
+  LOGIN_USER_URL: `${MAIN_URL}signin`,
+  GET_USER_URL: `${MAIN_URL}users`,
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
 };
