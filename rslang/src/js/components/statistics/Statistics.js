@@ -36,7 +36,7 @@ export default class Statistics {
     if (res) {
       this.statistics = {
         learnedWords: res.learnedWords,
-        optional: res.optional || {},
+        optional: Statistics.filterForOptional(res.optional) || {},
       };
     } else {
       this.statistics = {
@@ -66,13 +66,13 @@ export default class Statistics {
     return this.statistics.optional[date][group];
   }
 
-  updateLearnedWords(wordsCount) {
+  updateLearnedWords(group, wordsCount) {
     this.statistics.learnedWords += Number(wordsCount);
 
-    if (Object.prototype.hasOwnProperty.call(this.statistics.optional[this.currentdate].maingame, 'learnedWords')) {
-      this.statistics.optional[this.currentdate].maingame.learnedWords += wordsCount;
+    if (Object.prototype.hasOwnProperty.call(this.statistics.optional[this.currentdate][group], 'learnedWords')) {
+      this.statistics.optional[this.currentdate][group].learnedWords += wordsCount;
     } else {
-      this.statistics.optional[this.currentdate].maingame.learnedWords = wordsCount;
+      this.statistics.optional[this.currentdate][group].learnedWords = wordsCount;
     }
   }
 
@@ -85,7 +85,7 @@ export default class Statistics {
     this.statistics.optional[this.currentdate][group].wrongAnswers += wrong;
 
     if (learnedWords) {
-      this.updateLearnedWords(learnedWords);
+      this.updateLearnedWords(group, learnedWords);
     }
 
     await this.saveStatistics();
@@ -313,5 +313,19 @@ export default class Statistics {
         }
       });
     }
+  }
+
+  static filterForOptional(optional) {
+    const resObj = {};
+    if (optional) {
+      const dataArr = Object.entries(optional);
+      dataArr.forEach(([key, value]) => {
+        if (/^[0-9]{2}\.[0-9]{2}\.[0-9]{4}$/.test(key)) {
+          resObj[key] = value;
+        }
+      });
+    }
+
+    return resObj;
   }
 }
