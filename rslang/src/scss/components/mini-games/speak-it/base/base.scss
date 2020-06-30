@@ -22,8 +22,6 @@ main {
 
 .speak-it__main {
   display: flex;
-  align-items: center;
-  justify-content: center;
 
   min-height: 100vh;
   margin: 0;
@@ -31,4 +29,23 @@ main {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+.main-container__wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  margin: 10px;
+}
+
+.speak-it__message {
+  @include font(6rem);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  text-shadow: 0 0 10px $speak-it-standard-text-shadow;
+  color: $speak-it-standard-button-text-color;
 }

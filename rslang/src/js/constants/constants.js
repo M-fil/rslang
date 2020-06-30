@@ -1,8 +1,8 @@
 const urls = {
-  WORDS_DATA_URL: 'https://afternoon-falls-25894.herokuapp.com/words?',
-  CREATE_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users',
-  LOGIN_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/signin',
-  GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
+  WORDS_DATA_URL: 'http://pacific-castle-12388.herokuapp.com/words?',
+  CREATE_USER_URL: 'http://pacific-castle-12388.herokuapp.com/users',
+  LOGIN_USER_URL: 'http://pacific-castle-12388.herokuapp.com/signin',
+  GET_USER_URL: 'http://pacific-castle-12388.herokuapp.com/users/',
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
@@ -124,6 +124,7 @@ const speakItConstants = {
   NUMBER_OF_GROUPS: 6,
   NUMBER_OF_PAGES: 29,
   WORDS_LIMIT_NUMBER: 10,
+  NOT_ENOUGHT_WORDS: 'Недостаточно слов',
 };
 
 const vocabularyConstants = {
