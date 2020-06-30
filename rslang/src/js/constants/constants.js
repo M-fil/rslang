@@ -6,6 +6,7 @@ const urls = {
   GET_USER_URL: `${MAIN_URL}users`,
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 const authenticationTexts = {
@@ -160,6 +161,14 @@ const modalConstants = {
   CANCEL_BUTTON: 'Отмена',
 };
 
+const shortTermStatisticsConstants = {
+  ERROR_STAT: 'Ошибок',
+  CORRECT_STAT: 'Знаю',
+  STAT_TITLE: 'Статистика',
+  STAT_CLOSE: 'Закрыть',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
+};
+
 export {
   urls,
   findAPairText,
@@ -172,4 +181,5 @@ export {
   dailyStatisticsConstants,
   settingsText,
   modalConstants,
+  shortTermStatisticsConstants,
 };
