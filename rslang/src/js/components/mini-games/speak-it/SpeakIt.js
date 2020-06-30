@@ -5,6 +5,7 @@ import create, {
   speakItConstants,
   getRandomInteger,
   vocabularyConstants,
+  playAudio,
 } from './pathes';
 
 import WordCard from './components/words/WordCard';
@@ -13,14 +14,13 @@ import ImageBlock from './components/imageBlock/ImageBlock';
 import Navigation from './components/navigation/Navigation';
 import ButtonsBlock from './components/buttons/ButtonsBlock';
 import MicrophoneButton from './components/buttons/MicrophoneButton';
-import StatisticsBlock from './components/statistics/StatisticsBlock';
 import WordsToLearnSelect from '../common/WordsToLearnSelect';
 import Preloader from '../../preloader/Preloader';
 import Settings from '../../settings/Settings';
 import Vocabulary from '../../vocabulary/Vocabulary';
+import StatisticsBlock from './components/statistics/StatisticsBlock';
 
 import ModalWindow from '../common/ModalWindow';
-import ShortTermStatistics from '../common/ShortTermStatistics';
 
 const {
   WORDS_IMAGES_URL,
@@ -50,6 +50,7 @@ export default class SpeakIt {
     this.currentArrayOfWords = [];
     this.words = [];
     this.skippedWords = [];
+    this.guessedWords = [];
     this.learnedWords = [];
     this.audio = new Audio();
     this.recognition = SpeakIt.createSpeechRecongnition();
@@ -97,13 +98,6 @@ export default class SpeakIt {
     });
   }
 
-  playAudio(source) {
-    if (this.audio.src === '' || this.audio.src !== source || this.audio.ended) {
-      this.audio.src = source;
-      this.audio.play();
-    }
-  }
-
   initMainGamePage() {
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
 
@@ -126,6 +120,7 @@ export default class SpeakIt {
       this.wordCardClickEvent();
       this.startGame();
       this.activateExitButton();
+      this.activateContinueButton();
       this.activateRestartButton();
       this.activateMicroButton();
 
@@ -145,7 +140,6 @@ export default class SpeakIt {
     const { currentWordsType } = this.state;
     this.wordToLearnSelect = new WordsToLearnSelect('speak-it');
     this.navigation = new Navigation();
-    const learnedWordsLength = this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE);
 
     create(
       'div', 'navigation',
@@ -153,7 +147,6 @@ export default class SpeakIt {
       document.querySelector('.main-container__wrapper'),
     );
 
-    console.log('currentWordsType', currentWordsType);
     if (currentWordsType === SELECT_OPTION_LEARNED_WORDS) {
       this.navigation.hide();
     }
@@ -215,23 +208,28 @@ export default class SpeakIt {
     }
  
     this.saveCurrentWordsType(this.state.currentWordsType);
-    console.log('this.currentArrayOfWords', this.currentArrayOfWords);
-    const mainContainerWrapper = document.querySelector('.main-container__wrapper');
-    mainContainerWrapper.append(new ButtonsBlock().render());
+    this.shortTermStatistics = new StatisticsBlock();
+    this.shortTermStatistics.render(this.currentArrayOfWords, []);
+    this.shortTermStatistics.hide();
+    this.shortTermStatistics.clickStatisticaAudio();
     this.preloader.hide();
   }
 
   renderSpeacifiedWordsType() {
     this.renderWords();
     const speakItMessageHTML = document.querySelector('.speak-it__message');
+    const buttonsHTML = document.querySelector('.buttons-container');
+    const mainContainerWrapper = document.querySelector('.main-container__wrapper');
+
     if (speakItMessageHTML) {
       speakItMessageHTML.remove();
     }
-    this.shortTermStatistics = new ShortTermStatistics();
+    if (!buttonsHTML) {
+      mainContainerWrapper.append(new ButtonsBlock().render());
+    }
+    this.shortTermStatistics = new StatisticsBlock();
     this.shortTermStatistics.render(this.currentArrayOfWords, []);
     this.shortTermStatistics.hide();
-    //const statistics = new StatisticsBlock(this.currentArrayOfWords);
-    //document.body.append(statistics.render());
 
     const currentNavItem = document.querySelector(`[data-nav-number="${this.state.groupOfWords + 1}"]`);
     SpeakIt.selectSingleElementFromList(currentNavItem, 'navigation__item_selected');
@@ -257,11 +255,10 @@ export default class SpeakIt {
       }
     } else {
       this.currentArrayOfWords = this.learnedWords.map((word) => word.optional.allData);
-      this.renderWords(this.learnedWords);
-      this.shortTermStatistics = new ShortTermStatistics();
+      this.renderWords();
+      this.shortTermStatistics = new StatisticsBlock();
       this.shortTermStatistics.render(this.currentArrayOfWords, []);
-      //const statistics = new StatisticsBlock(this.currentArrayOfWords);
-      //document.body.append(statistics.render());
+      this.shortTermStatistics.hide();
       if (!buttonsHTML) {
         mainContainerWrapper.append(new ButtonsBlock().render());
       }
@@ -278,7 +275,7 @@ export default class SpeakIt {
           .find((word) => (word.id || word._id) === target.dataset.wordId);
 
         const translation = clickedWord.wordTranslate;
-        this.playAudio(`${WORDS_AUDIOS_URL}${clickedWord.audio}`);
+        playAudio(`${WORDS_AUDIOS_URL}${clickedWord.audio}`, this.audio);
 
         let currentImage = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
         currentImage = `${WORDS_IMAGES_URL}${clickedWord.image}`;
@@ -431,7 +428,7 @@ export default class SpeakIt {
         && !currentWordHTML.classList.contains('word-card_skipped')
       ) {
         currentWordHTML.classList.add('word-card_guessed');
-        this.playAudio(CORRECT_AUDIO_PATH);
+        playAudio(CORRECT_AUDIO_PATH, this.audio);
         wordInfoHTML.remove();
         const currentImage = `${WORDS_IMAGES_URL}${guessedWord.image}`;
         const imageBlock = new ImageBlock(currentImage, guessedWord.word, '', false);
@@ -440,8 +437,18 @@ export default class SpeakIt {
 
         scoreHTML.textContent = `+${this.state.correct += 1}`;
         scoreHTML.classList.remove('hidden');
-        SpeakIt.updateStatistics(guessedWord.word);
+        this.guessedWords.push(guessedWord);
         this.checkIsGameEnded();
+      }
+    });
+  }
+
+  activateContinueButton() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.continue-button');
+
+      if (target && this.shortTermStatistics) {
+        this.shortTermStatistics.hide();
       }
     });
   }
@@ -453,10 +460,12 @@ export default class SpeakIt {
 
     if (this.state.correct === numberOfCorrectWords) {
       setTimeout(() => {
-        this.playAudio(SUCCESS_AUDIO_PATH);
+        playAudio(SUCCESS_AUDIO_PATH, this.audio);
         statisticsHTML.classList.remove('hidden');
         overlayHTML.classList.remove('hidden');
         this.activateStatisticsButtons();
+        this.shortTermStatistics.modalClose.removeAttribute('disabled');
+        this.shortTermStatistics.continueButton.remove();
       }, 1500);
     }
   }
@@ -502,10 +511,10 @@ export default class SpeakIt {
     document.querySelector('.game-page').remove();
     this.renderWords();
     
-    this.shortTermStatistics = new ShortTermStatistics();
+    this.shortTermStatistics = new StatisticsBlock();
     this.shortTermStatistics.render(this.currentArrayOfWords, []);
-    //const statistics = new StatisticsBlock(this.currentArrayOfWords);
-    //document.body.append(statistics.render());
+    this.shortTermStatistics.hide();
+
     this.activateStatisticsBlock();
     this.acitavateRecognition();
     this.preloader.hide();
@@ -547,30 +556,16 @@ export default class SpeakIt {
       const target = event.target.closest('.result-button');
 
       if (target) {
-        document.querySelector('.statistics').classList.remove('hidden');
-        document.querySelector('.overlay').classList.remove('hidden');
-        this.activateStatisticsButtons();
+        this.shortTermStatistics.show();
       }
     });
   }
 
   activateStatisticsButtons() {
     document.addEventListener('click', (event) => {
-      const target = event.target.closest('.back-button');
-      if (target) {
-        document.querySelector('.statistics').classList.add('hidden');
-        document.querySelector('.overlay').classList.add('hidden');
-      }
-    });
-
-    document.addEventListener('click', (event) => {
       const target = event.target.closest('.new-game-button');
       if (target) {
-        const overlayHTML = document.querySelector('.overlay');
-        const statisticsHTML = document.querySelector('.statistics');
-
-        overlayHTML.classList.add('hidden');
-        document.body.style.overflow = 'auto';
+        this.shortTermStatistics.hide();
 
         this.switchOnTrainingMode();
         SpeakIt.selectSingleElementFromList(document.querySelector('[data-nav-number="1"]'), 'navigation__item_selected');
@@ -587,7 +582,7 @@ export default class SpeakIt {
       const target = event.target.closest('.statistics__word');
       if (target) {
         const wordObject = this.currentArrayOfWords.find((word) => word.word === target.dataset.scoreWord);
-        this.playAudio(`${WORDS_AUDIOS_URL}${wordObject.audio}`);
+        playAudio(`${WORDS_AUDIOS_URL}${wordObject.audio}`, this.audio);
       }
     });
   }

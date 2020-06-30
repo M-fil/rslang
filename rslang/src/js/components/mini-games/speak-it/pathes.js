@@ -10,6 +10,7 @@ import {
   getAggregatedWordsByFilter,
 } from '../../../service/service';
 import getRandomInteger from '../../../utils/random';
+import { playAudio } from '../../../utils/audio';
 
 export {
   speakItConstants,
@@ -18,6 +19,7 @@ export {
   wordsToLearnSelectConstants,
   getRandomInteger,
   getAggregatedWordsByFilter,
+  playAudio,
 };
 export { getWords };
 export default create;

@@ -119,6 +119,7 @@ const speakItConstants = {
   CORRECT_WORDS_TEXT: 'Я знаю',
   INCORRECT_WORDS_TEXT: 'Я не знаю',
   NEW_GAME_BUTTON: 'Новая Игра',
+  CONTINUE_BUTTON: 'Продолжить',
   SKIP_BUTTON: 'Пропустить',
   NUMBER_OF_GROUPS: 6,
   NUMBER_OF_PAGES: 29,

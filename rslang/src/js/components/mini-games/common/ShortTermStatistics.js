@@ -39,7 +39,6 @@ export default class ShortTermStatistics extends ModalWindow {
 
     ShortTermStatistics.statisticaWords(wrongWords, this.statisticaWrongWords);
     ShortTermStatistics.statisticaWords(rightWords, this.statisticaRightWords);
-    this.clickStatisticaAudio();
   }
 
   static statisticaWords(arrayWords, container) {

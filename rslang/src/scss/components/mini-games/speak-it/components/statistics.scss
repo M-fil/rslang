@@ -49,7 +49,12 @@
 
 .statistics__buttons {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  margin-top: 10px;
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
+  }
 }
 
 .statistics__button {
@@ -61,14 +66,9 @@
   border-radius: 20px;
   padding: 5px 10px;
   transition: 0.3s ease all;
-}
 
-.back-button:hover {
-  color: $speak-it-correct-color;
-  border-color:$speak-it-correct-color;
-}
-
-.new-game-button:hover {
-  color: $speak-it-incorrect-color;
-  border-color: $speak-it-incorrect-color;
+  &:hover {
+    color: $speak-it-incorrect-color;
+    border-color: $speak-it-incorrect-color;
+  }
 }
