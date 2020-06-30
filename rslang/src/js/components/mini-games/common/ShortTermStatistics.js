@@ -52,6 +52,19 @@ export default class ShortTermStatistics extends ModalWindow {
     }
   }
 
+  update(wrongWords, rightWords) {
+    this.statisticaWrongWordsText.innerHTML = '';
+    this.statisticaRightWordsText.innerHTML = '';
+
+    this.statisticaWrongWordsText = create('p', 'modal_title', `${ERROR_STAT} ${wrongWords.length}`, this.modalText);
+    this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
+    this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${rightWords.length}`, this.modalText);
+    this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
+
+    ShortTermStatistics.statisticaWords(wrongWords, this.statisticaWrongWords);
+    ShortTermStatistics.statisticaWords(rightWords, this.statisticaRightWords);
+  }
+
   static statisticaWords(arrayWords, container) {
     arrayWords.forEach((word) => {
       const everyString = create('p', '', '', container);
