@@ -8,6 +8,7 @@ import create from '../../../utils/сreate';
 import shuffle from '../../../utils/shuffle';
 import wordsFilter from '../../../utils/wordsfilter';
 import Preloader from '../../preloader/Preloader';
+import Settings from '../../settings/Settings';
 
 const findAPairConst = {
   maxPages: 30,
@@ -20,24 +21,37 @@ const findAPairConst = {
 };
 
 export default class FindAPair {
-  init() {
+  constructor(user) {
+    this.user = user;
+  }
+
+  async init() {
     this.level = Number(localStorage.level) || 1;
     this.fixedCards = 0;
     this.gameStarted = false;
     this.gameOnPause = false;
+    this.gameShowCards = false;
     this.audioObj = new Audio();
     this.preloader = new Preloader();
     this.preloader.render();
 
+    const settings = new Settings(this.user);
+    await settings.init();
+    this.settings = settings.getSettingsByGroup('findapair');
+
     this.renderStartPage();
   }
 
-  renderStartPage() {
-    const aboutgame = create('p', 'find-a-pair__about', findAPairText.about);
-    const startGameButton = create('button', 'find-a-pair__startgame-button', findAPairText.startButton, undefined, ['id', 'find-a-pair-startgame-button']);
-    startGameButton.addEventListener('click', (this.startGameHandler).bind(this));
-    const gameLevel = create('p', 'find-a-pair__gamelevel', `${findAPairText.level}: ${this.level}`);
-    this.container = create('div', 'find-a-pair find-a-pair__start-page', [aboutgame, startGameButton, gameLevel], document.body, ['id', 'find-a-pair']);
+  renderStartPage(container) {
+    const el = document.querySelector('#find-a-pair');
+    if (!el) {
+      const main = document.querySelector(container);
+      const aboutgame = create('p', 'find-a-pair__about', findAPairText.about);
+      const startGameButton = create('button', 'find-a-pair__startgame-button', findAPairText.startButton, undefined, ['id', 'find-a-pair-startgame-button']);
+      startGameButton.addEventListener('click', (this.startGameHandler).bind(this));
+      const gameLevel = create('p', 'find-a-pair__gamelevel', `${findAPairText.level}: ${this.level}`);
+      this.container = create('div', 'find-a-pair find-a-pair__start-page', [aboutgame, startGameButton, gameLevel], main || document.body, ['id', 'find-a-pair']);
+    }
   }
 
   async startGame() {
@@ -72,6 +86,11 @@ export default class FindAPair {
     this.container.appendChild(controlbar);
     this.container.appendChild(playingField);
     this.preloader.hide();
+
+    if (this.settings.showCardsTextOnStart) {
+      this.startTimer();
+      this.showCards();
+    }
   }
 
   async getCardsData() {
@@ -126,7 +145,7 @@ export default class FindAPair {
     this.fixedCards = 0;
     setTimeout(() => {
       checkedCards.forEach((element) => element.classList.remove('is-fixed'));
-    }, findAPairConst.delayForClosingCards);
+    }, this.settings.delayBeforeClosingCard);
   }
 
   playAudio(file) {
@@ -198,7 +217,7 @@ export default class FindAPair {
   }
 
   mouseClickHandler() {
-    if (!this.obj.gameOnPause && !this.element.classList.contains('is-paired')) {
+    if (!this.obj.gameOnPause && !this.gameShowCards && !this.element.classList.contains('is-paired')) {
       if (!this.obj.timer) {
         this.obj.startTimer();
       }
@@ -224,5 +243,20 @@ export default class FindAPair {
   newGameHandler() {
     FindAPair.clearPage();
     this.renderStartPage();
+  }
+
+  showCards() {
+    this.gameShowCards = true;
+    const cards = document.querySelectorAll('.find-a-pair-card__container');
+    cards.forEach((el) => {
+      el.classList.add('is-fixed');
+    });
+
+    setTimeout(() => {
+      cards.forEach((el) => {
+        el.classList.remove('is-fixed');
+      });
+      this.gameShowCards = false;
+    }, this.settings.showingCardsTime);
   }
 }
