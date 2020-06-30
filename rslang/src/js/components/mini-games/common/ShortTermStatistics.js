@@ -1,5 +1,6 @@
 import create from '../../../utils/сreate';
 import ModalWindow from './ModalWindow';
+import { playAudio } from '../../../utils/audio';
 import {
   shortTermStatisticsConstants,
   urls,
@@ -18,6 +19,11 @@ const {
 } = urls;
 
 export default class ShortTermStatistics extends ModalWindow {
+  constructor() {
+    super();
+    this.audio = new Audio();
+  }
+
   render(wrongWords, rightWords) {
     this.modaleWindow = new ModalWindow();
     ModalWindow.changeDisplay(this.modal, 'block');
@@ -50,8 +56,10 @@ export default class ShortTermStatistics extends ModalWindow {
   clickStatisticaAudio() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.audio-pictures');
+
       if (target) {
-        this.playAudio(`${WORDS_AUDIOS_URL}${event.target.nextSibling.dataset.audiosrc}`);
+        const audioSrc = `${WORDS_AUDIOS_URL}${event.target.nextSibling.dataset.audiosrc}`;
+        playAudio(audioSrc, this.audio);
       }
     });
   }
