@@ -3,6 +3,10 @@ import dateFormat from '../../utils/dateformat';
 import {
   statisticsText,
 } from '../../constants/constants';
+import {
+  updateUserStatistics,
+  getUserStatistics,
+} from '../../service/service';
 
 export default class Statistics {
   constructor(userData) {
@@ -17,28 +21,34 @@ export default class Statistics {
     this.initialized = false;
   }
 
-  init() {
+  async init() {
     if (!this.initialized) {
       this.initialized = true;
       const date = new Date();
       this.currentdate = dateFormat(date.getDate(), date.getMonth() + 1, date.getFullYear());
 
-      this.loadStatistics();
+      await this.loadStatistics();
     }
   }
 
-  loadStatistics() {
-    this.statistics = (localStorage.statistics) ? JSON.parse(localStorage.statistics) : {
-      learnedWords: 0,
-      optional: {},
-    };
+  async loadStatistics() {
+    const res = await getUserStatistics(this.user.userId, this.user.token);
+    if (res) {
+      this.statistics = {
+        learnedWords: res.learnedWords,
+        optional: res.optional,
+      };
+    } else {
+      this.statistics = {
+        learnedWords: 0,
+        optional: {},
+      };
+    }
     console.log('>', this.statistics);
   }
 
-  saveStatistics() {
-    localStorage.statistics = JSON.stringify(this.statistics);
-
-    console.log('>>', this.statistics);
+  async saveStatistics() {
+    await updateUserStatistics(this.user.userId, this.user.token, this.statistics);
   }
 
   getGameStatistics(group, requestedDate) {
@@ -58,7 +68,7 @@ export default class Statistics {
     }
   }
 
-  saveGameStatistics(group, correct, wrong, learnedWords) {
+  async saveGameStatistics(group, correct, wrong, learnedWords) {
     console.log(this.statistics);
     this.controlGroupInStatistics(group);
 
@@ -70,7 +80,7 @@ export default class Statistics {
       this.updateLearnedWords(learnedWords);
     }
 
-    this.saveStatistics();
+    await this.saveStatistics();
   }
 
   static createStatisticObject() {
