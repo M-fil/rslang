@@ -1,20 +1,12 @@
+const MAIN_URL = 'http://pacific-castle-12388.herokuapp.com/';
 const urls = {
-  WORDS_DATA_URL: 'http://pacific-castle-12388.herokuapp.com/words?',
-  CREATE_USER_URL: 'http://pacific-castle-12388.herokuapp.com/users',
-  LOGIN_USER_URL: 'http://pacific-castle-12388.herokuapp.com/signin',
-  GET_USER_URL: 'http://pacific-castle-12388.herokuapp.com/users/',
+  WORDS_DATA_URL: `${MAIN_URL}words?`,
+  CREATE_USER_URL: `${MAIN_URL}users`,
+  LOGIN_USER_URL: `${MAIN_URL}signin`,
+  GET_USER_URL: `${MAIN_URL}users`,
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
-  DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
-  CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
-  INCORRECT_AUDIO_PATH: './src/assets/audio/error.mp3',
-  SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
-};
-
-const wordsToLearnSelectConstants = {
-  SELECT_TITLE: 'Какие слова учить?',
-  SELECT_OPTION_LEARNED_WORDS: 'Уже изученные слова',
-  SELECT_OPTION_WORDS_FROM_COLLECTIONS: 'Слова из коллекций',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 const authenticationTexts = {
@@ -192,13 +184,20 @@ const modalConstants = {
   CANCEL_BUTTON: 'Отмена',
 };
 
+const shortTermStatisticsConstants = {
+  ERROR_STAT: 'Ошибок',
+  CORRECT_STAT: 'Знаю',
+  STAT_TITLE: 'Статистика',
+  STAT_CLOSE: 'Закрыть',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
+};
+
 export {
   urls,
   findAPairText,
   authenticationTexts,
   errorTypes,
   speakItConstants,
-  wordsToLearnSelectConstants,
   mainGameConstants,
   estimateButtonsTypes,
   wordsToLearnOptions,
@@ -206,4 +205,5 @@ export {
   dailyStatisticsConstants,
   settingsText,
   modalConstants,
+  shortTermStatisticsConstants,
 };
