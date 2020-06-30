@@ -36,7 +36,7 @@ export default class Statistics {
     if (res) {
       this.statistics = {
         learnedWords: res.learnedWords,
-        optional: res.optional,
+        optional: res.optional || {},
       };
     } else {
       this.statistics = {
@@ -49,6 +49,14 @@ export default class Statistics {
 
   async saveStatistics() {
     await updateUserStatistics(this.user.userId, this.user.token, this.statistics);
+  }
+
+  async resetStatistics() {
+    const body = {
+      learnedWords: 0,
+      optional: {},
+    };
+    await updateUserStatistics(this.user.userId, this.user.token, body);
   }
 
   getGameStatistics(group, requestedDate) {
