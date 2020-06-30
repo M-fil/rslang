@@ -1,0 +1,40 @@
+.modal-block {
+  @include font(1.5rem);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: $modal-window-background;
+}
+
+.modal-block_hidden {
+  display: none;
+}
+
+.modal-block__main {
+  border: 1px solid $modal-window-border-color;
+  border-radius: 15px;
+  background: $modal-window-main-background;
+  margin: 5px auto 0;
+  padding: 5px;
+  width: max-content;
+}
+
+.modal-block__navbar {
+  display: flex;
+  justify-content: space-between;
+  text-align: right;
+  padding: 5px;
+}
+
+.modal-block__title {
+  @include font(1.5rem, $style: italic);
+}
+
+.modal-block__close-button {
+  cursor: pointer;
+}
+
+.modal-block__content {
+  padding: 5px;
+  width: max-content;
+}
