@@ -8,6 +8,8 @@ const urls = {
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
+  CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
+  SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
 };
 
 const authenticationTexts = {
