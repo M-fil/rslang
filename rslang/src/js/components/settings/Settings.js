@@ -193,6 +193,7 @@ export default class Settings {
       optional: this.options,
     };
 
+    console.log(this.user);
     await setUserSettings(this.user.id, this.user.token, body);
   }
 

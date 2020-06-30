@@ -47,10 +47,12 @@ export default class ImageBlock {
     this.prelodaer.render();
     this.prelodaer.show();
 
-    this.imageHTML.src = imageSrc;
-    this.imageHTML.onload = () => {
-      this.translationHTML.textContent = translation;
-      this.prelodaer.hide();
-    };
+    if (this.imageHTML) {
+      this.imageHTML.src = imageSrc;
+      this.imageHTML.onload = () => {
+        this.translationHTML.textContent = translation;
+        this.prelodaer.hide();
+      };
+    }
   }
 }

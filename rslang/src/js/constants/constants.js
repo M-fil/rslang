@@ -3,7 +3,7 @@ const urls = {
   WORDS_DATA_URL: `${MAIN_URL}words?`,
   CREATE_USER_URL: `${MAIN_URL}users`,
   LOGIN_USER_URL: `${MAIN_URL}signin`,
-  GET_USER_URL: `${MAIN_URL}users`,
+  GET_USER_URL: `${MAIN_URL}users/`,
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
@@ -16,6 +16,12 @@ const authenticationTexts = {
   EMAIL_LABEL_TEXT: 'email',
   LOGIN_BUTTON_TEXT: 'Войти',
   REGISTER_BUTTON_TEXT: 'Создать',
+};
+
+const wordsToLearnSelectConstants = {
+  SELECT_TITLE: 'Какие слова учить?',
+  SELECT_OPTION_LEARNED_WORDS: 'Уже изученные слова',
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS: 'Слова из коллекций',
 };
 
 const errorTypes = {
@@ -206,4 +212,5 @@ export {
   settingsText,
   modalConstants,
   shortTermStatisticsConstants,
+  wordsToLearnSelectConstants,
 };

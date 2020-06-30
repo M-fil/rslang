@@ -14,7 +14,6 @@ import {
   createUser,
   loginUser,
   getUserById,
-  getUserSettings,
 } from '../../service/service';
 import {
   errorTypes,
@@ -55,9 +54,7 @@ class App {
   async initSettings() {
     const settings = new Settings(this.state.user);
     await settings.init();
-
-    const { id, token } = this.state.user;
-    this.state.settings = await getUserSettings(id, token);
+    this.state.settings = settings.getSettings();
   }
 
   async renderVocabulary(userState) {

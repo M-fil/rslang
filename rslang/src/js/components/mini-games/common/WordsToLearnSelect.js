@@ -30,19 +30,19 @@ class WordsToLearnSelect {
     return this.HTML;
   }
 
-  selectIndexByValue(value) {
-    const options = Array.from(this.select.options);
-    const item = options.find((option) => option.value === value);
-    options.forEach((option) => option.removeAttribute('selected'));
-    item.setAttribute('selected', '');
-  }
-
   renderOption(optionText) {
     return create(
       'option',
       `select__option ${this.containerClassNameType}`, optionText, '',
       ['value', optionText],
     );
+  }
+
+  selectIndexByValue(value) {
+    const options = Array.from(this.select.options);
+    const item = options.find((option) => option.value === value);
+    options.forEach((option) => option.removeAttribute('selected'));
+    item.setAttribute('selected', '');
   }
 }
 
