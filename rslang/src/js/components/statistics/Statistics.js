@@ -249,6 +249,53 @@ export default class Statistics {
     return elementsArr;
   }
 
+  getSummaryByGames() {
+    const arrData = Object.values(this.statistics.optional);
+    const resObj = {};
+
+    arrData.forEach((gameValue) => {
+      const gameData = Object.entries(gameValue);
+      gameData.forEach(([key, value]) => {
+        if (Object.prototype.hasOwnProperty.call(resObj, key)) {
+          resObj[key] += value?.playingCount || 0;
+        } else {
+          resObj[key] = value?.playingCount || 0;
+        }
+      });
+    });
+
+    return resObj;
+  }
+
+  getSummaryByAnswers() {
+    const arrData = Object.values(this.statistics.optional);
+    const resObj = {
+      correctAnswers: 0,
+      wrongAnswers: 0,
+    };
+
+    arrData.forEach((gameValue) => {
+      const gameData = Object.values(gameValue);
+      gameData.forEach((value) => {
+        resObj.correctAnswers += value.correctAnswers;
+        resObj.wrongAnswers += value.wrongAnswers;
+      });
+    });
+
+    return resObj;
+  }
+
+  getLearnedWordsByDate() {
+    const arrData = Object.entries(this.statistics.optional);
+    const resObj = {};
+
+    arrData.forEach(([key, value]) => {
+      resObj[key] = value?.maingame?.learnedWords;
+    });
+
+    return resObj;
+  }
+
   static changeTabHandler(event) {
     const TAB_EL = 'LI';
     if (event.target.tagName === TAB_EL) {
