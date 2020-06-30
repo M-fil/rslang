@@ -1,6 +1,7 @@
 const urls = {
   WORDS_DATA_URL: 'https://afternoon-falls-25894.herokuapp.com/words?',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 const savannahConstants = {
@@ -27,7 +28,6 @@ const savannahConstants = {
   AUDIO_CORRECT: './src/assets/audio/correct.mp3',
   AUDIO_ERROR: './src/assets/audio/error.mp3',
   AUDIO_BONUS: './src/assets/audio/bonus.mp3',
-  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
   LIVES_IMAGE_BLACK: './src/assets/images/heart_black.png',
   LIVES_IMAGE_INHERIT: './src/assets/images/heart_inherit.png',
   MAX_WORDS: 20,
@@ -36,7 +36,6 @@ const savannahConstants = {
   GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
-  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 const authenticationTexts = {

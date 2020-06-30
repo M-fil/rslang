@@ -1,11 +1,12 @@
 import create from '../../../utils/сreate';
 import {
   savannahConstants,
-  urls,
 } from '../../../constants/constants';
 import { getWords } from '../../../service/service';
-import Preloader from '../../preloader/Preloader';
+import Preloader from '../../preloader/preloader';
 import shuffle from '../../../utils/shuffle';
+import ModalWindow from '../common/ModalWindow';
+import ShortTermStatistics from '../common/ShortTermStatistics';
 
 const {
   SAVANNAH_SECONDS_COUNT,
@@ -13,19 +14,12 @@ const {
   START_BUTTON,
   LAST_NUMBER,
   MAX_PAGE,
-  MODAL_TITLE,
-  MODAL_WARNING,
-  CLOSE_BUTTON,
-  CANCEL_BUTTON,
   RANDOM_WORDS,
   LIVES,
   FRAME,
   END_ANIMATION,
   DIVIDER,
   ADD_LIVES,
-  ERROR_STAT,
-  CORRECT_STAT,
-  STAT,
   PLUS_LIVE,
   AUDIO_CORRECT,
   AUDIO_ERROR,
@@ -37,10 +31,6 @@ const {
   MAX_WORDS,
 } = savannahConstants;
 
-const {
-  WORDS_AUDIOS_URL,
-} = urls;
-
 export default class SavannahGame {
   constructor() {
     this.HTML = null;
@@ -50,6 +40,8 @@ export default class SavannahGame {
     this.numberReverse = create('span', 'number-reverse', '', this.container);
     this.preloader = new Preloader();
     this.audio = new Audio();
+    this.modalWindow = new ModalWindow();
+    this.shortTermStatistics = new ShortTermStatistics();
     this.error = 0;
   }
 
@@ -94,7 +86,8 @@ export default class SavannahGame {
     this.crateCardsData();
     this.wordClick();
     this.offAudio();
-    this.modalWindow();
+    this.createModal();
+
     this.changeLives();
     this.animatedWord();
     this.liveIndex = 0;
@@ -212,6 +205,7 @@ export default class SavannahGame {
         this.addLives();
       }
       if ((this.rightWords.length + this.wrongWords.length) === MAX_WORDS) {
+        this.shortTermStatistics.render(this.wrongWords, this.rightWords);
         this.createStatistics();
       }
     } else {
@@ -227,19 +221,7 @@ export default class SavannahGame {
   createStatistics() {
     clearInterval(this.timer);
     clearTimeout(this.errorTimer);
-    const statisticaContainer = create('div', 'modal', '', this.body);
-    SavannahGame.changeDisplay(statisticaContainer, 'block');
-    this.statisticaText = create('div', 'modal_text', '', statisticaContainer);
-    this.statisticaTitle = create('h4', 'modal_title', `${STAT}`, this.statisticaText);
-
-    this.statisticaWrongWordsText = create('p', 'modal_title', `${ERROR_STAT} ${this.wrongWords.length}`, this.statisticaText);
-    this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
-    this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${this.rightWords.length}`, this.statisticaText);
-    this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
-    this.audio.muted = false;
-    SavannahGame.statisticaWords(this.wrongWords, this.statisticaWrongWords);
-    SavannahGame.statisticaWords(this.rightWords, this.statisticaRightWords);
-    this.clickStatisticaAudio();
+    this.shortTermStatistics.render(this.wrongWords, this.rightWords);
   }
 
   wordClick() {
@@ -271,15 +253,6 @@ export default class SavannahGame {
     });
   }
 
-  clickStatisticaAudio() {
-    document.addEventListener('click', (event) => {
-      const target = event.target.closest('.audio-pictures');
-      if (target) {
-        this.playAudio(`${WORDS_AUDIOS_URL}${event.target.nextSibling.dataset.audiosrc}`);
-      }
-    });
-  }
-
   playAudio(source) {
     if (this.audio.src === '' || this.audio.src !== source || this.audio.ended) {
       this.audio.src = source;
@@ -305,22 +278,14 @@ export default class SavannahGame {
     });
   }
 
-  modalWindow() {
-    const modal = create('div', 'modal', '', this.body);
-    const modalText = create('div', 'modal_text', '', modal);
-    this.modalTitle = create('h4', 'modal_title', MODAL_TITLE, modalText);
-    this.modalWarning = create('p', 'modal_warning', MODAL_WARNING, modalText);
-    this.modalClose = create('button', 'modal_button close_button', CLOSE_BUTTON, modalText);
-    this.modalCancel = create('button', 'modal_button cancel_button', CANCEL_BUTTON, modalText);
+  createModal() {
+    this.exitButton = document.querySelector('.exit-button');
+    this.modalCancel = document.querySelector('.cancel_button');
     this.exitButton.addEventListener('click', () => {
-      SavannahGame.changeDisplay(modal, 'block');
+      this.modalWindow.show();
       clearInterval(this.timer);
     });
-    this.modalClose.addEventListener('click', () => {
-      SavannahGame.changeDisplay(modal, 'none');
-    });
     this.modalCancel.addEventListener('click', () => {
-      SavannahGame.changeDisplay(modal, 'none');
       this.animatedWord();
     });
   }

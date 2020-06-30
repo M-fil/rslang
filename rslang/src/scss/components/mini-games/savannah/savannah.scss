@@ -130,37 +130,6 @@ body {
 .sound_on {
   background-color: $savannah-background-white;
 }
-.modal {
-  display: none;
-  position: fixed;
-  align-items: center;
-  z-index: 5;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: $savannah-shadow-color;
-}
-.modal_text {
-  background-color: $savannah-background-white;
-  margin-top: 10%;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 20px;
-  border: 1px solid $savannah-border-black;
-  border-radius: 5px;
-  width: 30%;
-  overflow: auto;
-  max-height: 450px;
-  text-align: center;
-}
-
-.modal_button {
-  width: 53%;
-}
-.modal_words {
-  text-align: left;
-}
 
 .audio-pictures {
   width: 20px;
