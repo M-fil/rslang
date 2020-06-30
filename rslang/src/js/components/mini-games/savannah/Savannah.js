@@ -7,6 +7,7 @@ import Preloader from '../../preloader/preloader';
 import shuffle from '../../../utils/shuffle';
 import ModalWindow from '../common/ModalWindow';
 import ShortTermStatistics from '../common/ShortTermStatistics';
+import { playAudio } from '../../../utils/audio';
 
 const {
   SAVANNAH_SECONDS_COUNT,
@@ -59,7 +60,7 @@ export default class SavannahGame {
   }
 
   reverseReport() {
-    this.playAudio(AUDIO_TICKING);
+    playAudio(AUDIO_TICKING, this.audio);
     SavannahGame.changeDisplay(this.exitButton, 'none');
     const startGameWindow = document.querySelector('.start-game-window');
     SavannahGame.changeDisplay(startGameWindow, 'none');
@@ -195,7 +196,7 @@ export default class SavannahGame {
     if (target.dataset.translate === engTranslate) {
       this.correctWordNumber += 1;
       this.rightWords.push(this.arrayBeforeClickWords);
-      this.playAudio(AUDIO_CORRECT);
+      playAudio(AUDIO_CORRECT, this.audio);
       target.classList.add('word_correct');
       this.errorTimer = setTimeout(async () => {
         await this.changeCard();
@@ -253,13 +254,6 @@ export default class SavannahGame {
     });
   }
 
-  playAudio(source) {
-    if (this.audio.src === '' || this.audio.src !== source || this.audio.ended) {
-      this.audio.src = source;
-      this.audio.play();
-    }
-  }
-
   pauseAudio() {
     this.audio.pause();
   }
@@ -302,7 +296,7 @@ export default class SavannahGame {
     this.live.src += LIVES_IMAGE_BLACK;
     this.countLives += 1;
     this.correctWordNumber = 0;
-    this.playAudio(AUDIO_BONUS);
+    playAudio(AUDIO_BONUS, this.audio);
     this.plusLive = document.querySelector('.add-lives-number');
     this.plusLive.classList.add('show-number-live');
     setTimeout(() => {
@@ -325,7 +319,7 @@ export default class SavannahGame {
   errorWord() {
     this.allLives = document.querySelectorAll('.live');
     this.error += 1;
-    this.playAudio(AUDIO_ERROR);
+    playAudio(AUDIO_ERROR, this.audio);
     this.rusBut.forEach((rusButton) => {
       if (rusButton.dataset.translate === this.engRandomWords[this.num].wordTranslate) {
         rusButton.classList.add('word_correct');

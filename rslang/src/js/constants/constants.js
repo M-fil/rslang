@@ -6,23 +6,16 @@ const urls = {
 
 const savannahConstants = {
   SAVANNAH_SECONDS_COUNT: 3,
-  RULES: 'Тренировка Саванна развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь.',
+  RULES: 'Тренировка Саванна развивает словарный запас. За каждые изученные 5 слов, ты повышаешь количество жизней в игре.',
   START_BUTTON: 'Начать',
   LAST_NUMBER: 1,
   MAX_PAGE: 29,
-  MODAL_TITLE: 'Тренировка не закончена!',
-  MODAL_WARNING: 'Если вы вернетесь к списку, ваши требования не будут сохранены',
-  CLOSE_BUTTON: 'Закрыть',
-  CANCEL_BUTTON: 'Отмена',
   RANDOM_WORDS: 3,
   LIVES: 5,
   END_ANIMATION: 6500,
   FRAME: 24,
   DIVIDER: 20,
   ADD_LIVES: 5,
-  ERROR_STAT: 'Ошибок',
-  CORRECT_STAT: 'Знаю',
-  STAT: 'Статистика',
   PLUS_LIVE: '+1 &#9829',
   AUDIO_TICKING: './src/assets/audio/clock_ticking_loop.mp3',
   AUDIO_CORRECT: './src/assets/audio/correct.mp3',
@@ -31,11 +24,6 @@ const savannahConstants = {
   LIVES_IMAGE_BLACK: './src/assets/images/heart_black.png',
   LIVES_IMAGE_INHERIT: './src/assets/images/heart_inherit.png',
   MAX_WORDS: 20,
-  CREATE_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users',
-  LOGIN_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/signin',
-  GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
-  WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
-  WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
 };
 
 const authenticationTexts = {
@@ -195,7 +183,6 @@ const shortTermStatisticsConstants = {
   CORRECT_STAT: 'Знаю',
   STAT_TITLE: 'Статистика',
   STAT_CLOSE: 'Закрыть',
-  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 export {
