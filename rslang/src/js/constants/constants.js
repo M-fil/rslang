@@ -154,7 +154,6 @@ const settingsText = {
   },
 };
 
-
 const statisticsText = {
   tabtitels: {
     shortterm: 'Краткосрочная',
@@ -179,7 +178,7 @@ const statisticsText = {
     correctAnswers: 'Правильны ответов',
     wrongAnswers: 'Ошибок',
   },
-}
+};
 
 const modalConstants = {
   MODAL_TITLE: 'Тренировка не закончена!',
