@@ -18,6 +18,7 @@ import WordsToLearnSelect from '../common/WordsToLearnSelect';
 import Preloader from '../../preloader/Preloader';
 import Settings from '../../settings/Settings';
 import Vocabulary from '../../vocabulary/Vocabulary';
+import ModalWindow from '../common/ModalWindow';
 
 const {
   WORDS_IMAGES_URL,
@@ -76,6 +77,24 @@ export default class SpeakIt {
     create('div', 'main-container__wrapper', [startGamePage.render()], main);
   }
 
+  static renderExitButton() {
+    const mainContainerWrapper = document.querySelector('.main-container__wrapper');
+    const exitButton = create('button', 'speak-it__exit-button exit-button');
+    create('i', 'fas fa-times', '', exitButton);
+    mainContainerWrapper.append(exitButton);
+  }
+
+  activateExitButton() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.speak-it__exit-button');
+
+      if (target) {
+        this.modalWindow = new ModalWindow();
+        this.modalWindow.show()
+      }
+    });
+  }
+
   playAudio(source) {
     if (this.audio.src === '' || this.audio.src !== source || this.audio.ended) {
       this.audio.src = source;
@@ -89,6 +108,7 @@ export default class SpeakIt {
     document.querySelector('.start-page__button-start').addEventListener('click', async () => {
       mainContainerWrapper.innerHTML = '';
       document.querySelector('.speak-it__main').classList.add('in-game');
+      SpeakIt.renderExitButton();
 
       const microphone = new MicrophoneButton();
       mainContainerWrapper.append(microphone.render());
@@ -103,6 +123,7 @@ export default class SpeakIt {
       await this.renderWordsOnThePage();
       this.wordCardClickEvent();
       this.startGame();
+      this.activateExitButton();
       this.activateRestartButton();
       this.activateMicroButton();
 
