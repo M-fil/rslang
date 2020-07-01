@@ -118,7 +118,8 @@ export default class Statistics {
     return obj;
   }
 
-  render() {
+  render(mainContainer) {
+    const container = document.querySelector(mainContainer) || document.body;
     this.container = create('div', 'statistics__container', [
       this.renderShortTerm(),
       this.renderLongTerm(),
@@ -127,7 +128,7 @@ export default class Statistics {
     create('div', 'statistics', [
       Statistics.renderNavigation(),
       this.container,
-    ], document.body);
+    ], container);
   }
 
   static renderNavigation() {
