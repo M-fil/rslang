@@ -1,4 +1,4 @@
-const MAIN_URL = 'http://pacific-castle-12388.herokuapp.com/';
+const MAIN_URL = 'https://afternoon-falls-25894.herokuapp.com/';
 const urls = {
   WORDS_DATA_URL: `${MAIN_URL}words?`,
   CREATE_USER_URL: `${MAIN_URL}users`,
