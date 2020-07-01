@@ -208,7 +208,6 @@ export default class SavannahGame {
         this.addLives();
       }
       if ((this.rightWords.length + this.wrongWords.length) === MAX_WORDS) {
-        this.shortTermStatistics.render(this.wrongWords, this.rightWords);
         this.createStatistics();
       }
     } else {
@@ -276,13 +275,15 @@ export default class SavannahGame {
 
   createModal() {
     this.exit = document.querySelector('.exit-button');
-    this.mod = document.querySelector('.cancel_button');
+    this.modalCancelButton = document.querySelector('#closebutton').querySelector('.cancel_button');
     this.exit.addEventListener('click', () => {
       clearInterval(this.timer);
     });
-    this.mod.addEventListener('click', () => {
-      this.modalWindow.hide(this.animatedWord);
-    });
+    this.modalCancelButton.addEventListener('click', (this.clickCancelButton).bind(this));
+  }
+
+  clickCancelButton() {
+    this.modalWindow.hide((this.animatedWord).bind(this));
   }
 
   changeLives() {

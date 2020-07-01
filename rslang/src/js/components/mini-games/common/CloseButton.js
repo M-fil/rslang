@@ -5,7 +5,7 @@ export default class CloseButton {
   constructor() {
     this.body = document.querySelector('body');
     this.exitButton = create('button', 'exit-button', 'X', this.body);
-    this.modalWindow = new ModalWindow();
+    this.modalWindow = new ModalWindow('closebutton');
   }
 
   show() {
