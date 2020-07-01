@@ -302,13 +302,13 @@
 }
 
 .correct-card {
-    box-shadow: -1px -2px 2px $english-puzzle-false-cards, 
-    -1px 2px 2px $english-puzzle-false-cards;
+    box-shadow: 0 -2px 2px $english-puzzle-false-cards, 
+    0 -2px 2px $english-puzzle-false-cards;
 }
 
 .incorrect-card {
-    box-shadow: -1px -2px 2px $english-puzzle-right-cards, 
-    -1px 2px 2px $english-puzzle-right-cards;
+    box-shadow: 0 -2px 2px $english-puzzle-right-cards, 
+    0 -2px 2px $english-puzzle-right-cards;
 }
 
 .puzzle-row:last-child {
