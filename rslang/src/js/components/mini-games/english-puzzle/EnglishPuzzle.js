@@ -153,6 +153,7 @@ export default class EnglishPuzzle {
     }
 
     if (mistakeCounter === 0) {
+      this.statictic.correctAnswers += 1;
       this.rightAnswers.push(this.actualSentenses[this.activeSentenseCounter]);
       this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter]);
       document.querySelector('.bonus-button').classList.add('active-bonus');
@@ -163,6 +164,7 @@ export default class EnglishPuzzle {
         elem.removeEventListener('click', this.cardClickAction);
       });
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
+        this.statictic.playingCount += 1;
         viewElement([
           document.querySelector('.game-block_field--puzzle-container'),
         ], [
@@ -193,6 +195,7 @@ export default class EnglishPuzzle {
 
   showCorrectSentens() {
     const sentensBase = document.querySelector('.game-block_field--description');
+    this.statictic.wrongAnswers += 1;
 
     cleanParentNode(sentensBase);
     cleanParentNode(this.activeRow);
@@ -314,6 +317,12 @@ export default class EnglishPuzzle {
       viewElement([this.startMenu], []);
       await this.getCardsAndStartGame();
       viewElement([], [this.gameForm]);
+      this.statictic = {
+        playingCount: 0,
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        game: GAME_BLOCK.game,
+      };
     });
   }
 
@@ -379,6 +388,7 @@ export default class EnglishPuzzle {
 
     document.querySelector('.button-logout').addEventListener('click', async () => {
       this.modalWindow.show();
+      console.log(this.statictic);
     });
 
     document.querySelector('.button-sintezise').addEventListener('click', () => {

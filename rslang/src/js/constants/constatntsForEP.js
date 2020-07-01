@@ -11,6 +11,7 @@ const RESULT_FORM = {
 };
 
 const GAME_BLOCK = {
+  game: 'englishPuzzle',
   langEn: 'en-US',
   level: 'Уровень',
   page: 'Страница',
