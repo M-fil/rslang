@@ -175,6 +175,10 @@ const shortTermStatisticsConstants = {
   STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
+const startWindow = {
+  START_BUTTON: 'Начать',
+};
+
 export {
   urls,
   findAPairText,
@@ -189,4 +193,5 @@ export {
   modalConstants,
   shortTermStatisticsConstants,
   wordsToLearnSelectConstants,
+  startWindow,
 };
