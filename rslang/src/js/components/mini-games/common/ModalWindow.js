@@ -37,8 +37,11 @@ export default class ModalWindow {
     this.modalCancel.addEventListener('click', (this.hide).bind(this));
   }
 
-  hide() {
+  hide(callbackFn) {
     ModalWindow.changeDisplay(this.modal, 'none');
+    if (typeof callbackFn === 'function') {
+      callbackFn();
+    }
   }
 
   static changeDisplay(element, event) {

@@ -283,7 +283,7 @@ export default class SavannahGame {
   }
 
   clickCancelButton() {
-    this.modalWindow.hide((this.animatedWord).bind(this));
+    this.closeButton.resume((this.animatedWord).bind(this));
   }
 
   changeLives() {

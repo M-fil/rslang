@@ -19,6 +19,10 @@ export default class CloseButton {
     CloseButton.changeDisplay(this.exitButton, 'none');
   }
 
+  resume(callbackFn) {
+    this.modalWindow.hide(callbackFn);
+  }
+
   disabled(boolean) {
     this.exitButton.disabled = boolean;
   }
