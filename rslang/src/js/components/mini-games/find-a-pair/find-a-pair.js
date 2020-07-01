@@ -31,6 +31,7 @@ export default class FindAPair {
     this.gameStarted = false;
     this.gameOnPause = false;
     this.gameShowCards = false;
+    this.openedWords = [];
     this.audioObj = new Audio();
     this.preloader = new Preloader();
     this.preloader.render();
@@ -99,9 +100,9 @@ export default class FindAPair {
     if (!words.length) {
       this.getCardsData();
     }
-    const data = shuffle(wordsFilter(words), findAPairConst.cardsCount);
+    this.words = shuffle(wordsFilter(words), findAPairConst.cardsCount);
     const arrCards = [];
-    data.forEach((el) => {
+    this.words.forEach((el) => {
       arrCards.push({
         word: el.word,
         pair: el.word,
@@ -136,6 +137,7 @@ export default class FindAPair {
         this.playAudio('correct');
         checkedCards[0].classList.add('is-paired');
         checkedCards[1].classList.add('is-paired');
+        this.openedWords.push(checkedCards[0].dataset.wordPair);
         this.updateFindPairs();
         if (this.findPairs === findAPairConst.cardsCount) this.resultsPage();
       } else {
@@ -165,6 +167,8 @@ export default class FindAPair {
     this.preloader.show();
     this.clearTimer();
     this.saveStats();
+    const resWords = FindAPair.getResultWords(this.words, this.openedWords);
+    console.log(resWords);
     const globalFindedCards = localStorage.findedpairs || 0;
     this.container.innerHTML = '';
     this.container.classList.add('find-a-pair__start-page');
@@ -258,5 +262,23 @@ export default class FindAPair {
       });
       this.gameShowCards = false;
     }, this.settings.showingCardsTime);
+  }
+
+  static getResultWords(words, arr) {
+    const correctWords = [];
+    const wrongWords = [];
+
+    words.forEach((word) => {
+      if (arr.includes(word.word)) {
+        correctWords.push(word);
+      } else {
+        wrongWords.push(word);
+      }
+    });
+
+    return {
+      correct: correctWords,
+      wrong: wrongWords,
+    };
   }
 }
