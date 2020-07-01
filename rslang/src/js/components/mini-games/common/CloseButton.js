@@ -5,7 +5,7 @@ export default class CloseButton {
   constructor() {
     this.body = document.querySelector('body');
     this.exitButton = create('button', 'exit-button', 'X', this.body);
-    this.modalWindow = new ModalWindow();
+    this.modalWindow = new ModalWindow('closebutton');
   }
 
   show() {
@@ -17,6 +17,14 @@ export default class CloseButton {
 
   hide() {
     CloseButton.changeDisplay(this.exitButton, 'none');
+  }
+
+  resume(callbackFn) {
+    this.modalWindow.hide(callbackFn);
+  }
+
+  disabled(boolean) {
+    this.exitButton.disabled = boolean;
   }
 
   static changeDisplay(element, event) {
