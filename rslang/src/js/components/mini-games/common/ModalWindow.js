@@ -12,6 +12,7 @@ const {
 
 export default class ModalWindow {
   constructor() {
+    this.initialized = false;
     this.body = document.querySelector('body');
     this.modal = create('div', 'modal', '', this.body);
     this.modalText = create('div', 'modal_text', '', this.modal);
