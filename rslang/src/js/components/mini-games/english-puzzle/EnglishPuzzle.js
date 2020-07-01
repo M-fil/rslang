@@ -19,6 +19,7 @@ import {
 import createCanvasElements from './components/game-field';
 import findPainting from './components/select-painting';
 import Preloader from '../../preloader/preloader';
+import ModalWindow from '../common/ModalWindow';
 
 export default class EnglishPuzzle {
   constructor() {
@@ -45,10 +46,12 @@ export default class EnglishPuzzle {
     this.body.appendChild(this.wrapper);
     this.preloader = new Preloader();
     this.preloader.render();
+    this.modalWindow = new ModalWindow();
 
     this.startMenuButtonAction();
     this.actionsOnSupportButtons();
     this.controlButtonsAction();
+    this.actionsOnModalWindow();
   }
 
   async getCardsAndStartGame() {
@@ -375,7 +378,7 @@ export default class EnglishPuzzle {
     });
 
     document.querySelector('.button-logout').addEventListener('click', async () => {
-      viewElement([this.gameForm], [this.startMenu]);
+      this.modalWindow.show();
     });
 
     document.querySelector('.button-sintezise').addEventListener('click', () => {
@@ -493,6 +496,17 @@ export default class EnglishPuzzle {
           event.target.classList.remove('active-sound');
         }
       });
+    });
+  }
+
+  actionsOnModalWindow() {
+    document.querySelector('.close_button').addEventListener('click', () => {
+      viewElement([this.gameForm], [this.startMenu]);
+      this.modalWindow.hide();
+    });
+
+    document.querySelector('.cancel_button').addEventListener('click', () => {
+      this.modalWindow.hide();
     });
   }
 }
