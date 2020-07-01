@@ -189,4 +189,5 @@ export {
   wordsToLearnSelectConstants,
   modalConstants,
   shortTermStatisticsConstants,
+  wordsToLearnSelectConstants,
 };
