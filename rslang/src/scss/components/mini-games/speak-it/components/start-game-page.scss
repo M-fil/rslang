@@ -16,36 +16,20 @@
 }
 
 .start-page__explanation {
-  @include font(2.5rem, 4.5rem, 400);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  text-align: center;
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px $speak-it-standard-text-shadow;
-}
-
-.start-page__button-start {
-  @include font(4rem, 5.5rem, 400);
-
-  cursor: pointer;
-  color: $speak-it-standard-button-background;
-  border-radius: 20px;
-  padding: 5px 30px;
-  background-color: $speak-it-start-button-background;
-  border: 3px solid $speak-it-standard-button-background;
-  transition: 0.3s ease-in-out;
-
-  &:hover {
-    padding: 5px 80px;
-    box-shadow: 0 0 5px $speak-it-standard-button-background;
-  }
-
-  &:active {
-    border-color: $speak-it-standard-button-text-color;
-  }
+  font-size: inherit;
+  line-height: 2rem;
 }
 
 .start-page__paragraph {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
 }

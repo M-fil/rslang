@@ -9,18 +9,17 @@ import create, {
 } from './pathes';
 
 import WordCard from './components/words/WordCard';
-import StartGamePage from './components/pages/StartGamePage';
 import ImageBlock from './components/imageBlock/ImageBlock';
 import Navigation from './components/navigation/Navigation';
 import ButtonsBlock from './components/buttons/ButtonsBlock';
 import MicrophoneButton from './components/buttons/MicrophoneButton';
-import WordsToLearnSelect from '../common/WordsToLearnSelect';
 import Preloader from '../../preloader/Preloader';
 import Settings from '../../settings/Settings';
 import Vocabulary from '../../vocabulary/Vocabulary';
 import StatisticsBlock from './components/statistics/StatisticsBlock';
 
 import ModalWindow from '../common/ModalWindow';
+import StartPage from './components/pages/StartPage';
 
 const {
   WORDS_IMAGES_URL,
@@ -33,11 +32,13 @@ const {
 const {
   SELECT_OPTION_LEARNED_WORDS,
   SELECT_OPTION_WORDS_FROM_COLLECTIONS,
+  SPEAKIT_TITLE,
 } = wordsToLearnSelectConstants;
 
 const {
   WORDS_LIMIT_NUMBER,
   NOT_ENOUGHT_WORDS,
+  START_PAGE_BUTTON_TEXT,
 } = speakItConstants;
 
 const {
@@ -55,6 +56,8 @@ export default class SpeakIt {
     this.iDontKnowWords = [];
     this.audio = new Audio();
     this.recognition = SpeakIt.createSpeechRecongnition();
+
+    this.startWindow = new StartPage();
     this.settings = new Settings(userState);
     this.vocabulary = new Vocabulary(userState);
     this.modalWindow = new ModalWindow();
@@ -72,14 +75,16 @@ export default class SpeakIt {
   }
 
   run() {
-    SpeakIt.renderStartGamePage();
+    this.renderStartGamePage();
     this.initMainGamePage();
   }
 
-  static renderStartGamePage() {
+  renderStartGamePage() {
     const main = create('div', 'speak-it__main', '', document.body);
-    const startGamePage = new StartGamePage();
-    create('div', 'main-container__wrapper', [startGamePage.render()], main);
+    create('div', 'main-container__wrapper', [this.startWindow.render(
+      SPEAKIT_TITLE, this.startWindow.renderExplanations(), START_PAGE_BUTTON_TEXT,
+    )], main);
+    this.activateWordsToLearnSelect();
   }
 
   static renderExitButton() {
@@ -101,51 +106,52 @@ export default class SpeakIt {
 
   initMainGamePage() {
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
+    document.addEventListener('click', async (event) => {
+      const target = event.target.closest('.start-button');
 
-    document.querySelector('.start-page__button-start').addEventListener('click', async () => {
-      mainContainerWrapper.innerHTML = '';
-      document.querySelector('.speak-it__main').classList.add('in-game');
-      SpeakIt.renderExitButton();
+      if (target) {
+        mainContainerWrapper.innerHTML = '';
+        document.querySelector('.speak-it__main').classList.add('in-game');
+        SpeakIt.renderExitButton();
 
-      const microphone = new MicrophoneButton();
-      mainContainerWrapper.append(microphone.render());
-      mainContainerWrapper.append(create('div', 'score hidden'));
-      mainContainerWrapper.append(create('div', 'overlay hidden'));
-      this.preloader = new Preloader();
-      this.preloader.render();
-      this.preloader.show();
+        const microphone = new MicrophoneButton();
+        mainContainerWrapper.append(microphone.render());
+        mainContainerWrapper.append(create('div', 'score hidden'));
+        mainContainerWrapper.append(create('div', 'overlay hidden'));
+        this.preloader = new Preloader();
+        this.preloader.render();
+        this.preloader.show();
 
-      await this.settings.init();
-      await this.vocabulary.init();
-      await this.renderWordsOnThePage();
-      this.wordCardClickEvent();
-      this.startGame();
-      this.activateExitButton();
-      this.activateContinueButton();
-      this.activateRestartButton();
-      this.activateMicroButton();
+        await this.settings.init();
+        await this.vocabulary.init();
+        await this.renderWordsOnThePage();
+        this.wordCardClickEvent();
+        this.startGame();
+        this.activateExitButton();
+        this.activateContinueButton();
+        this.activateRestartButton();
+        this.activateMicroButton();
 
-      this.activateNavigation();
-      this.activateStatisticsBlock();
-      this.acitavateRecognition();
-      this.activateSoundForStatisticsWords();
-      this.activateSkipButtons();
-      this.activateWordsToLearnSelect();
-      this.activateStatisticsButtons();
+        this.activateNavigation();
+        this.activateStatisticsBlock();
+        this.acitavateRecognition();
+        this.activateSoundForStatisticsWords();
+        this.activateSkipButtons();
+        this.activateStatisticsButtons();
 
-      this.recognition.addEventListener('end', this.recognition.start);
-      this.recognition.start();
+        this.recognition.addEventListener('end', this.recognition.start);
+        this.recognition.start();
+      }
     });
   }
 
   renderNavigation() {
     const { currentWordsType } = this.state;
-    this.wordToLearnSelect = new WordsToLearnSelect('speak-it');
     this.navigation = new Navigation();
 
     create(
       'div', 'navigation',
-      [this.wordToLearnSelect.render(), this.navigation.render()],
+      this.navigation.render(),
       document.querySelector('.main-container__wrapper'),
     );
 
@@ -199,14 +205,12 @@ export default class SpeakIt {
       this.renderNavigation();
       this.renderLearnedWords();
       this.saveCurrentWordsType(this.state.currentWordsType);
-      this.wordToLearnSelect.selectIndexByValue(SELECT_OPTION_LEARNED_WORDS);
     } else {
       this.state.currentWordsType = SELECT_OPTION_WORDS_FROM_COLLECTIONS;
       await this.getColectionWords();
       this.renderNavigation();
       this.currentArrayOfWords = this.words;
       this.iDontKnowWords = this.currentArrayOfWords;
-      this.wordToLearnSelect.selectIndexByValue(SELECT_OPTION_WORDS_FROM_COLLECTIONS);
       this.renderSpeacifiedWordsType();
     }
 
@@ -288,7 +292,7 @@ export default class SpeakIt {
   }
 
   activateWordsToLearnSelect() {
-    const select = document.querySelector('.speak-it__learn-words-select');
+    const select = document.querySelector('.select__item');
     const defaultSelectValue = select.options[select.options.selectedIndex].value;
 
     if (defaultSelectValue === SELECT_OPTION_LEARNED_WORDS && this.navigation) {
