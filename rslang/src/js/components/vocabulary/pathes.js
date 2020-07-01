@@ -2,18 +2,17 @@ import create from '../../utils/сreate';
 import {
   vocabularyConstants,
   urls,
+  estimateButtonsTypes,
 } from '../../constants/constants';
 import {
   getAllUserWords,
   updateUserWord,
   getUserSettings,
+  createUserWord,
 } from '../../service/service';
 import {
   playAudio,
 } from '../../utils/audio';
-import {
-  createWordDataForBackend,
-} from '../../utils/words-functions';
 
 export default create;
 export {
@@ -22,6 +21,7 @@ export {
   getAllUserWords,
   playAudio,
   updateUserWord,
-  createWordDataForBackend,
   getUserSettings,
+  estimateButtonsTypes,
+  createUserWord,
 };
