@@ -16,9 +16,14 @@ const {
 
 export default class StatisticsBlock extends ShortTermStatistics {
   constructor(wrongWords, rightWords) {
-    super(wrongWords, rightWords)
-    this.modal.append(this.renderButtons());
-    this.modalClose.setAttribute('disabled', 'disabled');
+    super(wrongWords, rightWords);
+    this.exists = false;
+
+    if (!this.exists) {
+      this.modal.append(this.renderButtons());
+      this.modalClose.setAttribute('disabled', 'disabled');
+      this.exists = true;
+    }
   }
 
   renderButtons() {

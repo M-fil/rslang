@@ -64,9 +64,9 @@ class App {
     document.body.append(html);
   }
 
-  renderSpeakItGame() {
+  async renderSpeakItGame() {
     this.speakIt = new SpeakIt(this.state.user);
-    this.speakIt.run();
+    await this.speakIt.run();
   }
 
   activateAuthenticationForm() {
@@ -115,7 +115,7 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      this.renderSpeakItGame();
+      await this.renderSpeakItGame();
     } catch (error) {
       console.log(error);
       Authentication.createErrorBlock(error.message);
@@ -153,7 +153,7 @@ class App {
         token: JSON.parse(savedUserData).token,
       };
       await this.initSettings();
-      this.renderSpeakItGame();
+      await this.renderSpeakItGame();
       this.prelodaer.hide();
     } catch (error) {
       console.log(error);
