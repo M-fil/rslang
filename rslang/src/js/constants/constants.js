@@ -1,10 +1,12 @@
+const MAIN_URL = 'https://afternoon-falls-25894.herokuapp.com/';
 const urls = {
-  WORDS_DATA_URL: 'https://afternoon-falls-25894.herokuapp.com/words?',
-  CREATE_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users',
-  LOGIN_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/signin',
-  GET_USER_URL: 'https://afternoon-falls-25894.herokuapp.com/users/',
+  WORDS_DATA_URL: `${MAIN_URL}words?`,
+  CREATE_USER_URL: `${MAIN_URL}users`,
+  LOGIN_USER_URL: `${MAIN_URL}signin`,
+  GET_USER_URL: `${MAIN_URL}users/`,
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 const authenticationTexts = {
@@ -145,9 +147,9 @@ const settingsText = {
       imageAssociations: 'Отображать изображение',
     },
     findapair: {
-      delayBeforeClosingCard: 'Задержка при закрытии карточек',
+      delayBeforeClosingCard: 'Задержка при закрытии карточек (с)',
       showCardsTextOnStart: 'Показывать текст карточек при старте игры',
-      showingCardsTime: 'Время показа карточек',
+      showingCardsTime: 'Время показа карточек (с)',
     },
   },
 };
@@ -157,6 +159,14 @@ const modalConstants = {
   MODAL_WARNING: 'Если вы вернетесь к списку, ваш прогресс не будет сохранен',
   CLOSE_BUTTON: 'Всё равно закрыть',
   CANCEL_BUTTON: 'Отмена',
+};
+
+const shortTermStatisticsConstants = {
+  ERROR_STAT: 'Ошибок',
+  CORRECT_STAT: 'Знаю',
+  STAT_TITLE: 'Статистика',
+  STAT_CLOSE: 'Закрыть',
+  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 export {
@@ -171,4 +181,5 @@ export {
   dailyStatisticsConstants,
   settingsText,
   modalConstants,
+  shortTermStatisticsConstants,
 };
