@@ -3,6 +3,7 @@ import {
   urls,
   wordsToLearnSelectConstants,
   vocabularyConstants,
+  shortTermStatisticsConstants,
 } from '../../../constants/constants';
 import create from '../../../utils/сreate';
 import {
@@ -20,6 +21,7 @@ export {
   getRandomInteger,
   getAggregatedWordsByFilter,
   playAudio,
+  shortTermStatisticsConstants,
 };
 export { getWords };
 export default create;
