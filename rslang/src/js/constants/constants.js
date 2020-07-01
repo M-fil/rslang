@@ -147,9 +147,9 @@ const settingsText = {
       imageAssociations: 'Отображать изображение',
     },
     findapair: {
-      delayBeforeClosingCard: 'Задержка при закрытии карточек',
+      delayBeforeClosingCard: 'Задержка при закрытии карточек (с)',
       showCardsTextOnStart: 'Показывать текст карточек при старте игры',
-      showingCardsTime: 'Время показа карточек',
+      showingCardsTime: 'Время показа карточек (с)',
     },
   },
 };
