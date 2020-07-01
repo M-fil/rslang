@@ -76,7 +76,7 @@ export default class Statistics {
     }
   }
 
-  async saveGameStatistics(group, correct, wrong, learnedWords) {
+  async saveGameStatistics(group, correct, wrong, learnedWords, additionalObject) {
     console.log(this.statistics);
     this.controlGroupInStatistics(group);
 
@@ -86,6 +86,10 @@ export default class Statistics {
 
     if (learnedWords) {
       this.updateLearnedWords(group, learnedWords);
+    }
+
+    if (additionalObject) {
+      this.statistics.optional[this.currentdate][group].additional = additionalObject;
     }
 
     await this.saveStatistics();
