@@ -11,6 +11,7 @@ const urls = {
 
 const savannahConstants = {
   SAVANNAH_SECONDS_COUNT: 3,
+  GAME_NAME: 'Саванна',
   RULES: 'Тренировка Саванна развивает словарный запас. За каждые изученные 5 слов, ты повышаешь количество жизней в игре.',
   START_BUTTON: 'Начать',
   LAST_NUMBER: 1,

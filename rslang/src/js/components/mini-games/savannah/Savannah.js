@@ -9,6 +9,7 @@ import ShortTermStatistics from '../common/ShortTermStatistics';
 import { playAudio } from '../../../utils/audio';
 import CloseButton from '../common/CloseButton';
 import ModalWindow from '../common/ModalWindow';
+import StartWindow from '../common/StartWindow';
 
 const {
   SAVANNAH_SECONDS_COUNT,
@@ -31,41 +32,41 @@ const {
   LIVES_IMAGE_BLACK,
   LIVES_IMAGE_INHERIT,
   MAX_WORDS,
+  GAME_NAME,
 } = savannahConstants;
 
 export default class SavannahGame {
   constructor() {
     this.HTML = null;
     this.body = document.querySelector('body');
-    this.container = create('div', 'container', '', this.body);
-    this.gameWindow = create('div', 'start-game-window', '', this.container);
-    this.numberReverse = create('span', 'number-reverse', '', this.container);
     this.preloader = new Preloader();
     this.audio = new Audio();
     this.shortTermStatistics = new ShortTermStatistics();
     this.error = 0;
     this.closeButton = new CloseButton();
     this.modalWindow = new ModalWindow();
+    this.startWindow = new StartWindow();
   }
 
   render() {
+    this.startWindow.render(GAME_NAME, RULES, START_BUTTON);
     this.allWords = document.querySelectorAll('.word');
-    create('h2', 'game-name', 'Саванна', this.gameWindow);
-    create('div', 'game-rules', RULES, this.gameWindow);
-    this.startButton = create('button', 'start-button', START_BUTTON, this.gameWindow);
     this.arrayBeforeClickWords = [];
+    this.preloader.render();
+    this.closeButton.show();
+    this.container = document.querySelector('.container');
+    this.gameWindow = document.querySelector('.start-game-window');
+    this.startButton = document.querySelector('.start-button');
     this.startButton.addEventListener('click', () => {
       this.reverseReport();
     });
-    this.preloader.render();
-    this.closeButton.show();
   }
 
   reverseReport() {
     playAudio(AUDIO_TICKING, this.audio);
     this.closeButton.hide();
-    const startGameWindow = document.querySelector('.start-game-window');
-    SavannahGame.changeDisplay(startGameWindow, 'none');
+    this.numberReverse = create('span', 'number-reverse', '', this.container);
+    SavannahGame.changeDisplay(this.gameWindow, 'none');
     SavannahGame.changeDisplay(this.numberReverse, 'block');
     this.preloader.show();
     let timeLeft = SAVANNAH_SECONDS_COUNT;
