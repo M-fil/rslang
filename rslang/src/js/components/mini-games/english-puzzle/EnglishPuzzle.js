@@ -308,8 +308,9 @@ export default class EnglishPuzzle {
 
   startMenuButtonAction() {
     document.querySelector('.information-button').addEventListener('click', async () => {
+      viewElement([this.startMenu], []);
       await this.getCardsAndStartGame();
-      viewElement([this.startMenu], [this.gameForm]);
+      viewElement([], [this.gameForm]);
     });
   }
 

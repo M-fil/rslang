@@ -53,7 +53,6 @@ export default async function createCanvasElements(
 
           ctx.canvas.width = canvasWidth + radius;
           ctx.canvas.height = canvasHeight;
-
           ctx.beginPath();
 
           if (j) {
