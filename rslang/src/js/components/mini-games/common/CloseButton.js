@@ -19,6 +19,10 @@ export default class CloseButton {
     CloseButton.changeDisplay(this.exitButton, 'none');
   }
 
+  disabled(boolean) {
+    this.exitButton.disabled = boolean;
+  }
+
   static changeDisplay(element, event) {
     const el = element;
     if (event === 'none') {

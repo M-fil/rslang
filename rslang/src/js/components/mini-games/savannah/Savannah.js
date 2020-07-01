@@ -5,9 +5,10 @@ import {
 import { getWords } from '../../../service/service';
 import Preloader from '../../preloader/preloader';
 import shuffle from '../../../utils/shuffle';
-import ModalWindow from '../common/ModalWindow';
 import ShortTermStatistics from '../common/ShortTermStatistics';
 import { playAudio } from '../../../utils/audio';
+import CloseButton from '../common/CloseButton';
+import ModalWindow from '../common/ModalWindow';
 
 const {
   SAVANNAH_SECONDS_COUNT,
@@ -41,9 +42,10 @@ export default class SavannahGame {
     this.numberReverse = create('span', 'number-reverse', '', this.container);
     this.preloader = new Preloader();
     this.audio = new Audio();
-    this.modalWindow = new ModalWindow();
     this.shortTermStatistics = new ShortTermStatistics();
     this.error = 0;
+    this.closeButton = new CloseButton();
+    this.modalWindow = new ModalWindow();
   }
 
   render() {
@@ -51,17 +53,17 @@ export default class SavannahGame {
     create('h2', 'game-name', 'Саванна', this.gameWindow);
     create('div', 'game-rules', RULES, this.gameWindow);
     this.startButton = create('button', 'start-button', START_BUTTON, this.gameWindow);
-    this.exitButton = create('button', 'exit-button', 'X', this.body);
     this.arrayBeforeClickWords = [];
     this.startButton.addEventListener('click', () => {
       this.reverseReport();
     });
     this.preloader.render();
+    this.closeButton.show();
   }
 
   reverseReport() {
     playAudio(AUDIO_TICKING, this.audio);
-    SavannahGame.changeDisplay(this.exitButton, 'none');
+    this.closeButton.hide();
     const startGameWindow = document.querySelector('.start-game-window');
     SavannahGame.changeDisplay(startGameWindow, 'none');
     SavannahGame.changeDisplay(this.numberReverse, 'block');
@@ -102,7 +104,7 @@ export default class SavannahGame {
   }
 
   crateCardsData() {
-    SavannahGame.changeDisplay(this.exitButton, 'block');
+    this.closeButton.show();
     this.preloader.hide();
     this.num = 0;
     this.lives = create('div', 'lives', '', this.container);
@@ -145,7 +147,7 @@ export default class SavannahGame {
       disabledButton.classList.remove('word_error');
       disabledButton.disabled = false;
     });
-    this.exitButton.disabled = false;
+    this.closeButton.disabled(false);
     if (this.num === this.data.length - 1) {
       this.num = 0;
       this.page += 1;
@@ -273,14 +275,13 @@ export default class SavannahGame {
   }
 
   createModal() {
-    this.exitButton = document.querySelector('.exit-button');
-    this.modalCancel = document.querySelector('.cancel_button');
-    this.exitButton.addEventListener('click', () => {
-      this.modalWindow.show();
+    this.exit = document.querySelector('.exit-button');
+    this.mod = document.querySelector('.cancel_button');
+    this.exit.addEventListener('click', () => {
       clearInterval(this.timer);
     });
-    this.modalCancel.addEventListener('click', () => {
-      this.animatedWord();
+    this.mod.addEventListener('click', () => {
+      this.modalWindow.hide(this.animatedWord);
     });
   }
 
@@ -340,7 +341,7 @@ export default class SavannahGame {
       const disabledButton = rusButton;
       disabledButton.disabled = true;
     });
-    this.exitButton.disabled = true;
+    this.closeButton.disabled(true);
   }
 
   static changeDisplay(element, event) {
