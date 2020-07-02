@@ -125,7 +125,7 @@ const speakItConstants = {
   SKIP_BUTTON: 'Пропустить',
   NUMBER_OF_GROUPS: 6,
   NUMBER_OF_PAGES: 29,
-  WORDS_LIMIT_NUMBER: 3,
+  WORDS_LIMIT_NUMBER: 5,
   NOT_ENOUGHT_WORDS: 'Недостаточно слов',
 };
 

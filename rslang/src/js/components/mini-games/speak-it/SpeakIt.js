@@ -59,7 +59,6 @@ export default class SpeakIt {
 
     this.startWindow = new StartPage();
     this.settings = new Settings(userState);
-    console.log(userState)
     this.vocabulary = new Vocabulary(userState);
     this.statistics = new Statistics(userState);
     this.modalWindow = new ModalWindow('speak-it__modal');
@@ -83,7 +82,7 @@ export default class SpeakIt {
 
   async renderStartGamePage() {
     const startWindowHTML = this.startWindow.render(
-      SPEAKIT_TITLE, this.startWindow.renderExplanations(), this.initMainGamePage,
+      SPEAKIT_TITLE, this.startWindow.renderExplanations(), this.initMainGamePage.bind(this),
     );
     document.body.append(startWindowHTML, this.startWindow.closeButton.show());
     this.preloader.render();
@@ -108,7 +107,8 @@ export default class SpeakIt {
   async initMainGamePage() {
     SpeakIt.createMainContainerWrapper();
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
-    this.startWindow.container.remove();
+    console.log(this)
+    this.startWindow.gameWindow.remove();
     mainContainerWrapper.innerHTML = '';
     document.querySelector('.speak-it__main').classList.add('in-game');
 
@@ -121,6 +121,7 @@ export default class SpeakIt {
     await this.statistics.init();
     await this.settings.init();
     await this.renderWordsOnThePage();
+    console.log('getAllVocabulariesData', this.vocabulary.getAllVocabulariesData());
     this.wordCardClickEvent();
     this.startGame();
     this.activateExitButton();
@@ -218,24 +219,19 @@ export default class SpeakIt {
 
   renderLearnedWords() {
     this.learnedWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
+    console.log('this.learnedWords', this.learnedWords.map((word) => word.word));
     const buttonsHTML = document.querySelector('.buttons-container');
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
 
-    if (this.learnedWords.length < WORDS_LIMIT_NUMBER) {
-      // ToDo
-      this.removeGamePage();
-    } else {
-      console.log('renderLearnedWords else')
-      this.currentArrayOfWords = this.learnedWords.map((word) => word.optional.allData);
-      this.currentArrayOfWords = this.currentArrayOfWords.slice(0, WORDS_LIMIT_NUMBER);
-      this.iDontKnowWords = this.currentArrayOfWords;
-      console.log(this.currentArrayOfWords);
-      this.renderWords();
-      this.shortTermStatistics.render(this.iDontKnowWords, []);
-      this.shortTermStatistics.hide();
-      if (!buttonsHTML) {
-        mainContainerWrapper.append(new ButtonsBlock().render());
-      }
+    this.currentArrayOfWords = this.learnedWords.map((word) => word.optional.allData);
+    this.currentArrayOfWords = this.currentArrayOfWords.slice(0, WORDS_LIMIT_NUMBER);
+    this.iDontKnowWords = this.currentArrayOfWords;
+    console.log(this.currentArrayOfWords);
+    this.renderWords();
+    this.shortTermStatistics.render(this.iDontKnowWords, []);
+    this.shortTermStatistics.hide();
+    if (!buttonsHTML) {
+      mainContainerWrapper.append(new ButtonsBlock().render());
     }
   }
 
@@ -553,24 +549,41 @@ export default class SpeakIt {
     });
   }
 
+  renderNewGameWithCollectionWords() {
+    this.shortTermStatistics.hide();
+    this.guessedWords = [];
+    this.skippedWords = [];
+    this.switchOnTrainingMode();
+    this.renderMainGamePage(this.state.groupOfWords);
+    this.shortTermStatistics.continueButton.classList.remove('hidden');
+    this.shortTermStatistics.update(this.iDontKnowWords, this.guessedWords);
+  }
+
+  async renderNewGameWithLearnedWords() {
+    await this.vocabulary.addWordToTheVocabulary();
+    this.guessedWords = [];
+    this.skippedWords = [];
+    this.switchOnTrainingMode();
+    this.renderLearnedWords();
+    this.shortTermStatistics.continueButton.classList.remove('hidden');
+    this.shortTermStatistics.update(this.iDontKnowWords, this.guessedWords);
+  }
+
   activateStatisticsButtons() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.new-game-button');
       if (target && this.state.currentWordsType === SELECT_OPTION_WORDS_FROM_COLLECTIONS) {
-        this.shortTermStatistics.hide();
-
-        this.guessedWords = [];
-        this.skippedWords = [];
-        this.switchOnTrainingMode();
-        this.renderMainGamePage(this.state.groupOfWords);
-        this.shortTermStatistics.continueButton.classList.remove('hidden');
-        this.shortTermStatistics.update(this.iDontKnowWords, this.guessedWords);
+        this.renderNewGameWithCollectionWords();
       }
 
       if (target && this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS) {
         const words = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
-        console.log('words', words);
-        // HERE
+
+        if (words.length < WORDS_LIMIT_NUMBER) {
+          this.renderNewGameWithCollectionWords();
+        } else {
+          this.renderNewGameWithLearnedWords();
+        }
       }
     });
   }
