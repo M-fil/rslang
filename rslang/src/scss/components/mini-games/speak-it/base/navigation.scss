@@ -34,3 +34,15 @@
     }
   }
 }
+
+.navigation__select-container {
+  @include font(2.5rem);
+
+  & > *:not(:last-child) {
+    margin-right: 5px;
+  }
+}
+
+.navigation__select-label {
+  color: $speak-it-standard-button-text-color;
+}
