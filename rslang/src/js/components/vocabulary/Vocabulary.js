@@ -38,7 +38,7 @@ class Vocabulary {
     }
     this.container = null;
     this.audio = new Audio();
-    this.settings = new Settings();
+    this.settings = new Settings(userState);
 
     Vocabulary.instance = this;
     this.state = {
