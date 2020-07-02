@@ -38,6 +38,7 @@ export default class Settings {
       await this.loadSettings();
 
       this.renderSettingsWindow();
+      console.log('this.preloader', this.preloader);
       this.preloader.render();
     }
   }

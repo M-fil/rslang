@@ -32,7 +32,7 @@ export default class Statistics {
   }
 
   async loadStatistics() {
-    const res = await getUserStatistics(this.user.userId, this.user.token);
+    const res = await getUserStatistics(this.user.id, this.user.token);
     if (res) {
       this.statistics = {
         learnedWords: res.learnedWords,
@@ -44,11 +44,10 @@ export default class Statistics {
         optional: {},
       };
     }
-    console.log('>', this.statistics);
   }
 
   async saveStatistics() {
-    await updateUserStatistics(this.user.userId, this.user.token, this.statistics);
+    await updateUserStatistics(this.user.id, this.user.token, this.statistics);
   }
 
   async resetStatistics() {
@@ -56,7 +55,7 @@ export default class Statistics {
       learnedWords: 0,
       optional: {},
     };
-    await updateUserStatistics(this.user.userId, this.user.token, body);
+    await updateUserStatistics(this.user.id, this.user.token, body);
   }
 
   getGameStatistics(group, requestedDate) {
@@ -77,7 +76,6 @@ export default class Statistics {
   }
 
   async saveGameStatistics(group, correct, wrong, learnedWords) {
-    console.log(this.statistics);
     this.controlGroupInStatistics(group);
 
     this.statistics.optional[this.currentdate][group].playingCount += 1;

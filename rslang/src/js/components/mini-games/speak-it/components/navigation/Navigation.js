@@ -1,7 +1,6 @@
 import create, { speakItConstants } from '../../pathes';
 
 const {
-  GAME_COMPLEXITY,
   DESCRIPTION_OF_LEVELS,
   NUMBER_OF_GROUPS,
 } = speakItConstants;
@@ -13,15 +12,10 @@ export default class Navigation {
 
   render() {
     this.container = create('div', 'navigation__list');
-
-    for (let i = 0; i < NUMBER_OF_GROUPS; i += 1) {
-      create(
-        'div', 'navigation__item',
-        `${i + 1}`, this.container,
-        ['navNumber', i + 1],
-        ['title', `${GAME_COMPLEXITY}: ${i + 1}.\n${DESCRIPTION_OF_LEVELS}`],
-      );
-    }
+    this.select = create('select', 'navigation__group-select', '', this.container, ['title', DESCRIPTION_OF_LEVELS]);
+    Array.from({ length: NUMBER_OF_GROUPS })
+      .map((_, index) => index)
+      .map((item) => create('option', 'navigation__option', String(item + 1), this.select, ['value', item]));
 
     return this.container;
   }
