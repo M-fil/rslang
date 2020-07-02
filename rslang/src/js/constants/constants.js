@@ -19,6 +19,12 @@ const authenticationTexts = {
   REGISTER_BUTTON_TEXT: 'Создать',
 };
 
+const wordsToLearnSelectConstants = {
+  SELECT_TITLE: 'Какие слова учить?',
+  SELECT_OPTION_LEARNED_WORDS: 'Уже изученные слова',
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS: 'Слова из коллекций',
+};
+
 const errorTypes = {
   EMPTY_FIELD: 'Пароль и почта должны быть заполнены.',
   INCORRECT_VALUES: 'Поля заполнены неверно.',
@@ -148,9 +154,9 @@ const settingsText = {
       imageAssociations: 'Отображать изображение',
     },
     findapair: {
-      delayBeforeClosingCard: 'Задержка при закрытии карточек',
+      delayBeforeClosingCard: 'Задержка при закрытии карточек (с)',
       showCardsTextOnStart: 'Показывать текст карточек при старте игры',
-      showingCardsTime: 'Время показа карточек',
+      showingCardsTime: 'Время показа карточек (с)',
     },
   },
 };
@@ -181,6 +187,8 @@ export {
   vocabularyConstants,
   dailyStatisticsConstants,
   settingsText,
+  wordsToLearnSelectConstants,
   modalConstants,
   shortTermStatisticsConstants,
+  wordsToLearnSelectConstants,
 };
