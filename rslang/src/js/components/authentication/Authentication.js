@@ -1,6 +1,6 @@
 import create from '../../utils/сreate';
 import { authenticationTexts, errorTypes } from '../../constants/constants';
-import { checkPassword, checkEmail } from '../../utils/validators';
+import { checkPassword } from '../../utils/validators';
 
 const {
   PASSWORD_LABEL_TEXT,
@@ -11,7 +11,6 @@ const {
   EMPTY_FIELD,
   INCORRECT_VALUES,
   PASSWORD_REQUIRMENTS,
-  INCORRECT_EMAIL,
 } = errorTypes;
 
 class Authentication {
@@ -61,57 +60,49 @@ class Authentication {
   }
 
   static createErrorBlock(message) {
+    const errorBlockHTML = document.querySelector('.error-block');
+    if (errorBlockHTML) {
+      errorBlockHTML.remove();
+    }
+
+    const authenticationForm = document.querySelector('.authentication__form');
     const errorBlock = create('span', 'error-block', message);
-    document.querySelector('.authentication__form').append(errorBlock);
+    if (authenticationForm) {
+      authenticationForm.append(errorBlock);
+    }
   }
 
-  static submitData(formClassNameType, submitFunction) {
-    const formHTML = document.querySelector(`.${formClassNameType}`);
+  static async submitData(submitFunction) {
+    const formHTML = document.querySelector('.authentication__form');
+    const passwordInput = formHTML.querySelector('[name="password"]');
+    const emailInput = formHTML.querySelector('[name="email"]');
 
-    formHTML.addEventListener('submit', async (event) => {
-      event.preventDefault();
+    const trimedPasswordValue = passwordInput.value.trim();
+    const trimedEmailValue = emailInput.value.trim();
+    const userSubmitData = {
+      email: trimedEmailValue,
+      password: trimedPasswordValue,
+    };
 
-      const passwordInput = formHTML.querySelector('[name="password"]');
-      const emailInput = formHTML.querySelector('[name="email"]');
-
-      const trimedPasswordValue = passwordInput.value.trim();
-      const trimedEmailValue = emailInput.value.trim();
-      const userSubmitData = {
-        email: trimedEmailValue,
-        password: trimedPasswordValue,
-      };
-
-      try {
-        if (trimedPasswordValue === '' || trimedEmailValue === '') {
-          throw new Error(EMPTY_FIELD);
-        }
-
-        if (!checkPassword(trimedPasswordValue)) {
-          throw new Error(PASSWORD_REQUIRMENTS);
-        }
-
-        if (!checkEmail(trimedEmailValue)) {
-          throw new Error(INCORRECT_EMAIL);
-        }
-
-        const data = await submitFunction(userSubmitData);
-
-        if ('error' in data) {
-          throw new Error(INCORRECT_VALUES);
-        }
-
-        localStorage.setItem('user-data', JSON.stringify(data));
-      } catch (error) {
-        const errorBlockFromDOM = document.querySelector('.error-block');
-
-        if (!errorBlockFromDOM) {
-          this.createErrorBlock(error.message);
-          setTimeout(() => {
-            document.querySelector('.error-block').remove();
-          }, 3000);
-        }
+    try {
+      if (trimedPasswordValue === '' || trimedEmailValue === '') {
+        throw new Error(EMPTY_FIELD);
       }
-    });
+
+      if (!checkPassword(trimedPasswordValue)) {
+        throw new Error(PASSWORD_REQUIRMENTS);
+      }
+
+      const data = await submitFunction(userSubmitData);
+      if ('error' in data) {
+        throw new Error(INCORRECT_VALUES);
+      }
+
+      localStorage.setItem('user-data', JSON.stringify(data));
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 }
 

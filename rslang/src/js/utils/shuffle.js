@@ -14,7 +14,7 @@ function shuffleAudition(array) {
   
 function shuffle(array, requiredLenth) {
   const shuffledArr = array;
-  let length = shuffledArr.length;
+  let { length } = shuffledArr;
   let buffer;
   let index;
 
