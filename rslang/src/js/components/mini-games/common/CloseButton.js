@@ -3,16 +3,17 @@ import ModalWindow from './ModalWindow';
 
 export default class CloseButton {
   constructor() {
+    this.modalWindow = new ModalWindow('closebutton');
     this.exitButton = create('button', 'exit-button', '<i class="fas fa-times"></i>');
+    this.exitButton.addEventListener('click', (this.exitClickHandler).bind(this));
+  }
+
+  render() {
+    return this.exitButton;
   }
 
   show() {
-    this.modalWindow = new ModalWindow('closebutton');
     CloseButton.changeDisplay(this.exitButton, 'block');
-    this.exitButton.addEventListener('click', () => {
-      this.modalWindow.show();
-    });
-    return this.exitButton;
   }
 
   hide() {
@@ -21,6 +22,27 @@ export default class CloseButton {
 
   resume(callbackFn) {
     this.modalWindow.hide(callbackFn);
+  }
+
+  exitClickHandler() {
+    this.modalWindow.show();
+    if (this.exitClickCallbackFn) {
+      this.exitClickCallbackFn();
+    }
+  }
+
+  addExitButtonClickCallbackFn(callbackFn) {
+    if (typeof callbackFn === 'function') {
+      this.exitClickCallbackFn = callbackFn;
+    }
+  }
+
+  addCancelCallbackFn(callbackFn) {
+    this.modalWindow.addCallbackFnOnCancel(callbackFn);
+  }
+
+  addCloseCallbackFn(callbackFn) {
+    this.modalWindow.addCallbackFnOnClose(callbackFn);
   }
 
   disabled(boolean) {
