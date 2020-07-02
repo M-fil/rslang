@@ -31,8 +31,8 @@ const {
 } = urls;
 
 const {
-  SELECT_OPTION_LEARNED_WORDS,
-  SELECT_OPTION_WORDS_FROM_COLLECTIONS,
+  SELECT_OPTION_LEARNED_WORDS_VALUE,
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE,
   SPEAKIT_TITLE,
 } = wordsToLearnSelectConstants;
 
@@ -65,7 +65,7 @@ export default class SpeakIt {
     this.shortTermStatistics = new StatisticsBlock();
 
     this.state = {
-      currentWordsType: SELECT_OPTION_LEARNED_WORDS,
+      currentWordsType: SELECT_OPTION_LEARNED_WORDS_VALUE,
       gameStarted: false,
       currentPage: 0,
       groupOfWords: 0,
@@ -145,7 +145,7 @@ export default class SpeakIt {
       document.querySelector('.main-container__wrapper'),
     );
 
-    if (this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS) {
+    if (this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS_VALUE) {
       this.navigation.hide();
     } else {
       this.navigation.show();
@@ -190,7 +190,7 @@ export default class SpeakIt {
     this.preloader.show();
     const learnedWordsLength = this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE);
 
-    if ((this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS)
+    if ((this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS_VALUE)
       && (learnedWordsLength > WORDS_LIMIT_NUMBER)
     ) {
       this.renderNavigation();
@@ -252,11 +252,11 @@ export default class SpeakIt {
 
     if (isToEnable) {
       Array.from(options)
-        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS)
+        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE)
         .removeAttribute('disabled');
     } else {
       Array.from(options)
-        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS)
+        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE)
         .setAttribute('disabled', 'disabled');
     }
   }
@@ -266,12 +266,12 @@ export default class SpeakIt {
     this.learnedWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
 
     if (this.learnedWords.length < WORDS_LIMIT_NUMBER) {
-      this.state.currentWordsType = SELECT_OPTION_WORDS_FROM_COLLECTIONS;
-      this.startWindow.wordsToLearnSelect.selectIndexByValue(SELECT_OPTION_WORDS_FROM_COLLECTIONS);
+      this.state.currentWordsType = SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE;
+      this.startWindow.wordsToLearnSelect.selectIndexByValue(SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE);
       this.toggleLearnedWordsOption(false);
       await this.selectCollectionWords();
     } else {
-      this.state.currentWordsType = SELECT_OPTION_LEARNED_WORDS;
+      this.state.currentWordsType = SELECT_OPTION_LEARNED_WORDS_VALUE;
       this.toggleLearnedWordsOption();
       this.currentArrayOfWords = this.learnedWords.map((word) => word.optional.allData);
       this.currentArrayOfWords = this.currentArrayOfWords.slice(0, WORDS_LIMIT_NUMBER);
@@ -302,15 +302,15 @@ export default class SpeakIt {
 
         this.preloader.show();
         switch (selectedValue) {
-          case SELECT_OPTION_LEARNED_WORDS:
+          case SELECT_OPTION_LEARNED_WORDS_VALUE:
           default: {
             await this.selectWordsToLearn();
-            this.state.currentWordsType = SELECT_OPTION_LEARNED_WORDS;
+            this.state.currentWordsType = SELECT_OPTION_LEARNED_WORDS_VALUE;
             break;
           }
-          case SELECT_OPTION_WORDS_FROM_COLLECTIONS: {
+          case SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE: {
             await this.selectCollectionWords();
-            this.state.currentWordsType = SELECT_OPTION_WORDS_FROM_COLLECTIONS;
+            this.state.currentWordsType = SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE;
             break;
           }
         }
@@ -567,11 +567,11 @@ export default class SpeakIt {
   activateStatisticsButtons() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.new-game-button');
-      if (target && this.state.currentWordsType === SELECT_OPTION_WORDS_FROM_COLLECTIONS) {
+      if (target && this.state.currentWordsType === SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE) {
         this.renderNewGameWithCollectionWords();
       }
 
-      if (target && this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS) {
+      if (target && this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS_VALUE) {
         const words = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
 
         if (words.length < WORDS_LIMIT_NUMBER) {
