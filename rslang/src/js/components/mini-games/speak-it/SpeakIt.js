@@ -79,22 +79,15 @@ export default class SpeakIt {
 
   async run() {
     await this.renderStartGamePage();
-    this.initMainGamePage();
   }
 
   async renderStartGamePage() {
-    this.startWindow.render(
-      SPEAKIT_TITLE, this.startWindow.renderExplanations(), START_PAGE_BUTTON_TEXT,
-    )
+    const startWindowHTML = this.startWindow.render(
+      SPEAKIT_TITLE, this.startWindow.renderExplanations(), this.initMainGamePage,
+    );
+    document.body.append(startWindowHTML, this.startWindow.closeButton.show());
     this.preloader.render();
     await this.activateWordsToLearnSelect();
-  }
-
-  static renderExitButton() {
-    const mainContainerWrapper = document.querySelector('.main-container__wrapper');
-    const exitButton = create('button', 'speak-it__exit-button exit-button');
-    create('i', 'fas fa-times', '', exitButton);
-    mainContainerWrapper.append(exitButton);
   }
 
   activateExitButton() {
@@ -112,45 +105,38 @@ export default class SpeakIt {
     create('div', 'speak-it__main', wrapper, document.body);
   }
 
-  initMainGamePage() {
-    document.addEventListener('click', async (event) => {
-      const target = event.target.closest('.start-button');
+  async initMainGamePage() {
+    SpeakIt.createMainContainerWrapper();
+    const mainContainerWrapper = document.querySelector('.main-container__wrapper');
+    this.startWindow.container.remove();
+    mainContainerWrapper.innerHTML = '';
+    document.querySelector('.speak-it__main').classList.add('in-game');
 
-      if (target) {
-        SpeakIt.createMainContainerWrapper();
-        const mainContainerWrapper = document.querySelector('.main-container__wrapper');
-        this.startWindow.container.remove();
-        mainContainerWrapper.innerHTML = '';
-        document.querySelector('.speak-it__main').classList.add('in-game');
-        SpeakIt.renderExitButton();
+    const microphone = new MicrophoneButton();
+    mainContainerWrapper.append(microphone.render());
+    mainContainerWrapper.append(create('div', 'score hidden'));
+    mainContainerWrapper.append(create('div', 'overlay hidden'));
+    this.preloader.show();
 
-        const microphone = new MicrophoneButton();
-        mainContainerWrapper.append(microphone.render());
-        mainContainerWrapper.append(create('div', 'score hidden'));
-        mainContainerWrapper.append(create('div', 'overlay hidden'));
-        this.preloader.show();
+    await this.statistics.init();
+    await this.settings.init();
+    await this.renderWordsOnThePage();
+    this.wordCardClickEvent();
+    this.startGame();
+    this.activateExitButton();
+    this.activateContinueButton();
+    this.activateRestartButton();
+    this.activateMicroButton();
 
-        await this.statistics.init();
-        await this.settings.init();
-        await this.renderWordsOnThePage();
-        this.wordCardClickEvent();
-        this.startGame();
-        this.activateExitButton();
-        this.activateContinueButton();
-        this.activateRestartButton();
-        this.activateMicroButton();
+    this.activateNavigation();
+    this.activateStatisticsBlock();
+    this.acitavateRecognition();
+    this.activateSoundForStatisticsWords();
+    this.activateSkipButtons();
+    this.activateStatisticsButtons();
 
-        this.activateNavigation();
-        this.activateStatisticsBlock();
-        this.acitavateRecognition();
-        this.activateSoundForStatisticsWords();
-        this.activateSkipButtons();
-        this.activateStatisticsButtons();
-
-        this.recognition.addEventListener('end', this.recognition.start);
-        this.recognition.start();
-      }
-    });
+    this.recognition.addEventListener('end', this.recognition.start);
+    this.recognition.start();
   }
 
   renderNavigation() {
@@ -318,29 +304,32 @@ export default class SpeakIt {
   }
 
   async activateWordsToLearnSelect() {
-    const select = document.querySelector('.select__item');
     await this.selectWordsToLearn();
 
-    select.addEventListener('change', async (event) => {
-      const { options, selectedIndex } = event.target;
-      const selectedValue = options[selectedIndex].value;
+    document.addEventListener('change', async (event) => {
+      const target = event.target.closest('.select__item');
 
-      this.preloader.show();
-      switch (selectedValue) {
-        case SELECT_OPTION_LEARNED_WORDS:
-        default: {
-          await this.selectWordsToLearn();
-          this.state.currentWordsType = SELECT_OPTION_LEARNED_WORDS;
-          break;
+      if (target) {
+        const { options, selectedIndex } = event.target;
+        const selectedValue = options[selectedIndex].value;
+  
+        this.preloader.show();
+        switch (selectedValue) {
+          case SELECT_OPTION_LEARNED_WORDS:
+          default: {
+            await this.selectWordsToLearn();
+            this.state.currentWordsType = SELECT_OPTION_LEARNED_WORDS;
+            break;
+          }
+          case SELECT_OPTION_WORDS_FROM_COLLECTIONS: {
+            await this.selectCollectionWords();
+            this.state.currentWordsType = SELECT_OPTION_WORDS_FROM_COLLECTIONS;
+            break;
+          }
         }
-        case SELECT_OPTION_WORDS_FROM_COLLECTIONS: {
-          await this.selectCollectionWords();
-          this.state.currentWordsType = SELECT_OPTION_WORDS_FROM_COLLECTIONS;
-          break;
-        }
+        console.log('currentArrayOfWords', this.currentArrayOfWords);
+        this.preloader.hide();
       }
-      console.log('currentArrayOfWords', this.currentArrayOfWords);
-      this.preloader.hide();
     });
   }
 
