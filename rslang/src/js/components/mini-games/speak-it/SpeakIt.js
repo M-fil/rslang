@@ -38,7 +38,6 @@ const {
 
 const {
   WORDS_LIMIT_NUMBER,
-  NOT_ENOUGHT_WORDS,
   START_PAGE_BUTTON_TEXT,
 } = speakItConstants;
 

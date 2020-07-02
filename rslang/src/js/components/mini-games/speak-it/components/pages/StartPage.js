@@ -16,7 +16,7 @@ class StartPage extends StartWindow {
     create(
       'p', 'start-page__paragraph',
       `${START_GAME_DESCRIPTION_1} ${START_GAME_DESCRIPTION_2}`,
-      this.explantionHTML
+      this.explantionHTML,
     );
 
     const skipButtonHTML = create(
