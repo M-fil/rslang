@@ -13,6 +13,7 @@ const SettingsConst = {
   differenceBetweenNewAndMax: 5,
   minStepBetweenEasyAndNormal: 1,
   minStepBetweenNormalAndDifficult: 1,
+  convertToMilliseconds: 1000,
 };
 
 export default class Settings {
@@ -81,7 +82,11 @@ export default class Settings {
       maxCardsEl.setAttribute('min', maxCardsMin);
       if (Number(maxCardsEl.value) < (maxCardsMin)) maxCardsEl.value = maxCardsMin;
     });
-    const maxCardsPerDay = Settings.createNumberTabElement('maxMainCardsPerDay', settingsText.tabs.mainGame.maxCardsPerDay, this.options.main.maxCardsPerDay, false, undefined, ['min', this.options.main.newCardsPerDay + SettingsConst.differenceBetweenNewAndMax]);
+    const maxCardsMin = this.options.main.newCardsPerDay + SettingsConst.differenceBetweenNewAndMax;
+    const maxCardsValue = (this.options.main.maxCardsPerDay < maxCardsMin)
+      ? maxCardsMin
+      : this.options.main.maxCardsPerDay;
+    const maxCardsPerDay = Settings.createNumberTabElement('maxMainCardsPerDay', settingsText.tabs.mainGame.maxCardsPerDay, maxCardsValue, false, undefined, ['min', maxCardsMin]);
     const TranslateWord = Settings.createCheckboxTabElement('isMainShowTranslateWord', settingsText.tabs.mainGame.showTranslateWord, this.options.main.showTranslateWord, Settings.checkboxMainControllerHandler);
     const WordMeaning = Settings.createCheckboxTabElement('isMainShowWordMeaning', settingsText.tabs.mainGame.showWordMeaning, this.options.main.showWordMeaning, Settings.checkboxMainControllerHandler);
     const WordExample = Settings.createCheckboxTabElement('isMainShowWordExample', settingsText.tabs.mainGame.showWordExample, this.options.main.showWordExample, Settings.checkboxMainControllerHandler);
@@ -144,12 +149,12 @@ export default class Settings {
   }
 
   renderFindAPairTab() {
-    const delayBeforeClosing = Settings.createNumberTabElement('delayBeforeClosingCard', settingsText.tabs.findapair.delayBeforeClosingCard, this.options.findapair.delayBeforeClosingCard);
+    const delayBeforeClosing = Settings.createNumberTabElement('delayBeforeClosingCard', settingsText.tabs.findapair.delayBeforeClosingCard, (this.options.findapair.delayBeforeClosingCard / SettingsConst.convertToMilliseconds), false, undefined, ['min', 0.5], ['max', 5], ['step', 0.1]);
     const cardTextOnStart = Settings.createCheckboxTabElement('showCardsTextOnStart', settingsText.tabs.findapair.showCardsTextOnStart, this.options.findapair.showCardsTextOnStart, (event) => {
       const elem = document.querySelector('.settings-form__input[name=showingCardsTime]');
       elem.disabled = !event.target.checked;
     });
-    const showingCardsTime = Settings.createNumberTabElement('showingCardsTime', settingsText.tabs.findapair.showingCardsTime, this.options.findapair.showingCardsTime, !this.options.findapair.showCardsTextOnStart);
+    const showingCardsTime = Settings.createNumberTabElement('showingCardsTime', settingsText.tabs.findapair.showingCardsTime, (this.options.findapair.showingCardsTime / SettingsConst.convertToMilliseconds), !this.options.findapair.showCardsTextOnStart, undefined, ['min', 1], ['max', 59]);
 
     const div = create('div', 'settings-tabs__item', [delayBeforeClosing, cardTextOnStart, showingCardsTime], undefined, ['tabId', 3]);
 
@@ -197,8 +202,6 @@ export default class Settings {
   }
 
   async loadSettings() {
-    this.options = Settings.defaultSettingsOptions();
-    await this.saveSettings();
     const res = await getUserSettings(this.user.id, this.user.token);
     this.options = Settings.defaultSettingsOptions();
     if (res) this.options = res.optional;
@@ -348,9 +351,9 @@ export default class Settings {
         showImageAssociations: form.querySelector('.settings-form__input[name=isDictionaryShowImageAssociations]').checked,
       },
       findapair: {
-        delayBeforeClosingCard: Number(form.querySelector('.settings-form__input[name=delayBeforeClosingCard]').value),
+        delayBeforeClosingCard: Number(form.querySelector('.settings-form__input[name=delayBeforeClosingCard]').value) * SettingsConst.convertToMilliseconds,
         showCardsTextOnStart: form.querySelector('.settings-form__input[name=showCardsTextOnStart]').checked,
-        showingCardsTime: Number(form.querySelector('.settings-form__input[name=showingCardsTime]').value),
+        showingCardsTime: Number(form.querySelector('.settings-form__input[name=showingCardsTime]').value) * SettingsConst.convertToMilliseconds,
       },
     };
     await this.saveSettings();

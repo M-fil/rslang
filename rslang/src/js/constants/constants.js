@@ -147,13 +147,12 @@ const settingsText = {
       imageAssociations: 'Отображать изображение',
     },
     findapair: {
-      delayBeforeClosingCard: 'Задержка при закрытии карточек',
+      delayBeforeClosingCard: 'Задержка при закрытии карточек (с)',
       showCardsTextOnStart: 'Показывать текст карточек при старте игры',
-      showingCardsTime: 'Время показа карточек',
+      showingCardsTime: 'Время показа карточек (с)',
     },
   },
 };
-
 
 const statisticsText = {
   tabtitels: {
@@ -162,9 +161,12 @@ const statisticsText = {
   },
   gametitles: {
     maingame: 'Main Game',
-    savanna: 'Savanna',
+    savannah: 'Savanna',
     findapair: 'Find a pair',
-    audition: 'Audition',
+    auditiongame: 'Audition',
+    sprint: 'Sprint',
+    speakit: 'Speak It',
+    englishpuzzle: 'English Puzzle',
   },
   select: {
     game: 'Игра',
@@ -176,7 +178,7 @@ const statisticsText = {
     correctAnswers: 'Правильны ответов',
     wrongAnswers: 'Ошибок',
   },
-}
+};
 
 const modalConstants = {
   MODAL_TITLE: 'Тренировка не закончена!',

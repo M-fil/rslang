@@ -77,7 +77,7 @@ export default class Statistics {
     }
   }
 
-  async saveGameStatistics(group, correct, wrong, learnedWords) {
+  async saveGameStatistics(group, correct, wrong, learnedWords, additionalObject) {
     console.log(this.statistics);
     this.controlGroupInStatistics(group);
 
@@ -87,6 +87,10 @@ export default class Statistics {
 
     if (learnedWords) {
       this.updateLearnedWords(group, learnedWords);
+    }
+
+    if (additionalObject) {
+      this.statistics.optional[this.currentdate][group].additional = additionalObject;
     }
 
     await this.saveStatistics();
@@ -119,7 +123,8 @@ export default class Statistics {
     return obj;
   }
 
-  render() {
+  render(mainContainer) {
+    const container = document.querySelector(mainContainer) || document.body;
     this.container = create('div', 'statistics__container', [
       this.renderShortTerm(),
       this.renderLongTerm(),
@@ -128,7 +133,7 @@ export default class Statistics {
     create('div', 'statistics', [
       Statistics.renderNavigation(),
       this.container,
-    ], document.body);
+    ], container);
   }
 
   static renderNavigation() {
