@@ -1,7 +1,7 @@
 import create from '../../../utils/сreate';
 import WordsToLearnSelect from './WordsToLearnSelect';
 import CloseButton from './CloseButton';
-import { startWindow } from '../../../constants/constants'
+import { startWindow } from '../../../constants/constants';
 
 const {
   START_BUTTON,
