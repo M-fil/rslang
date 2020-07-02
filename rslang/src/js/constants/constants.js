@@ -239,7 +239,7 @@ export {
   dailyStatisticsConstants,
   settingsText,
   statisticsText,
+  wordsToLearnSelectConstants,
   modalConstants,
   shortTermStatisticsConstants,
-  wordsToLearnSelectConstants,
 };
