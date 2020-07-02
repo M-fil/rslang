@@ -17,8 +17,7 @@ import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
 
 const {
-  SELECT_VALUE_LEARNED_WORDS,
-  SELECT_VALUE_WORDS_FROM_COLLECTIONS,
+  SELECT_OPTION_LEARNED_WORDS_VALUE,
 } = wordsToLearnSelectConstants;
 
 const {
@@ -124,7 +123,7 @@ export default class FindAPair {
     let words;
     if (
       this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= findAPairConst.cardsCount
-      && collection === SELECT_VALUE_LEARNED_WORDS
+      && collection === SELECT_OPTION_LEARNED_WORDS_VALUE
     ) {
       words = this.Vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
       console.log('Words from User collection');
