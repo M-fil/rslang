@@ -3,12 +3,27 @@ import {
 } from '../../../service/service';
 import {
   findAPairText,
+  vocabularyConstants,
+  wordsToLearnSelectConstants,
 } from '../../../constants/constants';
 import create from '../../../utils/сreate';
 import shuffle from '../../../utils/shuffle';
 import wordsFilter from '../../../utils/wordsfilter';
-import Preloader from '../../preloader/Preloader';
+import Preloader from '../../preloader/preloader';
 import Settings from '../../settings/Settings';
+import ShortTermStatisctics from '../common/ShortTermStatistics';
+import CloseButton from '../common/CloseButton';
+import StartWindow from '../common/StartWindow';
+import Vocabulary from '../../vocabulary/Vocabulary';
+
+const {
+  SELECT_VALUE_LEARNED_WORDS,
+  SELECT_VALUE_WORDS_FROM_COLLECTIONS,
+} = wordsToLearnSelectConstants;
+
+const {
+  LEARNED_WORDS_TITLE,
+} = vocabularyConstants;
 
 const findAPairConst = {
   maxPages: 30,
@@ -35,30 +50,35 @@ export default class FindAPair {
     this.audioObj = new Audio();
     this.preloader = new Preloader();
     this.preloader.render();
-
+    this.ShortTermStatistics = new ShortTermStatisctics();
+    const StartPage = new StartWindow();
+    this.StartWindow = StartPage.render('Find a pair', findAPairText.about, (this.startGame).bind(this));
+    this.CloseButton = new CloseButton();
+    this.Vocabulary = new Vocabulary(this.user);
+    await this.Vocabulary.init();
     const settings = new Settings(this.user);
     await settings.init();
     this.settings = settings.getSettingsByGroup('findapair');
-
-    this.renderStartPage();
   }
 
   renderStartPage(container) {
-    const el = document.querySelector('#find-a-pair');
-    if (!el) {
-      const main = document.querySelector(container);
-      const aboutgame = create('p', 'find-a-pair__about', findAPairText.about);
-      const startGameButton = create('button', 'find-a-pair__startgame-button', findAPairText.startButton, undefined, ['id', 'find-a-pair-startgame-button']);
-      startGameButton.addEventListener('click', (this.startGameHandler).bind(this));
-      const gameLevel = create('p', 'find-a-pair__gamelevel', `${findAPairText.level}: ${this.level}`);
-      this.container = create('div', 'find-a-pair find-a-pair__start-page', [aboutgame, startGameButton, gameLevel], main || document.body, ['id', 'find-a-pair']);
+    if (!this.main) {
+      this.main = document.querySelector(container) || document.body;
     }
+    this.container = document.querySelector('#find-a-pair');
+    if (!this.container) {
+      this.container = create('div', 'find-a-pair', undefined, this.main, ['id', 'find-a-pair']);
+    }
+    this.container.append(this.StartWindow);
+    this.container.classList.add('find-a-pair__start-page');
   }
 
-  async startGame() {
+  async startGame(collection) {
     this.preloader.show();
-    this.data = await this.getCardsData();
+    this.data = await this.getCardsData(collection);
     this.findPairs = 0;
+    this.clearTimer();
+    this.gameOnPause = false;
     this.renderGame();
   }
 
@@ -84,8 +104,14 @@ export default class FindAPair {
 
     pauseButton.addEventListener('click', (this.pauseGameHandler).bind(this));
 
+    this.CloseButton.show();
+    this.CloseButton.addExitButtonClickCallbackFn((this.pauseGameHandler).bind(this));
+    this.CloseButton.addCloseCallbackFn((this.newGameHandler).bind(this));
+    this.CloseButton.addCancelCallbackFn((this.pauseGameHandler).bind(this));
+
     this.container.appendChild(controlbar);
     this.container.appendChild(playingField);
+    this.container.append(this.CloseButton.render());
     this.preloader.hide();
 
     if (this.settings.showCardsTextOnStart) {
@@ -94,9 +120,20 @@ export default class FindAPair {
     }
   }
 
-  async getCardsData() {
-    const page = Math.floor(Math.random() * findAPairConst.maxPages);
-    const words = await getWords(page, this.level - 1);
+  async getCardsData(collection) {
+    let words;
+    if (
+      this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= findAPairConst.cardsCount
+      && collection === SELECT_VALUE_LEARNED_WORDS
+    ) {
+      words = this.Vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
+      console.log('Words from User collection');
+    } else {
+      const page = Math.floor(Math.random() * findAPairConst.maxPages);
+      words = await getWords(page, this.level - 1);
+      console.log('Words from base collection');
+    }
+
     if (!words.length) {
       this.getCardsData();
     }
@@ -168,17 +205,10 @@ export default class FindAPair {
     this.clearTimer();
     this.saveStats();
     const resWords = FindAPair.getResultWords(this.words, this.openedWords);
-    console.log(resWords);
-    const globalFindedCards = localStorage.findedpairs || 0;
-    this.container.innerHTML = '';
-    this.container.classList.add('find-a-pair__start-page');
 
-    create('p', 'find-a-pair__result-text', findAPairText.resultText, this.container);
-    create('p', 'find-a-pair__finded-pairs', `${findAPairText.findCards}: ${this.findPairs} (${globalFindedCards})`, this.container);
-    create('p', 'find-a-pair__next-level', `${findAPairText.nextLevel}: ${this.level}`, this.container);
-    const newGame = create('button', 'find-a-pair__newgame-button', findAPairText.newGameButton, this.container);
+    this.ShortTermStatistics.render(resWords.wrong, resWords.correct);
+    this.ShortTermStatistics.addCallbackFnOnClose((this.newGameHandler).bind(this));
 
-    newGame.addEventListener('click', (this.newGameHandler).bind(this));
     this.preloader.hide();
   }
 
@@ -193,9 +223,8 @@ export default class FindAPair {
     localStorage.findedpairs = findPairs + this.findPairs;
   }
 
-  static clearPage() {
-    const container = document.querySelector('#find-a-pair');
-    if (container) container.remove();
+  clearPage() {
+    this.container.innerHTML = '';
   }
 
   clearTimer() {
@@ -245,7 +274,8 @@ export default class FindAPair {
   }
 
   newGameHandler() {
-    FindAPair.clearPage();
+    this.clearPage();
+    this.ShortTermStatistics.hide();
     this.renderStartPage();
   }
 
