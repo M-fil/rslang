@@ -351,9 +351,14 @@ export default class SpeakIt {
         const wordObject = this.currentArrayOfWords.find((word) => (word.id || word._id) === wordId);
         this.skippedWords.push(wordObject);
         await this.checkIsGameEnded();
-        await this.vocabulary.addWordToTheVocabulary(wordObject, WORDS_TO_LEARN_TITLE);
       }
     });
+  }
+
+  async addSkippedWordsToTheWordsToLearn() {
+    const arrayOfPromises = this.skippedWords
+      .map((word) => this.vocabulary.addWordToTheVocabulary(word, WORDS_TO_LEARN_TITLE));
+    await Promise.all(arrayOfPromises);
   }
 
   startGame() {
@@ -474,6 +479,7 @@ export default class SpeakIt {
         this.shortTermStatistics.modalClose.removeAttribute('disabled');
         this.shortTermStatistics.continueButton.classList.add('hidden');
       }, 1000);
+      await this.addSkippedWordsToTheWordsToLearn();
       await this.statistics.saveGameStatistics(
         'speakit', this.guessedWords.length, this.skippedWords.length,
       );
