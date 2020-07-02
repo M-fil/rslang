@@ -1,6 +1,6 @@
 import create from '../../../utils/сreate';
 import {
-  savannahConstants,
+  savannahConstants, vocabularyConstants, wordsToLearnSelectConstants,
 } from '../../../constants/constants';
 import { getWords } from '../../../service/service';
 import Preloader from '../../preloader/preloader';
@@ -10,6 +10,8 @@ import { playAudio } from '../../../utils/audio';
 import CloseButton from '../common/CloseButton';
 import ModalWindow from '../common/ModalWindow';
 import StartWindow from '../common/StartWindow';
+import Vocabulary from '../../vocabulary/Vocabulary';
+// import Statistics from '../../statistics/Statistics'
 
 const {
   SAVANNAH_SECONDS_COUNT,
@@ -17,6 +19,7 @@ const {
   LAST_NUMBER,
   MAX_PAGE,
   RANDOM_WORDS,
+  MAX_WORDS_LINE,
   LIVES,
   FRAME,
   END_ANIMATION,
@@ -32,10 +35,19 @@ const {
   LIVES_IMAGE_INHERIT,
   MAX_WORDS,
   GAME_NAME,
+  MIN_VOCABULARY_WORDS,
 } = savannahConstants;
 
+const {
+  SELECT_OPTION_LEARNED_WORDS_VALUE,
+} = wordsToLearnSelectConstants;
+
+const {
+  WORDS_TO_LEARN_TITLE,
+} = vocabularyConstants;
+
 export default class SavannahGame {
-  constructor() {
+  constructor(userState) {
     this.HTML = null;
     this.body = document.querySelector('body');
     this.preloader = new Preloader();
@@ -45,17 +57,46 @@ export default class SavannahGame {
     this.modalWindow = new ModalWindow();
     this.startWindow = new StartWindow();
     this.closeButton = new CloseButton();
+    this.vocabulary = new Vocabulary(userState);
+    // this.statistics = new Statistics(userState);
   }
 
   render() {
     const startPage = this.startWindow.render(GAME_NAME, RULES, (this.reverseReport).bind(this));
     const closePage = this.closeButton.show();
     this.container = create('div', 'container', [startPage, closePage], this.body);
+    // const optionVocabulary = document.querySelector('')
     this.allWords = document.querySelectorAll('.word');
     this.arrayBeforeClickWords = [];
     this.preloader.render();
     this.gameWindow = document.querySelector('.start-game-window');
     this.startButton = document.querySelector('.start-button');
+    this.isVocabularyWords();
+  }
+
+  async isVocabularyWords() {
+    await this.vocabulary.init();
+    if (this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS) {
+      this.engRandomWords = this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE);
+      this.toggleLearnedWordsOption(true);
+    } else {
+      this.engRandomWords = this.data;
+      this.toggleLearnedWordsOption(false);
+    }
+  }
+
+  toggleLearnedWordsOption(isToEnable = true) {
+    const { options } = this.startWindow.wordsToLearnSelect.select;
+
+    if (isToEnable) {
+      Array.from(options)
+        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE);
+      // .removeAttribute('disabled');
+    } else {
+      Array.from(options)
+        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE);
+      // .setAttribute('disabled', 'disabled');
+    }
   }
 
   reverseReport() {
@@ -87,7 +128,7 @@ export default class SavannahGame {
     this.wordClick();
     this.offAudio();
     this.createModal();
-
+    // await this.statistics.init();
     this.changeLives();
     this.animatedWord();
     this.liveIndex = 0;
@@ -108,8 +149,8 @@ export default class SavannahGame {
     this.offSound = create('button', 'sound sound_on', 'Off', this.container);
     this.engLine = create('div', 'english-line', '', this.container);
     this.rusLine = create('div', 'russian-line', '', this.container);
-    this.engRandomWords = this.data;
-    this.engRandomWords = shuffle(this.data);
+
+    shuffle(this.engRandomWords);
 
     this.engBut = create('span', 'word word_english', this.engRandomWords[this.num].word, this.engLine);
     this.engBut.setAttribute('data-translate', this.engRandomWords[this.num].wordTranslate);
@@ -121,7 +162,7 @@ export default class SavannahGame {
       if (this.engBut.dataset.translate === this.engRandomWords[i].wordTranslate) {
         this.wordsTranslate.push(this.engBut.dataset.translate);
       }
-      if (this.engBut.dataset.translate !== this.engRandomWords[i].wordTranslate && this.wordsTranslate.length < 4) {
+      if (this.engBut.dataset.translate !== this.engRandomWords[i].wordTranslate && this.wordsTranslate.length < MAX_WORDS_LINE) {
         this.wordsTranslate.push(this.engRandomWords[i].wordTranslate);
       }
     }
@@ -149,15 +190,15 @@ export default class SavannahGame {
       this.num = 0;
       this.page += 1;
       this.data = await getWords(this.page, this.group);
-      this.engRandomWords = this.data;
-      this.engRandomWords = shuffle(this.data);
+      // this.engRandomWords = this.data;
+      // this.engRandomWords = shuffle(this.data);
     }
     if (this.page === MAX_PAGE) {
       this.group += 1;
       this.page = 0;
       this.data = await getWords(this.page, this.group);
-      this.engRandomWords = this.data;
-      this.engRandomWords = shuffle(this.data);
+      // this.engRandomWords = this.data;
+      // this.engRandomWords = shuffle(this.data);
     }
     this.wordsTranslate.length = 0;
 
@@ -217,10 +258,16 @@ export default class SavannahGame {
     }
   }
 
-  createStatistics() {
+  async createStatistics() {
     clearInterval(this.timer);
     clearTimeout(this.errorTimer);
     this.shortTermStatistics.render(this.wrongWords, this.rightWords);
+    const arrayOfPromises = this.wrongWords
+      .map((word) => this.vocabulary.addWordToTheVocabulary(word, WORDS_TO_LEARN_TITLE));
+    await Promise.all(arrayOfPromises);
+    // await this.statistics.saveGameStatistics(
+    //   'savannah', this.rightWords.length, this.wrongWords.length,
+    // );
   }
 
   wordClick() {

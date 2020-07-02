@@ -7,6 +7,7 @@ import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import SavannahGame from '../mini-games/savannah/Savannah';
 
 import {
   createUser,
@@ -110,8 +111,10 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      this.savannahGame = new SavannahGame(this.state.user);
+      this.savannahGame.render();
+      // await App.renderMainGame(this.state.user);
+      // await this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -148,8 +151,9 @@ class App {
         token: JSON.parse(savedUserData).token,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      // await App.renderMainGame(this.state.user);
+      // await this.renderVocabulary(this.state.user);
+      this.savannahGame.render();
     } catch (error) {
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
