@@ -197,9 +197,12 @@ const statisticsText = {
   },
   gametitles: {
     maingame: 'Main Game',
-    savanna: 'Savanna',
+    savannah: 'Savanna',
     findapair: 'Find a pair',
-    audition: 'Audition',
+    auditiongame: 'Audition',
+    sprint: 'Sprint',
+    speakit: 'Speak It',
+    englishpuzzle: 'English Puzzle',
   },
   select: {
     game: 'Игра',

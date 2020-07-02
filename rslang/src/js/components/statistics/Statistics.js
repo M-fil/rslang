@@ -7,6 +7,7 @@ import {
   updateUserStatistics,
   getUserStatistics,
 } from '../../service/service';
+import chart from './Chart';
 
 export default class Statistics {
   constructor(userData) {
@@ -36,7 +37,7 @@ export default class Statistics {
     if (res) {
       this.statistics = {
         learnedWords: res.learnedWords,
-        optional: res.optional || {},
+        optional: Statistics.filterForOptional(res.optional) || {},
       };
     } else {
       this.statistics = {
@@ -65,17 +66,17 @@ export default class Statistics {
     return this.statistics.optional[date][group];
   }
 
-  updateLearnedWords(wordsCount) {
+  updateLearnedWords(group, wordsCount) {
     this.statistics.learnedWords += Number(wordsCount);
 
-    if (Object.prototype.hasOwnProperty.call(this.statistics.optional[this.currentdate].maingame, 'learnedWords')) {
-      this.statistics.optional[this.currentdate].maingame.learnedWords += wordsCount;
+    if (Object.prototype.hasOwnProperty.call(this.statistics.optional[this.currentdate][group], 'learnedWords')) {
+      this.statistics.optional[this.currentdate][group].learnedWords += wordsCount;
     } else {
-      this.statistics.optional[this.currentdate].maingame.learnedWords = wordsCount;
+      this.statistics.optional[this.currentdate][group].learnedWords = wordsCount;
     }
   }
 
-  async saveGameStatistics(group, correct, wrong, learnedWords) {
+  async saveGameStatistics(group, correct, wrong, learnedWords, additionalObject) {
     this.controlGroupInStatistics(group);
 
     this.statistics.optional[this.currentdate][group].playingCount += 1;
@@ -83,7 +84,11 @@ export default class Statistics {
     this.statistics.optional[this.currentdate][group].wrongAnswers += wrong;
 
     if (learnedWords) {
-      this.updateLearnedWords(learnedWords);
+      this.updateLearnedWords(group, learnedWords);
+    }
+
+    if (additionalObject) {
+      this.statistics.optional[this.currentdate][group].additional = additionalObject;
     }
 
     await this.saveStatistics();
@@ -116,7 +121,8 @@ export default class Statistics {
     return obj;
   }
 
-  render() {
+  render(mainContainer) {
+    const container = document.querySelector(mainContainer) || document.body;
     this.container = create('div', 'statistics__container', [
       this.renderShortTerm(),
       this.renderLongTerm(),
@@ -125,7 +131,7 @@ export default class Statistics {
     create('div', 'statistics', [
       Statistics.renderNavigation(),
       this.container,
-    ], document.body);
+    ], container);
   }
 
   static renderNavigation() {
@@ -247,6 +253,53 @@ export default class Statistics {
     return elementsArr;
   }
 
+  getSummaryByGames() {
+    const arrData = Object.values(this.statistics.optional);
+    const resObj = {};
+
+    arrData.forEach((gameValue) => {
+      const gameData = Object.entries(gameValue);
+      gameData.forEach(([key, value]) => {
+        if (Object.prototype.hasOwnProperty.call(resObj, key)) {
+          resObj[key] += value?.playingCount || 0;
+        } else {
+          resObj[key] = value?.playingCount || 0;
+        }
+      });
+    });
+
+    return resObj;
+  }
+
+  getSummaryByAnswers() {
+    const arrData = Object.values(this.statistics.optional);
+    const resObj = {
+      correctAnswers: 0,
+      wrongAnswers: 0,
+    };
+
+    arrData.forEach((gameValue) => {
+      const gameData = Object.values(gameValue);
+      gameData.forEach((value) => {
+        resObj.correctAnswers += value.correctAnswers;
+        resObj.wrongAnswers += value.wrongAnswers;
+      });
+    });
+
+    return resObj;
+  }
+
+  getLearnedWordsByDate() {
+    const arrData = Object.entries(this.statistics.optional);
+    const resObj = {};
+
+    arrData.forEach(([key, value]) => {
+      resObj[key] = value?.maingame?.learnedWords;
+    });
+
+    return resObj;
+  }
+
   static changeTabHandler(event) {
     const TAB_EL = 'LI';
     if (event.target.tagName === TAB_EL) {
@@ -264,5 +317,31 @@ export default class Statistics {
         }
       });
     }
+  }
+
+  static filterForOptional(optional) {
+    const resObj = {};
+    if (optional) {
+      const dataArr = Object.entries(optional);
+      dataArr.forEach(([key, value]) => {
+        if (/^[0-9]{2}\.[0-9]{2}\.[0-9]{4}$/.test(key)) {
+          resObj[key] = value;
+        }
+      });
+    }
+
+    return resObj;
+  }
+  getCharts(){
+    const chrt = new chart();
+    const learnedWordsData = this.getLearnedWordsByDate();
+    const summaryByAnswers = this.getSummaryByAnswers();
+    const summaryByGames = this.getSummaryByGames();
+    console.log('summaryByGames',summaryByGames);
+    setTimeout( () =>{
+    chrt.summaryByAnswersChart(summaryByAnswers);
+    chrt.summaryByGamesChart(summaryByGames);
+    chrt.learnedWordsChart(this.statistics.learnedWords,learnedWordsData);
+  },5000);
   }
 }
