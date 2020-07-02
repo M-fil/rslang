@@ -126,16 +126,16 @@ class Vocabulary {
   async addWordToTheVocabulary(
     word, vocabularyType = WORDS_TO_LEARN_TITLE, estimation = GOOD.text,
   ) {
-    const { id, token } = this.state.userState;
+    const { userId, token } = this.state.userState;
     try {
       const data = await this.createWordDataForBackend(word, estimation, vocabularyType);
       const { wordId } = data.optional;
-      await updateUserWord(id, wordId, data, token);
+      await updateUserWord(userId, wordId, data, token);
       await this.sortWordsInVocabularies();
     } catch (error) {
       const data = await this.createWordDataForBackend(word, estimation, vocabularyType);
       const { wordId } = data.optional;
-      await createUserWord(id, wordId, data, token);
+      await createUserWord(userId, wordId, data, token);
       await this.sortWordsInVocabularies();
     }
   }
@@ -146,8 +146,8 @@ class Vocabulary {
   }
 
   async sortWordsInVocabularies() {
-    const { id, token } = this.state.userState;
-    const allWords = await getAllUserWords(id, token);
+    const { userId, token } = this.state.userState;
+    const allWords = await getAllUserWords(userId, token);
     this.state.allUserWords = allWords;
     this.state.allUserWords = this.parseUserWordsData();
 
@@ -259,9 +259,9 @@ class Vocabulary {
           } = this.getWordObjectByTargetElement(target);
           const { valuationDate } = targetWordObject.optional;
 
-          const { id, token } = this.state.userState;
+          const { userId, token } = this.state.userState;
           await this.addWordToTheVocabulary(targetWordObject, WORDS_TO_LEARN_TITLE, valuationDate);
-          this.state.allUserWords = await getAllUserWords(id, token);
+          this.state.allUserWords = await getAllUserWords(userId, token);
 
           this.updateVocabularyAfterRestoreButtonClick(targetWordObject);
           targetWordHTML.remove();
