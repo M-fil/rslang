@@ -3,16 +3,16 @@ import ModalWindow from './ModalWindow';
 
 export default class CloseButton {
   constructor() {
-    this.body = document.querySelector('body');
-    this.exitButton = create('button', 'exit-button', 'X', this.body);
-    this.modalWindow = new ModalWindow('closebutton');
+    this.exitButton = create('button', 'exit-button', '<i class="fas fa-times"></i>');
   }
 
   show() {
+    this.modalWindow = new ModalWindow('closebutton');
     CloseButton.changeDisplay(this.exitButton, 'block');
     this.exitButton.addEventListener('click', () => {
       this.modalWindow.show();
     });
+    return this.exitButton;
   }
 
   hide() {

@@ -14,7 +14,6 @@ import StartWindow from '../common/StartWindow';
 const {
   SAVANNAH_SECONDS_COUNT,
   RULES,
-  START_BUTTON,
   LAST_NUMBER,
   MAX_PAGE,
   RANDOM_WORDS,
@@ -43,23 +42,20 @@ export default class SavannahGame {
     this.audio = new Audio();
     this.shortTermStatistics = new ShortTermStatistics();
     this.error = 0;
-    this.closeButton = new CloseButton();
     this.modalWindow = new ModalWindow();
     this.startWindow = new StartWindow();
+    this.closeButton = new CloseButton();
   }
 
   render() {
-    this.startWindow.render(GAME_NAME, RULES, START_BUTTON);
+    const startPage = this.startWindow.render(GAME_NAME, RULES, (this.reverseReport).bind(this));
+    const closePage = this.closeButton.show();
+    this.container = create('div', 'container', [startPage, closePage], this.body);
     this.allWords = document.querySelectorAll('.word');
     this.arrayBeforeClickWords = [];
     this.preloader.render();
-    this.closeButton.show();
-    this.container = document.querySelector('.container');
     this.gameWindow = document.querySelector('.start-game-window');
     this.startButton = document.querySelector('.start-button');
-    this.startButton.addEventListener('click', () => {
-      this.reverseReport();
-    });
   }
 
   reverseReport() {

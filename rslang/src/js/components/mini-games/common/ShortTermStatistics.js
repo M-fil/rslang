@@ -21,7 +21,6 @@ export default class ShortTermStatistics extends ModalWindow {
   render(wrongWords, rightWords) {
     if (!this.initialized) {
       this.initialized = true;
-      this.modaleWindow = new ModalWindow();
       ModalWindow.changeDisplay(this.modal, 'block');
       ModalWindow.changeDisplay(this.modalCancel, 'none');
       this.modalTitle.innerHTML = STAT_TITLE;
@@ -32,7 +31,7 @@ export default class ShortTermStatistics extends ModalWindow {
       this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
       this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${rightWords.length}`, this.modalText);
       this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
-  
+
       ShortTermStatistics.statisticaWords(wrongWords, this.statisticaWrongWords);
       ShortTermStatistics.statisticaWords(rightWords, this.statisticaRightWords);
       this.clickStatisticaAudio();

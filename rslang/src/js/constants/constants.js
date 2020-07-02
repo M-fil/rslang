@@ -197,6 +197,10 @@ const shortTermStatisticsConstants = {
   STAT_CLOSE: 'Закрыть',
 };
 
+const startWindow = {
+  START_BUTTON: 'Начать',
+};
+
 export {
   urls,
   savannahConstants,
@@ -212,4 +216,5 @@ export {
   modalConstants,
   shortTermStatisticsConstants,
   wordsToLearnSelectConstants,
+  startWindow,
 };
