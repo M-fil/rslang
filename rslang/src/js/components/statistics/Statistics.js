@@ -7,6 +7,7 @@ import {
   updateUserStatistics,
   getUserStatistics,
 } from '../../service/service';
+import chart from './Chart';
 
 export default class Statistics {
   constructor(userData) {
@@ -327,5 +328,17 @@ export default class Statistics {
     }
 
     return resObj;
+  }
+  getCharts(){
+    const chrt = new chart();
+    const learnedWordsData = this.getLearnedWordsByDate();
+    const summaryByAnswers = this.getSummaryByAnswers();
+    const summaryByGames = this.getSummaryByGames();
+    console.log('summaryByGames',summaryByGames);
+    setTimeout( () =>{
+    chrt.summaryByAnswersChart(summaryByAnswers);
+    chrt.summaryByGamesChart(summaryByGames);
+    chrt.learnedWordsChart(this.statistics.learnedWords,learnedWordsData);
+  },5000);
   }
 }
