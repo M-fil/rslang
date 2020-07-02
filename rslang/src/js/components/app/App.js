@@ -93,7 +93,6 @@ class App {
           await this.signInUser();
           this.prelodaer.hide();
         } catch (error) {
-          console.log(error);
           this.prelodaer.hide();
           Authentication.createErrorBlock(error.message);
         }
@@ -117,7 +116,6 @@ class App {
       await this.initSettings();
       await this.renderSpeakItGame();
     } catch (error) {
-      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -156,7 +154,6 @@ class App {
       await this.renderSpeakItGame();
       this.prelodaer.hide();
     } catch (error) {
-      console.log(error);
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';

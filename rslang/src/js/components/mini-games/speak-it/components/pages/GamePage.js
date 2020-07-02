@@ -26,15 +26,10 @@ export default class GamePage {
   }
 
   async initWords() {
-    try {
-      const data = await getWords(this.pageNumber, this.groupNumber);
-      this.wordsList = data.slice(0, WORDS_LIMIT_NUMBER);
-      this.renderWords();
-      localStorage.setItem('currentWords', JSON.stringify(this.wordsList));
-      document.querySelector('.loading').remove();
-    } catch (error) {
-      console.log(error);
-    }
+    const data = await getWords(this.pageNumber, this.groupNumber);
+    this.wordsList = data.slice(0, WORDS_LIMIT_NUMBER);
+    this.renderWords();
+    localStorage.setItem('currentWords', JSON.stringify(this.wordsList));
   }
 
   renderWords() {

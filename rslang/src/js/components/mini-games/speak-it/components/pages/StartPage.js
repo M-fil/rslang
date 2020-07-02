@@ -20,7 +20,7 @@ class StartPage extends StartWindow {
     );
 
     const skipButtonHTML = create(
-      'button', 'word-card__skip-word-button word-card__skip-word-button_start-page', SKIP_BUTTON
+      'button', 'word-card__skip-word-button word-card__skip-word-button_start-page', SKIP_BUTTON,
     );
     const spanDescriptionStart = create('span', '', START_GAME_DESCRIPTION_3);
     create(

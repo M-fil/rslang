@@ -38,7 +38,6 @@ export default class Settings {
       await this.loadSettings();
 
       this.renderSettingsWindow();
-      console.log('this.preloader', this.preloader);
       this.preloader.render();
     }
   }
@@ -199,7 +198,6 @@ export default class Settings {
       optional: this.options,
     };
 
-    console.log(this.user);
     await setUserSettings(this.user.id, this.user.token, body);
   }
 

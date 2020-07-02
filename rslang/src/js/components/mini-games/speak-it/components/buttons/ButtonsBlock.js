@@ -1,5 +1,4 @@
-import create from '../../pathes';
-import { speakItConstants } from '../../pathes';
+import create, { speakItConstants } from '../../pathes';
 
 const {
   RESTART_BUTTON,

@@ -38,7 +38,6 @@ const {
 
 const {
   WORDS_LIMIT_NUMBER,
-  START_PAGE_BUTTON_TEXT,
 } = speakItConstants;
 
 const {
@@ -107,7 +106,6 @@ export default class SpeakIt {
   async initMainGamePage() {
     SpeakIt.createMainContainerWrapper();
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
-    console.log(this)
     this.startWindow.gameWindow.remove();
     mainContainerWrapper.innerHTML = '';
     document.querySelector('.speak-it__main').classList.add('in-game');
@@ -121,7 +119,6 @@ export default class SpeakIt {
     await this.statistics.init();
     await this.settings.init();
     await this.renderWordsOnThePage();
-    console.log('getAllVocabulariesData', this.vocabulary.getAllVocabulariesData());
     this.wordCardClickEvent();
     this.startGame();
     this.activateExitButton();
@@ -148,13 +145,10 @@ export default class SpeakIt {
       document.querySelector('.main-container__wrapper'),
     );
 
-    console.log('this.currentWordsType', this.state.currentWordsType);
     if (this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS) {
-      console.log('hide')
       this.navigation.hide();
     } else {
-      console.log('show')
-      this.navigation.show(); 
+      this.navigation.show();
     }
   }
 
@@ -179,7 +173,6 @@ export default class SpeakIt {
     this.imageBlock = new ImageBlock();
     container.prepend(this.imageBlock.render());
 
-    console.log('ToRender', this.currentArrayOfWords);
     this.currentArrayOfWords.forEach((word) => {
       if (word.optional) {
         const { transcription } = word.optional.allData;
@@ -197,7 +190,9 @@ export default class SpeakIt {
     this.preloader.show();
     const learnedWordsLength = this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE);
 
-    if ((this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS) && (learnedWordsLength > WORDS_LIMIT_NUMBER)) {
+    if ((this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS)
+      && (learnedWordsLength > WORDS_LIMIT_NUMBER)
+    ) {
       this.renderNavigation();
       this.renderLearnedWords();
     } else {
@@ -219,14 +214,12 @@ export default class SpeakIt {
 
   renderLearnedWords() {
     this.learnedWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
-    console.log('this.learnedWords', this.learnedWords.map((word) => word.word));
     const buttonsHTML = document.querySelector('.buttons-container');
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
 
     this.currentArrayOfWords = this.learnedWords.map((word) => word.optional.allData);
     this.currentArrayOfWords = this.currentArrayOfWords.slice(0, WORDS_LIMIT_NUMBER);
     this.iDontKnowWords = this.currentArrayOfWords;
-    console.log(this.currentArrayOfWords);
     this.renderWords();
     this.shortTermStatistics.render(this.iDontKnowWords, []);
     this.shortTermStatistics.hide();
@@ -270,12 +263,10 @@ export default class SpeakIt {
 
   async selectWordsToLearn() {
     await this.vocabulary.init();
-    console.log(this.vocabulary.getAllUserWordsLength());
     this.learnedWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
 
     if (this.learnedWords.length < WORDS_LIMIT_NUMBER) {
       this.state.currentWordsType = SELECT_OPTION_WORDS_FROM_COLLECTIONS;
-      console.log('this.startWindow.wordsToLearnSelect', this.startWindow)
       this.startWindow.wordsToLearnSelect.selectIndexByValue(SELECT_OPTION_WORDS_FROM_COLLECTIONS);
       this.toggleLearnedWordsOption(false);
       await this.selectCollectionWords();
@@ -308,7 +299,7 @@ export default class SpeakIt {
       if (target) {
         const { options, selectedIndex } = event.target;
         const selectedValue = options[selectedIndex].value;
-  
+
         this.preloader.show();
         switch (selectedValue) {
           case SELECT_OPTION_LEARNED_WORDS:
@@ -323,7 +314,6 @@ export default class SpeakIt {
             break;
           }
         }
-        console.log('currentArrayOfWords', this.currentArrayOfWords);
         this.preloader.hide();
       }
     });
@@ -348,7 +338,8 @@ export default class SpeakIt {
         const { wordId } = wordCardHTML.dataset;
         wordCardHTML.classList.add('word-card_skipped');
 
-        const wordObject = this.currentArrayOfWords.find((word) => (word.id || word._id) === wordId);
+        const wordObject = this.currentArrayOfWords
+          .find((word) => (word.id || word._id) === wordId);
         this.skippedWords.push(wordObject);
         await this.checkIsGameEnded();
       }
@@ -402,7 +393,6 @@ export default class SpeakIt {
        || word.optional.word.toLowerCase();
       return item;
     });
-    console.log('this.listOfWords', listOfWords);
 
     window.SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
     const recognitionList = new SpeechGrammarList();
@@ -419,7 +409,6 @@ export default class SpeakIt {
         .map((result) => result[0])
         .map((result) => result.transcript)
         .join('');
-      console.log(transcript);
 
       const resultHTML = document.querySelector('.word-info__speech-recognition span');
       const wordInfoHTML = document.querySelector('.game-page__word-info');
@@ -449,7 +438,8 @@ export default class SpeakIt {
         scoreHTML.textContent = `+${this.state.correct += 1}`;
         scoreHTML.classList.remove('hidden');
         this.guessedWords.push(guessedWordObject);
-        this.iDontKnowWords = this.iDontKnowWords.filter((word) => (word.id || word._id) !== guessedWordObject.id);
+        this.iDontKnowWords = this.iDontKnowWords
+          .filter((word) => (word.id || word._id) !== guessedWordObject.id);
         this.shortTermStatistics.update(this.iDontKnowWords, this.guessedWords);
 
         await this.checkIsGameEnded();
@@ -474,7 +464,6 @@ export default class SpeakIt {
       setTimeout(() => {
         playAudio(SUCCESS_AUDIO_PATH, this.audio);
         this.shortTermStatistics.update(this.skippedWords, this.guessedWords);
-        console.log('this.iDontKnowWords', this.iDontKnowWords);
         this.shortTermStatistics.show();
         this.shortTermStatistics.modalClose.removeAttribute('disabled');
         this.shortTermStatistics.continueButton.classList.add('hidden');
@@ -491,7 +480,7 @@ export default class SpeakIt {
       const target = event.target.closest('.navigation__group-select');
 
       if (target) {
-        const options = target.options;
+        const { options } = target;
         this.state.groupOfWords = Number(options[target.selectedIndex].value);
         this.switchOnTrainingMode();
         this.renderMainGamePage(this.state.groupOfWords);
@@ -598,7 +587,8 @@ export default class SpeakIt {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.statistics__word');
       if (target) {
-        const wordObject = this.currentArrayOfWords.find((word) => word.word === target.dataset.scoreWord);
+        const wordObject = this.currentArrayOfWords
+          .find((word) => word.word === target.dataset.scoreWord);
         playAudio(`${WORDS_AUDIOS_URL}${wordObject.audio}`, this.audio);
       }
     });
