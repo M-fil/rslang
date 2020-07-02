@@ -114,7 +114,7 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderMainGame();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -151,7 +151,7 @@ class App {
         token: JSON.parse(savedUserData).token,
       };
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderMainGame();
       this.prelodaer.hide();
     } catch (error) {
       localStorage.setItem('user-data', '');
@@ -164,9 +164,9 @@ class App {
     }
   }
 
-  static async renderMainGame(userState) {
-    const mainGame = new MainGame(userState);
-    await mainGame.render('.main-content');
+  async renderMainGame() {
+    this.mainGame = new MainGame(this.state.user);
+    await this.mainGame.render('.main-content');
   }
 
   renderToggleAuthentication() {

@@ -27,6 +27,7 @@ import Authentication from '../authentication/Authentication';
 import DailyStatistics from './components/daily-statistics/DailyStatistics';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import Statistics from '../statistics/Statistics';
 
 const {
   REMOVE_WORD_BUTTON,
@@ -63,6 +64,7 @@ class MainGame {
   constructor(userState) {
     this.vocabulary = null;
     this.settings = null;
+    this.statistics = null;
 
     this.state = {
       currentWordIndex: 0,
@@ -106,6 +108,7 @@ class MainGame {
 
       await this.initSettings();
       await this.initVocabulary();
+      await this.initStatistics();
       await this.resetStatisticsIfNewDay();
       await this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
@@ -183,6 +186,11 @@ class MainGame {
   async initSettings() {
     this.settings = new Settings(this.state.userState);
     await this.settings.init();
+  }
+
+  async initStatistics() {
+    this.statistics = new Statistics(this.state.userState);
+    await this.statistics.init();
   }
 
   async addWordsToLearnToTheVocabulary() {
