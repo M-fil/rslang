@@ -34,7 +34,7 @@ class App {
     this.state = {
       user: {
         isAuthrorized: false,
-        id: '',
+        userId: '',
         token: '',
         email: '',
       },
@@ -86,7 +86,7 @@ class App {
             ...this.state,
             user: {
               ...this.state.user,
-              id: data.userId,
+              userId: data.userId,
               email: data.email,
             },
           };
@@ -107,7 +107,7 @@ class App {
         ...this.state,
         user: {
           ...this.state.user,
-          id: data.userId,
+          userId: data.userId,
           token: data.token,
         },
       };
@@ -134,8 +134,8 @@ class App {
           data = await getUserById(userId, token);
           break;
         }
-        case this.state.user.id && this.state.user.token: {
-          const { id: userId, token } = this.state.user;
+        case this.state.user.userId && this.state.user.token: {
+          const { userId, token } = this.state.user;
           data = await getUserById(userId, token);
           break;
         }
@@ -146,7 +146,7 @@ class App {
       this.state.user.isAuthrorized = true;
       this.state.user = {
         ...this.state.user,
-        id: data.id,
+        userId: data.id,
         email: data.email,
         token: JSON.parse(savedUserData).token,
       };

@@ -7,6 +7,8 @@ const {
   SELECT_TITLE,
   SELECT_OPTION_LEARNED_WORDS,
   SELECT_OPTION_WORDS_FROM_COLLECTIONS,
+  SELECT_OPTION_LEARNED_WORDS_VALUE,
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE,
 } = wordsToLearnSelectConstants;
 
 class WordsToLearnSelect {
@@ -21,20 +23,20 @@ class WordsToLearnSelect {
     this.select = create(
       'select', `select__item ${this.containerClassNameType}__learn-words-select`,
       [
-        this.renderOption(SELECT_OPTION_LEARNED_WORDS),
-        this.renderOption(SELECT_OPTION_WORDS_FROM_COLLECTIONS),
+        this.renderOption(SELECT_OPTION_LEARNED_WORDS, SELECT_OPTION_LEARNED_WORDS_VALUE),
+        this.renderOption(SELECT_OPTION_WORDS_FROM_COLLECTIONS, SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE),
       ],
-      this.HTML,
+      this.HTML, ['id', 'selectWords'],
     );
 
     return this.HTML;
   }
 
-  renderOption(optionText) {
+  renderOption(optionText, valueText) {
     return create(
       'option',
       `select__option ${this.containerClassNameType}`, optionText, '',
-      ['value', optionText],
+      ['value', valueText],
     );
   }
 

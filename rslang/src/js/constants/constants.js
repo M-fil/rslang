@@ -25,6 +25,8 @@ const wordsToLearnSelectConstants = {
   SELECT_TITLE: 'Какие слова учить?',
   SELECT_OPTION_LEARNED_WORDS: 'Уже изученные слова',
   SELECT_OPTION_WORDS_FROM_COLLECTIONS: 'Слова из коллекций',
+  SELECT_OPTION_LEARNED_WORDS_VALUE: 'LEARNED_WORDS',
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE: 'WORDS_FROM_COLLECTIONS',
 };
 
 const errorTypes = {
