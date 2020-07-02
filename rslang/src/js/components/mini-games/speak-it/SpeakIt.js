@@ -33,11 +33,11 @@ const {
 const {
   SELECT_OPTION_LEARNED_WORDS_VALUE,
   SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE,
-  SPEAKIT_TITLE,
 } = wordsToLearnSelectConstants;
 
 const {
   WORDS_LIMIT_NUMBER,
+  SPEAKIT_TITLE,
 } = speakItConstants;
 
 const {
