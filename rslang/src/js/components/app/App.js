@@ -53,9 +53,7 @@ class App {
   async initSettings() {
     const settings = new Settings(this.state.user);
     await settings.init();
-
-    const { userId, token } = this.state.user;
-    this.state.settings = await getUserSettings(userId, token);
+    this.state.settings = settings.getSettings();
   }
 
   async renderVocabulary(userState) {
