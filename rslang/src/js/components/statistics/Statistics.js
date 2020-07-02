@@ -32,7 +32,7 @@ export default class Statistics {
   }
 
   async loadStatistics() {
-    const res = await getUserStatistics(this.user.id, this.user.token);
+    const res = await getUserStatistics(this.user.userId, this.user.token);
     if (res) {
       this.statistics = {
         learnedWords: res.learnedWords,
@@ -47,7 +47,7 @@ export default class Statistics {
   }
 
   async saveStatistics() {
-    await updateUserStatistics(this.user.id, this.user.token, this.statistics);
+    await updateUserStatistics(this.user.userId, this.user.token, this.statistics);
   }
 
   async resetStatistics() {
@@ -55,7 +55,7 @@ export default class Statistics {
       learnedWords: 0,
       optional: {},
     };
-    await updateUserStatistics(this.user.id, this.user.token, body);
+    await updateUserStatistics(this.user.userId, this.user.token, body);
   }
 
   getGameStatistics(group, requestedDate) {
