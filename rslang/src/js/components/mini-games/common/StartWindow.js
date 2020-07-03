@@ -19,10 +19,16 @@ export default class StartWindow {
     this.gameWindow.appendChild(this.wordsToLearnSelect.render());
     this.startButton = create('button', 'start-button', START_BUTTON, this.gameWindow);
     this.closeButton.show();
-    if (typeof startButtonFn === 'function') {
-      this.startButton.addEventListener('click', startButtonFn);
-    }
+    this.startButtonFn = startButtonFn;
+    this.startButton.addEventListener('click', (this.startButtonClickHandler).bind(this));
 
     return this.gameWindow;
+  }
+
+  startButtonClickHandler() {
+    const selectedCollection = document.querySelector('#selectWords').value;
+    if (typeof this.startButtonFn === 'function') {
+      this.startButtonFn(selectedCollection);
+    }
   }
 }
