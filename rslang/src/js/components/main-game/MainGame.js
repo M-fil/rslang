@@ -1,8 +1,6 @@
 import {
   getAllUserWords,
   getAggregatedWordsByFilter,
-  updateStatistics,
-  getStatistics,
 } from '../../service/service';
 import create from '../../utils/сreate';
 import {
@@ -69,6 +67,7 @@ class MainGame {
     this.state = {
       currentWordIndex: 0,
       mistakesInCurrentWord: 0,
+      commonMistakesNumber: 0,
       learnedWordsToday: 0,
       longestSeriesOfAnswers: 0,
       longestSeriesIndicator: 0,
@@ -109,10 +108,11 @@ class MainGame {
       await this.initSettings();
       await this.initVocabulary();
       await this.initStatistics();
-      await this.resetStatisticsIfNewDay();
-      await this.getStatisticsData();
+      await this.setStatisticsData();
+      this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.parseUserWordsData();
+      console.log('getGameStatistics', this.statistics.getGameStatistics('maingame'));
 
       if (!this.state.isNormCompleted) {
         this.state.currentWordIndex = 0;
@@ -231,28 +231,24 @@ class MainGame {
     return wordsToRevise;
   }
 
-  async getStatisticsData() {
-    try {
-      const { userId, token } = this.getUserDataForAuthorization();
-      const statistics = await getStatistics(userId, token);
-      const {
-        learnedWordsToday,
-        correctAnswersNumber,
-        isNormCompleted,
-        longestSeriesOfAnswers,
-        longestSeriesIndicator,
-      } = JSON.parse(statistics.optional.mainGame);
-      this.state.learnedWordsToday = parseInt(learnedWordsToday, 10);
-      this.state.correctAnswersNumber = parseInt(correctAnswersNumber, 10);
-      this.state.longestSeriesOfAnswers = parseInt(longestSeriesOfAnswers, 10);
-      this.state.longestSeriesIndicator = parseInt(longestSeriesIndicator, 10);
-      this.state.isNormCompleted = JSON.parse(isNormCompleted);
-    } catch (error) {
-      this.state.correctAnswersNumber = 0;
-    }
+  getStatisticsData() {
+    const statisticsData = this.statistics.getGameStatistics('maingame');
+    console.log('statisticsData', statisticsData);
+    const {
+      learnedWordsToday,
+      correctAnswersNumber,
+      isNormCompleted,
+      longestSeriesOfAnswers,
+      longestSeriesIndicator,
+    } = JSON.parse(statisticsData.additional);
+    this.state.learnedWordsToday = parseInt(learnedWordsToday, 10);
+    this.state.correctAnswersNumber = parseInt(correctAnswersNumber, 10);
+    this.state.longestSeriesOfAnswers = parseInt(longestSeriesOfAnswers, 10);
+    this.state.longestSeriesIndicator = parseInt(longestSeriesIndicator, 10);
+    this.state.isNormCompleted = JSON.parse(isNormCompleted);
   }
 
-  async setStatisticsData() {
+  /*async setStatisticsData() {
     const { userId, token } = this.getUserDataForAuthorization();
     const mainGame = JSON.stringify({
       learnedWordsToday: this.state.learnedWordsToday,
@@ -269,6 +265,23 @@ class MainGame {
       },
     };
     await updateStatistics(userId, token, body);
+  }*/
+
+  async setStatisticsData() {
+    const mainGameAdditional = JSON.stringify({
+      learnedWordsToday: this.state.learnedWordsToday,
+      correctAnswersNumber: this.state.correctAnswersNumber,
+      lastGameWinDate: this.state.lastGameWinDate,
+      isNormCompleted: this.state.isNormCompleted,
+      longestSeriesIndicator: this.state.longestSeriesIndicator,
+      longestSeriesOfAnswers: this.state.longestSeriesOfAnswers,
+    });
+
+    await this.statistics.saveGameStatistics(
+      'maingame', this.state.correctAnswersNumber,
+      this.state.commonMistakesNumber, this.state.learnedWordsToday,
+      mainGameAdditional,
+    );
   }
 
   async resetStatistics() {
@@ -284,9 +297,8 @@ class MainGame {
 
   async resetStatisticsIfNewDay() {
     try {
-      const { userId, token } = this.getUserDataForAuthorization();
-      const statistics = await getStatistics(userId, token);
-      const data = JSON.parse(statistics.optional.mainGame);
+      const statisticsData = this.statistics.getGameStatistics('maingame');
+      const data = JSON.parse(statisticsData.additional);
       let date = new Date(data.lastGameWinDate).setHours(0, 0, 0);
       const currentDate = new Date();
       date = addDaysToTheDate(1, new Date(date));
@@ -302,7 +314,7 @@ class MainGame {
 
   async setNewWords() {
     const wordsToRevise = this.getWordsToRevise();
-    const { userId, token } = this.getUserDataForAuthorization();
+    const { userId, token } = this.state.userState;
     const { maxCardsPerDay, newCardsPerDay } = this.settings.getSettingsByGroup('main');
     const { learnedWordsToday } = this.state;
 
@@ -329,7 +341,7 @@ class MainGame {
   }
 
   async getAllUserWordsFromBackend() {
-    const { userId, token } = this.getUserDataForAuthorization();
+    const { userId, token } = this.state.userState;
     const data = await getAllUserWords(userId, token);
     return data;
   }
@@ -338,18 +350,6 @@ class MainGame {
     return this.state.userWords
       .filter((word) => word.optional.vocabulary === wordsType)
       .map((word) => (word.optional ? word.optional.allData : word));
-  }
-
-  getUserDataForAuthorization() {
-    const savedUserData = localStorage.getItem('user-data');
-    if (savedUserData) {
-      return JSON.parse(savedUserData);
-    }
-
-    return {
-      userId: this.state.userState.userId,
-      token: this.state.userState.token,
-    };
   }
 
   renderMainGameControls() {
@@ -596,6 +596,9 @@ class MainGame {
         }
       } else {
         userAnswerHTML.classList.add('word-card__user-answer_visible');
+        if (this.state.mistakesInCurrentWord === 1) {
+          this.state.commonMistakesNumber += 1;
+        }
         this.state.mistakesInCurrentWord += 1;
         this.state.longestSeriesIndicator += 1;
         inputHTML.value = '';

@@ -7,7 +7,6 @@ import {
   updateUserStatistics,
   getUserStatistics,
 } from '../../service/service';
-import chart from './Chart';
 
 export default class Statistics {
   constructor(userData) {
@@ -332,6 +331,7 @@ export default class Statistics {
 
     return resObj;
   }
+
   getCharts(){
     const chrt = new chart();
     const learnedWordsData = this.getLearnedWordsByDate();
