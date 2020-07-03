@@ -11,6 +11,7 @@ import shuffle from '../../../utils/shuffle';
 import wordsFilter from '../../../utils/wordsfilter';
 import Preloader from '../../preloader/preloader';
 import Settings from '../../settings/Settings';
+import Statistics from '../../statistics/Statistics';
 import ShortTermStatisctics from '../common/ShortTermStatistics';
 import CloseButton from '../common/CloseButton';
 import StartWindow from '../common/StartWindow';
@@ -57,6 +58,8 @@ export default class FindAPair {
     const settings = new Settings(this.user);
     await settings.init();
     this.settings = settings.getSettingsByGroup('findapair');
+    this.statistics = new Statistics(this.user);
+    await this.statistics.init();
   }
 
   renderStartPage(container) {
@@ -125,12 +128,10 @@ export default class FindAPair {
       this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= findAPairConst.cardsCount
       && collection === SELECT_OPTION_LEARNED_WORDS_VALUE
     ) {
-      words = this.Vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
-      console.log('Words from User collection');
+      words = this.Vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE, true);
     } else {
       const page = Math.floor(Math.random() * findAPairConst.maxPages);
       words = wordsFilter(await getWords(page, this.level));
-      console.log('Words from base collection');
     }
 
     if (!words.length) {
@@ -140,12 +141,12 @@ export default class FindAPair {
     const arrCards = [];
     this.words.forEach((el) => {
       arrCards.push({
-        word: el?.optional?.allData.word || el.word,
-        pair: el?.optional?.allData.word || el.word,
+        word: el.word,
+        pair: el.word,
       });
       arrCards.push({
-        word: el?.optional?.allData.wordTranslate || el.wordTranslate,
-        pair: el?.optional?.allData.word || el.word,
+        word: el.wordTranslate,
+        pair: el.word,
       });
     });
 
@@ -215,8 +216,7 @@ export default class FindAPair {
     this.clearTimer();
     this.saveStats();
     const resWords = FindAPair.getResultWords(this.words, this.openedWords);
-
-    this.addWordToLearned(resWords.correct);
+    this.statistics.saveGameStatistics('findapair', resWords.correct.length, 0);
 
     this.ShortTermStatistics.render(resWords.wrong, resWords.correct);
     this.ShortTermStatistics.addCallbackFnOnClose((this.newGameHandler).bind(this));
@@ -325,7 +325,6 @@ export default class FindAPair {
   }
 
   checkWordsCountInVocabulary() {
-    console.log(this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE));
     return (this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= findAPairConst.cardsCount);
   }
 }
