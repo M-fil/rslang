@@ -41,6 +41,7 @@ const errorTypes = {
   STATUS_200: 200,
   USER_IS_NOT_AUTHORIZED: 'Пользователь не авторизирован',
   USER_NOT_FOUND: 'Такого пользователя не существует. Пожалуйста, проверьте введенные данные.',
+  EXCEEDED_NAME_LENGTH: 'Длина поля "Имя" не должна превышать 30 символов',
 };
 
 const mainGameConstants = {

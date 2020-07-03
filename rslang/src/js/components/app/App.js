@@ -47,9 +47,19 @@ class App {
     this.container = null;
   }
 
-  run() {
+  async run() {
     this.container = create('main', 'main-content', '', document.body);
-    this.checkIsUserAuthorized();
+    try {
+      await this.checkIsUserAuthorized();
+    } catch (error) {
+      localStorage.setItem('user-data', '');
+      this.state.user.isAuthrorized = false;
+      this.container.innerHTML = '';
+      this.renderAuthenticationBlock('authorization');
+      this.renderToggleAuthentication();
+      this.activateAuthenticationForm();
+      this.prelodaer.hide();
+    }
   }
 
   async initSettings() {
@@ -142,6 +152,7 @@ class App {
           throw new Error(USER_IS_NOT_AUTHORIZED);
       }
 
+      console.log('getUserById', data)
       this.state.user.isAuthrorized = true;
       this.state.user = {
         ...this.state.user,
@@ -155,21 +166,16 @@ class App {
       await App.renderMainGame(this.state.user);
       await this.renderVocabulary(this.state.user);
     } catch (error) {
-      console.log(this.state.user)
       const parsedData = JSON.parse(savedUserData);
-      if (parsedData && parsedData.userId && parsedData.token) {
-        const { userId, token } = parsedData;
-        const data = await getRefreshToken(userId, token);
-        console.log('getRefreshToken', data);
-      } else {
-        console.log('NOTE')
-        this.state.user.isAuthrorized = false;
-        this.container.innerHTML = '';
-        this.renderAuthenticationBlock('authorization');
-        this.renderToggleAuthentication();
-        this.activateAuthenticationForm();
-        this.prelodaer.hide();
-      }
+      const { userId, refreshToken } = parsedData;
+      const data = await getRefreshToken(userId, refreshToken);
+      this.state.user = {
+        ...this.state.user,
+        ...data,
+      };
+      await this.initSettings();
+      await App.renderMainGame(this.state.user);
+      await this.renderVocabulary(this.state.user);
     }
   }
 
