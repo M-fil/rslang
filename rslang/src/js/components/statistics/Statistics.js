@@ -25,6 +25,7 @@ export default class Statistics {
   async init() {
     if (!this.initialized) {
       this.initialized = true;
+      this.chrt = new StatisticsChart();
       const date = new Date();
       this.currentdate = dateFormat(date.getDate(), date.getMonth() + 1, date.getFullYear());
 
@@ -199,16 +200,15 @@ export default class Statistics {
   }
 
   renderLongTerm() {
-    const chrt = new StatisticsChart();
     const learnedWordsData = this.getLearnedWordsByDate();
     const summaryByAnswers = this.getSummaryByAnswers();
     const summaryByGames = this.getSummaryByGames();
 
-    chrt.summaryByAnswersChart(summaryByAnswers);
-    chrt.summaryByGamesChart(summaryByGames);
-    chrt.learnedWordsChart(this.statistics.learnedWords, learnedWordsData);
+    this.chrt.summaryByAnswersChart(summaryByAnswers);
+    this.chrt.summaryByGamesChart(summaryByGames);
+    this.chrt.learnedWordsChart(this.statistics.learnedWords, learnedWordsData);
 
-    return create('div', 'statistics-tab__item statistics__long-term', chrt.renderStatisticsCharts(), undefined, ['tabId', 'longterm']);
+    return create('div', 'statistics-tab__item statistics__long-term', this.chrt.renderStatisticsCharts(), undefined, ['tabId', 'longterm']);
   }
 
   static createSelect(name, id, ...options) {
