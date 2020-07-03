@@ -1,0 +1,48 @@
+.statistics {
+  width: $content-width;
+  margin: 0 auto;
+  text-align: center;
+}
+.statisticsCharts{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.mainChart{
+  width: 100%;
+}
+.pieChart{
+  width: 50%;
+}
+.statictics-tab-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.statictics-tab-list__item {
+  display: block;
+  width: 150px;
+  @include font(1.5rem);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.statictics-tab-list_active {
+  font-weight: bold;
+}
+
+.statistics-tab__item {
+  display: none;
+}
+
+.statistics-tab_active {
+  display: block;
+}

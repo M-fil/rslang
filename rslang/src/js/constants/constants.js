@@ -176,6 +176,32 @@ const settingsText = {
   },
 };
 
+const statisticsText = {
+  tabtitels: {
+    shortterm: 'Краткосрочная',
+    longterm: 'Долгосрочная',
+  },
+  gametitles: {
+    maingame: 'Main Game',
+    savannah: 'Savanna',
+    findapair: 'Find a pair',
+    auditiongame: 'Audition',
+    sprint: 'Sprint',
+    speakit: 'Speak It',
+    englishpuzzle: 'English Puzzle',
+  },
+  select: {
+    game: 'Игра',
+    date: 'Дата',
+  },
+  texts: {
+    learnedWords: 'Изучено новых слов',
+    playingCount: 'Сыграно игр',
+    correctAnswers: 'Правильны ответов',
+    wrongAnswers: 'Ошибок',
+  },
+};
+
 const modalConstants = {
   MODAL_TITLE: 'Тренировка не закончена!',
   MODAL_WARNING: 'Если вы вернетесь к списку, ваш прогресс не будет сохранен',
@@ -207,6 +233,7 @@ export {
   dailyStatisticsConstants,
   settingsText,
   wordsToLearnSelectConstants,
+  statisticsText,
   modalConstants,
   shortTermStatisticsConstants,
   startWindow,

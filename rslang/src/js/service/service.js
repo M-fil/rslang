@@ -257,6 +257,38 @@ const getUserSettings = async (userId, token) => {
   return content;
 };
 
+const updateUserStatistics = async (userId, token, body) => {
+  let content = false;
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/statistics`, {
+    method: 'PUT',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (rawResponse.status === 200) content = await rawResponse.json();
+  return content;
+};
+
+const getUserStatistics = async (userId, token) => {
+  let content = false;
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/statistics`, {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+
+  if (rawResponse.status === 200) content = await rawResponse.json();
+  return content;
+};
+
 export {
   getWords,
   createUser,
@@ -273,4 +305,6 @@ export {
   setUserSettings,
   getUserSettings,
   getRefreshToken,
+  updateUserStatistics,
+  getUserStatistics,
 };
