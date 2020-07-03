@@ -46,7 +46,6 @@ export default class FindAPair {
     this.gameStarted = false;
     this.gameOnPause = false;
     this.gameShowCards = false;
-    this.openedWords = [];
     this.audioObj = new Audio();
     this.preloader = new Preloader();
     this.preloader.render();
@@ -78,6 +77,7 @@ export default class FindAPair {
     this.preloader.show();
     this.level = group || 0;
     this.data = await this.getCardsData(collection);
+    this.openedWords = [];
     this.findPairs = 0;
     this.clearTimer();
     this.gameOnPause = false;
@@ -187,17 +187,6 @@ export default class FindAPair {
     }, this.settings.delayBeforeClosingCard);
   }
 
-  addWordToLearned(wordArr) {
-    const promsArr = [];
-    if (wordArr.length) {
-      wordArr.forEach((word) => {
-        promsArr.push(this.Vocabulary.addWordToTheVocabulary(word, LEARNED_WORDS_TITLE));
-      });
-    }
-
-    Promise.all(promsArr);
-  }
-
   playAudio(file) {
     this.audioObj.src = `./src/assets/audio/${file}.mp3`;
     this.audioObj.play();
@@ -216,11 +205,11 @@ export default class FindAPair {
     this.clearTimer();
     this.saveStats();
     const resWords = FindAPair.getResultWords(this.words, this.openedWords);
+
     this.statistics.saveGameStatistics('findapair', resWords.correct.length, 0);
 
     this.ShortTermStatistics.render(resWords.wrong, resWords.correct);
     this.ShortTermStatistics.addCallbackFnOnClose((this.newGameHandler).bind(this));
-
     this.preloader.hide();
   }
 
