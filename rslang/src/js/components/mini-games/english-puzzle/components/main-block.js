@@ -45,27 +45,15 @@ export default class MainBlock {
   }
 
   static createSelectBlock() {
-    const selectsContainer = create('div', 'game-mode-selects');
     const searchButton = create('div', 'new_lvl-button', '<i class="fas fa-search"></i>');
-    for (let i = 0; i < GAME_BLOCK.gameMode; i += 1) {
-      const selectDescription = create('p', 'select-block_description');
-      let select = null;
-      switch (i) {
-        case 0:
-          select = MainBlock.selectFill(GAME_BLOCK.gameLevels);
-          selectDescription.textContent = GAME_BLOCK.level;
-          select.classList.add('level');
-          break;
-        default:
-          select = MainBlock.selectFill(GAME_BLOCK.gamePages, select);
-          selectDescription.textContent = GAME_BLOCK.page;
-          select.classList.add('page');
-          break;
-      }
-      create('div', 'select-block', [selectDescription, select], selectsContainer);
-    }
-    selectsContainer.appendChild(searchButton);
-    return selectsContainer;
+    const selectDescription = create('p', 'select-block_description');
+    const select = MainBlock.selectFill(GAME_BLOCK.gameLevels);
+    selectDescription.textContent = GAME_BLOCK.level;
+    select.classList.add('level');
+    const selectBlock = create('div', 'select-block', [selectDescription, select]);
+    const selectBlockContainer = create('div', 'select-block-container', selectBlock);
+    viewElement([selectBlockContainer], []);
+    return create('div', 'game-mode-selects', [selectBlockContainer, searchButton]);
   }
 
   createControlButtons() {

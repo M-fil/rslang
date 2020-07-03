@@ -4,9 +4,11 @@ import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
-import Preloader from '../preloader/Preloader';
+import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+
+import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
 
 import {
   createUser,
@@ -65,6 +67,11 @@ class App {
     document.body.append(html);
   }
 
+  async renderEnglishPuzzle() {
+    this.englishPuzzle = new EnglishPuzzle(this.state.user);
+    await this.englishPuzzle.start();
+  }
+
   activateAuthenticationForm() {
     document.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -110,8 +117,8 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
       await this.renderVocabulary(this.state.user);
+      await this.renderEnglishPuzzle();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -148,8 +155,9 @@ class App {
         token: JSON.parse(savedUserData).token,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
       await this.renderVocabulary(this.state.user);
+      await this.renderEnglishPuzzle();
+      this.prelodaer.hide();
     } catch (error) {
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
@@ -159,11 +167,6 @@ class App {
       this.activateAuthenticationForm();
       this.prelodaer.hide();
     }
-  }
-
-  static async renderMainGame(userState) {
-    const mainGame = new MainGame(userState);
-    await mainGame.render('.main-content');
   }
 
   renderToggleAuthentication() {

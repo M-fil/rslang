@@ -10,6 +10,7 @@ import {
 } from '../../../service/service';
 import {
   urls,
+  wordsToLearnSelectConstants,
 } from '../../../constants/constants';
 import {
   GAME_BLOCK,
@@ -21,13 +22,23 @@ import findPainting from './components/select-painting';
 import Preloader from '../../preloader/preloader';
 import StartWindow from '../common/StartWindow';
 import CloseButton from '../common/CloseButton';
+import Vocabulary from '../../vocabulary/Vocabulary';
+// import Statistics from '../../statistics/Statistics';
+
+const {
+  SELECT_OPTION_LEARNED_WORDS,
+} = wordsToLearnSelectConstants;
 
 export default class EnglishPuzzle {
-  constructor() {
+  constructor(userState) {
     this.gameForm = null;
     this.startMenu = null;
     this.closeButton = null;
     this.resultForm = createResultBlock();
+
+    this.vocabulary = new Vocabulary(userState);
+    // this.statistics = new Statistics(userState);
+
     this.sinth = window.speechSynthesis;
     this.actualSentenses = null;
     this.actualTranslate = null;
@@ -40,7 +51,7 @@ export default class EnglishPuzzle {
     this.painting = null;
   }
 
-  start() {
+  async start() {
     const gameZone = new MainBlock();
     const startWindow = new StartWindow();
     const buttonForClose = new CloseButton();
@@ -48,7 +59,7 @@ export default class EnglishPuzzle {
     this.startMenu = create('div', 'start-window', startWindow.render(START_WINDOW.title, START_WINDOW.description, (this.startMenuButtonAction).bind(this)));
     this.closeButton = buttonForClose.show();
     [this.body] = document.getElementsByTagName('body');
-    this.wrapper = create('div', 'wrapper', [this.startMenu, this.gameForm, this.resultForm, this.closeButton]);
+    this.wrapper = create('div', 'english-puzzle-wrapper', [this.startMenu, this.gameForm, this.resultForm, this.closeButton]);
     this.body.appendChild(this.wrapper);
     this.preloader = new Preloader();
     this.preloader.render();
@@ -73,9 +84,19 @@ export default class EnglishPuzzle {
   }
 
   async getGameCards() {
-    const level = document.querySelector('.level').value - 1;
-    const page = document.querySelector('.page').value - 1;
-    const words = await getWords(page, level);
+    let level;
+    let page;
+    let words;
+    switch (this.gameStatus) {
+      case SELECT_OPTION_LEARNED_WORDS:
+        break;
+      default:
+        viewElement([], [document.querySelector('.select-block-container')]);
+        level = document.querySelector('.level').value - 1;
+        page = 0;
+        words = await getWords(page, level);
+        break;
+    }
     this.painting = findPainting(level + 1, page + 1);
     const imageUrl = urls.GET_PAINTING(this.painting.imageSrc);
     this.paintingText = `${this.painting.author}, ${this.painting.name} (${this.painting.year})`;
@@ -314,6 +335,7 @@ export default class EnglishPuzzle {
   }
 
   async startMenuButtonAction() {
+    this.gameStatus = document.querySelector('.select__item').value;
     viewElement([this.startMenu], []);
     await this.getCardsAndStartGame();
     viewElement([], [this.gameForm]);
@@ -423,7 +445,10 @@ export default class EnglishPuzzle {
       if (event.target.classList.contains('active-sintez')) {
         this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter], event.target);
       } else if (event.target.parentNode.classList.contains('active-sintez')) {
-        this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter], event.target.parentNode);
+        this.speachActiveSentens(
+          this.actualSentenses[this.activeSentenseCounter],
+          event.target.parentNode,
+        );
       }
     });
 

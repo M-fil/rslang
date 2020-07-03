@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import '../scss/style.scss';
-import EnglishPuzzle from './components/mini-games/english-puzzle/EnglishPuzzle';
 
-const englishPuzzle = new EnglishPuzzle();
-englishPuzzle.start();
+import App from './components/app/App';
+
+const app = new App();
+app.run();
