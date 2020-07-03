@@ -125,11 +125,10 @@ const getRefreshToken = async (userId, token) => {
       Accept: 'application/json',
     },
   });
-  console.log(rawResponse);
 
   const content = await rawResponse.json();
   return content;
-}
+};
 
 const getAllUserWords = async (userId, token) => {
   const rawResponse = await fetch(`${GET_USER_URL}${userId}/words`, {

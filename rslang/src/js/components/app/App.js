@@ -152,7 +152,6 @@ class App {
           throw new Error(USER_IS_NOT_AUTHORIZED);
       }
 
-      console.log('getUserById', data)
       this.state.user.isAuthrorized = true;
       this.state.user = {
         ...this.state.user,

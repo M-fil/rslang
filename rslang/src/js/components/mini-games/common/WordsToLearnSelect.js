@@ -23,8 +23,12 @@ class WordsToLearnSelect {
     this.select = create(
       'select', `select__item ${this.containerClassNameType}__learn-words-select`,
       [
-        this.renderOption(SELECT_OPTION_LEARNED_WORDS, SELECT_OPTION_LEARNED_WORDS_VALUE),
-        this.renderOption(SELECT_OPTION_WORDS_FROM_COLLECTIONS, SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE),
+        this.renderOption(
+          SELECT_OPTION_LEARNED_WORDS, SELECT_OPTION_LEARNED_WORDS_VALUE,
+        ),
+        this.renderOption(
+          SELECT_OPTION_WORDS_FROM_COLLECTIONS, SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE,
+        ),
       ],
       this.HTML, ['id', 'selectWords'],
     );

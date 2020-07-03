@@ -45,7 +45,7 @@ class Authentication {
 
     const formHTML = create(
       'form', `${this.classNameType}__form authentication__form`,
-      [nameField, emailField, passwordField, submitButton]
+      [nameField, emailField, passwordField, submitButton],
     );
     return formHTML;
   }
@@ -117,7 +117,6 @@ class Authentication {
         throw new Error(INCORRECT_VALUES);
       }
 
-      console.log('Authentication', data);
       localStorage.setItem('user-data', JSON.stringify(data));
       return data;
     } catch (error) {
