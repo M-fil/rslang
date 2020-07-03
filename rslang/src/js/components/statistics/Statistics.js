@@ -30,8 +30,6 @@ export default class Statistics {
       this.currentdate = dateFormat(date.getDate(), date.getMonth() + 1, date.getFullYear());
 
       await this.loadStatistics();
-
-      this.render();
     }
   }
 
