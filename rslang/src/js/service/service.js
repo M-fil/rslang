@@ -116,6 +116,20 @@ const getUserWord = async (userId, wordId, token) => {
   return content;
 };
 
+const getRefreshToken = async (userId, token) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/tokens`, {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+
+  const content = await rawResponse.json();
+  return content;
+};
+
 const getAllUserWords = async (userId, token) => {
   const rawResponse = await fetch(`${GET_USER_URL}${userId}/words`, {
     method: 'GET',
@@ -292,4 +306,5 @@ export {
   getUserSettings,
   updateUserStatistics,
   getUserStatistics,
+  getRefreshToken,
 };
