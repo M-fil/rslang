@@ -54,6 +54,7 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      App.removeModalElements();
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';
@@ -61,6 +62,19 @@ class App {
       this.renderToggleAuthentication();
       this.activateAuthenticationForm();
       this.prelodaer.hide();
+    }
+  }
+
+  static removeModalElements() {
+    const startGameWindow = document.querySelector('.start-game-window');
+    const exitButton = document.querySelector('.exit-button');
+
+    if (startGameWindow) {
+      startGameWindow.remove();
+    }
+
+    if (exitButton) {
+      exitButton.remove();
     }
   }
 
@@ -171,15 +185,18 @@ class App {
       await this.renderSpeakItGame();
       this.prelodaer.hide();
     } catch (error) {
+      console.log(error);
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
+      console.log('parsedData', parsedData);
+      console.log('refreshToken', refreshToken);
       const data = await getRefreshToken(userId, refreshToken);
       this.state.user = {
         ...this.state.user,
         ...data,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
+      await this.renderSpeakItGame(this.state.user);
       await this.renderVocabulary(this.state.user);
     }
   }

@@ -125,6 +125,7 @@ const getRefreshToken = async (userId, token) => {
       Accept: 'application/json',
     },
   });
+  console.log('rawResponse', rawResponse);
 
   const content = await rawResponse.json();
   return content;
