@@ -40,7 +40,7 @@ export default class FindAPair {
   }
 
   async init() {
-    this.level = Number(localStorage.level) || 1;
+    this.level = Number(localStorage.level) || 0;
     this.fixedCards = 0;
     this.gameStarted = false;
     this.gameOnPause = false;
@@ -50,8 +50,7 @@ export default class FindAPair {
     this.preloader = new Preloader();
     this.preloader.render();
     this.ShortTermStatistics = new ShortTermStatisctics();
-    const StartPage = new StartWindow();
-    this.StartWindow = StartPage.render('Find a pair', findAPairText.about, (this.startGame).bind(this));
+    this.StartWindow = new StartWindow((this.startGame).bind(this));
     this.CloseButton = new CloseButton();
     this.Vocabulary = new Vocabulary(this.user);
     await this.Vocabulary.init();
@@ -68,12 +67,13 @@ export default class FindAPair {
     if (!this.container) {
       this.container = create('div', 'find-a-pair', undefined, this.main, ['id', 'find-a-pair']);
     }
-    this.container.append(this.StartWindow);
+    this.container.append(this.StartWindow.render('Find a pair', findAPairText.about, this.checkWordsCountInVocabulary()));
     this.container.classList.add('find-a-pair__start-page');
   }
 
-  async startGame(collection) {
+  async startGame(collection, group) {
     this.preloader.show();
+    this.level = group || 0;
     this.data = await this.getCardsData(collection);
     this.findPairs = 0;
     this.clearTimer();
@@ -129,23 +129,23 @@ export default class FindAPair {
       console.log('Words from User collection');
     } else {
       const page = Math.floor(Math.random() * findAPairConst.maxPages);
-      words = await getWords(page, this.level - 1);
+      words = wordsFilter(await getWords(page, this.level));
       console.log('Words from base collection');
     }
 
     if (!words.length) {
       this.getCardsData();
     }
-    this.words = shuffle(wordsFilter(words), findAPairConst.cardsCount);
+    this.words = shuffle(words, findAPairConst.cardsCount);
     const arrCards = [];
     this.words.forEach((el) => {
       arrCards.push({
-        word: el.word,
-        pair: el.word,
+        word: el?.optional?.allData.word || el.word,
+        pair: el?.optional?.allData.word || el.word,
       });
       arrCards.push({
-        word: el.wordTranslate,
-        pair: el.word,
+        word: el?.optional?.allData.wordTranslate || el.wordTranslate,
+        pair: el?.optional?.allData.word || el.word,
       });
     });
 
@@ -186,6 +186,17 @@ export default class FindAPair {
     }, this.settings.delayBeforeClosingCard);
   }
 
+  addWordToLearned(wordArr) {
+    const promsArr = [];
+    if (wordArr.length) {
+      wordArr.forEach((word) => {
+        promsArr.push(this.Vocabulary.addWordToTheVocabulary(word, LEARNED_WORDS_TITLE));
+      });
+    }
+
+    Promise.all(promsArr);
+  }
+
   playAudio(file) {
     this.audioObj.src = `./src/assets/audio/${file}.mp3`;
     this.audioObj.play();
@@ -204,6 +215,8 @@ export default class FindAPair {
     this.clearTimer();
     this.saveStats();
     const resWords = FindAPair.getResultWords(this.words, this.openedWords);
+
+    this.addWordToLearned(resWords.correct);
 
     this.ShortTermStatistics.render(resWords.wrong, resWords.correct);
     this.ShortTermStatistics.addCallbackFnOnClose((this.newGameHandler).bind(this));
@@ -309,5 +322,10 @@ export default class FindAPair {
       correct: correctWords,
       wrong: wrongWords,
     };
+  }
+
+  checkWordsCountInVocabulary() {
+    console.log(this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE));
+    return (this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= findAPairConst.cardsCount);
   }
 }
