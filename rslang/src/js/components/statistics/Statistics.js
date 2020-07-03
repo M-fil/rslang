@@ -45,7 +45,6 @@ export default class Statistics {
         optional: {},
       };
     }
-    console.log('>', this.statistics);
   }
 
   async saveStatistics() {
@@ -77,23 +76,55 @@ export default class Statistics {
     }
   }
 
-  async saveGameStatistics(group, correct, wrong, learnedWords, additionalObject) {
-    console.log(this.statistics);
+  async saveMainGameStatistics(incrementPlayingCount, correct, wrong, learnedWords, additionalObject) {
+    const group = 'maingame';
     this.controlGroupInStatistics(group);
 
-    this.statistics.optional[this.currentdate][group].playingCount += 1;
-    this.statistics.optional[this.currentdate][group].correctAnswers += correct;
-    this.statistics.optional[this.currentdate][group].wrongAnswers += wrong;
+    if (incrementPlayingCount) {
+      this.incrementPlayingCounts(group);
+    }
+
+    this.updateAnswersStatistics(group, correct, wrong);
 
     if (learnedWords) {
       this.updateLearnedWords(group, learnedWords);
     }
 
     if (additionalObject) {
-      this.statistics.optional[this.currentdate][group].additional = additionalObject;
+      this.addAdditionalObject(group, additionalObject);
     }
 
     await this.saveStatistics();
+  }
+
+  async saveGameStatistics(group, correct, wrong, learnedWords, additionalObject) {
+    this.controlGroupInStatistics(group);
+
+    this.incrementPlayingCounts(group);
+    this.updateAnswersStatistics(group, correct, wrong);
+
+    if (learnedWords) {
+      this.updateLearnedWords(group, learnedWords);
+    }
+
+    if (additionalObject) {
+      this.addAdditionalObject(group, additionalObject);
+    }
+
+    await this.saveStatistics();
+  }
+
+  incrementPlayingCounts(group) {
+    this.statistics.optional[this.currentdate][group].playingCount += 1;
+  }
+
+  updateAnswersStatistics(group, correct, wrong) {
+    this.statistics.optional[this.currentdate][group].correctAnswers += correct;
+    this.statistics.optional[this.currentdate][group].wrongAnswers += wrong;
+  }
+
+  addAdditionalObject(group, additionalObject) {
+    this.statistics.optional[this.currentdate][group].additional = additionalObject;
   }
 
   static createStatisticObject() {
@@ -334,16 +365,17 @@ export default class Statistics {
 
     return resObj;
   }
-  getCharts(){
+
+  getCharts() {
     const chrt = new chart();
     const learnedWordsData = this.getLearnedWordsByDate();
     const summaryByAnswers = this.getSummaryByAnswers();
     const summaryByGames = this.getSummaryByGames();
     console.log('summaryByGames',summaryByGames);
-    setTimeout( () =>{
-    chrt.summaryByAnswersChart(summaryByAnswers);
-    chrt.summaryByGamesChart(summaryByGames);
-    chrt.learnedWordsChart(this.statistics.learnedWords,learnedWordsData);
-  },5000);
+    setTimeout(() => {
+      chrt.summaryByAnswersChart(summaryByAnswers);
+      chrt.summaryByGamesChart(summaryByGames);
+      chrt.learnedWordsChart(this.statistics.learnedWords,learnedWordsData);
+    },5000);
   }
 }
