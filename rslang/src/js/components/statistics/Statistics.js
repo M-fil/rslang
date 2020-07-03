@@ -382,7 +382,6 @@ export default class Statistics {
     const learnedWordsData = this.getLearnedWordsByDate();
     const summaryByAnswers = this.getSummaryByAnswers();
     const summaryByGames = this.getSummaryByGames();
-    console.log('summaryByGames', summaryByGames);
     setTimeout(() => {
       chrt.summaryByAnswersChart(summaryByAnswers);
       chrt.summaryByGamesChart(summaryByGames);
