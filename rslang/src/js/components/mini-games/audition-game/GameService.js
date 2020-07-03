@@ -3,20 +3,27 @@ import GameDataService from './GameDataService';
 import GameStatistic from './GameStatistic';
 import create from '../../../utils/сreate';
 import { shuffle } from '../../../utils/shuffle';
-import { urls, auditionGameVariables } from '../../../constants/constants';
+import { urls, auditionGameVariables, vocabularyConstants } from '../../../constants/constants';
 import Preloader from '../../preloader/Preloader';
+import Vocabulary from  '../../vocabulary/Vocabulary'
 
 export default class GameService {
   constructor(user) {
     this.user = user;
+   /* this.user = {
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZmNlZGJmMjM3ODBlMDAxNzQ4N2MyYSIsImlhdCI6MTU5MzcxMTAxMSwiZXhwIjoxNTkzNzI1NDExfQ.ffkTcQtdTj6BvZnHiG9wbZ1cxgr_kK0IcjJ76bdnuSM',
+      userId: '5efcedbf23780e0017487c2a',
+      };*/
   }
 
-  preloaderInit() {
+  async preloaderInit() {
     this.preloader = new Preloader();
     this.preloader.render();
     this.isMuted = false;
     this.isHintAvailable = true;
     this.correctAnswersCounter = 0;
+    this.vocabulary = new Vocabulary(this.user);
+    await this.vocabulary.init();
   }
 
   async initRound(lives, roundsAll, currentRound, roundResults) {
@@ -88,6 +95,7 @@ export default class GameService {
 
           this.nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound, roundResults);
         } else {
+          this.vocabulary.addWordToTheVocabulary(mainWord, vocabularyConstants.WORDS_TO_LEARN_TITLE);
           this.correctAnswersCounter = 0;
           const audioRoundResult = new Audio(urls.errorSound);
           if (!this.sound.classList.contains('audition-game__sound__buttonMuted')) audioRoundResult.play();

@@ -7,6 +7,7 @@ import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import AuditionGame from '../mini-games/audition-game/AuditionGame';
 
 import {
   createUser,
@@ -110,8 +111,9 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+     // await App.renderMainGame(this.state.user);
+      // await this.renderVocabulary(this.state.user);
+      this.auditiongame(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -148,8 +150,9 @@ class App {
         token: JSON.parse(savedUserData).token,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      //await App.renderMainGame(this.state.user);
+      //await this.renderVocabulary(this.state.user);
+      this.auditiongame(this.state.user);
     } catch (error) {
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
@@ -159,11 +162,17 @@ class App {
       this.activateAuthenticationForm();
       this.prelodaer.hide();
     }
+    this.prelodaer.hide();
   }
 
   static async renderMainGame(userState) {
     const mainGame = new MainGame(userState);
     await mainGame.render('.main-content');
+    
+  }
+  auditiongame(userState){
+    const audition = new AuditionGame(userState);
+    audition.render(auditionGameVariables.Lives,auditionGameVariables.Rounds);
   }
 
   renderToggleAuthentication() {

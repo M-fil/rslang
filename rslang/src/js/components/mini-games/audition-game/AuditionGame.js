@@ -9,7 +9,7 @@ export default class AuditionGame {
 
   render(lives, roundsAll) {
     const wrapper = create('div', 'audition-game__wrapper', '', document.querySelector('body'));
-    this.gameService = new GameService();
+    this.gameService = new GameService(this.user);
     const gameStartScreen = new StartGameScreen();
     const gameStartButton = gameStartScreen.createStartScreen();
     const roundResults = [];
