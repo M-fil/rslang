@@ -47,6 +47,8 @@ const wordsToLearnSelectConstants = {
   SELECT_TITLE: 'Какие слова учить?',
   SELECT_OPTION_LEARNED_WORDS: 'Уже изученные слова',
   SELECT_OPTION_WORDS_FROM_COLLECTIONS: 'Слова из коллекций',
+  SELECT_OPTION_LEARNED_WORDS_VALUE: 'LEARNED_WORDS',
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE: 'WORDS_FROM_COLLECTIONS',
 };
 
 const errorTypes = {
@@ -178,9 +180,9 @@ const settingsText = {
       imageAssociations: 'Отображать изображение',
     },
     findapair: {
-      delayBeforeClosingCard: 'Задержка при закрытии карточек',
+      delayBeforeClosingCard: 'Задержка при закрытии карточек (с)',
       showCardsTextOnStart: 'Показывать текст карточек при старте игры',
-      showingCardsTime: 'Время показа карточек',
+      showingCardsTime: 'Время показа карточек (с)',
     },
   },
 };
@@ -215,8 +217,8 @@ export {
   vocabularyConstants,
   dailyStatisticsConstants,
   settingsText,
+  wordsToLearnSelectConstants,
   modalConstants,
   shortTermStatisticsConstants,
-  wordsToLearnSelectConstants,
   startWindow,
 };
