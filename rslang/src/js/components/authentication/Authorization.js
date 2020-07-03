@@ -1,11 +1,11 @@
-import { authenticationTexts } from '../../constants/constants';
+import { authenticationConstants } from '../../constants/constants';
 
 import Authentication from './Authentication';
 
 const {
   AUTHORIZATION_TITLE,
   LOGIN_BUTTON_TEXT,
-} = authenticationTexts;
+} = authenticationConstants;
 
 class Authorization extends Authentication {
   constructor() {

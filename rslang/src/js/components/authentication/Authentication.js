@@ -1,11 +1,11 @@
 import create from '../../utils/сreate';
-import { authenticationTexts, errorTypes } from '../../constants/constants';
+import { authenticationConstants, errorTypes } from '../../constants/constants';
 import { checkPassword } from '../../utils/validators';
 
 const {
   PASSWORD_LABEL_TEXT,
   EMAIL_LABEL_TEXT,
-} = authenticationTexts;
+} = authenticationConstants;
 
 const {
   EMPTY_FIELD,

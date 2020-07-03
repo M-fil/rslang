@@ -12,14 +12,17 @@ const urls = {
   errorSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3',
   WORDS_DATA_URL_ADDITIONAL:'https://wordsapiv1.p.rapidapi.com/words/',
 };
-
-const authenticationTexts = {
+const authenticationConstants = {
   AUTHORIZATION_TITLE: 'Авторизация',
   REGISTRATION_TITLE: 'Регистрация',
   PASSWORD_LABEL_TEXT: 'пароль',
   EMAIL_LABEL_TEXT: 'email',
+  NAME_LABEL_TEXT: 'Имя',
   LOGIN_BUTTON_TEXT: 'Войти',
   REGISTER_BUTTON_TEXT: 'Создать',
+  AUTHORIZATION_KEY: 'authorization',
+  REGISTRATION_KEY: 'registration',
+  MAX_NAME_LENGTH: 30,
 };
 
 const errorTypes = {
@@ -232,7 +235,7 @@ export {
   urls,
   auditionGameVariables,
   findAPairText,
-  authenticationTexts,
+  authenticationConstants,
   errorTypes,
   mainGameConstants,
   estimateButtonsTypes,
