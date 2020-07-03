@@ -8,9 +8,11 @@ import {
 import {
   getWords,
 } from '../../../service/service';
+import getRandomInteger from '../../../utils/random';
 import {
   urls,
   wordsToLearnSelectConstants,
+  vocabularyConstants,
 } from '../../../constants/constants';
 import {
   GAME_BLOCK,
@@ -23,10 +25,10 @@ import Preloader from '../../preloader/preloader';
 import StartWindow from '../common/StartWindow';
 import CloseButton from '../common/CloseButton';
 import Vocabulary from '../../vocabulary/Vocabulary';
-// import Statistics from '../../statistics/Statistics';
+import Statistics from '../../statistics/Statistics';
 
 const {
-  SELECT_OPTION_LEARNED_WORDS,
+  SELECT_OPTION_LEARNED_WORDS_VALUE,
 } = wordsToLearnSelectConstants;
 
 export default class EnglishPuzzle {
@@ -37,10 +39,14 @@ export default class EnglishPuzzle {
     this.resultForm = createResultBlock();
 
     this.vocabulary = new Vocabulary(userState);
-    // this.statistics = new Statistics(userState);
+    this.vocabulary.init();
+    this.statistics = new Statistics(userState);
+    this.preloader = new Preloader();
 
     this.sinth = window.speechSynthesis;
     this.actualSentenses = null;
+
+    this.words = null;
     this.actualTranslate = null;
     this.actualCards = null;
     this.activeSentenseCounter = 0;
@@ -53,16 +59,17 @@ export default class EnglishPuzzle {
 
   async start() {
     const gameZone = new MainBlock();
-    const startWindow = new StartWindow();
-    const buttonForClose = new CloseButton();
+    const startWindow = new StartWindow((this.startMenuButtonAction).bind(this));
+    const clsButton = new CloseButton();
+    clsButton.show();
+    this.closeButton = clsButton.render();
     this.gameForm = gameZone.createMainForm();
-    this.startMenu = create('div', 'start-window', startWindow.render(START_WINDOW.title, START_WINDOW.description, (this.startMenuButtonAction).bind(this)));
-    this.closeButton = buttonForClose.show();
+    this.startMenu = create('div', 'start-window', startWindow.render(START_WINDOW.title, START_WINDOW.description, true));
+    this.preloader.render();
+
     [this.body] = document.getElementsByTagName('body');
     this.wrapper = create('div', 'english-puzzle-wrapper', [this.startMenu, this.gameForm, this.resultForm, this.closeButton]);
     this.body.appendChild(this.wrapper);
-    this.preloader = new Preloader();
-    this.preloader.render();
 
     this.actionsOnSupportButtons();
     this.controlButtonsAction();
@@ -84,20 +91,17 @@ export default class EnglishPuzzle {
   }
 
   async getGameCards() {
-    let level;
-    let page;
-    let words;
+    const page = getRandomInteger(0, GAME_BLOCK.gamePages);
+    const lvl = getRandomInteger(0, GAME_BLOCK.gameLevels);
     switch (this.gameStatus) {
-      case SELECT_OPTION_LEARNED_WORDS:
+      case SELECT_OPTION_LEARNED_WORDS_VALUE:
+        this.painting = findPainting(lvl, page);
         break;
       default:
-        viewElement([], [document.querySelector('.select-block-container')]);
-        level = document.querySelector('.level').value - 1;
-        page = 0;
-        words = await getWords(page, level);
+        this.words = await getWords(page, this.gameLvl);
+        this.painting = findPainting(this.gameLvl + 1, page + 1);
         break;
     }
-    this.painting = findPainting(level + 1, page + 1);
     const imageUrl = urls.GET_PAINTING(this.painting.imageSrc);
     this.paintingText = `${this.painting.author}, ${this.painting.name} (${this.painting.year})`;
     this.actualSentenses = [];
@@ -111,8 +115,8 @@ export default class EnglishPuzzle {
     document.querySelector('.game-block_field--background').style.backgroundImage = `url(${imageUrl})`;
 
     for (let i = 0; i < GAME_BLOCK.gameZoneRows; i += 1) {
-      this.actualSentenses.push(words[i].textExample);
-      this.actualTranslate.push(words[i].textExampleTranslate);
+      this.actualSentenses.push(this.words[i].textExample);
+      this.actualTranslate.push(this.words[i].textExampleTranslate);
     }
 
     this.actualCards = await createCanvasElements({
@@ -138,8 +142,6 @@ export default class EnglishPuzzle {
       }
     } else if (this.activeSentenseCounter + 1 === GAME_BLOCK.gameZoneRows) {
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
-        const page = document.querySelector('.page');
-        page.value = Number(page.value) + 1;
         await this.getCardsAndStartGame();
         viewElement([
           document.querySelector('.game-block_field--background'),
@@ -223,6 +225,7 @@ export default class EnglishPuzzle {
     cleanParentNode(this.activeRow);
 
     this.falseAnswers.push(this.actualSentenses[this.activeSentenseCounter]);
+    this.addWordToCollectionWordsToLern();
     this.activeSentenseForCheck.forEach((el) => {
       const elem = el;
       elem.classList.remove('active-card');
@@ -230,6 +233,11 @@ export default class EnglishPuzzle {
       elem.removeEventListener('click', this.cardClickAction);
       this.activeRow.appendChild(elem);
     });
+  }
+
+  async addWordToCollectionWordsToLern() {
+    await this.vocabulary.addWordToTheVocabulary(this.words[this.activeSentenseCounter],
+      vocabularyConstants.WORDS_TO_LEARN_TITLE);
   }
 
   showActualPainting() {
@@ -334,8 +342,9 @@ export default class EnglishPuzzle {
     }
   }
 
-  async startMenuButtonAction() {
-    this.gameStatus = document.querySelector('.select__item').value;
+  async startMenuButtonAction(collection, lvl) {
+    this.gameStatus = collection;
+    this.gameLvl = lvl;
     viewElement([this.startMenu], []);
     await this.getCardsAndStartGame();
     viewElement([], [this.gameForm]);
@@ -536,11 +545,6 @@ export default class EnglishPuzzle {
   actionsOnModalWindow() {
     document.querySelector('.close_button').addEventListener('click', () => {
       viewElement([this.gameForm], [this.startMenu]);
-      this.modalWindow.hide();
-    });
-
-    document.querySelector('.cancel_button').addEventListener('click', () => {
-      this.modalWindow.hide();
     });
   }
 }

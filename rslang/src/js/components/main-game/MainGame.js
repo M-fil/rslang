@@ -339,7 +339,7 @@ class MainGame {
     }
 
     return {
-      userId: this.state.userState.id,
+      userId: this.state.userState.userId,
       token: this.state.userState.token,
     };
   }

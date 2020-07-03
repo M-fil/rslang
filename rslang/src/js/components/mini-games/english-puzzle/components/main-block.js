@@ -33,27 +33,9 @@ export default class MainBlock {
     return gameContainer;
   }
 
-  static selectFill(numberOfRows) {
-    const masOfOptions = [];
-    for (let i = 1; i <= numberOfRows; i += 1) {
-      const el = create('option', 'select-option');
-      el.value = i;
-      el.label = i;
-      masOfOptions.push(el);
-    }
-    return create('select', 'select-block_mode', masOfOptions);
-  }
-
   static createSelectBlock() {
     const searchButton = create('div', 'new_lvl-button', '<i class="fas fa-search"></i>');
-    const selectDescription = create('p', 'select-block_description');
-    const select = MainBlock.selectFill(GAME_BLOCK.gameLevels);
-    selectDescription.textContent = GAME_BLOCK.level;
-    select.classList.add('level');
-    const selectBlock = create('div', 'select-block', [selectDescription, select]);
-    const selectBlockContainer = create('div', 'select-block-container', selectBlock);
-    viewElement([selectBlockContainer], []);
-    return create('div', 'game-mode-selects', [selectBlockContainer, searchButton]);
+    return create('div', 'game-mode-selects', searchButton);
   }
 
   createControlButtons() {
