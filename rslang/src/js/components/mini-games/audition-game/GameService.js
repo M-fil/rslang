@@ -27,12 +27,14 @@ export default class GameService {
   }
 
   async initRound(lives, roundsAll, currentRound, roundResults) {
+    console.log('init');
     this.preloader.show();
     const gameDataService = new GameDataService();
     const data = await gameDataService.mapping(currentRound, this.isMuted);
     const answers = document.querySelector('.audition-game__answers');
     const arr = data.array;
     const mainWord = data.mainWordToAsk;
+    this.testObj = data.test;
     this.createPossibleWords(arr, answers);
     const audio = new Audio(`${urls.mainAudioPath}${mainWord.audio}`);
     audio.play();

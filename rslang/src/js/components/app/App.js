@@ -171,8 +171,9 @@ class App {
     
   }
   auditiongame(userState){
+    console.log('auditoingame');
     const audition = new AuditionGame(userState);
-    audition.render(auditionGameVariables.Lives,auditionGameVariables.Rounds);
+    audition.render(5,5);
   }
 
   renderToggleAuthentication() {

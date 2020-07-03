@@ -27,7 +27,7 @@ export default class GameDataService {
       const partOfSpeech = test.results ? test?.results[0]?.partOfSpeech : auditionGameVariables.IDK;
       if (this.shuffledValue[i]?.wordTranslate) {
         wordsInfo.push({
-          word: this.shuffledValue[i].word, translate: this.shuffledValue[i].wordTranslate, audio: this.shuffledValue[i].audio, partOfSpeech, image: this.shuffledValue[i].image,
+          word: this.shuffledValue[i].word, translate: this.shuffledValue[i].wordTranslate, audio: this.shuffledValue[i].audio, partOfSpeech, image: this.shuffledValue[i].image, id: this.shuffledValue[i].id,
         });
       }
     }
@@ -35,6 +35,6 @@ export default class GameDataService {
     const possibleAnswers = filteredWordsInfo.slice(0, auditionGameVariables.possibleWordsAmount);
     const mainWordToAsk = possibleAnswers[0];
     const shuffledPossibleAnswers = shuffle(possibleAnswers);
-    return { mainWordToAsk, array: shuffledPossibleAnswers };
+    return { mainWordToAsk, array: shuffledPossibleAnswers , test:this.shuffledValue[0]};
   }
 }

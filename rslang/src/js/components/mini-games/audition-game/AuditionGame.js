@@ -13,7 +13,7 @@ export default class AuditionGame {
     const gameStartScreen = new StartGameScreen();
     const gameStartButton = gameStartScreen.createStartScreen();
     const roundResults = [];
-
+    console.log('rendr');
     gameStartButton.addEventListener('click', async () => {
       document.querySelector('.audition-game__startScreen').classList.toggle('hide');
       this.gameService.preloaderInit();
