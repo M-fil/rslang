@@ -19,23 +19,23 @@ const {
 
 export default class ShortTermStatistics extends ModalWindow {
   render(wrongWords, rightWords) {
-    if (!this.initialized) {
-      this.initialized = true;
-      ModalWindow.changeDisplay(this.modal, 'block');
-      ModalWindow.changeDisplay(this.modalCancel, 'none');
-      this.modalTitle.innerHTML = STAT_TITLE;
-      this.modalWarning.innerHTML = null;
-      this.modalClose.innerHTML = STAT_CLOSE;
-      this.audio = new Audio();
-      this.statisticaWrongWordsText = create('p', 'modal_title', `${ERROR_STAT} ${wrongWords.length}`, this.modalText);
-      this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
-      this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${rightWords.length}`, this.modalText);
-      this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
+    ModalWindow.changeDisplay(this.modal, 'block');
+    ModalWindow.changeDisplay(this.modalCancel, 'none');
+    this.modalTitle.innerHTML = STAT_TITLE;
+    this.modalWarning.innerHTML = null;
+    this.modalClose.innerHTML = STAT_CLOSE;
+    this.audio = new Audio();
 
-      ShortTermStatistics.statisticaWords(wrongWords, this.statisticaWrongWords);
-      ShortTermStatistics.statisticaWords(rightWords, this.statisticaRightWords);
-      this.clickStatisticaAudio();
-    }
+    ShortTermStatistics.clearstatisticaWords();
+
+    this.statisticaWrongWordsText = create('p', 'modal_title', `${ERROR_STAT} ${wrongWords.length}`, this.modalText);
+    this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
+    this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${rightWords.length}`, this.modalText);
+    this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
+
+    ShortTermStatistics.statisticaWords(wrongWords, this.statisticaWrongWords);
+    ShortTermStatistics.statisticaWords(rightWords, this.statisticaRightWords);
+    this.clickStatisticaAudio();
   }
 
   static statisticaWords(arrayWords, container) {
@@ -57,5 +57,16 @@ export default class ShortTermStatistics extends ModalWindow {
         this.audio.play();
       }
     });
+  }
+
+  static clearstatisticaWords() {
+    const wrongWords = document.querySelector('#short_term_wrong_words');
+    if (wrongWords) {
+      wrongWords.remove();
+    }
+    const rightWords = document.querySelector('#short_term_right_words');
+    if (rightWords) {
+      rightWords.remove();
+    }
   }
 }
