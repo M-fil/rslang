@@ -14,10 +14,11 @@ import {
   createUser,
   loginUser,
   getUserById,
+  getRefreshToken,
 } from '../../service/service';
 import {
   errorTypes,
-  authenticationTexts,
+  authenticationConstants,
 } from '../../constants/constants';
 
 const {
@@ -27,7 +28,7 @@ const {
 const {
   AUTHORIZATION_TITLE,
   REGISTRATION_TITLE,
-} = authenticationTexts;
+} = authenticationConstants;
 
 class App {
   constructor() {
@@ -35,8 +36,10 @@ class App {
       user: {
         isAuthrorized: false,
         userId: '',
+        refreshToken: '',
         token: '',
         email: '',
+        name: '',
       },
       vocabulary: {},
       settings: {},
@@ -46,9 +49,19 @@ class App {
     this.container = null;
   }
 
-  run() {
+  async run() {
     this.container = create('main', 'main-content', '', document.body);
-    this.checkIsUserAuthorized();
+    try {
+      await this.checkIsUserAuthorized();
+    } catch (error) {
+      localStorage.setItem('user-data', '');
+      this.state.user.isAuthrorized = false;
+      this.container.innerHTML = '';
+      this.renderAuthenticationBlock('authorization');
+      this.renderToggleAuthentication();
+      this.activateAuthenticationForm();
+      this.prelodaer.hide();
+    }
   }
 
   async initSettings() {
@@ -109,6 +122,8 @@ class App {
           ...this.state.user,
           userId: data.userId,
           token: data.token,
+          refreshToken: data.refreshToken,
+          name: data.name,
         },
       };
       document.querySelector('.authentication').remove();
@@ -149,18 +164,23 @@ class App {
         userId: data.id,
         email: data.email,
         token: JSON.parse(savedUserData).token,
+        refreshToken: JSON.parse(savedUserData).refreshToken,
+        name: data.name,
       };
       await this.initSettings();
       await this.renderSpeakItGame();
       this.prelodaer.hide();
     } catch (error) {
-      localStorage.setItem('user-data', '');
-      this.state.user.isAuthrorized = false;
-      this.container.innerHTML = '';
-      this.renderAuthenticationBlock('authorization');
-      this.renderToggleAuthentication();
-      this.activateAuthenticationForm();
-      this.prelodaer.hide();
+      const parsedData = JSON.parse(savedUserData);
+      const { userId, refreshToken } = parsedData;
+      const data = await getRefreshToken(userId, refreshToken);
+      this.state.user = {
+        ...this.state.user,
+        ...data,
+      };
+      await this.initSettings();
+      await App.renderMainGame(this.state.user);
+      await this.renderVocabulary(this.state.user);
     }
   }
 
