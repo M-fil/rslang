@@ -268,15 +268,15 @@ class MainGame {
     }
   }
 
-  async setStatisticsData() {
+  async setStatisticsData(incrementPlayingCount = null) {
     console.log('setStatisticsData', this.state.stats.additional);
     const mainGameAdditional = JSON.stringify(this.state.stats.additional);
     const { commonMistakesNumber } = this.state.stats;
     console.log('this.state.stats', this.state.stats)
     const { correctAnswersNumber, learnedWordsToday } = this.state.stats;
     console.log('this.state.stats.commonMistakesNumber', this.state.stats.commonMistakesNumber);
-    await this.statistics.saveGameStatistics(
-      'maingame', correctAnswersNumber > 1 ? 1 : correctAnswersNumber,
+    await this.statistics.saveMainGameStatistics(
+      incrementPlayingCount, correctAnswersNumber > 1 ? 1 : correctAnswersNumber,
       commonMistakesNumber > 1 ? 1 : commonMistakesNumber, 
       learnedWordsToday > 1 ? 1 : learnedWordsToday,
       mainGameAdditional,
