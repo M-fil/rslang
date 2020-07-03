@@ -30,17 +30,44 @@ export default class ModalWindow {
       this.modalClose = create('button', 'modal_button close_button', CLOSE_BUTTON, this.modalText);
       this.modalCancel = create('button', 'modal_button cancel_button', CANCEL_BUTTON, this.modalText);
     }
+    this.modalClose.addEventListener('click', (this.closeButtonHandler).bind(this));
+    this.modalCancel.addEventListener('click', (this.cancelButtonHandler).bind(this));
   }
 
   show() {
     ModalWindow.changeDisplay(this.modal, 'block');
-    this.modalCancel.addEventListener('click', (this.hide).bind(this));
   }
 
   hide(callbackFn) {
     ModalWindow.changeDisplay(this.modal, 'none');
     if (typeof callbackFn === 'function') {
       callbackFn();
+    }
+  }
+
+  closeButtonHandler() {
+    this.hide();
+    if (this.CallbackFnOnClose) {
+      this.CallbackFnOnClose();
+    }
+  }
+
+  cancelButtonHandler() {
+    this.hide();
+    if (this.CallbackFnOnCancel) {
+      this.CallbackFnOnCancel();
+    }
+  }
+
+  addCallbackFnOnClose(callbackFn) {
+    if (typeof callbackFn === 'function') {
+      this.CallbackFnOnClose = callbackFn;
+    }
+  }
+
+  addCallbackFnOnCancel(callbackFn) {
+    if (typeof callbackFn === 'function') {
+      this.CallbackFnOnCancel = callbackFn;
     }
   }
 
