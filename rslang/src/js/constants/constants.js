@@ -9,13 +9,17 @@ const urls = {
   STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
-const authenticationTexts = {
+const authenticationConstants = {
   AUTHORIZATION_TITLE: 'Авторизация',
   REGISTRATION_TITLE: 'Регистрация',
   PASSWORD_LABEL_TEXT: 'пароль',
   EMAIL_LABEL_TEXT: 'email',
+  NAME_LABEL_TEXT: 'Имя',
   LOGIN_BUTTON_TEXT: 'Войти',
   REGISTER_BUTTON_TEXT: 'Создать',
+  AUTHORIZATION_KEY: 'authorization',
+  REGISTRATION_KEY: 'registration',
+  MAX_NAME_LENGTH: 30,
 };
 
 const wordsToLearnSelectConstants = {
@@ -36,7 +40,7 @@ const wordsToLearnSelectConstants = {
 };
 
 const errorTypes = {
-  EMPTY_FIELD: 'Пароль и почта должны быть заполнены.',
+  EMPTY_FIELD: 'Имя, почта и пароль должны быть заполнены.',
   INCORRECT_VALUES: 'Поля заполнены неверно.',
   PASSWORD_REQUIRMENTS: 'Пароль должен содержать не менее 8 символов, как минимум одну прописную букву, одну заглавную букву, одну цифру и один спецсимвол',
   INCORRECT_EMAIL: 'email введен неверно.',
@@ -46,6 +50,7 @@ const errorTypes = {
   STATUS_200: 200,
   USER_IS_NOT_AUTHORIZED: 'Пользователь не авторизирован',
   USER_NOT_FOUND: 'Такого пользователя не существует. Пожалуйста, проверьте введенные данные.',
+  EXCEEDED_NAME_LENGTH: 'Длина поля "Имя" не должна превышать 30 символов',
 };
 
 const mainGameConstants = {
@@ -193,7 +198,7 @@ const startWindow = {
 export {
   urls,
   findAPairText,
-  authenticationTexts,
+  authenticationConstants,
   errorTypes,
   mainGameConstants,
   estimateButtonsTypes,
