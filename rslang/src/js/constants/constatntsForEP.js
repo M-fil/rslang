@@ -1,6 +1,6 @@
 const START_WINDOW = {
   title: 'ENGLISH PUZZLE',
-  descrption: 'Нажимайте на слова, собирайте фразы. Слова могут быть перетянуты. Выберайте подсказки. После угаданного предложения используйте бонус.',
+  description: 'Нажимайте на слова, собирайте фразы. Слова могут быть перетянуты. \nВыберайте подсказки. После угаданного предложения используйте бонус.',
   startButton: 'Старт',
 };
 
@@ -18,7 +18,7 @@ const GAME_BLOCK = {
   gameMode: 2,
   gameLevels: 6,
   gamePages: 30,
-  controlButtons: 4,
+  controlButtons: 3,
   gameZoneRows: 10,
 };
 

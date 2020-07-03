@@ -1,4 +1,3 @@
-import createStartWindow from './components/start-menu';
 import MainBlock from './components/main-block';
 import createResultBlock from './components/result-block';
 import create from '../../../utils/сreate';
@@ -15,16 +14,19 @@ import {
 import {
   GAME_BLOCK,
   RESULT_FORM,
+  START_WINDOW,
 } from '../../../constants/constatntsForEP';
 import createCanvasElements from './components/game-field';
 import findPainting from './components/select-painting';
 import Preloader from '../../preloader/preloader';
-import ModalWindow from '../common/ModalWindow';
+import StartWindow from '../common/StartWindow';
+import CloseButton from '../common/CloseButton';
 
 export default class EnglishPuzzle {
   constructor() {
-    this.startMenu = createStartWindow();
     this.gameForm = null;
+    this.startMenu = null;
+    this.closeButton = null;
     this.resultForm = createResultBlock();
     this.sinth = window.speechSynthesis;
     this.actualSentenses = null;
@@ -40,15 +42,17 @@ export default class EnglishPuzzle {
 
   start() {
     const gameZone = new MainBlock();
+    const startWindow = new StartWindow();
+    const buttonForClose = new CloseButton();
     this.gameForm = gameZone.createMainForm();
+    this.startMenu = create('div', 'start-window', startWindow.render(START_WINDOW.title, START_WINDOW.description, (this.startMenuButtonAction).bind(this)));
+    this.closeButton = buttonForClose.show();
     [this.body] = document.getElementsByTagName('body');
-    this.wrapper = create('div', 'wrapper', [this.startMenu, this.gameForm, this.resultForm]);
+    this.wrapper = create('div', 'wrapper', [this.startMenu, this.gameForm, this.resultForm, this.closeButton]);
     this.body.appendChild(this.wrapper);
     this.preloader = new Preloader();
     this.preloader.render();
-    this.modalWindow = new ModalWindow();
 
-    this.startMenuButtonAction();
     this.actionsOnSupportButtons();
     this.controlButtonsAction();
     this.actionsOnModalWindow();
@@ -153,7 +157,6 @@ export default class EnglishPuzzle {
     }
 
     if (mistakeCounter === 0) {
-      this.statictic.correctAnswers += 1;
       this.rightAnswers.push(this.actualSentenses[this.activeSentenseCounter]);
       this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter]);
       document.querySelector('.bonus-button').classList.add('active-bonus');
@@ -164,7 +167,6 @@ export default class EnglishPuzzle {
         elem.removeEventListener('click', this.cardClickAction);
       });
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
-        this.statictic.playingCount += 1;
         viewElement([
           document.querySelector('.game-block_field--puzzle-container'),
         ], [
@@ -195,7 +197,6 @@ export default class EnglishPuzzle {
 
   showCorrectSentens() {
     const sentensBase = document.querySelector('.game-block_field--description');
-    this.statictic.wrongAnswers += 1;
 
     cleanParentNode(sentensBase);
     cleanParentNode(this.activeRow);
@@ -295,7 +296,7 @@ export default class EnglishPuzzle {
 
   static createResultRow(mas) {
     const sentenses = mas.map((el) => {
-      const dinamic = create('div', 'result-row_sound');
+      const dinamic = create('div', 'result-row_sound', '<i class="fas fa-volume-up"></i>');
       const text = create('p', 'result-row_text');
       text.textContent = EnglishPuzzle.createCorrectSentence(el);
       return create('div', 'result-row', [dinamic, text]);
@@ -312,18 +313,10 @@ export default class EnglishPuzzle {
     }
   }
 
-  startMenuButtonAction() {
-    document.querySelector('.information-button').addEventListener('click', async () => {
-      viewElement([this.startMenu], []);
-      await this.getCardsAndStartGame();
-      viewElement([], [this.gameForm]);
-      this.statictic = {
-        playingCount: 0,
-        correctAnswers: 0,
-        wrongAnswers: 0,
-        game: GAME_BLOCK.game,
-      };
-    });
+  async startMenuButtonAction() {
+    viewElement([this.startMenu], []);
+    await this.getCardsAndStartGame();
+    viewElement([], [this.gameForm]);
   }
 
   cardClickAction(ev) {
@@ -381,14 +374,11 @@ export default class EnglishPuzzle {
 
   actionsOnSupportButtons() {
     document.querySelector('.control-buttons_container').addEventListener('click', (event) => {
-      if (event.target.classList.contains('help-button') && !event.target.classList.contains('button-logout')) {
+      if (event.target.classList.contains('help-button')) {
         event.target.classList.toggle('active-button');
+      } else if (event.target.classList.contains('fas')) {
+        event.target.parentNode.classList.toggle('active-button');
       }
-    });
-
-    document.querySelector('.button-logout').addEventListener('click', async () => {
-      this.modalWindow.show();
-      console.log(this.statictic);
     });
 
     document.querySelector('.button-sintezise').addEventListener('click', () => {
@@ -429,9 +419,11 @@ export default class EnglishPuzzle {
       localStorage.userSettings = JSON.stringify(status);
     });
 
-    document.querySelector('.sound-button').addEventListener('click', async (event) => {
+    document.querySelector('.sound-button').addEventListener('click', (event) => {
       if (event.target.classList.contains('active-sintez')) {
         this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter], event.target);
+      } else if (event.target.parentNode.classList.contains('active-sintez')) {
+        this.speachActiveSentens(this.actualSentenses[this.activeSentenseCounter], event.target.parentNode);
       }
     });
 
@@ -500,10 +492,17 @@ export default class EnglishPuzzle {
     document.querySelectorAll('.result-row').forEach((el) => {
       const components = el.childNodes;
       components[0].addEventListener('click', (event) => {
-        this.speachActiveSentens(components[1].textContent, event.target);
+        if (event.target.classList.contains('result-row_sound')) {
+          this.speachActiveSentens(components[1].textContent, event.target);
+        } else if (event.target.parentNode.classList.contains('result-row_sound')) {
+          this.speachActiveSentens(components[1].textContent, event.target.parentNode);
+        }
         if (event.target.classList.contains('active-sound')) {
           this.sinth.cancel();
           event.target.classList.remove('active-sound');
+        } else if (event.target.parentNode.classList.contains('active-sound')) {
+          this.sinth.cancel();
+          event.target.parentNode.classList.remove('active-sound');
         }
       });
     });

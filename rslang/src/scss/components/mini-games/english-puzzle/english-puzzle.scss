@@ -39,27 +39,8 @@
     transform: scale(1.1);
 }
 
-.start-block_information {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    font-weight: 500;
-    text-align: center;
-    font-size: 1.2em;
-}
-
-.information-title {
-    margin-bottom: 20px;
-    font-size: 2em;
-}
-
-.information-functionality {
-    max-width: 500px;
-    width: 100%;
-    min-width: 300px;
-    text-align: center;
+.start-game-window {
+    margin-top: 0;
 }
 
 .hidden-element {
@@ -118,8 +99,10 @@
     border-radius: 5px;
 }
 
-.control-buttons_container button, .new_lvl-button {
-    position: relative;
+.control-buttons_container div, .new_lvl-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 1px;
     width: 45px;
     height: 45px;
@@ -132,46 +115,13 @@
     font-size: 1.5em;
 }
 
-.button-sintezise::before {
-    position: absolute;
-    left: 25%;
-    bottom: 20%;
-    content: '\1F508';
-}
-
-.button-trunslate::before {
-    position: absolute;
-    left: 25%;
-    bottom: 20%;
-    content: '\240A';
-}
-
-.button-background::before {
-    position: absolute;
-    left: 25%;
-    bottom: 20%;
-    content: '\1F3B4';
-}
-
-.button-logout::before {
-    position: absolute;
-    left: 25%;
-    bottom: 20%;
-    content: '\1F6AA';
-}
-
 .sound-button {
-    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 40px;
     height: 40px;
     cursor: pointer;
-}
-
-.sound-button::before, .result-row_sound::before {
-    position: absolute;
-    left: 10%;
-    bottom: 10%;
-    content: '\1F508';
 }
 
 .sound-button_active {
@@ -193,14 +143,6 @@
     border-radius: 50%;
     background-color: $english-puzzle-button-hover-background;
 }
-
-.new_lvl-button::before {
-    position: absolute;
-    left: 25%;
-    bottom: 20%;
-    content: '\1F50E';
-}
-
 
 .control-buttons_container .active-button {
     background-color: $english-puzzle-button-hover-background;
@@ -434,9 +376,11 @@
 }
 
 .result-row_sound {
-    position: relative;
-    height: 20px;
-    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25px;
+    width: 25px;
 }
 
 .result-row_text {

@@ -46,7 +46,7 @@ export default class MainBlock {
 
   static createSelectBlock() {
     const selectsContainer = create('div', 'game-mode-selects');
-    const searchButton = create('button', 'new_lvl-button');
+    const searchButton = create('div', 'new_lvl-button', '<i class="fas fa-search"></i>');
     for (let i = 0; i < GAME_BLOCK.gameMode; i += 1) {
       const selectDescription = create('p', 'select-block_description');
       let select = null;
@@ -75,16 +75,13 @@ export default class MainBlock {
       let button = null;
       switch (i) {
         case 0:
-          button = create('button', 'button-sintezise help-button', '', buttonsContainer);
+          button = create('div', 'button-sintezise help-button', '<i class="fas fa-music"></i>', buttonsContainer);
           break;
         case 1:
-          button = create('button', 'button-trunslate help-button', '', buttonsContainer);
-          break;
-        case 2:
-          button = create('button', 'button-background help-button', '', buttonsContainer);
+          button = create('div', 'button-trunslate help-button', '<i class="fas fa-language"></i>', buttonsContainer);
           break;
         default:
-          button = create('button', 'button-logout help-button', '', buttonsContainer);
+          button = create('div', 'button-background help-button', '<i class="far fa-image"></i>', buttonsContainer);
           break;
       }
       if (buttonStutMas[i] && (i + 1 !== GAME_BLOCK.controlButtons)) {
@@ -126,7 +123,7 @@ export default class MainBlock {
   }
 
   createUserTooltips() {
-    const soundBlock = create('div', 'sound-button');
+    const soundBlock = create('div', 'sound-button', '<i class="fas fa-volume-up"></i>');
     const translateSentense = create('p', 'translate-sentense');
     if (this.buttonStat.sound) {
       soundBlock.classList.add('active-sintez');
