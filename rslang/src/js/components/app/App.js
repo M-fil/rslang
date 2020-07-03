@@ -54,6 +54,7 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      console.log(error);
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';
@@ -106,6 +107,7 @@ class App {
           await this.signInUser();
           this.prelodaer.hide();
         } catch (error) {
+          console.log(error);
           this.prelodaer.hide();
           Authentication.createErrorBlock(error.message);
         }
@@ -131,6 +133,7 @@ class App {
       await this.initSettings();
       await this.renderMainGame();
     } catch (error) {
+      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -171,6 +174,7 @@ class App {
       await this.renderMainGame();
       this.prelodaer.hide();
     } catch (error) {
+      console.log(error);
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
       const data = await getRefreshToken(userId, refreshToken);
@@ -179,7 +183,7 @@ class App {
         ...data,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
+      await this.renderMainGame();
       await this.renderVocabulary(this.state.user);
     }
   }
