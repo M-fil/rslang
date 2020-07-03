@@ -24,6 +24,15 @@ const wordsToLearnSelectConstants = {
   SELECT_OPTION_WORDS_FROM_COLLECTIONS: 'Слова из коллекций',
   SELECT_OPTION_LEARNED_WORDS_VALUE: 'LEARNED_WORDS',
   SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE: 'WORDS_FROM_COLLECTIONS',
+  SELECT_GROUP_TITLE: 'Выберите группу сложности',
+  SELECT_GROUP_OPTIONS_TITLE_LIST: [
+    'Группа 1',
+    'Группа 2',
+    'Группа 3',
+    'Группа 4',
+    'Группа 5',
+    'Группа 6',
+  ],
 };
 
 const errorTypes = {
