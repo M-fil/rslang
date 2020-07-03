@@ -80,9 +80,12 @@ export default class SpeakIt {
   }
 
   async renderStartGamePage() {
-    console.log('renderStartGamePage');
+    await this.vocabulary.init();
+    this.learnedWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
+    console.log('learnedWords', this.learnedWords);
+    const isShowLearnedWordsOption = this.learnedWords.length >= WORDS_LIMIT_NUMBER;
     const startWindowHTML = this.startWindow.render(
-      SPEAKIT_TITLE, this.startWindow.renderExplanations(),
+      SPEAKIT_TITLE, this.startWindow.renderExplanations(), isShowLearnedWordsOption,
     );
     document.body.append(startWindowHTML, this.startWindow.closeButton.render());
     this.preloader.render();
@@ -114,6 +117,7 @@ export default class SpeakIt {
 
     const microphone = new MicrophoneButton();
     mainContainerWrapper.append(microphone.render());
+    microphone.HTML.classList.remove('hidden');
     mainContainerWrapper.append(create('div', 'score hidden'));
     mainContainerWrapper.append(create('div', 'overlay hidden'));
     this.preloader.show();
@@ -139,13 +143,17 @@ export default class SpeakIt {
     this.recognition.start();
   }
 
-  renderNavigation() {
+  renderNavigation(isPrepand = false) {
     this.navigation = new Navigation();
-    create(
-      'div', 'navigation',
-      this.navigation.render(),
-      document.querySelector('.main-container__wrapper'),
-    );
+    const navigationHTML = this.navigation.render();
+    const navigationContainer = create('div', 'navigation');
+    const mainContainerWrapper = document.querySelector('.main-container__wrapper');
+    if (isPrepand) {
+      mainContainerWrapper.prepend(navigationHTML);
+    } else {
+      navigationContainer.append(navigationHTML);
+      mainContainerWrapper.append(navigationContainer);
+    }
 
     if (this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS_VALUE) {
       this.navigation.hide();
@@ -242,32 +250,15 @@ export default class SpeakIt {
     });
   }
 
-  toggleLearnedWordsOption(isToEnable = true) {
-    const { options } = this.startWindow.wordsToLearnSelect.select;
-
-    if (isToEnable) {
-      Array.from(options)
-        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE)
-        .removeAttribute('disabled');
-    } else {
-      Array.from(options)
-        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE)
-        .setAttribute('disabled', 'disabled');
-    }
-  }
-
   async selectWordsToLearn() {
-    await this.vocabulary.init();
     this.learnedWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
 
     if (this.learnedWords.length < WORDS_LIMIT_NUMBER) {
       this.state.currentWordsType = SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE;
       this.startWindow.wordsToLearnSelect.selectIndexByValue(SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE);
-      this.toggleLearnedWordsOption(false);
       await this.selectCollectionWords();
     } else {
       this.state.currentWordsType = SELECT_OPTION_LEARNED_WORDS_VALUE;
-      this.toggleLearnedWordsOption();
       this.currentArrayOfWords = this.learnedWords.map((word) => word.optional.allData);
       this.currentArrayOfWords = this.currentArrayOfWords.slice(0, WORDS_LIMIT_NUMBER);
       this.iDontKnowWords = this.currentArrayOfWords;
@@ -382,8 +373,7 @@ export default class SpeakIt {
 
   acitavateRecognition() {
     const listOfWords = this.currentArrayOfWords.map((word) => {
-      const item = (word.word && word.word.toLowerCase())
-       || word.optional.word.toLowerCase();
+      const item = word.word.toLowerCase()
       return item;
     });
 
@@ -588,21 +578,33 @@ export default class SpeakIt {
     this.shortTermStatistics.update(this.iDontKnowWords, this.guessedWords);
   }
 
+  static removeNavigationHTML() {
+    const navigationHTML = document.querySelector('.navigation');
+    if (navigationHTML) {
+      navigationHTML.remove();
+    }
+  }
+
   activateStatisticsButtons() {
     document.addEventListener('click', async (event) => {
       const target = event.target.closest('.new-game-button');
+
       if (target && this.state.currentWordsType === SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE) {
         await this.renderNewGameWithCollectionWords();
+        SpeakIt.removeNavigationHTML();
+        this.renderNavigation(true);
       }
 
       if (target && this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS_VALUE) {
         const words = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
+        SpeakIt.removeNavigationHTML();
 
         if (words.length < WORDS_LIMIT_NUMBER) {
           await this.renderNewGameWithCollectionWords();
         } else {
           this.renderNewGameWithLearnedWords();
         }
+        this.renderNavigation(true);
       }
     });
   }
