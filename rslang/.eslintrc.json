@@ -11,6 +11,10 @@
         "sourceType": "module"
     },
     "rules": {
+<<<<<<< HEAD
         "linebreak-style": 0
+=======
+      "no-new": "off"
+>>>>>>> 8778dc4c41b753c9b3a4d4271768c43465ce7d3e
     }
 }
