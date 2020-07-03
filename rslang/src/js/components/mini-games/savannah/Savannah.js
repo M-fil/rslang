@@ -40,6 +40,7 @@ const {
 
 const {
   SELECT_OPTION_LEARNED_WORDS_VALUE,
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE,
 } = wordsToLearnSelectConstants;
 
 const {
@@ -65,7 +66,6 @@ export default class SavannahGame {
     const startPage = this.startWindow.render(GAME_NAME, RULES, (this.reverseReport).bind(this));
     const closePage = this.closeButton.show();
     this.container = create('div', 'container', [startPage, closePage], this.body);
-    // const optionVocabulary = document.querySelector('')
     this.allWords = document.querySelectorAll('.word');
     this.arrayBeforeClickWords = [];
     this.preloader.render();
@@ -90,12 +90,15 @@ export default class SavannahGame {
 
     if (isToEnable) {
       Array.from(options)
-        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE);
-      // .removeAttribute('disabled');
+        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE)
+        .setAttribute('selected', 'selected');
     } else {
       Array.from(options)
-        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE);
-      // .setAttribute('disabled', 'disabled');
+        .find((option) => option.value === SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE)
+        .setAttribute('selected', 'selected');
+      Array.from(options)
+        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE)
+        .setAttribute('disabled', 'disabled');
     }
   }
 
