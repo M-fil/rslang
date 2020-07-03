@@ -15,8 +15,8 @@ const {
 } = shortTermStatisticsConstants;
 
 export default class StatisticsBlock extends ShortTermStatistics {
-  constructor(wrongWords, rightWords) {
-    super(wrongWords, rightWords);
+  constructor() {
+    super();
     this.exists = false;
 
     if (!this.exists) {
@@ -39,6 +39,7 @@ export default class StatisticsBlock extends ShortTermStatistics {
   }
 
   update(wrongWords, rightWords) {
+    console.log('StatisticsBlock', wrongWords && wrongWords.map((word) => word.word));
     this.statisticaWrongWordsText.innerHTML = '';
     this.statisticaRightWordsText.innerHTML = '';
 

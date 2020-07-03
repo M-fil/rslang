@@ -174,14 +174,8 @@ export default class SpeakIt {
     this.imageBlock = new ImageBlock();
     container.prepend(this.imageBlock.render());
 
-    console.log('renderWords', this.currentArrayOfWords);
     this.currentArrayOfWords.forEach((word) => {
-      if (word.optional) {
-        const { transcription } = word.optional.allData;
-        this.wordCard = new WordCard(word.wordId, word.optional.word, transcription);
-      } else {
-        this.wordCard = new WordCard(word.id || word._id, word.word, word.transcription);
-      }
+      this.wordCard = new WordCard(word.id || word._id, word.word, word.transcription);
       wordsContainer.append(this.wordCard.render());
     });
 
@@ -198,7 +192,6 @@ export default class SpeakIt {
       this.renderNavigation();
       this.renderLearnedWords();
     } else {
-      // await this.getColectionWords();
       this.renderNavigation();
       this.renderSpeacifiedWordsType();
     }
@@ -485,20 +478,31 @@ export default class SpeakIt {
       const targetValue = Number(options[target.selectedIndex].value);
       console.log('targetValue', targetValue);
       await this.setCollectionWordsData(targetValue);
+      this.shortTermStatistics.update(this.iDontKnowWords, this.guessedWords);
       this.preloader.hide();
       console.log('words', this.currentArrayOfWords.map((word) => word.word));
     });
   }
 
   activateNavigation() {
-    document.addEventListener('change', (event) => {
+    const optionsHTML = document.querySelector('.navigation__group-select').options;
+    Array.from(optionsHTML).forEach((option) => {
+      option.removeAttribute('selected');
+    });
+    Array.from(optionsHTML)[this.state.groupOfWords].setAttribute('selected', '');
+
+    document.addEventListener('change', async (event) => {
       const target = event.target.closest('.navigation__group-select');
 
       if (target) {
         const { options } = target;
-        targetValue = Number(options[target.selectedIndex].value);
+        const targetValue = Number(options[target.selectedIndex].value);
         this.switchOnTrainingMode();
-        this.renderMainGamePage(targetValue);
+        await this.renderMainGamePage(targetValue);
+        console.log('activateNavigation', this.currentArrayOfWords);
+        console.log('iDontKnowWords', this.iDontKnowWords.map(word => (word.word)));
+        console.log(this.shortTermStatistics)
+        this.shortTermStatistics.update(this.iDontKnowWords, this.guessedWords);
         this.shortTermStatistics.hide();
       }
     });
@@ -512,6 +516,7 @@ export default class SpeakIt {
     const wordsData = await getWords(this.state.currentPage, groupNumber);
     this.currentArrayOfWords = wordsData.slice(0, WORDS_LIMIT_NUMBER);
     this.iDontKnowWords = this.currentArrayOfWords;
+    this.guessedWords = [];
   }
 
   async renderMainGamePage(groupNumber) {
@@ -563,12 +568,12 @@ export default class SpeakIt {
     });
   }
 
-  renderNewGameWithCollectionWords() {
+  async renderNewGameWithCollectionWords() {
     this.shortTermStatistics.hide();
     this.guessedWords = [];
     this.skippedWords = [];
     this.switchOnTrainingMode();
-    this.renderMainGamePage(this.state.groupOfWords);
+    await this.renderMainGamePage(this.state.groupOfWords);
     this.shortTermStatistics.continueButton.classList.remove('hidden');
     this.shortTermStatistics.update(this.iDontKnowWords, this.guessedWords);
   }
@@ -584,17 +589,17 @@ export default class SpeakIt {
   }
 
   activateStatisticsButtons() {
-    document.addEventListener('click', (event) => {
+    document.addEventListener('click', async (event) => {
       const target = event.target.closest('.new-game-button');
       if (target && this.state.currentWordsType === SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE) {
-        this.renderNewGameWithCollectionWords();
+        await this.renderNewGameWithCollectionWords();
       }
 
       if (target && this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS_VALUE) {
         const words = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
 
         if (words.length < WORDS_LIMIT_NUMBER) {
-          this.renderNewGameWithCollectionWords();
+          await this.renderNewGameWithCollectionWords();
         } else {
           this.renderNewGameWithLearnedWords();
         }
