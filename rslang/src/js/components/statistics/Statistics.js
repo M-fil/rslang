@@ -7,7 +7,7 @@ import {
   updateUserStatistics,
   getUserStatistics,
 } from '../../service/service';
-import chart from './Chart';
+import StatisticsChart from './Chart';
 
 export default class Statistics {
   constructor(userData) {
@@ -29,6 +29,8 @@ export default class Statistics {
       this.currentdate = dateFormat(date.getDate(), date.getMonth() + 1, date.getFullYear());
 
       await this.loadStatistics();
+
+      this.render();
     }
   }
 
@@ -197,7 +199,16 @@ export default class Statistics {
   }
 
   renderLongTerm() {
-    return create('div', 'statistics-tab__item statistics__long-term', undefined, undefined, ['tabId', 'longterm']);
+    const chrt = new StatisticsChart();
+    const learnedWordsData = this.getLearnedWordsByDate();
+    const summaryByAnswers = this.getSummaryByAnswers();
+    const summaryByGames = this.getSummaryByGames();
+
+    chrt.summaryByAnswersChart(summaryByAnswers);
+    chrt.summaryByGamesChart(summaryByGames);
+    chrt.learnedWordsChart(this.statistics.learnedWords, learnedWordsData);
+
+    return create('div', 'statistics-tab__item statistics__long-term', chrt.renderStatisticsCharts(), undefined, ['tabId', 'longterm']);
   }
 
   static createSelect(name, id, ...options) {
@@ -367,15 +378,15 @@ export default class Statistics {
   }
 
   getCharts() {
-    const chrt = new chart();
+    const chrt = new StatisticsChart();
     const learnedWordsData = this.getLearnedWordsByDate();
     const summaryByAnswers = this.getSummaryByAnswers();
     const summaryByGames = this.getSummaryByGames();
-    console.log('summaryByGames',summaryByGames);
+    console.log('summaryByGames', summaryByGames);
     setTimeout(() => {
       chrt.summaryByAnswersChart(summaryByAnswers);
       chrt.summaryByGamesChart(summaryByGames);
-      chrt.learnedWordsChart(this.statistics.learnedWords,learnedWordsData);
-    },5000);
+      chrt.learnedWordsChart(this.statistics.learnedWords, learnedWordsData);
+    }, 5000);
   }
 }
