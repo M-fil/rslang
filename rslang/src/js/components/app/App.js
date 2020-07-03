@@ -185,11 +185,8 @@ class App {
       await this.renderSpeakItGame();
       this.prelodaer.hide();
     } catch (error) {
-      console.log(error);
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
-      console.log('parsedData', parsedData);
-      console.log('refreshToken', refreshToken);
       const data = await getRefreshToken(userId, refreshToken);
       this.state.user = {
         ...this.state.user,

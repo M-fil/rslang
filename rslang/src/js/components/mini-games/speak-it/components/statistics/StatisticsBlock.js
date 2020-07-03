@@ -39,7 +39,6 @@ export default class StatisticsBlock extends ShortTermStatistics {
   }
 
   update(wrongWords, rightWords) {
-    console.log('StatisticsBlock', wrongWords && wrongWords.map((word) => word.word));
     this.statisticaWrongWordsText.innerHTML = '';
     this.statisticaRightWordsText.innerHTML = '';
 

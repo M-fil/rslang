@@ -82,7 +82,6 @@ export default class SpeakIt {
   async renderStartGamePage() {
     await this.vocabulary.init();
     this.learnedWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
-    console.log('learnedWords', this.learnedWords);
     const isShowLearnedWordsOption = this.learnedWords.length >= WORDS_LIMIT_NUMBER;
     const startWindowHTML = this.startWindow.render(
       SPEAKIT_TITLE, this.startWindow.renderExplanations(), isShowLearnedWordsOption,
@@ -298,7 +297,6 @@ export default class SpeakIt {
           break;
         }
       }
-      console.log(this.state.currentWordsType);
       this.preloader.hide();
     });
   }
@@ -373,7 +371,7 @@ export default class SpeakIt {
 
   acitavateRecognition() {
     const listOfWords = this.currentArrayOfWords.map((word) => {
-      const item = word.word.toLowerCase()
+      const item = word.word.toLowerCase();
       return item;
     });
 
@@ -466,11 +464,9 @@ export default class SpeakIt {
       const { target } = event;
       const { options } = target;
       const targetValue = Number(options[target.selectedIndex].value);
-      console.log('targetValue', targetValue);
       await this.setCollectionWordsData(targetValue);
       this.shortTermStatistics.update(this.iDontKnowWords, this.guessedWords);
       this.preloader.hide();
-      console.log('words', this.currentArrayOfWords.map((word) => word.word));
     });
   }
 
@@ -489,9 +485,6 @@ export default class SpeakIt {
         const targetValue = Number(options[target.selectedIndex].value);
         this.switchOnTrainingMode();
         await this.renderMainGamePage(targetValue);
-        console.log('activateNavigation', this.currentArrayOfWords);
-        console.log('iDontKnowWords', this.iDontKnowWords.map(word => (word.word)));
-        console.log(this.shortTermStatistics)
         this.shortTermStatistics.update(this.iDontKnowWords, this.guessedWords);
         this.shortTermStatistics.hide();
       }
