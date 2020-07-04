@@ -95,7 +95,14 @@ export default class Statistics {
     await this.saveStatistics();
   }
 
-  async saveGameStatistics(group, correct, wrong, learnedWords, additionalObject, replaceValues = false) {
+  async saveGameStatistics(
+    group,
+    correct,
+    wrong,
+    learnedWords,
+    additionalObject,
+    replaceValues = false,
+  ) {
     this.controlGroupInStatistics(group);
 
     this.incrementPlayingCounts(group);
