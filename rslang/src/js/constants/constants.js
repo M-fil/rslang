@@ -233,6 +233,16 @@ const statisticsText = {
   },
 };
 
+const StatisticsGameCodes = {
+  MAIN_GAME_CODE: 'maingame',
+  SAVANNA_GAME_CODE: 'savannah',
+  FIND_A_PAIR_GAME_CODE: 'findapair',
+  AUDITION_GAME_CODE: 'auditiongame',
+  SPRINT_GAME_CODE: 'sprint',
+  SPEAK_IT_GAME_CODE: 'speakit',
+  ENGLISH_PUZZLE_GAME_CODE: 'englishpuzzle',
+};
+
 const modalConstants = {
   MODAL_TITLE: 'Тренировка не закончена!',
   MODAL_WARNING: 'Если вы вернетесь к списку, ваш прогресс не будет сохранен',
@@ -265,6 +275,7 @@ export {
   dailyStatisticsConstants,
   settingsText,
   statisticsText,
+  StatisticsGameCodes,
   wordsToLearnSelectConstants,
   modalConstants,
   shortTermStatisticsConstants,
