@@ -67,17 +67,14 @@ export default class Statistics {
     return this.statistics.optional[date][group];
   }
 
-  updateLearnedWords(group, wordsCount) {
-    this.statistics.learnedWords += Number(wordsCount);
-
-    if (Object.prototype.hasOwnProperty.call(this.statistics.optional[this.currentdate][group], 'learnedWords')) {
-      this.statistics.optional[this.currentdate][group].learnedWords += wordsCount;
-    } else {
-      this.statistics.optional[this.currentdate][group].learnedWords = wordsCount;
-    }
-  }
-
-  async saveMainGameStatistics(incrementPlayingCount, correct, wrong, learnedWords, additionalObject) {
+  async saveMainGameStatistics(
+    incrementPlayingCount,
+    correct,
+    wrong,
+    learnedWords,
+    additionalObject,
+    replaceValues = false,
+  ) {
     const group = 'maingame';
     this.controlGroupInStatistics(group);
 
@@ -85,10 +82,10 @@ export default class Statistics {
       this.incrementPlayingCounts(group);
     }
 
-    this.updateAnswersStatistics(group, correct, wrong);
+    this.updateAnswersStatistics(group, correct, wrong, replaceValues);
 
     if (learnedWords) {
-      this.updateLearnedWords(group, learnedWords);
+      this.updateLearnedWords(group, learnedWords, replaceValues);
     }
 
     if (additionalObject) {
@@ -98,14 +95,14 @@ export default class Statistics {
     await this.saveStatistics();
   }
 
-  async saveGameStatistics(group, correct, wrong, learnedWords, additionalObject) {
+  async saveGameStatistics(group, correct, wrong, learnedWords, additionalObject, replaceValues = false) {
     this.controlGroupInStatistics(group);
 
     this.incrementPlayingCounts(group);
-    this.updateAnswersStatistics(group, correct, wrong);
+    this.updateAnswersStatistics(group, correct, wrong, replaceValues);
 
     if (learnedWords) {
-      this.updateLearnedWords(group, learnedWords);
+      this.updateLearnedWords(group, learnedWords, replaceValues);
     }
 
     if (additionalObject) {
@@ -119,9 +116,27 @@ export default class Statistics {
     this.statistics.optional[this.currentdate][group].playingCount += 1;
   }
 
-  updateAnswersStatistics(group, correct, wrong) {
-    this.statistics.optional[this.currentdate][group].correctAnswers += correct;
-    this.statistics.optional[this.currentdate][group].wrongAnswers += wrong;
+  updateAnswersStatistics(group, correct, wrong, replaceValues = false) {
+    if (replaceValues) {
+      this.statistics.optional[this.currentdate][group].correctAnswers = correct;
+      this.statistics.optional[this.currentdate][group].wrongAnswers = wrong;
+    } else {
+      this.statistics.optional[this.currentdate][group].correctAnswers += correct;
+      this.statistics.optional[this.currentdate][group].wrongAnswers += wrong;
+    }
+  }
+
+  updateLearnedWords(group, wordsCount, replaceValues = false) {
+    this.statistics.learnedWords += Number(wordsCount);
+
+    if (
+      Object.prototype.hasOwnProperty.call(this.statistics.optional[this.currentdate][group], 'learnedWords')
+      && !replaceValues
+    ) {
+      this.statistics.optional[this.currentdate][group].learnedWords += wordsCount;
+    } else {
+      this.statistics.optional[this.currentdate][group].learnedWords = wordsCount;
+    }
   }
 
   addAdditionalObject(group, additionalObject) {
