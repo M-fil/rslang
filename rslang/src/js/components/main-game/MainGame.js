@@ -304,10 +304,11 @@ class MainGame {
         wrong,
         learned,
         mainGameAdditional,
+        true,
       );
     } else {
       await this.statistics.saveMainGameStatistics(
-        incrementPlayingCount, 0, 0, 0, mainGameAdditional,
+        incrementPlayingCount, 0, 0, 0, mainGameAdditional, true,
       );
     }
   }
