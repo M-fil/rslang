@@ -176,12 +176,24 @@ class Vocabulary {
     this.renderVocabulary(vocabulary);
   }
 
-  getWordsByVocabularyType(vocabularyType) {
-    return this.state.allUserWords.filter((word) => word.optional.vocabulary === vocabularyType);
+  getWordsByVocabularyType(vocabularyType, getNormalObject = false) {
+    const wordsArr = this.state.allUserWords.filter((word) => word.optional.vocabulary === vocabularyType);
+    return (getNormalObject) ? wordsArr.map((word) => word.optional.allData) : wordsArr;
   }
 
-  getAllVocabulariesData() {
-    return this.state.vocabularies;
+  getAllVocabulariesData(getNormalObjects = false) {
+    let vocabulariesWordsObject;
+    if (getNormalObjects) {
+      vocabulariesWordsObject = {
+        wordsToLearn: this.state.vocabularies.wordsToLearn.map((word) => word.optional.allData),
+        learnedWords: this.state.vocabularies.learnedWords.map((word) => word.optional.allData),
+        removedWords: this.state.vocabularies.removedWords.map((word) => word.optional.allData),
+        difficultWords: this.state.vocabularies.difficultWords.map((word) => word.optional.allData),
+      };
+    } else {
+      vocabulariesWordsObject = this.state.vocabularies;
+    }
+    return vocabulariesWordsObject;
   }
 
   getVocabularyWordsLength(vocabularyType) {
