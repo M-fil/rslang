@@ -11,7 +11,7 @@ import CloseButton from '../common/CloseButton';
 import ModalWindow from '../common/ModalWindow';
 import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
-// import Statistics from '../../statistics/Statistics'
+import Statistics from '../../statistics/Statistics';
 
 const {
   SAVANNAH_SECONDS_COUNT,
@@ -56,31 +56,31 @@ export default class SavannahGame {
     this.shortTermStatistics = new ShortTermStatistics();
     this.error = 0;
     this.modalWindow = new ModalWindow();
-    this.startWindow = new StartWindow();
+    this.startWindow = new StartWindow((this.reverseReport).bind(this));
     this.closeButton = new CloseButton();
     this.vocabulary = new Vocabulary(userState);
-    // this.statistics = new Statistics(userState);
+    this.statistics = new Statistics(userState);
   }
 
   render() {
     const startPage = this.startWindow.render(GAME_NAME, RULES, (this.reverseReport).bind(this));
-    const closePage = this.closeButton.show();
-    this.container = create('div', 'container', [startPage, closePage], this.body);
+    this.closeButton.show();
+    this.container = create('div', 'container', startPage, this.body);
+    this.container.append(this.closeButton.render());
     this.allWords = document.querySelectorAll('.word');
     this.arrayBeforeClickWords = [];
     this.preloader.render();
     this.gameWindow = document.querySelector('.start-game-window');
     this.startButton = document.querySelector('.start-button');
     this.isVocabularyWords();
+    this.getAllVocabulariesData();
   }
 
   async isVocabularyWords() {
     await this.vocabulary.init();
     if (this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS) {
-      this.engRandomWords = this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE);
       this.toggleLearnedWordsOption(true);
     } else {
-      this.engRandomWords = this.data;
       this.toggleLearnedWordsOption(false);
     }
   }
@@ -131,7 +131,7 @@ export default class SavannahGame {
     this.wordClick();
     this.offAudio();
     this.createModal();
-    // await this.statistics.init();
+    await this.statistics.init();
     this.changeLives();
     this.animatedWord();
     this.liveIndex = 0;
@@ -145,6 +145,11 @@ export default class SavannahGame {
   }
 
   crateCardsData() {
+    if (this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS) {
+      this.engRandomWords = this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE);
+    } else {
+      this.engRandomWords = this.data;
+    }
     this.closeButton.show();
     this.preloader.hide();
     this.num = 0;
@@ -268,9 +273,9 @@ export default class SavannahGame {
     const arrayOfPromises = this.wrongWords
       .map((word) => this.vocabulary.addWordToTheVocabulary(word, WORDS_TO_LEARN_TITLE));
     await Promise.all(arrayOfPromises);
-    // await this.statistics.saveGameStatistics(
-    //   'savannah', this.rightWords.length, this.wrongWords.length,
-    // );
+    await this.statistics.saveGameStatistics(
+      'savannah', this.rightWords.length, this.wrongWords.length,
+    );
   }
 
   wordClick() {
@@ -321,16 +326,17 @@ export default class SavannahGame {
   }
 
   createModal() {
-    this.exit = document.querySelector('.exit-button');
     this.modalCancelButton = document.querySelector('#closebutton').querySelector('.cancel_button');
-    this.exit.addEventListener('click', () => {
-      clearInterval(this.timer);
-    });
+    this.closeButton.addExitButtonClickCallbackFn((this.clearTime).bind(this));
     this.modalCancelButton.addEventListener('click', (this.clickCancelButton).bind(this));
   }
 
   clickCancelButton() {
     this.closeButton.resume((this.animatedWord).bind(this));
+  }
+
+  clearTime() {
+    clearInterval(this.timer);
   }
 
   changeLives() {
