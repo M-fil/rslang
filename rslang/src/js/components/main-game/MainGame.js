@@ -135,6 +135,7 @@ class MainGame {
       await this.initVocabulary();
       await this.initStatistics();
       await this.setStatisticsData(null, false);
+      console.log(this.settings.getSettingsByGroup('main'));
       this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.parseUserWordsData();
@@ -1024,7 +1025,10 @@ class MainGame {
     if (number < this.state.audios.length) {
       this.state.isAudioEnded = false;
       let firstAudioIndex = number;
-      this.playAudio(this.state.audios[firstAudioIndex]);
+      const audioFile = this.state.audios[firstAudioIndex];
+      if (audioFile) {
+        this.playAudio(audioFile);
+      }
 
       this.state.audio.onended = () => {
         if (firstAudioIndex === this.state.audios.length - 1) {
@@ -1086,11 +1090,20 @@ class MainGame {
   }
 
   setAudiosForWords(currentWord) {
+    const {
+      showWordMeaning,
+      showWordExample,
+    } = this.settings.getSettingsByGroup('main');
+
+    const audioMeaning = showWordMeaning
+      ? `${WORDS_AUDIOS_URL}${currentWord.audioMeaning}` : null;
+    const audioExample = showWordExample
+      ? `${WORDS_AUDIOS_URL}${currentWord.audioExample}` : null;
     if (currentWord) {
       this.state.audios = [
         `${WORDS_AUDIOS_URL}${currentWord.audio}`,
-        `${WORDS_AUDIOS_URL}${currentWord.audioMeaning}`,
-        `${WORDS_AUDIOS_URL}${currentWord.audioExample}`,
+        audioMeaning,
+        audioExample,
       ];
     }
   }
