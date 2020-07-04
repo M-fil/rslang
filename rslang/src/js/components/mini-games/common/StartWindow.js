@@ -17,7 +17,7 @@ export default class StartWindow {
 
   render(gameNames, rules, showUserCollection = true) {
     this.gameWindow.innerHTML = '';
-    
+
     this.yourGameName = create('h2', 'game-name', gameNames, this.gameWindow);
     this.gameRules = create('div', 'game-rules', rules, this.gameWindow);
     this.wordsToLearnSelect = new WordsToLearnSelect('gameWindow');

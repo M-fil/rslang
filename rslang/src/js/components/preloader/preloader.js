@@ -21,7 +21,6 @@ export default class Preloader {
   }
 
   show() {
-    console.log('this.preload.', this.preload)
     this.preload.classList.add('preloader__visible');
   }
 

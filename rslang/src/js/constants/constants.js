@@ -142,7 +142,7 @@ const speakItConstants = {
   NEW_GAME_BUTTON: 'Новая Игра',
   CONTINUE_BUTTON: 'Продолжить',
   SKIP_BUTTON: 'Пропустить',
-  GROUPS_OF_WORDS_TEXT: 'Группа слов:', 
+  GROUPS_OF_WORDS_TEXT: 'Группа слов:',
   NUMBER_OF_GROUPS: 6,
   NUMBER_OF_PAGES: 29,
   WORDS_LIMIT_NUMBER: 10,
