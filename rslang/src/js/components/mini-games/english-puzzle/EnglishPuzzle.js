@@ -13,6 +13,7 @@ import {
   urls,
   wordsToLearnSelectConstants,
   vocabularyConstants,
+  StatisticsGameCodes,
 } from '../../../constants/constants';
 import {
   GAME_BLOCK,
@@ -370,7 +371,11 @@ export default class EnglishPuzzle {
 
   async actionOnCloseButton() {
     viewElement([this.gameForm], [this.startMenu]);
-    this.statistics.saveGameStatistics('englishpuzzle', this.rightAnswers.length, this.falseAnswers.length);
+    this.statistics.saveGameStatistics(
+      StatisticsGameCodes.ENGLISH_PUZZLE_GAME_CODE,
+      this.rightAnswers.length,
+      this.falseAnswers.length,
+    );
   }
 
   dragAndDropActions() {
