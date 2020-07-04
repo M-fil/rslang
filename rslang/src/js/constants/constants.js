@@ -82,6 +82,9 @@ const dailyStatisticsConstants = {
   NEW_WORDS_TEXT: 'Новые слова',
   LONGEST_SERIES_OF_ANSWERS_TEXT: 'Саммая длинная серия правильных ответов',
   GO_TO_THE_MAIN_PAGE: 'Перейти на главную',
+  DIFFICULT_WORDS_TITLE_TEXT: 'Поздравляем! Вы повторили все сложные слова!',
+  DIFFICULT_WORDS_COUNT_TEXT: (count) => `Всего сложных слов: ${count}.`,
+  REVISE_DIFFICULT_WORDS_AGAIN: 'Повторить еще раз',
 };
 
 const wordsToLearnOptions = {
