@@ -85,10 +85,13 @@ export default class Statistics {
       this.incrementPlayingCounts(group);
     }
 
-    this.updateAnswersStatistics(group, correct, wrong);
+    //this.updateAnswersStatistics(group, correct, wrong);
+    this.statistics.optional[this.currentdate][group].correctAnswers = correct;
+    this.statistics.optional[this.currentdate][group].wrongAnswers = wrong;
 
     if (learnedWords) {
-      this.updateLearnedWords(group, learnedWords);
+      //this.updateLearnedWords(group, learnedWords);
+      this.statistics.optional[this.currentdate][group].learnedWords = learnedWords;
     }
 
     if (additionalObject) {
