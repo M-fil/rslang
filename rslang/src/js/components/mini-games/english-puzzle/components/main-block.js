@@ -16,7 +16,6 @@ export default class MainBlock {
       const userSettings = {
         sound: false,
         translate: false,
-        background: false,
       };
       localStorage.setItem('userSettings', JSON.stringify(userSettings));
     }
@@ -47,14 +46,11 @@ export default class MainBlock {
         case 0:
           button = create('div', 'button-sintezise help-button', '<i class="fas fa-music"></i>', buttonsContainer);
           break;
-        case 1:
+        default:
           button = create('div', 'button-trunslate help-button', '<i class="fas fa-language"></i>', buttonsContainer);
           break;
-        default:
-          button = create('div', 'button-background help-button', '<i class="far fa-image"></i>', buttonsContainer);
-          break;
       }
-      if (buttonStutMas[i] && (i + 1 !== GAME_BLOCK.controlButtons)) {
+      if (buttonStutMas[i]) {
         button.classList.add('active-button');
       }
     }
