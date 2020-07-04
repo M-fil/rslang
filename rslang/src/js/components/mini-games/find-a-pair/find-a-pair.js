@@ -5,6 +5,7 @@ import {
   findAPairText,
   vocabularyConstants,
   wordsToLearnSelectConstants,
+  StatisticsGameCodes,
 } from '../../../constants/constants';
 import create from '../../../utils/сreate';
 import shuffle from '../../../utils/shuffle';
@@ -34,6 +35,10 @@ const findAPairConst = {
   gameTimerSec: 90,
   gameTimerInterval: 1000,
 };
+
+const {
+  FIND_A_PAIR_GAME_CODE,
+} = StatisticsGameCodes;
 
 export default class FindAPair {
   constructor(user) {
@@ -206,7 +211,7 @@ export default class FindAPair {
     this.saveStats();
     const resWords = FindAPair.getResultWords(this.words, this.openedWords);
 
-    this.statistics.saveGameStatistics('findapair', resWords.correct.length, 0);
+    this.statistics.saveGameStatistics(FIND_A_PAIR_GAME_CODE, resWords.correct.length, 0);
 
     this.ShortTermStatistics.render(resWords.wrong, resWords.correct);
     this.ShortTermStatistics.addCallbackFnOnClose((this.newGameHandler).bind(this));
