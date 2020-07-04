@@ -2,12 +2,17 @@ import create from '../../utils/сreate';
 import dateFormat from '../../utils/dateformat';
 import {
   statisticsText,
+  StatisticsGameCodes,
 } from '../../constants/constants';
 import {
   updateUserStatistics,
   getUserStatistics,
 } from '../../service/service';
 import StatisticsChart from './Chart';
+
+const {
+  MAIN_GAME_CODE,
+} = StatisticsGameCodes;
 
 export default class Statistics {
   constructor(userData) {
@@ -75,7 +80,7 @@ export default class Statistics {
     additionalObject,
     replaceValues = false,
   ) {
-    const group = 'maingame';
+    const group = MAIN_GAME_CODE;
     this.controlGroupInStatistics(group);
 
     if (incrementPlayingCount) {
