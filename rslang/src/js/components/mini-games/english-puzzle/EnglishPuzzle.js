@@ -190,7 +190,6 @@ export default class EnglishPuzzle {
         const elem = el;
         elem.classList.remove('active-card');
         elem.removeAttribute('draggable');
-        elem.removeEventListener('click', this.cardClickAction);
       });
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
         viewElement([
@@ -233,7 +232,6 @@ export default class EnglishPuzzle {
       const elem = el;
       elem.classList.remove('active-card');
       elem.removeAttribute('draggable');
-      elem.removeEventListener('click', this.cardClickAction);
       this.activeRow.appendChild(elem);
     });
   }
@@ -362,8 +360,8 @@ export default class EnglishPuzzle {
   }
 
   cardClickAction(ev) {
-    if (!ev.target.data) {
-      this.dropped = ev.target;
+    if (!ev.data) {
+      this.dropped = ev;
     }
     this.activeRow.appendChild(this.dropped);
     this.activeRow.classList.remove('row-hover');
@@ -395,7 +393,6 @@ export default class EnglishPuzzle {
           this.dropped = event.target;
         }
       });
-      el.addEventListener('click', (this.cardClickAction).bind(this));
     });
 
     this.activeRow.addEventListener('drop', (event) => {
@@ -407,16 +404,26 @@ export default class EnglishPuzzle {
     this.activeRow.addEventListener('dragover', dragOver);
     this.activeRow.addEventListener('dragenter', dragEnter);
     this.activeRow.addEventListener('dragleave', dragLeave);
+    this.activeRow.addEventListener('click', (event) => {
+      if(event.target.classList.contains('active-card')) {
+        this.cardClickAction(event.target);
+      }
+    });
 
     document.querySelector('.game-block_field--description').addEventListener('drop', (event) => {
       event.preventDefault();
       document.querySelector('.game-block_field--description').appendChild(this.dropped);
       event.target.classList.remove('row-hover');
     });
-
     document.querySelector('.game-block_field--description').addEventListener('dragover', dragOver);
     document.querySelector('.game-block_field--description').addEventListener('dragenter', dragEnter);
     document.querySelector('.game-block_field--description').addEventListener('dragleave', dragLeave);
+    document.querySelector('.game-block_field--description').addEventListener('click', (event) => {
+      if(event.target.classList.contains('active-card')) {
+        this.cardClickAction(event.target);
+      }
+    });
+
   }
 
   actionsOnSupportButtons() {
