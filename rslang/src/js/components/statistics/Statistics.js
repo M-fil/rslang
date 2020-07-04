@@ -7,6 +7,7 @@ import {
   updateUserStatistics,
   getUserStatistics,
 } from '../../service/service';
+import StatisticsChart from './Chart';
 
 export default class Statistics {
   constructor(userData) {
@@ -24,6 +25,7 @@ export default class Statistics {
   async init() {
     if (!this.initialized) {
       this.initialized = true;
+      this.chrt = new StatisticsChart();
       const date = new Date();
       this.currentdate = dateFormat(date.getDate(), date.getMonth() + 1, date.getFullYear());
 
@@ -36,7 +38,7 @@ export default class Statistics {
     if (res) {
       this.statistics = {
         learnedWords: res.learnedWords,
-        optional: res.optional || {},
+        optional: Statistics.filterForOptional(res.optional) || {},
       };
     } else {
       this.statistics = {
@@ -65,28 +67,80 @@ export default class Statistics {
     return this.statistics.optional[date][group];
   }
 
-  updateLearnedWords(wordsCount) {
-    this.statistics.learnedWords += Number(wordsCount);
-
-    if (Object.prototype.hasOwnProperty.call(this.statistics.optional[this.currentdate].maingame, 'learnedWords')) {
-      this.statistics.optional[this.currentdate].maingame.learnedWords += wordsCount;
-    } else {
-      this.statistics.optional[this.currentdate].maingame.learnedWords = wordsCount;
-    }
-  }
-
-  async saveGameStatistics(group, correct, wrong, learnedWords) {
+  async saveMainGameStatistics(
+    incrementPlayingCount,
+    correct,
+    wrong,
+    learnedWords,
+    additionalObject,
+    replaceValues = false,
+  ) {
+    const group = 'maingame';
     this.controlGroupInStatistics(group);
 
-    this.statistics.optional[this.currentdate][group].playingCount += 1;
-    this.statistics.optional[this.currentdate][group].correctAnswers += correct;
-    this.statistics.optional[this.currentdate][group].wrongAnswers += wrong;
+    if (incrementPlayingCount) {
+      this.incrementPlayingCounts(group);
+    }
+
+    this.updateAnswersStatistics(group, correct, wrong, replaceValues);
 
     if (learnedWords) {
-      this.updateLearnedWords(learnedWords);
+      this.updateLearnedWords(group, learnedWords, replaceValues);
+    }
+
+    if (additionalObject) {
+      this.addAdditionalObject(group, additionalObject);
     }
 
     await this.saveStatistics();
+  }
+
+  async saveGameStatistics(group, correct, wrong, learnedWords, additionalObject, replaceValues = false) {
+    this.controlGroupInStatistics(group);
+
+    this.incrementPlayingCounts(group);
+    this.updateAnswersStatistics(group, correct, wrong, replaceValues);
+
+    if (learnedWords) {
+      this.updateLearnedWords(group, learnedWords, replaceValues);
+    }
+
+    if (additionalObject) {
+      this.addAdditionalObject(group, additionalObject);
+    }
+
+    await this.saveStatistics();
+  }
+
+  incrementPlayingCounts(group) {
+    this.statistics.optional[this.currentdate][group].playingCount += 1;
+  }
+
+  updateAnswersStatistics(group, correct, wrong, replaceValues = false) {
+    if (replaceValues) {
+      this.statistics.optional[this.currentdate][group].correctAnswers = correct;
+      this.statistics.optional[this.currentdate][group].wrongAnswers = wrong;
+    } else {
+      this.statistics.optional[this.currentdate][group].correctAnswers += correct;
+      this.statistics.optional[this.currentdate][group].wrongAnswers += wrong;
+    }
+  }
+
+  updateLearnedWords(group, wordsCount, replaceValues = false) {
+    this.statistics.learnedWords += Number(wordsCount);
+
+    if (
+      Object.prototype.hasOwnProperty.call(this.statistics.optional[this.currentdate][group], 'learnedWords')
+      && !replaceValues
+    ) {
+      this.statistics.optional[this.currentdate][group].learnedWords += wordsCount;
+    } else {
+      this.statistics.optional[this.currentdate][group].learnedWords = wordsCount;
+    }
+  }
+
+  addAdditionalObject(group, additionalObject) {
+    this.statistics.optional[this.currentdate][group].additional = additionalObject;
   }
 
   static createStatisticObject() {
@@ -116,7 +170,8 @@ export default class Statistics {
     return obj;
   }
 
-  render() {
+  render(mainContainer) {
+    const container = document.querySelector(mainContainer) || document.body;
     this.container = create('div', 'statistics__container', [
       this.renderShortTerm(),
       this.renderLongTerm(),
@@ -125,7 +180,7 @@ export default class Statistics {
     create('div', 'statistics', [
       Statistics.renderNavigation(),
       this.container,
-    ], document.body);
+    ], container);
   }
 
   static renderNavigation() {
@@ -158,7 +213,15 @@ export default class Statistics {
   }
 
   renderLongTerm() {
-    return create('div', 'statistics-tab__item statistics__long-term', undefined, undefined, ['tabId', 'longterm']);
+    const learnedWordsData = this.getLearnedWordsByDate();
+    const summaryByAnswers = this.getSummaryByAnswers();
+    const summaryByGames = this.getSummaryByGames();
+
+    this.chrt.summaryByAnswersChart(summaryByAnswers);
+    this.chrt.summaryByGamesChart(summaryByGames);
+    this.chrt.learnedWordsChart(this.statistics.learnedWords, learnedWordsData);
+
+    return create('div', 'statistics-tab__item statistics__long-term', this.chrt.renderStatisticsCharts(), undefined, ['tabId', 'longterm']);
   }
 
   static createSelect(name, id, ...options) {
@@ -247,6 +310,53 @@ export default class Statistics {
     return elementsArr;
   }
 
+  getSummaryByGames() {
+    const arrData = Object.values(this.statistics.optional);
+    const resObj = {};
+
+    arrData.forEach((gameValue) => {
+      const gameData = Object.entries(gameValue);
+      gameData.forEach(([key, value]) => {
+        if (Object.prototype.hasOwnProperty.call(resObj, key)) {
+          resObj[key] += value?.playingCount || 0;
+        } else {
+          resObj[key] = value?.playingCount || 0;
+        }
+      });
+    });
+
+    return resObj;
+  }
+
+  getSummaryByAnswers() {
+    const arrData = Object.values(this.statistics.optional);
+    const resObj = {
+      correctAnswers: 0,
+      wrongAnswers: 0,
+    };
+
+    arrData.forEach((gameValue) => {
+      const gameData = Object.values(gameValue);
+      gameData.forEach((value) => {
+        resObj.correctAnswers += value.correctAnswers;
+        resObj.wrongAnswers += value.wrongAnswers;
+      });
+    });
+
+    return resObj;
+  }
+
+  getLearnedWordsByDate() {
+    const arrData = Object.entries(this.statistics.optional);
+    const resObj = {};
+
+    arrData.forEach(([key, value]) => {
+      resObj[key] = value?.maingame?.learnedWords;
+    });
+
+    return resObj;
+  }
+
   static changeTabHandler(event) {
     const TAB_EL = 'LI';
     if (event.target.tagName === TAB_EL) {
@@ -264,5 +374,31 @@ export default class Statistics {
         }
       });
     }
+  }
+
+  static filterForOptional(optional) {
+    const resObj = {};
+    if (optional) {
+      const dataArr = Object.entries(optional);
+      dataArr.forEach(([key, value]) => {
+        if (/^[0-9]{2}\.[0-9]{2}\.[0-9]{4}$/.test(key)) {
+          resObj[key] = value;
+        }
+      });
+    }
+
+    return resObj;
+  }
+
+  getCharts() {
+    const chrt = new StatisticsChart();
+    const learnedWordsData = this.getLearnedWordsByDate();
+    const summaryByAnswers = this.getSummaryByAnswers();
+    const summaryByGames = this.getSummaryByGames();
+    setTimeout(() => {
+      chrt.summaryByAnswersChart(summaryByAnswers);
+      chrt.summaryByGamesChart(summaryByGames);
+      chrt.learnedWordsChart(this.statistics.learnedWords, learnedWordsData);
+    }, 5000);
   }
 }

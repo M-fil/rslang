@@ -47,13 +47,16 @@ const errorTypes = {
   INCORRECT_VALUES: 'Поля заполнены неверно.',
   PASSWORD_REQUIRMENTS: 'Пароль должен содержать не менее 8 символов, как минимум одну прописную букву, одну заглавную букву, одну цифру и один спецсимвол',
   INCORRECT_EMAIL: 'email введен неверно.',
-  ERROR_417: 417,
-  ERROR_404: 404,
   USER_ALREADY_EXISTS: 'пользователь с такими данными уже существует',
-  STATUS_200: 200,
   USER_IS_NOT_AUTHORIZED: 'Пользователь не авторизирован',
   USER_NOT_FOUND: 'Такого пользователя не существует. Пожалуйста, проверьте введенные данные.',
   EXCEEDED_NAME_LENGTH: 'Длина поля "Имя" не должна превышать 30 символов',
+};
+
+const HTTPCodesConstants = {
+  HTTP_STATUS_200: 200,
+  HTTP_ERROR_404: 404,
+  HTTP_ERROR_417: 417,
 };
 
 const mainGameConstants = {
@@ -211,9 +214,12 @@ const statisticsText = {
   },
   gametitles: {
     maingame: 'Main Game',
-    savanna: 'Savanna',
+    savannah: 'Savanna',
     findapair: 'Find a pair',
-    audition: 'Audition',
+    auditiongame: 'Audition',
+    sprint: 'Sprint',
+    speakit: 'Speak It',
+    englishpuzzle: 'English Puzzle',
   },
   select: {
     game: 'Игра',
@@ -263,4 +269,5 @@ export {
   modalConstants,
   shortTermStatisticsConstants,
   startWindow,
+  HTTPCodesConstants,
 };

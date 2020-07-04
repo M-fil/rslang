@@ -3,7 +3,19 @@
   margin: 0 auto;
   text-align: center;
 }
-
+.statisticsCharts{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.mainChart{
+  width: 100%;
+}
+.pieChart{
+  width: 50%;
+}
 .statictics-tab-list {
   list-style: none;
   display: flex;
