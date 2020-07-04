@@ -6,6 +6,7 @@ import create, {
   getRandomInteger,
   vocabularyConstants,
   playAudio,
+  StatisticsGameCodes,
 } from './pathes';
 
 import WordCard from './components/words/WordCard';
@@ -45,6 +46,10 @@ const {
   WORDS_TO_LEARN_TITLE,
 } = vocabularyConstants;
 
+const {
+  SPEAK_IT_GAME_CODE,
+} = StatisticsGameCodes;
+
 export default class SpeakIt {
   constructor(userState) {
     this.currentArrayOfWords = [];
@@ -57,7 +62,6 @@ export default class SpeakIt {
     this.recognition = SpeakIt.createSpeechRecongnition();
 
     this.startWindow = new StartPage(this.initMainGamePage.bind(this));
-    this.settings = new Settings(userState);
     this.vocabulary = new Vocabulary(userState);
     this.statistics = new Statistics(userState);
     this.modalWindow = new ModalWindow('speak-it__modal');
@@ -122,7 +126,6 @@ export default class SpeakIt {
     this.preloader.show();
 
     await this.statistics.init();
-    await this.settings.init();
     await this.renderWordsOnThePage();
     this.wordCardClickEvent();
     this.startGame();
@@ -451,7 +454,7 @@ export default class SpeakIt {
       }, 1000);
       await this.addSkippedWordsToTheWordsToLearn();
       await this.statistics.saveGameStatistics(
-        'speakit', this.guessedWords.length, this.skippedWords.length,
+        SPEAK_IT_GAME_CODE, this.guessedWords.length, this.skippedWords.length,
       );
     }
   }
