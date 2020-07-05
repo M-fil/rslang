@@ -130,6 +130,7 @@ const vocabularyConstants = {
   NEW_WORDS_TITLE: 'Новые слова',
   RESTORE_BUTTON_TEXT: 'Восстановить',
   EMPTY_VOCABULARY_MESSAGE: 'Словарь пуст.',
+  NUMBER_OF_PROGRESS_CIRCLES: 5,
 };
 
 const settingsText = {
@@ -222,6 +223,14 @@ const modalConstants = {
   CANCEL_BUTTON: 'Отмена',
 };
 
+const progressLearningConstants = {
+  TIME_TO_REVISE_TEXT: 'Количество повторений слова:',
+  LAST_TIME_OF_REVISE_TEXT: 'Повторялось в последний раз:',
+  NEXT_TIME_OF_REVISE_TEXT: 'Будет повторяться снова:',
+  PROGRESS_LEARNING_TEXT: 'Прогресс изучения:',
+  NOT_REVISE_YET: 'еще не повторялось',
+};
+
 const shortTermStatisticsConstants = {
   ERROR_STAT: 'Ошибок',
   CORRECT_STAT: 'Знаю',
@@ -252,4 +261,5 @@ export {
   shortTermStatisticsConstants,
   startWindow,
   HTTPCodesConstants,
+  progressLearningConstants,
 };
