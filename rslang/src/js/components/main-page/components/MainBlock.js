@@ -10,6 +10,7 @@ const {
   findAPair,
   sprint,
   audioGame,
+  englishPuzzle,
 } = gamesInfo;
 
 class MainBlock {

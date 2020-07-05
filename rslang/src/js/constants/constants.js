@@ -235,40 +235,51 @@ const startWindow = {
 };
 
 const mainPageHeaderConstants = {
-  STATISTICS_BUTTON_TEXT: '',
-  VOCABULARY_BUTTON_TEXT: '',
-  PROMO_BUTTON_TEXT: '',
-  ABOUT_TEAM_TEXT: '',
-  STATISTICS_CODE: '',
-  VOCABULARY_CODE: '',
-  PROMO_CODE: '',
-  ABOUT_TEAM_CODE: '',
-  SETTINGS_CODE: '',
+  STATISTICS_BUTTON_TEXT: 'Статистика',
+  VOCABULARY_BUTTON_TEXT: 'Словарь',
+  PROMO_BUTTON_TEXT: 'Промо',
+  ABOUT_TEAM_TEXT: 'О Команде',
+  STATISTICS_CODE: 'STATISTICS_CODE',
+  VOCABULARY_CODE: 'VOCABULARY_CODE',
+  PROMO_CODE: 'PROMO_CODE',
+  ABOUT_TEAM_CODE: 'ABOUT_TEAM_CODE',
+  SETTINGS_CODE: 'SETTINGS_CODE',
 };
 
 const gamesInfo = {
   mainGame: {
-    title: '',
+    code: 'MAIN_GAME_CODE',
+    title: 'Основная игра',
     description: '',
   },
   savannah: {
-    title: '',
+    code: 'SAVANNAH_CODE',
+    title: 'Саванна',
     description: '',
   },
   speakIt: {
-    title: '',
+    code: 'SPEAKIT_CODE',
+    title: 'SpeakIt',
     description: '',
   },
   findAPair: {
-    title: '',
+    code: 'FINDAPAIR_CODE',
+    title: 'Найди пару',
     description: '',
   },
   sprint: {
-    title: '',
+    code: 'SPRINT_CODE',
+    title: 'Спринт',
     description: '',
   },
   audioGame: {
-    title: '',
+    code: 'AUDIOGAME_CODE',
+    title: 'Аудиовызов',
+    description: '',
+  },
+  englishPuzzle: {
+    code: 'ENGLISH_PUZZLE_CODE',
+    title: 'English Puzzle',
     description: '',
   },
 };
