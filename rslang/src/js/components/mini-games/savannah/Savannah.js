@@ -39,13 +39,13 @@ const {
 } = savannahConstants;
 
 const {
-  SELECT_OPTION_LEARNED_WORDS_VALUE,
-  SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE,
-} = wordsToLearnSelectConstants;
+  WORDS_TO_LEARN_TITLE,
+  LEARNED_WORDS_TITLE,
+} = vocabularyConstants;
 
 const {
-  WORDS_TO_LEARN_TITLE,
-} = vocabularyConstants;
+  SELECT_OPTION_LEARNED_WORDS_VALUE,
+} = wordsToLearnSelectConstants;
 
 export default class SavannahGame {
   constructor(userState) {
@@ -62,8 +62,9 @@ export default class SavannahGame {
     this.statistics = new Statistics(userState);
   }
 
-  render() {
-    const startPage = this.startWindow.render(GAME_NAME, RULES, (this.reverseReport).bind(this));
+  async render() {
+    this.learnedWords();
+    const startPage = this.startWindow.render(GAME_NAME, RULES, this.isVocabularyWords);
     this.closeButton.show();
     this.container = create('div', 'container', startPage, this.body);
     this.container.append(this.closeButton.render());
@@ -72,37 +73,18 @@ export default class SavannahGame {
     this.preloader.render();
     this.gameWindow = document.querySelector('.start-game-window');
     this.startButton = document.querySelector('.start-button');
-    this.isVocabularyWords();
-    this.getAllVocabulariesData();
-  }
-
-  async isVocabularyWords() {
     await this.vocabulary.init();
-    if (this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS) {
-      this.toggleLearnedWordsOption(true);
+  }
+
+  learnedWords() {
+    if (this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS) {
+      this.isVocabularyWords = true;
     } else {
-      this.toggleLearnedWordsOption(false);
+      this.isVocabularyWords = false;
     }
   }
 
-  toggleLearnedWordsOption(isToEnable = true) {
-    const { options } = this.startWindow.wordsToLearnSelect.select;
-
-    if (isToEnable) {
-      Array.from(options)
-        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE)
-        .setAttribute('selected', 'selected');
-    } else {
-      Array.from(options)
-        .find((option) => option.value === SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE)
-        .setAttribute('selected', 'selected');
-      Array.from(options)
-        .find((option) => option.value === SELECT_OPTION_LEARNED_WORDS_VALUE)
-        .setAttribute('disabled', 'disabled');
-    }
-  }
-
-  reverseReport() {
+  reverseReport(collection, group) {
     playAudio(AUDIO_TICKING, this.audio);
     this.closeButton.hide();
     this.numberReverse = create('span', 'number-reverse', '', this.container);
@@ -117,17 +99,16 @@ export default class SavannahGame {
         this.numberReverse.innerHTML = timeLeft;
       } else {
         clearInterval(timer);
-        this.mainGame();
+        this.mainGame(collection, group);
       }
     }, 1000);
   }
 
-  async mainGame() {
-    this.page = 0;
-    this.group = 0;
+  async mainGame(collection, group) {
     SavannahGame.changeDisplay(this.numberReverse, 'none');
-    this.data = await getWords(this.page, this.group);
-    this.crateCardsData();
+    this.page = Math.floor(Math.random() * MAX_PAGE);
+    this.data = await getWords(this.page, group);
+    this.crateCardsData(collection);
     this.wordClick();
     this.offAudio();
     this.createModal();
@@ -144,9 +125,11 @@ export default class SavannahGame {
     this.pauseAudio();
   }
 
-  crateCardsData() {
-    if (this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS) {
-      this.engRandomWords = this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE);
+  crateCardsData(collection) {
+    if (
+      this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS
+      && collection === SELECT_OPTION_LEARNED_WORDS_VALUE) {
+      this.engRandomWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE, true);
     } else {
       this.engRandomWords = this.data;
     }
@@ -157,7 +140,6 @@ export default class SavannahGame {
     this.offSound = create('button', 'sound sound_on', 'Off', this.container);
     this.engLine = create('div', 'english-line', '', this.container);
     this.rusLine = create('div', 'russian-line', '', this.container);
-
     shuffle(this.engRandomWords);
 
     this.engBut = create('span', 'word word_english', this.engRandomWords[this.num].word, this.engLine);
@@ -194,46 +176,30 @@ export default class SavannahGame {
       disabledButton.disabled = false;
     });
     this.closeButton.disabled(false);
-    if (this.num === this.data.length - 1) {
-      this.num = 0;
-      this.page += 1;
-      this.data = await getWords(this.page, this.group);
-      // this.engRandomWords = this.data;
-      // this.engRandomWords = shuffle(this.data);
-    }
-    if (this.page === MAX_PAGE) {
-      this.group += 1;
-      this.page = 0;
-      this.data = await getWords(this.page, this.group);
-      // this.engRandomWords = this.data;
-      // this.engRandomWords = shuffle(this.data);
-    }
     this.wordsTranslate.length = 0;
 
-    if (this.num !== this.data.length - 1) {
-      this.num += 1;
-      this.engBut.innerHTML = this.engRandomWords[this.num].word;
-      this.engBut.setAttribute('data-translate', this.engRandomWords[this.num].wordTranslate);
-      this.arrayBeforeClickWords = this.engRandomWords[this.num];
+    this.num += 1;
+    this.engBut.innerHTML = this.engRandomWords[this.num].word;
+    this.engBut.setAttribute('data-translate', this.engRandomWords[this.num].wordTranslate);
+    this.arrayBeforeClickWords = this.engRandomWords[this.num];
 
-      const randomData = this.data;
-      const correctWord = randomData.find((word) => this.engBut.dataset.translate === word.wordTranslate);
+    const randomData = this.data;
+    const correctWord = randomData.find((word) => this.engBut.dataset.translate === word.wordTranslate);
 
-      let randomTranslations = randomData
-        .filter((word) => this.engBut.dataset.translate !== word.wordTranslate)
-        .map((word) => word.wordTranslate);
+    let randomTranslations = randomData
+      .filter((word) => this.engBut.dataset.translate !== word.wordTranslate)
+      .map((word) => word.wordTranslate);
 
-      randomTranslations = shuffle(randomTranslations, RANDOM_WORDS);
-      const int = Math.round(Math.random());
-      this.wordsTranslate = (!int) ? [...randomTranslations, correctWord.wordTranslate] : [correctWord.wordTranslate, ...randomTranslations];
-      this.wordTranslate = shuffle(this.wordsTranslate);
-      let keyboardNumber = 0;
-      for (let i = 0; i < this.rusBut.length; i += 1) {
-        keyboardNumber += 1;
-        this.rusBut[i].setAttribute('data-translate', this.wordsTranslate[i]);
-        this.rusBut[i].innerHTML = this.wordsTranslate[i];
-        this.wordNumber = create('span', 'word_number', keyboardNumber.toString(), this.rusBut[i]);
-      }
+    randomTranslations = shuffle(randomTranslations, RANDOM_WORDS);
+    const int = Math.round(Math.random());
+    this.wordsTranslate = (!int) ? [...randomTranslations, correctWord.wordTranslate] : [correctWord.wordTranslate, ...randomTranslations];
+    this.wordTranslate = shuffle(this.wordsTranslate);
+    let keyboardNumber = 0;
+    for (let i = 0; i < this.rusBut.length; i += 1) {
+      keyboardNumber += 1;
+      this.rusBut[i].setAttribute('data-translate', this.wordsTranslate[i]);
+      this.rusBut[i].innerHTML = this.wordsTranslate[i];
+      this.wordNumber = create('span', 'word_number', keyboardNumber.toString(), this.rusBut[i]);
     }
   }
 
