@@ -234,6 +234,13 @@ const startWindow = {
   START_BUTTON: 'Начать',
 };
 
+const mainPageHeaderConstants = {
+  STATISTICS_BUTTON_TEXT: '',
+  VOCABULARY_BUTTON_TEXT: '',
+  PROMO_BUTTON_TEXT: '',
+  ABOUT_TEAM_TEXT: '',
+}
+
 export {
   urls,
   findAPairText,
@@ -252,4 +259,5 @@ export {
   shortTermStatisticsConstants,
   startWindow,
   HTTPCodesConstants,
+  mainPageHeaderConstants,
 };
