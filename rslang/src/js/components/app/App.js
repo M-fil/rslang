@@ -187,7 +187,6 @@ class App {
     await mainGame.render('.main-content');
   }
   auditiongame(userState){
-    console.log('auditoingame');
     const audition = new AuditionGame(userState);
     audition.render(5,5);
   }	 

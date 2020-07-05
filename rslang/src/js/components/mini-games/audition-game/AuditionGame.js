@@ -10,10 +10,10 @@ export default class AuditionGame {
   render(lives, roundsAll) {
     const wrapper = create('div', 'audition-game__wrapper', '', document.querySelector('body'));
     this.gameService = new GameService(this.user);
+    this.gameService.getVocabularyData();
     const gameStartScreen = new StartGameScreen();
     const gameStartButton = gameStartScreen.createStartScreen();
     const roundResults = [];
-    console.log('rendr');
     gameStartButton.addEventListener('click', async () => {
       document.querySelector('.audition-game__startScreen').classList.toggle('hide');
       this.gameService.preloaderInit();

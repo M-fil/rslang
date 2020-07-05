@@ -5,14 +5,7 @@ import Statistics from '../../statistics/Statistics'
 
 export default class GameStatistic {
   constructor(userData) {
-    if (GameStatistic.exists) {
-      return GameStatistic.instance;
-    }
-
-    this.user = userData || false;
-
-    GameStatistic.exists = true;
-    GameStatistic.instance = this;
+    this.user = userData;  
   }
   statistics(resultObj) {
     const correctArray = resultObj.filter((res) => res.result === auditionGameVariables.correct);

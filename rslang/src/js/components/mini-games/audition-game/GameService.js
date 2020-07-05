@@ -15,26 +15,29 @@ export default class GameService {
       userId: '5efcedbf23780e0017487c2a',
       };*/
   }
-
+  async getVocabularyData(){
+    this.voc = new Vocabulary(this.user);
+    await this.voc.init();
+    this.vocabulary  =  await this.voc.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE,  true);  
+  }
   async preloaderInit() {
     this.preloader = new Preloader();
     this.preloader.render();
     this.isMuted = false;
     this.isHintAvailable = true;
     this.correctAnswersCounter = 0;
-    this.vocabulary = new Vocabulary(this.user);
-    await this.vocabulary.init();
+    
   }
 
   async initRound(lives, roundsAll, currentRound, roundResults) {
-    console.log('init');
     this.preloader.show();
-    const gameDataService = new GameDataService();
+    this.genGame();
+    const gameDataService = new GameDataService(this.vocabulary);
     const data = await gameDataService.mapping(currentRound, this.isMuted);
     const answers = document.querySelector('.audition-game__answers');
     const arr = data.array;
+    console.log('DATA:',data);
     const mainWord = data.mainWordToAsk;
-    this.testObj = data.test;
     this.createPossibleWords(arr, answers);
     const audio = new Audio(`${urls.mainAudioPath}${mainWord.audio}`);
     audio.play();
@@ -51,7 +54,22 @@ export default class GameService {
     this.soundHandler();
     this.hintHandler(mainWord);
   }
-
+  genGame(){
+    const wrapper = document.querySelector('.audition-game__wrapper');
+    this.container = create('div', 'audition-game__container hide', '', wrapper);
+    const soundCont = create('div', 'audition-game__sound__container', '', this.container);
+    const hintCont = create('div', 'audition-game__hint__container', '', this.container);
+    if (!this.isMuted) create('div', 'audition-game__sound__button', '', soundCont);
+    else create('div', 'audition-game__sound__button audition-game__sound__buttonMuted', '', soundCont);
+    document.querySelector('.audition-game__sound__button')
+    create('div', 'audition-game__hint__button', '', hintCont);
+    create('div', 'close', '', this.container);
+    const game = create('div', 'audition-game__game', '', this.container);
+    create('div', 'audition-game__audio__pulse', '', game);
+    create('p', 'audition-game__correctanswer', '', game);
+    create('div', 'audition-game__answers', '', game);
+    create('button', 'audition-game__button__next Enter', `${auditionGameVariables.idkBtn}`, game);
+  }
   nextRound(lives, roundsAll, currentRound, roundResults) {
     if (lives > 0 && currentRound !== roundsAll) {
       let curr = currentRound;
@@ -87,6 +105,7 @@ export default class GameService {
         this.designUncheckedPossibleWords(elements);
         document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.translate}`;
         document.querySelector('.audition-game__audio__pulse').style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
+       // this.vocabulary.addWordToTheVocabulary(mainWord, vocabularyConstants.LEARNED_WORDS_TITLE);
         if (event.target.innerText.includes(mainWord.translate)) {
           event.target.innerHTML = `${auditionGameVariables.checkMark}${event.target.innerText}`;
           const audioRoundResult = new Audio(urls.correctSound);
@@ -189,7 +208,7 @@ export default class GameService {
 
   modalDialog() {
     const wrapper = document.querySelector('body');
-    this.modal = create('div', 'modal', '', wrapper);
+    this.modal = create('div', 'modalAudition', '', wrapper);
     this.modalContent = create('div', 'modal-content', '', this.modal);
     create('h2', 'alarmMessage', auditionGameVariables.modalAlarm, this.modalContent);
     create('p', 'alarmDesc', auditionGameVariables.modalDesc, this.modalContent);
@@ -202,12 +221,12 @@ export default class GameService {
     document.querySelector('.agreeToClose').addEventListener('click', () => {
       document.querySelector('.audition-game__container').remove();
       document.querySelector('.audition-game__startScreen').classList.toggle('hide');
-      document.querySelector('.modal').remove();
+      document.querySelector('.modalAudition').remove();
       document.querySelector('.audition-game__wrapper').className = 'audition-game__wrapper';
       document.querySelector('.progress').style.width = auditionGameVariables.zeroPercent;
     });
     document.querySelector('.cancelToClose').addEventListener('click', () => {
-      document.querySelector('.modal').remove();
+      document.querySelector('.modalAudition').remove();
     });
   }
 

@@ -1,27 +1,28 @@
 import create from '../../../utils/сreate';
 import { getWords, getWordsAdditionalInfo } from '../../../service/service';
 import { simpleShuffle, shuffle } from '../../../utils/shuffle';
-import { auditionGameVariables } from '../../../constants/constants';
+import { auditionGameVariables, vocabularyConstants } from '../../../constants/constants';
+//import Vocabulary from  '../../vocabulary/Vocabulary'
 
 export default class GameDataService {
+  constructor(vocabulary){
+    this.vocabulary = vocabulary;  
+  }
   async mapping(currentRound, isMuted) {
     const curr = currentRound <= auditionGameVariables.maxGroups && currentRound > 0 ? currentRound - 1 : Math.floor(Math.random() * Math.floor(auditionGameVariables.maxGroups));
-    this.data = await getWords(Math.floor(Math.random() * Math.floor(auditionGameVariables.maxPages)), curr);
-    this.shuffledValue = this.data.sort(simpleShuffle);
-    const wrapper = document.querySelector('.audition-game__wrapper');
-    this.container = create('div', 'audition-game__container hide', '', wrapper);
-    const soundCont = create('div', 'audition-game__sound__container', '', this.container);
-    const hintCont = create('div', 'audition-game__hint__container', '', this.container);
-    if (!isMuted) create('div', 'audition-game__sound__button', '', soundCont);
-    else create('div', 'audition-game__sound__button audition-game__sound__buttonMuted', '', soundCont);
-    create('div', 'audition-game__hint__button', '', hintCont);
-    create('div', 'close', '', this.container);
-    const game = create('div', 'audition-game__game', '', this.container);
-    create('div', 'audition-game__audio__pulse', '', game);
-    create('p', 'audition-game__correctanswer', '', game);
-    create('div', 'audition-game__answers', '', game);
-    create('button', 'audition-game__button__next Enter', `${auditionGameVariables.idkBtn}`, game);
+   // await this.vocabulary.init();
+    //const tst =  this.vocabulary;//.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE,  true); 
     const wordsInfo = [];
+  console.log( this.vocabulary);
+    if( this.vocabulary?.length >= 5 &&  this.vocabulary[0]?.audio){
+      this.shuffledValue =  this.vocabulary.sort(simpleShuffle);
+     // alert('1');
+    }
+    else {
+      this.data = await getWords(Math.floor(Math.random() * Math.floor(auditionGameVariables.maxPages)), curr);
+     // alert('2');
+    this.shuffledValue = this.data.sort(simpleShuffle);
+  
     for (let i = 0; i < this.shuffledValue.length - 1; i += 1) {
       const test = await getWordsAdditionalInfo(this.shuffledValue[i].word);
       const partOfSpeech = test.results ? test?.results[0]?.partOfSpeech : auditionGameVariables.IDK;
@@ -31,10 +32,17 @@ export default class GameDataService {
         });
       }
     }
-    const filteredWordsInfo = wordsInfo.filter((word) => word.partOfSpeech === auditionGameVariables.noun);
+   }
+    //console.log('wordsINFO:',wordsInfo);
+    const filteredWordsInfo = wordsInfo.length > 0 ? wordsInfo.filter((word) => word.partOfSpeech === auditionGameVariables.noun):this.vocabulary;
     const possibleAnswers = filteredWordsInfo.slice(0, auditionGameVariables.possibleWordsAmount);
     const mainWordToAsk = possibleAnswers[0];
+    if(this.vocabulary.length >= auditionGameVariables.possibleWordsAmount){
+    const index = this.vocabulary.indexOf(mainWordToAsk);
+    this.vocabulary.splice(index,1);
+    }
     const shuffledPossibleAnswers = shuffle(possibleAnswers);
-    return { mainWordToAsk, array: shuffledPossibleAnswers , test:this.shuffledValue[0]};
+    console.log({ mainWordToAsk, array: shuffledPossibleAnswers});
+    return { mainWordToAsk, array: shuffledPossibleAnswers};
   }
 }
