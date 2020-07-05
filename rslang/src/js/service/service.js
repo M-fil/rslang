@@ -1,4 +1,4 @@
-import { urls, errorTypes } from '../constants/constants';
+import { urls, errorTypes, HTTPCodesConstants } from '../constants/constants';
 
 const {
   WORDS_DATA_URL,
@@ -10,12 +10,15 @@ const {
 
 const {
   USER_ALREADY_EXISTS,
-  ERROR_417,
-  ERROR_404,
   INCORRECT_VALUES,
-  STATUS_200,
   USER_NOT_FOUND,
 } = errorTypes;
+
+const {
+  HTTP_STATUS_200,
+  HTTP_ERROR_404,
+  HTTP_ERROR_417,
+} = HTTPCodesConstants;
 
 const getWords = async (page = 0, group = 0) => {
   const response = await fetch(`${WORDS_DATA_URL}page=${page}&group=${group}`);
@@ -44,11 +47,11 @@ const createUser = async (user) => {
     body: JSON.stringify(user),
   });
 
-  if (rawResponse.status === ERROR_417) {
+  if (rawResponse.status === HTTP_ERROR_417) {
     throw new Error(USER_ALREADY_EXISTS);
   }
 
-  if (rawResponse.status !== STATUS_200) {
+  if (rawResponse.status !== HTTP_STATUS_200) {
     throw new Error(INCORRECT_VALUES);
   }
 
@@ -66,15 +69,15 @@ const loginUser = async (user) => {
     body: JSON.stringify(user),
   });
 
-  if (rawResponse.status === ERROR_417) {
+  if (rawResponse.status === HTTP_ERROR_417) {
     throw new Error(USER_ALREADY_EXISTS);
   }
 
-  if (rawResponse.status === ERROR_404) {
+  if (rawResponse.status === HTTP_ERROR_404) {
     throw new Error(USER_NOT_FOUND);
   }
 
-  if (rawResponse.status !== STATUS_200) {
+  if (rawResponse.status !== HTTP_STATUS_200) {
     throw new Error(INCORRECT_VALUES);
   }
 
@@ -115,6 +118,20 @@ const createUserWord = async (userId, wordId, word, token) => {
 
 const getUserWord = async (userId, wordId, token) => {
   const rawResponse = await fetch(`${GET_USER_URL}${userId}/words/${wordId}`, {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+
+  const content = await rawResponse.json();
+  return content;
+};
+
+const getRefreshToken = async (userId, token) => {
+  const rawResponse = await fetch(`${GET_USER_URL}${userId}/tokens`, {
     method: 'GET',
     withCredentials: true,
     headers: {
@@ -234,7 +251,7 @@ const setUserSettings = async (userId, token, body) => {
     body: JSON.stringify(body),
   });
 
-  if (rawResponse.status === 200) content = await rawResponse.json();
+  if (rawResponse.status === HTTP_STATUS_200) content = await rawResponse.json();
   return content;
 };
 
@@ -250,7 +267,7 @@ const getUserSettings = async (userId, token) => {
     },
   });
 
-  if (rawResponse.status === 200) content = await rawResponse.json();
+  if (rawResponse.status === HTTP_STATUS_200) content = await rawResponse.json();
   return content;
 };
 
@@ -267,7 +284,7 @@ const updateUserStatistics = async (userId, token, body) => {
     body: JSON.stringify(body),
   });
 
-  if (rawResponse.status === 200) content = await rawResponse.json();
+  if (rawResponse.status === HTTP_STATUS_200) content = await rawResponse.json();
   return content;
 };
 
@@ -282,7 +299,7 @@ const getUserStatistics = async (userId, token) => {
     },
   });
 
-  if (rawResponse.status === 200) content = await rawResponse.json();
+  if (rawResponse.status === HTTP_STATUS_200) content = await rawResponse.json();
   return content;
 };
 
@@ -302,6 +319,7 @@ export {
   getStatistics,
   setUserSettings,
   getUserSettings,
+  getRefreshToken,
   updateUserStatistics,
   getUserStatistics,
 };

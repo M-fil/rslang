@@ -1,5 +1,5 @@
 .find-a-pair {
-  border: 1px solid black;
+  border: 1px solid $find-a-pair-border-color;
   border-radius: 15px;
   padding: 15px;
   text-align: center;
@@ -8,7 +8,6 @@
 }
 
 .find-a-pair__start-page {
-  margin: calc(100vh - 70vh) auto 0;
   width: fit-content;
 }
 

@@ -22,3 +22,5 @@ setTimeout(()=>{
   //stat.saveGameStatistics('maingame',222,30,143);
 },5000);*/
 
+const app = new App();
+app.run();

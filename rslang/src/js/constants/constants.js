@@ -12,6 +12,7 @@ const urls = {
   errorSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3',
   WORDS_DATA_URL_ADDITIONAL:'https://wordsapiv1.p.rapidapi.com/words/',
 };
+
 const authenticationConstants = {
   AUTHORIZATION_TITLE: 'Авторизация',
   REGISTRATION_TITLE: 'Регистрация',
@@ -23,19 +24,42 @@ const authenticationConstants = {
   AUTHORIZATION_KEY: 'authorization',
   REGISTRATION_KEY: 'registration',
   MAX_NAME_LENGTH: 30,
+
+};
+
+const wordsToLearnSelectConstants = {
+  SELECT_TITLE: 'Какие слова учить?',
+  SELECT_OPTION_LEARNED_WORDS: 'Уже изученные слова',
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS: 'Слова из коллекций',
+  SELECT_OPTION_LEARNED_WORDS_VALUE: 'LEARNED_WORDS',
+  SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE: 'WORDS_FROM_COLLECTIONS',
+  SELECT_GROUP_TITLE: 'Выберите группу сложности',
+  SELECT_GROUP_OPTIONS_TITLE_LIST: [
+    'Группа 1',
+    'Группа 2',
+    'Группа 3',
+    'Группа 4',
+    'Группа 5',
+    'Группа 6',
+  ],
+
 };
 
 const errorTypes = {
-  EMPTY_FIELD: 'Пароль и почта должны быть заполнены.',
+  EMPTY_FIELD: 'Имя, почта и пароль должны быть заполнены.',
   INCORRECT_VALUES: 'Поля заполнены неверно.',
   PASSWORD_REQUIRMENTS: 'Пароль должен содержать не менее 8 символов, как минимум одну прописную букву, одну заглавную букву, одну цифру и один спецсимвол',
   INCORRECT_EMAIL: 'email введен неверно.',
-  ERROR_417: 417,
-  ERROR_404: 404,
   USER_ALREADY_EXISTS: 'пользователь с такими данными уже существует',
-  STATUS_200: 200,
   USER_IS_NOT_AUTHORIZED: 'Пользователь не авторизирован',
   USER_NOT_FOUND: 'Такого пользователя не существует. Пожалуйста, проверьте введенные данные.',
+  EXCEEDED_NAME_LENGTH: 'Длина поля "Имя" не должна превышать 30 символов',
+};
+
+const HTTPCodesConstants = {
+  HTTP_STATUS_200: 200,
+  HTTP_ERROR_404: 404,
+  HTTP_ERROR_417: 417,
 };
 
 const mainGameConstants = {
@@ -188,6 +212,16 @@ const statisticsText = {
   },
 };
 
+const StatisticsGameCodes = {
+  MAIN_GAME_CODE: 'maingame',
+  SAVANNA_GAME_CODE: 'savannah',
+  FIND_A_PAIR_GAME_CODE: 'findapair',
+  AUDITION_GAME_CODE: 'auditiongame',
+  SPRINT_GAME_CODE: 'sprint',
+  SPEAK_IT_GAME_CODE: 'speakit',
+  ENGLISH_PUZZLE_GAME_CODE: 'englishpuzzle',
+};
+
 const modalConstants = {
   MODAL_TITLE: 'Тренировка не закончена!',
   MODAL_WARNING: 'Если вы вернетесь к списку, ваш прогресс не будет сохранен',
@@ -231,6 +265,12 @@ const auditionGameVariables = {
   bg: ['bg1', 'bg2', 'bg3', 'bg4'],
   digits: ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5'],
 };
+
+const startWindow = {
+  START_BUTTON: 'Начать',
+};
+
+
 export {
   urls,
   auditionGameVariables,
@@ -244,6 +284,10 @@ export {
   dailyStatisticsConstants,
   settingsText,
   statisticsText,
+  StatisticsGameCodes,
+  wordsToLearnSelectConstants,
   modalConstants,
   shortTermStatisticsConstants,
+  startWindow,
+  HTTPCodesConstants,
 };

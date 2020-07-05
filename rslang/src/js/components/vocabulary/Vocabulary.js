@@ -147,7 +147,6 @@ class Vocabulary {
 
   async sortWordsInVocabularies() {
     const { userId, token } = this.state.userState;
-    console.log(this.state.userState);
     const allWords = await getAllUserWords(userId, token);
     this.state.allUserWords = allWords;
     this.state.allUserWords = this.parseUserWordsData();
@@ -196,6 +195,21 @@ class Vocabulary {
     return vocabulariesWordsObject;
   }	  
 
+
+  getAllVocabulariesData(getNormalObjects = false) {
+    let vocabulariesWordsObject;
+    if (getNormalObjects) {
+      vocabulariesWordsObject = {
+        wordsToLearn: this.state.vocabularies.wordsToLearn.map((word) => word.optional.allData),
+        learnedWords: this.state.vocabularies.learnedWords.map((word) => word.optional.allData),
+        removedWords: this.state.vocabularies.removedWords.map((word) => word.optional.allData),
+        difficultWords: this.state.vocabularies.difficultWords.map((word) => word.optional.allData),
+      };
+    } else {
+      vocabulariesWordsObject = this.state.vocabularies;
+    }
+    return vocabulariesWordsObject;
+  }
 
   getVocabularyWordsLength(vocabularyType) {
     return this.state.allUserWords
