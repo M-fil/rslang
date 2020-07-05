@@ -55,8 +55,7 @@ class VocabularyItem {
     }
     create('div', 'word-item__main-container',
       [mainHTML, sentencesBlock, this.learningProgress && this.learningProgress.render()],
-      this.HTML,
-    );
+      this.HTML);
 
     if (showImageAssociations) {
       const imageBlock = create('div', 'word-item__image-block', '', this.HTML);

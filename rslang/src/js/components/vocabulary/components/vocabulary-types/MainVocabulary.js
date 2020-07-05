@@ -78,9 +78,9 @@ class MainVocabulary {
   }
 
   static createLearningProgressObject(
-    timesOfRevise, lastTimeOfRevise, nextTimeOfReivise, commonNumberOfCorrectAnswers
+    timesOfRevise, lastTimeOfRevise, nextTimeOfReivise, commonNumberOfCorrectAnswers,
   ) {
-     return {
+    return {
       timesOfRevise,
       lastTimeOfRevise,
       nextTimeOfReivise,

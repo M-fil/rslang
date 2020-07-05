@@ -7,6 +7,7 @@ import create, {
   urls,
   estimateButtonsTypes,
   addDaysToTheDate,
+  dateFormat,
 } from './pathes';
 
 import VocabularyHeader from './components/vocabulary-header/VocabularyHeader';
@@ -59,7 +60,6 @@ class Vocabulary {
   async init() {
     await this.settings.init();
     await this.sortWordsInVocabularies();
-    console.log(this.getWordsByVocabularyType(WORDS_TO_LEARN_TITLE))
   }
 
   async render() {
@@ -185,7 +185,8 @@ class Vocabulary {
   }
 
   getWordsByVocabularyType(vocabularyType, getNormalObject = false) {
-    const wordsArr = this.state.allUserWords.filter((word) => word.optional.vocabulary === vocabularyType);
+    const wordsArr = this.state.allUserWords
+      .filter((word) => word.optional.vocabulary === vocabularyType);
     return (getNormalObject) ? wordsArr.map((word) => word.optional.allData) : wordsArr;
   }
 

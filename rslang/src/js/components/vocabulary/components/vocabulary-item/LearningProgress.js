@@ -17,7 +17,7 @@ const {
 
 class LearningProgress {
   constructor(
-    timesOfRevise, lastTimeOfRevise, nextTimeOfReivise, commonNumberOfCorrectAnswers
+    timesOfRevise, lastTimeOfRevise, nextTimeOfReivise, commonNumberOfCorrectAnswers,
   ) {
     this.HTML = null;
     this.timesOfRevise = timesOfRevise;
@@ -55,4 +55,4 @@ class LearningProgress {
   }
 }
 
-export default LearningProgress
+export default LearningProgress;
