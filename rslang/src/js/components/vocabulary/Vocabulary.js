@@ -62,7 +62,7 @@ class Vocabulary {
 
   async render() {
     this.container = create('div', 'vocabulary');
-    const vocabularyHeader = new VocabularyHeader();
+    const vocabularyHeader = new VocabularyHeader(this.help);
     this.container.append(vocabularyHeader.render());
     this.mainContentHTML = create('div', 'vocabulary__main-content', '', this.container);
 
