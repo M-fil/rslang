@@ -69,13 +69,16 @@ const errorTypes = {
   INCORRECT_VALUES: 'Поля заполнены неверно.',
   PASSWORD_REQUIRMENTS: 'Пароль должен содержать не менее 8 символов, как минимум одну прописную букву, одну заглавную букву, одну цифру и один спецсимвол',
   INCORRECT_EMAIL: 'email введен неверно.',
-  ERROR_417: 417,
-  ERROR_404: 404,
   USER_ALREADY_EXISTS: 'пользователь с такими данными уже существует',
-  STATUS_200: 200,
   USER_IS_NOT_AUTHORIZED: 'Пользователь не авторизирован',
   USER_NOT_FOUND: 'Такого пользователя не существует. Пожалуйста, проверьте введенные данные.',
   EXCEEDED_NAME_LENGTH: 'Длина поля "Имя" не должна превышать 30 символов',
+};
+
+const HTTPCodesConstants = {
+  HTTP_STATUS_200: 200,
+  HTTP_ERROR_404: 404,
+  HTTP_ERROR_417: 417,
 };
 
 const mainGameConstants = {
@@ -201,6 +204,42 @@ const settingsText = {
   },
 };
 
+const statisticsText = {
+  tabtitels: {
+    shortterm: 'Краткосрочная',
+    longterm: 'Долгосрочная',
+  },
+  gametitles: {
+    maingame: 'Main Game',
+    savannah: 'Savanna',
+    findapair: 'Find a pair',
+    auditiongame: 'Audition',
+    sprint: 'Sprint',
+    speakit: 'Speak It',
+    englishpuzzle: 'English Puzzle',
+  },
+  select: {
+    game: 'Игра',
+    date: 'Дата',
+  },
+  texts: {
+    learnedWords: 'Изучено новых слов',
+    playingCount: 'Сыграно игр',
+    correctAnswers: 'Правильны ответов',
+    wrongAnswers: 'Ошибок',
+  },
+};
+
+const StatisticsGameCodes = {
+  MAIN_GAME_CODE: 'maingame',
+  SAVANNA_GAME_CODE: 'savannah',
+  FIND_A_PAIR_GAME_CODE: 'findapair',
+  AUDITION_GAME_CODE: 'auditiongame',
+  SPRINT_GAME_CODE: 'sprint',
+  SPEAK_IT_GAME_CODE: 'speakit',
+  ENGLISH_PUZZLE_GAME_CODE: 'englishpuzzle',
+};
+
 const modalConstants = {
   MODAL_TITLE: 'Тренировка не закончена!',
   MODAL_WARNING: 'Если вы вернетесь к списку, ваш прогресс не будет сохранен',
@@ -231,8 +270,11 @@ export {
   vocabularyConstants,
   dailyStatisticsConstants,
   settingsText,
+  statisticsText,
+  StatisticsGameCodes,
   wordsToLearnSelectConstants,
   modalConstants,
   shortTermStatisticsConstants,
   startWindow,
+  HTTPCodesConstants,
 };
