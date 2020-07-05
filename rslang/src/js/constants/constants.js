@@ -239,7 +239,39 @@ const mainPageHeaderConstants = {
   VOCABULARY_BUTTON_TEXT: '',
   PROMO_BUTTON_TEXT: '',
   ABOUT_TEAM_TEXT: '',
-}
+  STATISTICS_CODE: '',
+  VOCABULARY_CODE: '',
+  PROMO_CODE: '',
+  ABOUT_TEAM_CODE: '',
+  SETTINGS_CODE: '',
+};
+
+const gamesInfo = {
+  mainGame: {
+    title: '',
+    description: '',
+  },
+  savannah: {
+    title: '',
+    description: '',
+  },
+  speakIt: {
+    title: '',
+    description: '',
+  },
+  findAPair: {
+    title: '',
+    description: '',
+  },
+  sprint: {
+    title: '',
+    description: '',
+  },
+  audioGame: {
+    title: '',
+    description: '',
+  },
+};
 
 export {
   urls,
@@ -260,4 +292,5 @@ export {
   startWindow,
   HTTPCodesConstants,
   mainPageHeaderConstants,
+  gamesInfo,
 };
