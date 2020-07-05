@@ -7,6 +7,9 @@ import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import Statistics from '../statistics/Statistics';
+
+import MainPage from '../main-page/MainPage';
 
 import {
   createUser,
@@ -63,16 +66,37 @@ class App {
   }
 
   async initSettings() {
-    const settings = new Settings(this.state.user);
-    await settings.init();
-    this.state.settings = settings.getSettings();
+    this.settings = new Settings(this.state.user);
+    await this.settings.init();
+    this.state.settings = this.settings.getSettings();
   }
 
-  async renderVocabulary(userState) {
-    this.vocabulary = new Vocabulary(userState);
+  async initStatistics() {
+    this.statistics = new Statistics();
+    await this.settings.init();
+  }
+
+  async initVocabulary() {
+    this.vocabulary = new Vocabulary(this.state.user);
     await this.vocabulary.init();
+  }
+
+  async initAuxilaryComponents() {
+    await this.initSettings();
+    await this.initStatistics();
+    await this.initVocabulary();
+  }
+
+  async renderVocabulary() {
+    this.container.innerHTML = '';
     const html = await this.vocabulary.render();
     document.body.append(html);
+  }
+
+  renderMainPage() {
+    this.container.innerHTML = '';
+    this.mainPage = new MainPage(this.state.user.name);
+    this.container.append(this.mainPage.render());
   }
 
   activateAuthenticationForm() {
@@ -121,9 +145,8 @@ class App {
       };
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
-      await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      await this.initAuxilaryComponents();
+      this.renderMainPage();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -161,9 +184,8 @@ class App {
         refreshToken: JSON.parse(savedUserData).refreshToken,
         name: data.name,
       };
-      await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      await this.initAuxilaryComponents();
+      this.renderMainPage();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
@@ -172,9 +194,8 @@ class App {
         ...this.state.user,
         ...data,
       };
-      await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      await this.initAuxilaryComponents();
+      this.renderMainPage();
     }
   }
 

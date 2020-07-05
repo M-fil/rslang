@@ -32,6 +32,7 @@ class MainBlock {
       MainBlock.renderGameButton(...Object.values(findAPair)),
       MainBlock.renderGameButton(...Object.values(sprint)),
       MainBlock.renderGameButton(...Object.values(audioGame)),
+      MainBlock.renderGameButton(...Object.values(englishPuzzle)),
     );
 
     return this.HTML;
