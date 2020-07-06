@@ -307,7 +307,7 @@ export {
   getStatistics,
   setUserSettings,
   getUserSettings,
+  getRefreshToken,
   updateUserStatistics,
   getUserStatistics,
-  getRefreshToken,
 };

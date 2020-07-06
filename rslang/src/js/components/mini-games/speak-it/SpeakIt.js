@@ -15,11 +15,9 @@ import Navigation from './components/navigation/Navigation';
 import ButtonsBlock from './components/buttons/ButtonsBlock';
 import MicrophoneButton from './components/buttons/MicrophoneButton';
 import Preloader from '../../preloader/Preloader';
-import Settings from '../../settings/Settings';
 import Vocabulary from '../../vocabulary/Vocabulary';
 import StatisticsBlock from './components/statistics/StatisticsBlock';
 import Statistics from '../../statistics/Statistics';
-
 import ModalWindow from '../common/ModalWindow';
 import StartPage from './components/pages/StartPage';
 
@@ -51,7 +49,9 @@ const {
 } = StatisticsGameCodes;
 
 export default class SpeakIt {
-  constructor(userState) {
+  constructor(miniGameParameters) {
+    this.userState = miniGameParameters.user;
+
     this.currentArrayOfWords = [];
     this.words = [];
     this.skippedWords = [];
@@ -62,8 +62,8 @@ export default class SpeakIt {
     this.recognition = SpeakIt.createSpeechRecongnition();
 
     this.startWindow = new StartPage(this.initMainGamePage.bind(this));
-    this.vocabulary = new Vocabulary(userState);
-    this.statistics = new Statistics(userState);
+    this.vocabulary = new Vocabulary(this.userState);
+    this.statistics = new Statistics(this.userState);
     this.modalWindow = new ModalWindow('speak-it__modal');
     this.preloader = new Preloader();
     this.shortTermStatistics = new StatisticsBlock();
@@ -75,7 +75,7 @@ export default class SpeakIt {
       groupOfWords: 0,
       correct: 0,
       isMicroDisabled: true,
-      userState,
+      userState: this.userState,
     };
   }
 

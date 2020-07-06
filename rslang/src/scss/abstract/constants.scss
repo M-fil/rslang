@@ -34,7 +34,7 @@ $daily-statistics-background: #303B44;
 $labtop-l-width: 1440px;
 $content-width: 1024px;
 $tablet-width: 768px;
-$mobile-big-width: 414px;
+$mobile-big-width: 425px;
 $mobile-small-width: 320px;
 
 $modal-window-background: rgba(0,0,0,0.6);
@@ -42,3 +42,10 @@ $modal-window-border-color: #000000;
 $modal-window-main-background: #ffffff;
 
 $start-game-window-border-color: #000000;
+
+$find-a-pair-border-color: #000000;
+$find-a-pair-shadow-color: rgba(0,0,0,0.5);
+$find-a-pair-shadow-color-on-hover: rgba(0,0,0,0.9);
+$find-a-pair-card-text-color: #000000;
+$find-a-pair-card-text-background-color: #ffffff;
+$find-a-pair-card-background-image: url(/src/assets/images/find-a-pair-card-image.png);
