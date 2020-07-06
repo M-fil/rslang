@@ -51,6 +51,8 @@ const {
 export default class SpeakIt {
   constructor(miniGameParameters) {
     this.userState = miniGameParameters.user;
+    this.closeButton = miniGameParameters.closeButton;
+    this.shortTermStatistics = miniGameParameters.shortTermStatistics;
 
     this.currentArrayOfWords = [];
     this.words = [];
@@ -64,7 +66,6 @@ export default class SpeakIt {
     this.startWindow = new StartPage(this.initMainGamePage.bind(this));
     this.vocabulary = new Vocabulary(this.userState);
     this.statistics = new Statistics(this.userState);
-    this.modalWindow = new ModalWindow('speak-it__modal');
     this.preloader = new Preloader();
     this.shortTermStatistics = new StatisticsBlock();
 
@@ -77,6 +78,8 @@ export default class SpeakIt {
       isMicroDisabled: true,
       userState: this.userState,
     };
+    this.recognition.addEventListener('end', this.recognition.start);
+    this.recognition.start();
   }
 
   async run() {
@@ -96,14 +99,14 @@ export default class SpeakIt {
     await this.activateWordsToLearnSelect();
   }
 
-  activateExitButton() {
-    document.addEventListener('click', (event) => {
-      const target = event.target.closest('.speak-it__exit-button');
-
-      if (target) {
-        this.modalWindow.show();
-      }
-    });
+  goToTheStartPageHandler() {
+    document.querySelector('.speak-it__main').remove();
+    this.startWindow.gameWindow.remove();
+    const isShowLearnedWordsOption = this.learnedWords.length >= WORDS_LIMIT_NUMBER;
+    const startWindowHTML = this.startWindow.render(
+      SPEAKIT_TITLE, this.startWindow.renderExplanations(), isShowLearnedWordsOption,
+    );
+    document.body.append(startWindowHTML, this.startWindow.closeButton.render());
   }
 
   static createMainContainerWrapper() {
@@ -112,6 +115,7 @@ export default class SpeakIt {
   }
 
   async initMainGamePage() {
+    this.closeButton.addCloseCallbackFn(this.goToTheStartPageHandler.bind(this));
     SpeakIt.createMainContainerWrapper();
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
     this.startWindow.gameWindow.remove();
@@ -129,7 +133,6 @@ export default class SpeakIt {
     await this.renderWordsOnThePage();
     this.wordCardClickEvent();
     this.startGame();
-    this.activateExitButton();
     this.activateContinueButton();
     this.activateRestartButton();
     this.activateMicroButton();
@@ -140,9 +143,6 @@ export default class SpeakIt {
     this.activateSoundForStatisticsWords();
     this.activateSkipButtons();
     this.activateStatisticsButtons();
-
-    this.recognition.addEventListener('end', this.recognition.start);
-    this.recognition.start();
   }
 
   renderNavigation(isPrepand = false) {
