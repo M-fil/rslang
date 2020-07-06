@@ -1,4 +1,4 @@
-body {
+.main-content {
   height: 100vh;
   background: $savannah-background;
 }
@@ -63,7 +63,7 @@ body {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  margin-top: 10%;
+  margin-top: 8%;
 }
 
 .lives {

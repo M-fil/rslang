@@ -54,7 +54,6 @@ const {
 export default class SavannahGame {
   constructor(userState) {
     this.HTML = null;
-    this.body = document.querySelector('body');
     this.preloader = new Preloader();
     this.audio = new Audio();
     this.shortTermStatistics = new ShortTermStatistics();
@@ -70,7 +69,8 @@ export default class SavannahGame {
     this.learnedWords();
     const startPage = this.startWindow.render(GAME_NAME, RULES, this.isVocabularyWords);
     this.closeButton.show();
-    this.container = create('div', 'container', startPage, this.body);
+    const content = document.querySelector('.main-content');
+    this.container = create('div', 'container', startPage, content);
     this.container.append(this.closeButton.render());
     this.allWords = document.querySelectorAll('.word');
     this.arrayBeforeClickWords = [];
