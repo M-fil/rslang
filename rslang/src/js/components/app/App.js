@@ -60,6 +60,16 @@ class App {
     }
   }
 
+  activateGoToTheMainPageButton() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('#button-go-to-main-page');
+
+      if (target) {
+        this.container.innerHTML = '';
+      }
+    });
+  }
+
   async run() {
     this.container = create('main', 'main-content', '', document.body);
     try {
