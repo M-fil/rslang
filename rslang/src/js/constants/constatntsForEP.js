@@ -17,7 +17,7 @@ const GAME_BLOCK = {
   gameButtons: ['Я не знаю', 'Проверить', 'Продолжить', 'Результат', 'Повторить', 'Бонус'],
   gameLevels: 6,
   gamePages: 30,
-  controlButtons: 2,
+  controlButtons: 3,
   gameZoneRows: 10,
 };
 

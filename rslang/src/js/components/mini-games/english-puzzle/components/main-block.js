@@ -25,16 +25,11 @@ export default class MainBlock {
     const puzzleFieldBackground = create('div', 'game-block_field--background');
     const descriptionField = create('div', 'game-block_field--description');
     const gameField = create('div', 'game-block_field', [this.createUserTooltips(), puzzleFieldContainer, puzzleFieldBackground, descriptionField, MainBlock.createGameButtons()]);
-    const controlBlock = create('div', 'control-block', [MainBlock.createSelectBlock(), this.createControlButtons()]);
+    const controlBlock = create('div', 'control-block', this.createControlButtons());
     const gameBlock = create('div', 'game-block', [controlBlock, gameField]);
     const gameContainer = create('div', 'game-container', gameBlock);
     viewElement([gameContainer, puzzleFieldBackground], []);
     return gameContainer;
-  }
-
-  static createSelectBlock() {
-    const searchButton = create('div', 'new_lvl-button', '<i class="fas fa-search"></i>');
-    return create('div', 'game-mode-selects', searchButton);
   }
 
   createControlButtons() {
@@ -44,6 +39,10 @@ export default class MainBlock {
       let button = null;
       switch (i) {
         case 0:
+          button = create('div', 'new_lvl-button', '<i class="fas fa-search"></i>');
+          create('div', 'new-lvl-button_container', button, buttonsContainer);
+          break;
+        case 1:
           button = create('div', 'button-sintezise help-button', '<i class="fas fa-music"></i>', buttonsContainer);
           break;
         default:

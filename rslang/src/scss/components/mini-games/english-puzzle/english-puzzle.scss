@@ -1,5 +1,6 @@
 * {
     margin: 0 auto;
+    user-select: block;
 }
 
 .english-puzzle-wrapper {
@@ -104,7 +105,11 @@
     border-radius: 5px;
 }
 
-.control-buttons_container div, .new_lvl-button {
+.new-lvl-button_container {
+    margin: 0 10% 0 10%;
+}
+
+.control-buttons_container .help-button, .new_lvl-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -210,6 +215,10 @@
 .puzzle-row {
     height: 10%;
     width: 100%;
+}
+
+.puzzle-row:focus {
+    outline: none;
 }
 
 .game-block_field--description {
