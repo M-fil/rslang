@@ -18,7 +18,6 @@ import Preloader from '../../preloader/Preloader';
 import Vocabulary from '../../vocabulary/Vocabulary';
 import StatisticsBlock from './components/statistics/StatisticsBlock';
 import Statistics from '../../statistics/Statistics';
-import ModalWindow from '../common/ModalWindow';
 import StartPage from './components/pages/StartPage';
 
 const {
@@ -93,7 +92,7 @@ export default class SpeakIt {
     const startWindowHTML = this.startWindow.render(
       SPEAKIT_TITLE, this.startWindow.renderExplanations(), isShowLearnedWordsOption,
     );
-    document.body.append(startWindowHTML, this.startWindow.closeButton.render());
+    document.body.append(startWindowHTML);
     this.preloader.render();
     this.activateSelectLevelOnStartPage();
     await this.activateWordsToLearnSelect();
@@ -106,7 +105,7 @@ export default class SpeakIt {
     const startWindowHTML = this.startWindow.render(
       SPEAKIT_TITLE, this.startWindow.renderExplanations(), isShowLearnedWordsOption,
     );
-    document.body.append(startWindowHTML, this.startWindow.closeButton.render());
+    document.body.append(startWindowHTML);
   }
 
   static createMainContainerWrapper() {
@@ -127,6 +126,8 @@ export default class SpeakIt {
     microphone.HTML.classList.remove('hidden');
     mainContainerWrapper.append(create('div', 'score hidden'));
     mainContainerWrapper.append(create('div', 'overlay hidden'));
+    this.closeButton.show();
+    mainContainerWrapper.append(this.closeButton.render());
     this.preloader.show();
 
     await this.statistics.init();
