@@ -1,18 +1,18 @@
 body {
-  font-size: 20px;
-  line-height: 1.2;
-  width: 100%;
   height: 100vh;
-  margin: 0;
+  background: $savannah-background;
 }
-
+.container {
+  @include font(1rem, 1.2);
+  width: 80%;
+}
 .number-reverse {
   display: none;
   position: absolute;
   top: calc(50% - 35px);
   left: calc(50% - 15px);
   color: $savannah-number-reverse;
-  font-size: 50px;
+  font-size: 5rem;
 }
 
 .word {
@@ -23,14 +23,16 @@ body {
 .word_english {
   border: none;
   color: $savannah-english-word;
-  font-size: 40px; 
+  font-size: 4rem; 
   text-align: center;
 }
 .word_russian {
+  min-width: 23%;
+  margin-top: 1rem;
   position: relative;
   height: 70px;
   color: $savannah-russian-word;
-  font-size: 22px;
+  font-size: 2.2rem;
   cursor: pointer;
   border: 1px solid $savannah-russian-word-border;
   word-break: break-word;
@@ -60,20 +62,19 @@ body {
 .russian-line {
   display: flex;
   justify-content: space-evenly;
-  margin-top: 20%;
+  flex-wrap: wrap;
+  margin-top: 10%;
 }
 
 .lives {
-  position: absolute;
-  top: 25px;
-  right: 150px;
-  max-width: 400px;
+  max-width: 280px;
+  height: 90px;
 }
 .add-lives-number {
   position: absolute;
   top: 80px;
-  right: 250px;
-  font-size: 40px;
+  right: 10rem;
+  font-size: 4rem;
   color: $savannah-plus-lives;
   opacity: 0;
 }
@@ -99,9 +100,24 @@ body {
   height: 40px;
 }
 
+.sound {
+  border: 1px solid $savannah-russian-word-border;
+  font-size: 3rem;
+  padding: 5px 10px;
+  height: 45px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 5px;
+}
 .sound_off {
   background-color: $savannah-background-sound-off;
 }
 .sound_on {
   background-color: $savannah-background-white;
+}
+
+.line-info {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 }

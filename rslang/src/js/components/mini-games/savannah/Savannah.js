@@ -1,6 +1,6 @@
 import create from '../../../utils/сreate';
 import {
-  savannahConstants, vocabularyConstants, wordsToLearnSelectConstants,
+  savannahConstants, vocabularyConstants, wordsToLearnSelectConstants, StatisticsGameCodes,
 } from '../../../constants/constants';
 import { getWords } from '../../../service/service';
 import Preloader from '../../preloader/preloader';
@@ -46,6 +46,10 @@ const {
 const {
   SELECT_OPTION_LEARNED_WORDS_VALUE,
 } = wordsToLearnSelectConstants;
+
+const {
+  SAVANNA_GAME_CODE,
+} = StatisticsGameCodes;
 
 export default class SavannahGame {
   constructor(userState) {
@@ -136,8 +140,9 @@ export default class SavannahGame {
     this.closeButton.show();
     this.preloader.hide();
     this.num = 0;
-    this.lives = create('div', 'lives', '', this.container);
-    this.offSound = create('button', 'sound sound_on', 'Off', this.container);
+    this.lineForInfo = create('div', 'line-info', '', this.container);
+    this.offSound = create('button', 'sound sound_on', '<i class="fas fa-volume-up"></i>', this.lineForInfo);
+    this.lives = create('div', 'lives', '', this.lineForInfo);
     this.engLine = create('div', 'english-line', '', this.container);
     this.rusLine = create('div', 'russian-line', '', this.container);
     shuffle(this.engRandomWords);
@@ -148,11 +153,14 @@ export default class SavannahGame {
 
     this.engBut.disabled = true;
     this.wordsTranslate = [];
-    for (let i = 0; i < this.data.length; i += 1) {
+    for (let i = 0; i < this.engRandomWords.length; i += 1) {
       if (this.engBut.dataset.translate === this.engRandomWords[i].wordTranslate) {
         this.wordsTranslate.push(this.engBut.dataset.translate);
       }
-      if (this.engBut.dataset.translate !== this.engRandomWords[i].wordTranslate && this.wordsTranslate.length < MAX_WORDS_LINE) {
+      if (
+        this.engBut.dataset.translate !== this.engRandomWords[i].wordTranslate
+        && this.wordsTranslate.length < MAX_WORDS_LINE
+      ) {
         this.wordsTranslate.push(this.engRandomWords[i].wordTranslate);
       }
     }
@@ -183,7 +191,7 @@ export default class SavannahGame {
     this.engBut.setAttribute('data-translate', this.engRandomWords[this.num].wordTranslate);
     this.arrayBeforeClickWords = this.engRandomWords[this.num];
 
-    const randomData = this.data;
+    const randomData = this.engRandomWords;
     const correctWord = randomData.find((word) => this.engBut.dataset.translate === word.wordTranslate);
 
     let randomTranslations = randomData
@@ -226,7 +234,10 @@ export default class SavannahGame {
       this.correctWordNumber = 0;
       target.classList.add('word_error');
       this.errorWord();
-      if (this.error === (LIVES + this.countLives) || (this.rightWords.length + this.wrongWords.length) === MAX_WORDS) {
+      if (
+        this.error === (LIVES + this.countLives)
+        || (this.rightWords.length + this.wrongWords.length) === MAX_WORDS
+      ) {
         this.createStatistics();
       }
     }
@@ -240,7 +251,7 @@ export default class SavannahGame {
       .map((word) => this.vocabulary.addWordToTheVocabulary(word, WORDS_TO_LEARN_TITLE));
     await Promise.all(arrayOfPromises);
     await this.statistics.saveGameStatistics(
-      'savannah', this.rightWords.length, this.wrongWords.length,
+      SAVANNA_GAME_CODE, this.rightWords.length, this.wrongWords.length,
     );
   }
 
@@ -282,10 +293,12 @@ export default class SavannahGame {
       if (this.offSound.classList.contains('sound_on')) {
         this.offSound.classList.add('sound_off');
         this.offSound.classList.remove('sound_on');
+        this.offSound.innerHTML = '<i class="fas fa-volume-mute"></i>';
         this.audio.muted = true;
       } else {
         this.offSound.classList.remove('sound_off');
         this.offSound.classList.add('sound_on');
+        this.offSound.innerHTML = '<i class="fas fa-volume-up"></i>';
         this.audio.muted = false;
       }
     });
