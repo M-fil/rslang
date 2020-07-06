@@ -8,6 +8,9 @@ import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 
+import CloseButton from '../mini-games/common/CloseButton';
+import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
+
 import {
   createUser,
   loginUser,
@@ -30,6 +33,8 @@ const {
 
 class App {
   constructor() {
+    this.closeButton = new CloseButton();
+    this.shortTermStatistics = new ShortTermStatistics();
     this.state = {
       user: {
         isAuthrorized: false,
@@ -45,6 +50,14 @@ class App {
     };
 
     this.container = null;
+  }
+
+  createMiniGameParameterObject() {
+    return {
+      user: this.state.user,
+      closeButton: this.closeButton,
+      shortTermStatistics: this.shortTermStatistics,
+    }
   }
 
   async run() {
