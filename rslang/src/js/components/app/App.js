@@ -11,6 +11,7 @@ import Statistics from '../statistics/Statistics';
 
 import MainPage from '../main-page/MainPage';
 
+import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 
@@ -78,6 +79,7 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      App.removeModalElements();
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';
@@ -85,6 +87,19 @@ class App {
       this.renderToggleAuthentication();
       this.activateAuthenticationForm();
       this.prelodaer.hide();
+    }
+  }
+
+  static removeModalElements() {
+    const startGameWindow = document.querySelector('.start-game-window');
+    const exitButton = document.querySelector('.exit-button');
+
+    if (startGameWindow) {
+      startGameWindow.remove();
+    }
+
+    if (exitButton) {
+      exitButton.remove();
     }
   }
 
@@ -120,6 +135,11 @@ class App {
     this.container.innerHTML = '';
     this.mainPage = new MainPage(this.state.user.name);
     this.container.append(this.mainPage.render());
+  }
+  
+  async renderSpeakItGame() {
+    this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
+    await this.speakIt.run();
   }
 
   activateAuthenticationForm() {
