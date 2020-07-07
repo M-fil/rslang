@@ -7,7 +7,7 @@ import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
-
+import Sprint from '../mini-games/sprint/Sprint';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 
@@ -145,8 +145,11 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      this.sprint = new Sprint(this.state.user);
+      this.sprint.SprintRender();
+      // await App.renderMainGame(this.state.user);
+      // await this.renderVocabulary(this.state.user);
+
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -196,8 +199,8 @@ class App {
         ...data,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      // await App.renderMainGame(this.state.user);
+      // await this.renderVocabulary(this.state.user);
     }
   }
 

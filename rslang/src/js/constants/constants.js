@@ -235,6 +235,26 @@ const startWindow = {
   GO_TO_MAIN_PAGE_BUTTON: 'На главную',
 };
 
+const sprint = {
+  START_TIMER: 5,
+  GAME_RULES: 'Лео-спринт – скоростная тренировка. За 60 секунд надо угадывать, правильный ли перевод предложен к английскому слову.<br>Допфункционал: за 12 подряд правильно угаданных слов даётся +5 секунд к таймеру игры.',
+  POWER1: 1,
+  POWER2: 2,
+  POWER3: 4,
+  POWER4: 8,
+  CORRECT1: 4,
+  CORRECT2: 8,
+  CORRECT3: 12,
+  BONUS_ANSWERS: 12,
+  BONUS_TIME: 5,
+  RIGHT_ANSWER: '✓',
+  GAME_TIMER: 60,
+  SCORE: 'Ваш счёт: ',
+  CORRECT_ANSWERS: 'Знаю ',
+  INCORRECT_ANSWERS: 'Ошибок ',
+  EXIT_ANSWER: 'Вы, действительно, хотите вернуться в меню игры?',
+};
+
 export {
   urls,
   findAPairText,
@@ -253,4 +273,5 @@ export {
   shortTermStatisticsConstants,
   startWindow,
   HTTPCodesConstants,
+  sprint,
 };
