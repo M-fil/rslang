@@ -345,41 +345,55 @@ const gamesInfo = {
     code: 'MAIN_GAME_CODE',
     title: 'Основная игра',
     description: '',
+    image: './src/assets/images/main-page-buttons-images/main-game.png',
   },
   savannah: {
     code: 'SAVANNAH_CODE',
     title: 'Саванна',
     description: '',
+    image: './src/assets/images/main-page-buttons-images/savannah.png',
   },
   speakIt: {
     code: 'SPEAKIT_CODE',
     title: 'SpeakIt',
     description: '',
+    image: './src/assets/images/main-page-buttons-images/speakit.png',
   },
   findAPair: {
     code: 'FINDAPAIR_CODE',
     title: 'Найди пару',
     description: '',
+    image: './src/assets/images/main-page-buttons-images/find-a-pair.png',
   },
   sprint: {
     code: 'SPRINT_CODE',
     title: 'Спринт',
     description: '',
+    image: './src/assets/images/main-page-buttons-images/sprint.png',
   },
   audioGame: {
     code: 'AUDIOGAME_CODE',
     title: 'Аудиовызов',
     description: '',
+    image: './src/assets/images/main-page-buttons-images/audio-game.png',
   },
   englishPuzzle: {
     code: 'ENGLISH_PUZZLE_CODE',
     title: 'English Puzzle',
     description: '',
+    image: './src/assets/images/main-page-buttons-images/english-puzzle.png',
   },
 };
 
 const mainPageConstants = {
   GAME_TITLE_TEXT: 'Выберите чем хотите заниматься:',
+  ENGLISH_GOALS_TITLE: 'Английский для Ваших целей',
+};
+
+const mainPageUrls = {
+  MAIN_PAGE_LOGO_URL: './src/assets/images/main-page/start-page-logo.png',
+  MAIN_PAGE_CHICKEN_IMAGE: './src/assets/images/main-page/chicken-start-page.png',
+  INFO_BUTTON_URL: './src/assets/images/main-page/info-icon.svg',
 };
 
 const mainPageEnglishGoal = {
@@ -389,6 +403,15 @@ const mainPageEnglishGoal = {
   WATCH_AND_READ: 'Смотреть фильмы и читать книги',
   PROGRESS: 'Совершенствоваться',
   GO_TO_THE_NEW_COUNTRY: 'Переехать в другую страну',
+};
+
+const mainPageGoalsImages = {
+  TRAVEL_IMAGE: './src/assets/images/main-page-goals/travel.png',
+  WORK_IMAGE: './src/assets/images/main-page-goals/work.png',
+  STUDY_IMAGE: './src/assets/images/main-page-goals/study.png',
+  WATCH_AND_READ_IMAGE: './src/assets/images/main-page-goals/watch-and-read.png',
+  PROGRESS_IMAGE: './src/assets/images/main-page-goals/progress.png',
+  GO_TO_THE_NEW_COUNTRY_IMAGE: './src/assets/images/main-page-goals/go-to-the-new-country.png',
 };
 
 export {
@@ -416,4 +439,6 @@ export {
   gamesInfo,
   mainPageConstants,
   mainPageEnglishGoal,
+  mainPageGoalsImages,
+  mainPageUrls,
 };

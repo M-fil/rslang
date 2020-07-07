@@ -19,7 +19,7 @@
 }
 
 .game-button__name {
-  @include font(2rem);
+  @include font(2rem, 2.5rem);
 
   color: $main-page-text-color;
   margin-bottom: 20px;
@@ -40,8 +40,7 @@
   font-size: 2rem;
 }
 
-.game-button__game-icon {
+.game-button__game-image {
   position: absolute;
-  right: 20px;
-  font-size: 3rem;
+  right: 20px
 }

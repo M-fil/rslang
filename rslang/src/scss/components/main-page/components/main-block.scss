@@ -11,10 +11,7 @@
 }
 
 .main-block__title {
-  @include font(2rem);
-
-  text-align: center;
-  margin-bottom: 40px;
+  @include main-page-standard-title;
 }
 
 .main-block__mini-games-container {

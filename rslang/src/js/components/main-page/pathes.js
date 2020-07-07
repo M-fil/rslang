@@ -4,6 +4,8 @@ import {
   gamesInfo,
   mainPageConstants,
   mainPageEnglishGoal,
+  mainPageGoalsImages,
+  mainPageUrls,
 } from '../../constants/constants';
 
 export {
@@ -12,4 +14,6 @@ export {
   gamesInfo,
   mainPageConstants,
   mainPageEnglishGoal,
+  mainPageGoalsImages,
+  mainPageUrls,
 };

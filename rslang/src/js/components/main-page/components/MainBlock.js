@@ -2,6 +2,7 @@ import {
   create,
   gamesInfo,
   mainPageConstants,
+  mainPageUrls,
 } from '../pathes';
 
 const {
@@ -17,6 +18,10 @@ const {
 const {
   GAME_TITLE_TEXT,
 } = mainPageConstants;
+
+const {
+  INFO_BUTTON_URL,
+} = mainPageUrls;
 
 class MainBlock {
   constructor() {
@@ -45,12 +50,12 @@ class MainBlock {
     return this.HTML;
   }
 
-  static renderGameButton(gameCode, gameName, gameDescription, extraClassName = '') {
+  static renderGameButton(gameCode, gameName, gameDescription, imageSrc, extraClassName = '') {
     const container = create(
       'div', `main-page__game-button${extraClassName}`, '', null, ['gameCode', gameCode],
     );
-    this.infoIcon = create('i', 'fas fa-info-circle game-button__info-icon');
-    this.gameButtonIcon = create('i', 'fas fa-info-circle game-button__game-icon');
+    this.infoIcon = create('img', 'game-button__info-icon', '', null, ['src', INFO_BUTTON_URL]);
+    this.gameButtonIcon = create('img', 'game-button__game-image', '', null, ['src', imageSrc]);
     create('div', 'game-button__info-button', this.infoIcon, container);
     create('div', 'game-button__name', gameName, container);
     create('div', 'game-button__icon-container', this.gameButtonIcon, container);

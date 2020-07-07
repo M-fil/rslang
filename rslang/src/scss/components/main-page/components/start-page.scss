@@ -1,0 +1,50 @@
+.main-page__start-page {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: calc(100vh - 180px);
+  padding-top: 25px;
+  background: $main-page-start-page-background;
+}
+
+.start-page__arrow-bottom {
+  @extend %arrow-down-button-transition;
+
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -20px;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 3px solid $main-page-border-color;
+  border-radius: 50%;
+  background: $main-page-arrow-button-background;
+  width: 40px;
+  height: 40px;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  i {
+    font-size: 2.5rem;
+  }
+}
+
+.star-page__logo {
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.start-page__image-logo {
+  margin-left: 10%;
+}
+

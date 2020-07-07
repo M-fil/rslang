@@ -1,0 +1,34 @@
+.main-page__goals-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: $main-page-english-goals-background;
+  padding: 96px 0 55px 0;
+}
+
+.goals__title {
+  @include main-page-standard-title;
+}
+
+.main-page__goals-list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  width: 80%;
+}
+
+.main-page__goal {
+  @include font(1.5rem, 2rem);
+
+  display: flex;
+  align-items: center;
+
+  width: 30%;
+  margin-bottom: 70px;
+}
+
+.goal__image {
+  margin-right: 35px;
+}
