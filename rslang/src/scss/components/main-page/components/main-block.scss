@@ -3,19 +3,36 @@
 
   display: flex;
   justify-content: center;
-  padding: 70px 0;
+  padding: 70px 0 150px 0;
 }
 
 .main-block__wrapper {
-  width: 80%;
+  width: 100%;
 }
 
 .main-block__title {
   @include main-page-standard-title;
 }
 
-.main-block__mini-games-container {
+.main-block__games-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-block__game-line {
+  display: flex;
   justify-content: space-between;
+}
+
+.main-block__games-first-line {
+  width: 80%;
+}
+
+.main-block__games-second-line {
+  width: 60%
+}
+
+.main-block__games-third-line {
+  width: 40%
 }

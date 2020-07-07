@@ -32,7 +32,6 @@ const {
 } = mainPageConstants;
 
 const {
-  MAIN_PAGE_LOGO_URL,
   MAIN_PAGE_CHICKEN_IMAGE,
 } = mainPageUrls;
 
@@ -62,8 +61,6 @@ class MainPage {
 
   renderStartPageForMainPage() {
     const container = create('div', 'main-page__start-page');
-    this.startPageLogoImage = create('img', 'start-page__image-logo', '', null, ['src', MAIN_PAGE_LOGO_URL]);
-    create('div', 'star-page__logo', this.startPageLogoImage, container);
     this.mainImage = create('img', 'start-page__main-image', '', null, ['src', MAIN_PAGE_CHICKEN_IMAGE]);
     create('div', 'start-page__main-image-container', this.mainImage, container);
     create('button', 'start-page__arrow-bottom', '<i class="fas fa-arrow-down"></i>', container);

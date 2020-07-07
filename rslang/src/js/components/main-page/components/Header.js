@@ -1,7 +1,12 @@
 import {
   create,
   mainPageHeaderButtonConstants,
+  mainPageUrls,
 } from '../pathes';
+
+const {
+  MAIN_PAGE_LOGO_URL,
+} = mainPageUrls;
 
 const {
   STATISTICS_BUTTON_TEXT,
@@ -25,6 +30,8 @@ class Header {
   render() {
     const settingsIconHTML = '<i class="fas fa-cog"></i>';
     this.HTML = create('header', 'main-page__header');
+    this.startPageLogoImage = create('img', 'main-page__image-logo', '', null, ['src', MAIN_PAGE_LOGO_URL]);
+    create('div', 'main-page__logo', this.startPageLogoImage, this.HTML);
     this.buttonsList = create('div', 'header__buttons-list', '', this.HTML);
     this.renderHeaderButton(VOCABULARY_BUTTON_TEXT, VOCABULARY_CODE);
     this.renderHeaderButton(STATISTICS_BUTTON_TEXT, STATISTICS_CODE);
@@ -41,7 +48,7 @@ class Header {
     const userIcon = create('i', 'fas fa-user header__user-icon');
     const userName = create('span', 'user-name__text', this.userName);
     create('div', 'header__user-name', [userIcon, userName], container);
-    create('button', 'header__logout-button', LOG_OUT_BUTTON_TEXT, container);
+    this.logoutButton = create('button', 'header__logout-button', LOG_OUT_BUTTON_TEXT, container);
 
     return container;
   }

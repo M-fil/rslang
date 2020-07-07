@@ -1,26 +1,37 @@
 .main-page__game-button {
-  cursor: pointer;
   position: relative;
 
   padding: 3px 3px 20px 3px;
-  width: 25%;
+  width: 250px;
   background: $main-page-game-buttons-background;
   margin-bottom: 50px;
-}
 
-.main-gape__main-game-button {
-  width: 100%;
+  &:hover {
+    & .game-button__name {
+      color: $main-page-logour-hover-color;
+    }
+  }
 }
 
 .game-button__info-button {
+  @extend %standard-button-transition;
+
+  cursor: pointer;
   position: absolute;
   right: 3px;
   top: 3px;
+
+  &:hover {
+    color: $main-page-logour-hover-color;
+    transform: scale(1.1);
+  }
 }
 
 .game-button__name {
+  @extend %standard-button-transition;
   @include font(2rem, 2.5rem);
 
+  cursor: default;
   color: $main-page-text-color;
   margin-bottom: 20px;
 }
@@ -43,4 +54,8 @@
 .game-button__game-image {
   position: absolute;
   right: 20px
+}
+
+.main-game__main-game-button {
+  width: 350px;
 }
