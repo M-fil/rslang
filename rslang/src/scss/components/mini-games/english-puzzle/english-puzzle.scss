@@ -13,6 +13,7 @@
 .form-container, .start-window, .result-container {
     width: 100%;
     height: 100%;
+    background-color: $game-bakground-color;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

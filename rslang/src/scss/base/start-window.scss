@@ -1,40 +1,159 @@
 .container {
-  width: 70%;
-  height: 100vh;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: $game-bakground-color;
 }
+
 .start-game-window {
   width: 50%;
+  height: 55%;
+  background-color: $modal-window-main-background;
   padding: 10px 15px;
-  border: 1px solid $start-game-window-border-color;
+  border-radius: 10px;
   text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 15%;
 }
+
 .start-button {
-  margin-top: 20px;
+  position: relative;
   padding: 10px;
   width: 100px;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  border: 1.5px solid $standard-border-color;
   text-transform: uppercase;
+  transition: all 300ms ease;
+  box-shadow: 0px 4px 10px 2px rgba(black, 0.2);
+  z-index: 1;
+
+  &:before{
+    position: absolute;
+    content: '';
+    width: 0%;
+    height: 100%;
+    background: $game-bacground-or-hover-for-buttons;
+    top: 0;
+    left: 50%;
+    z-index: -1;
+    transition: all 0ms ease;
+  }
+  
+  &:hover{
+    color: white; 
+    box-shadow:none;
+    &:before{
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      background: $game-bacground-or-hover-for-buttons;
+      top: 0;
+      left: 0%;
+      z-index: -1;
+      transition: all 300ms ease;
+    }
+  }
 }
+
 .game-name {
-  font-size: 30px;
+  font-size: 2em;
+  margin-bottom: 15px;
 }
+
 .game-rules {
-  font-size: 22px;
+  font-size: 1.5em;
 }
-.select__container {
-  padding-top: 25px;
-}
-.select__title {
-  font-size: 20px;
-}
-.select__item {
+
+.gameWindow__container {
   margin-top: 10px;
+  height: 40%;
+}
+
+.gameWindow__select-title {
+  font-size: 1.2em;
+}
+
+.gameWindow__container .select__item {
+  margin-top: 10px;
+  height: 20%;
+  border-radius: 5px;
+  border: 1px solid $game-bacground-or-hover-for-buttons;
+  background-color: none;
+}
+
+.gameWindow__container .select__item:focus,
+.gameWindow__container .select__item:hover {
+  cursor: pointer;
+  outline: none;
+  border-color: 1px solid $game-bakground-color;
 }
 
 .select_hidden {
   display: none;
+}
+
+@media(max-width: 1150px) {
+  .start-game-window {
+    width: 55%;
+  }
+}
+
+@media(max-width: 1024px) {
+  .start-game-window {
+    height: 60%;
+  }
+}
+
+@media(max-width: 820px) {
+  .game-rules {
+    font-size: 1.3em;
+  }
+}
+
+@media(max-width: 600px) {
+  .start-game-window {
+    height: 70%;
+    width: 65%;
+  }
+}
+
+@media(max-width: 500px) {
+  .start-game-window {
+    height: 75%;
+    width: 80%;
+  }
+}
+
+@media(max-width: 400px) {
+  .start-game-window {
+    width: 85%;
+  }
+
+  .gameWindow__container {
+    height: 35%;
+  }
+}
+
+@media(max-width: 360px) {
+  .game-rules {
+    font-size: 1.2em;
+  }
+
+  .gameWindow__select-title {
+    font-size: 1.1em;
+  }
+
+  .gameWindow__container {
+    height: 30%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  * {
+    overflow-x: hidden;
+  }
 }
