@@ -13,8 +13,6 @@ import wordsFilter from '../../../utils/wordsfilter';
 import Preloader from '../../preloader/preloader';
 import Settings from '../../settings/Settings';
 import Statistics from '../../statistics/Statistics';
-import ShortTermStatisctics from '../common/ShortTermStatistics';
-import CloseButton from '../common/CloseButton';
 import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
 
@@ -41,8 +39,10 @@ const {
 } = StatisticsGameCodes;
 
 export default class FindAPair {
-  constructor(user) {
-    this.user = user;
+  constructor(miniGameObj) {
+    this.user = miniGameObj.user;
+    this.CloseButton = miniGameObj.closeButton;
+    this.ShortTermStatistics = miniGameObj.shortTermStatistics;
   }
 
   async init() {
@@ -54,9 +54,7 @@ export default class FindAPair {
     this.audioObj = new Audio();
     this.preloader = new Preloader();
     this.preloader.render();
-    this.ShortTermStatistics = new ShortTermStatisctics();
     this.StartWindow = new StartWindow((this.startGame).bind(this));
-    this.CloseButton = new CloseButton();
     this.Vocabulary = new Vocabulary(this.user);
     await this.Vocabulary.init();
     const settings = new Settings(this.user);
@@ -75,6 +73,7 @@ export default class FindAPair {
       this.container = create('div', 'find-a-pair', undefined, this.main, ['id', 'find-a-pair']);
     }
     this.container.append(this.StartWindow.render('Find a pair', findAPairText.about, this.checkWordsCountInVocabulary()));
+    this.container.classList.remove('find-a-pair_short-term-statistics');
     this.container.classList.add('find-a-pair__start-page');
   }
 
@@ -218,6 +217,8 @@ export default class FindAPair {
 
     this.ShortTermStatistics.render(resWords.wrong, resWords.correct);
     this.ShortTermStatistics.addCallbackFnOnClose((this.newGameHandler).bind(this));
+
+    this.container.classList.add('find-a-pair_short-term-statistics');
     this.preloader.hide();
   }
 
