@@ -10,12 +10,15 @@ import Statistics from '../statistics/Statistics';
 
 import MainPage from '../main-page/MainPage';
 
-import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
-import SavannahGame from '../mini-games/savannah/Savannah';
 
 import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
+import SavannahGame from '../mini-games/savannah/Savannah';
+import SpeakIt from '../mini-games/speak-it/SpeakIt';
+import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
+import FindAPair from '../mini-games/find-a-pair/find-a-pair';
+import SprintGame from '../mini-games/sprint/Sprint';
 
 import {
   createUser,
