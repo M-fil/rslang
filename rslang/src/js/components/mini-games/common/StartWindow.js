@@ -1,18 +1,19 @@
 import create from '../../../utils/сreate';
 import WordsToLearnSelect from './WordsToLearnSelect';
-import CloseButton from './CloseButton';
 import { startWindow } from '../../../constants/constants';
 
 const {
   START_BUTTON,
+  GO_TO_MAIN_PAGE_BUTTON,
 } = startWindow;
+
 export default class StartWindow {
   constructor(startButtonFn) {
     this.gameWindow = create('div', 'start-game-window');
-    this.closeButton = new CloseButton();
     this.startButton = create('button', 'start-button', START_BUTTON);
     this.startButtonFn = startButtonFn;
     this.startButton.addEventListener('click', (this.startButtonClickHandler).bind(this));
+    this.goToMainButton = create('button', 'start-button', GO_TO_MAIN_PAGE_BUTTON, undefined, ['id', 'button-go-to-main-page']);
   }
 
   render(gameNames, rules, showUserCollection = true) {
@@ -23,7 +24,7 @@ export default class StartWindow {
     this.wordsToLearnSelect = new WordsToLearnSelect('gameWindow');
     this.gameWindow.appendChild(this.wordsToLearnSelect.render(showUserCollection));
     this.gameWindow.appendChild(this.startButton);
-    this.closeButton.show();
+    this.gameWindow.appendChild(this.goToMainButton);
 
     return this.gameWindow;
   }
