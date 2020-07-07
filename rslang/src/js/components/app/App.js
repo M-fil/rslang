@@ -58,7 +58,7 @@ class App {
       user: this.state.user,
       closeButton: this.closeButton,
       shortTermStatistics: this.shortTermStatistics,
-    }
+    };
   }
 
   activateGoToTheMainPageButton() {
