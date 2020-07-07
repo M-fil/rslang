@@ -3,8 +3,8 @@ import {
   savannahConstants, vocabularyConstants, wordsToLearnSelectConstants, StatisticsGameCodes,
 } from '../../../constants/constants';
 import { getWords } from '../../../service/service';
-import Preloader from '../../preloader/preloader';
-import shuffle from '../../../utils/shuffle';
+import Preloader from '../../preloader/Preloader';
+import { shuffle } from '../../../utils/shuffle';
 import ShortTermStatistics from '../common/ShortTermStatistics';
 import { playAudio } from '../../../utils/audio';
 import CloseButton from '../common/CloseButton';

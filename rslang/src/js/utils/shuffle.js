@@ -1,17 +1,17 @@
 function simpleShuffle() {
-    return  Math.round(Math.random()) - 0.5;
+  return Math.round(Math.random()) - 0.5;
 }
 function shuffleAudition(array) {
-    for (let i = 0; i < array.length - 1; i++) {
-        let j = i + Math.floor(Math.random() * (array.length - i));
+  for (let i = 0; i < array.length - 1; i += 1) {
+    const j = i + Math.floor(Math.random() * (array.length - i));
 
-        let temp = array[j];
-        array[j] = array[i];
-        array[i] = temp;
-    }
-    return array.sort(()=>Math.random()-0.5);
+    const temp = array[j];
+    array[j] = array[i];
+    array[i] = temp;
+  }
+  return array.sort(() => Math.random() - 0.5);
 }
-  
+
 function shuffle(array, requiredLenth) {
   const shuffledArr = array;
   let { length } = shuffledArr;

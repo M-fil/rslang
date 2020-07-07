@@ -23,7 +23,7 @@ import {
 } from '../../../constants/constatntsForEP';
 import createCanvasElements from './components/game-field';
 import findPainting from './components/select-painting';
-import Preloader from '../../preloader/preloader';
+import Preloader from '../../preloader/Preloader';
 import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
 import Statistics from '../../statistics/Statistics';

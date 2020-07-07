@@ -377,6 +377,9 @@ const gamesInfo = {
   },
 };
 
+const mainPageConstants = {
+  GAME_TITLE_TEXT: 'Выберите чем хотите заниматься:',
+};
 
 export {
   urls,
@@ -401,4 +404,5 @@ export {
   HTTPCodesConstants,
   mainPageHeaderConstants,
   gamesInfo,
+  mainPageConstants,
 };

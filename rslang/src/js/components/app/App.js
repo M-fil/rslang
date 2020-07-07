@@ -3,7 +3,7 @@ import create from '../../utils/сreate';
 import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
-import Preloader from '../preloader/preloader';
+import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 import Statistics from '../statistics/Statistics';
@@ -13,7 +13,6 @@ import MainPage from '../main-page/MainPage';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 
-import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
 import SavannahGame from '../mini-games/savannah/Savannah';
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
@@ -30,6 +29,8 @@ import {
 import {
   errorTypes,
   authenticationConstants,
+  mainPageHeaderConstants,
+  gamesInfo,
 } from '../../constants/constants';
 
 const {
@@ -50,6 +51,14 @@ const {
   audioGame,
   englishPuzzle,
 } = gamesInfo;
+
+const {
+  STATISTICS_CODE,
+  VOCABULARY_CODE,
+  PROMO_CODE,
+  ABOUT_TEAM_CODE,
+  SETTINGS_CODE,
+} = mainPageHeaderConstants;
 
 class App {
   constructor() {
@@ -90,13 +99,58 @@ class App {
     });
   }
 
+  activateHeaderButtons() {
+    document.addEventListener('click', async (event) => {
+      const target = event.target.closest('[headerPageCode]');
+
+      if (target) {
+        const { headerPageCode } = target.dataset;
+
+        switch (headerPageCode) {
+          case STATISTICS_CODE:
+          default:
+            this.renderStatistics();
+            break;
+          case VOCABULARY_CODE:
+            await this.renderVocabulary();
+            break;
+          case PROMO_CODE:
+            break;
+          case ABOUT_TEAM_CODE:
+            break;
+          case SETTINGS_CODE:
+            this.renderSettingsBlock();
+            break;
+        }
+      }
+    });
+  }
+
+  renderStatistics() {
+    this.container.innerHTML = '';
+    this.statistics.render('.main-page__content');
+  }
+
+  async renderVocabulary() {
+    this.container.innerHTML = '';
+    await this.vocabulary.render();
+  }
+
+  renderPromoPage() {}
+
+  renderAboutTeamPage() {}
+
+  renderSettingsBlock() {
+    this.settings.renderSettingsWindow();
+  }
+
   activateGameButtons() {
     document.addEventListener('click', async (event) => {
       const target = event.target.closest('[gameCode]');
 
       if (taget) {
-        const gameCode = target.dataset.gameCode;
-        switch(gameCode) {
+        const { gameCode } = target.dataset;
+        switch (gameCode) {
           case mainGame.code:
           default:
             await this.renderMainGame();
@@ -142,7 +196,7 @@ class App {
     await this.englishPuzzle.start('.main-page__content');
   }
 
-  renderAuditionGame(){
+  renderAuditionGame() {
     this.container.innerHTML = '';
     this.auditionGame = new AuditionGame(this.createMiniGameParameterObject());
     this.auditionGame.render(5, 5, '.main-page__content');
@@ -173,6 +227,7 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      console.log(error);
       App.removeModalElements();
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
@@ -219,16 +274,13 @@ class App {
     await this.initVocabulary();
   }
 
-  async renderVocabulary() {
-    this.container.innerHTML = '';
-    const html = await this.vocabulary.render();
-    document.body.append(html);
-  }
-
   renderMainPage() {
     this.container.innerHTML = '';
+    console.log(this.container);
     this.mainPage = new MainPage(this.state.user.name);
-    this.container.append(this.mainPage.render());
+    const html = this.mainPage.render();
+    console.log(html);
+    this.container.append(html);
   }
 
   activateAuthenticationForm() {
@@ -255,6 +307,7 @@ class App {
           await this.signInUser();
           this.prelodaer.hide();
         } catch (error) {
+          console.log(error);
           this.prelodaer.hide();
           Authentication.createErrorBlock(error.message);
         }
@@ -280,6 +333,7 @@ class App {
       await this.initAuxilaryComponents();
       this.renderMainPage();
     } catch (error) {
+      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -318,7 +372,9 @@ class App {
       };
       await this.initAuxilaryComponents();
       this.renderMainPage();
+      this.prelodaer.hide();
     } catch (error) {
+      console.log(error);
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
       const data = await getRefreshToken(userId, refreshToken);
@@ -328,6 +384,7 @@ class App {
       };
       await this.initAuxilaryComponents();
       this.renderMainPage();
+      this.prelodaer.hide();
     }
   }
 

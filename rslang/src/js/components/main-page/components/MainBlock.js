@@ -20,8 +20,8 @@ class MainBlock {
 
   render() {
     this.HTML = create('div', 'main-page__main-block');
-    this.mainGameContainer = create('div', 'main-block__main-game-container');
-    this.miniGameContainer = create('div', 'main-block__mini-games-container');
+    this.mainGameContainer = create('div', 'main-block__main-game-container', '', this.HTML);
+    this.miniGameContainer = create('div', 'main-block__mini-games-container', '', this.HTML);
 
     this.mainGameContainer.append(
       MainBlock.renderGameButton(...Object.values(mainGame), ' main-gape__main-game-button'),

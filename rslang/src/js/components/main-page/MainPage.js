@@ -23,6 +23,8 @@ class MainPage {
       this.mainBlock.render(),
       this.footer.render(),
     );
+
+    return this.HTML;
   }
 }
 

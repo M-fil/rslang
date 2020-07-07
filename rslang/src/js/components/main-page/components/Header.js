@@ -24,7 +24,7 @@ class Header {
   render() {
     const settingsIconHTML = '<i class="fas fa-cog"></i>';
     this.HTML = create('header', 'main-page__header');
-    this.buttonsList = create('div', 'header__buttons-list');
+    this.buttonsList = create('div', 'header__buttons-list', '', this.HTML);
     this.renderHeaderButton(VOCABULARY_BUTTON_TEXT, VOCABULARY_CODE);
     this.renderHeaderButton(STATISTICS_BUTTON_TEXT, STATISTICS_CODE);
     this.renderHeaderButton(settingsIconHTML, SETTINGS_CODE);
@@ -36,7 +36,7 @@ class Header {
   }
 
   renderHeaderButton(buttonText, buttonCode) {
-    create('div', 'header__button', buttonText, this.buttonsList, ['pageType', buttonCode]);
+    create('div', 'header__button', buttonText, this.buttonsList, ['headerPageCode', buttonCode]);
   }
 }
 

@@ -8,9 +8,9 @@ import {
   StatisticsGameCodes,
 } from '../../../constants/constants';
 import create from '../../../utils/сreate';
-import shuffle from '../../../utils/shuffle';
+import { shuffle } from '../../../utils/shuffle';
 import wordsFilter from '../../../utils/wordsfilter';
-import Preloader from '../../preloader/preloader';
+import Preloader from '../../preloader/Preloader';
 import Settings from '../../settings/Settings';
 import Statistics from '../../statistics/Statistics';
 import ShortTermStatisctics from '../common/ShortTermStatistics';
