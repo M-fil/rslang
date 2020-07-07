@@ -263,6 +263,7 @@ const shortTermStatisticsConstants = {
 
 const startWindow = {
   START_BUTTON: 'Начать',
+  GO_TO_MAIN_PAGE_BUTTON: 'На главную',
 };
 
 export {

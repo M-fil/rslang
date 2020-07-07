@@ -70,12 +70,14 @@ const defaultStatisticsAdditional = {
 };
 
 class MainGame {
-  constructor(userState) {
+  constructor(mainGameParameters, closeCallbackFn) {
     this.vocabulary = null;
     this.settings = null;
     this.statistics = null;
     this.preloader = new Preloader();
 
+    this.closeButton = mainGameParameters.closeButton;
+    this.closeCallbackFn = closeCallbackFn;
     this.state = {
       stats: {
         learnedWordsToday: 0,
@@ -101,7 +103,7 @@ class MainGame {
         isAudioPlaybackEnabled: true,
         isTranslationsEnabled: true,
       },
-      userState,
+      userState: mainGameParameters.user,
     };
   }
 
@@ -350,12 +352,15 @@ class MainGame {
     return data;
   }
 
+  goToTheMainPage() {
+
+  }
+
   renderMainGameControls() {
     const container = create('div', 'main-game__controls');
     const gameSettingsBlock = new SettingsControls();
     const vocabularyButtons = this.renderVocabularyButtons();
     this.wordsSelectList = new WordsSelectList();
-    this.closeButton = new CloseButton();
     this.closeButton.exitButton.classList.add('exit-button_relative');
     this.closeButton.show();
     container.append(

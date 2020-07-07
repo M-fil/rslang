@@ -9,6 +9,8 @@ import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
+import CloseButton from '../mini-games/common/CloseButton';
+import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 
 import {
   createUser,
@@ -32,6 +34,8 @@ const {
 
 class App {
   constructor() {
+    this.closeButton = new CloseButton();
+    this.shortTermStatistics = new ShortTermStatistics();
     this.state = {
       user: {
         isAuthrorized: false,
@@ -47,6 +51,28 @@ class App {
     };
 
     this.container = null;
+  }
+
+  createMiniGameParameterObject() {
+    return {
+      user: this.state.user,
+      closeButton: this.closeButton,
+      shortTermStatistics: this.shortTermStatistics,
+    };
+  }
+
+  activateGoToTheMainPageButton() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('#button-go-to-main-page');
+
+      if (target) {
+        this.goToTheMainPageHanlder();
+      }
+    });
+  }
+
+  goToTheMainPageHanlder() {
+    this.container.innerHTML = ''; 
   }
 
   async run() {
@@ -75,11 +101,6 @@ class App {
     await this.vocabulary.init();
     const html = await this.vocabulary.render();
     document.body.append(html);
-  }
-
-  async renderSpeakItGame() {
-    this.speakIt = new SpeakIt(this.state.user);
-    await this.speakIt.run();
   }
 
   activateAuthenticationForm() {
@@ -185,7 +206,10 @@ class App {
   }
 
   async renderMainGame() {
-    this.mainGame = new MainGame(this.state.user);
+    this.mainGame = new MainGame(
+      this.createMiniGameParameterObject(),
+      this.goToTheMainPageHanlder,
+    );
     await this.mainGame.render('.main-content');
   }
 
