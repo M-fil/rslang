@@ -19,6 +19,7 @@ import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
 import FindAPair from '../mini-games/find-a-pair/find-a-pair';
 import SprintGame from '../mini-games/sprint/Sprint';
+import AuditionGame from '../mini-games/audition-game/AuditionGame';
 
 import {
   createUser,
@@ -251,6 +252,16 @@ class App {
       this.renderMainPage();
     }
   }
+
+  static async renderMainGame(userState) {
+    const mainGame = new MainGame(userState);
+    await mainGame.render('.main-content');
+  }
+  
+  auditiongame(userState){
+    const audition = new AuditionGame(userState);
+    audition.render(5,5);
+  }	 
 
   renderToggleAuthentication() {
     const buttonsContainer = create('div', 'authentication__buttons');

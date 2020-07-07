@@ -37,6 +37,10 @@ const savannahConstants = {
   LIVES_IMAGE_BLACK: './src/assets/images/heart_black.png',
   LIVES_IMAGE_INHERIT: './src/assets/images/heart_inherit.png',
   MAX_WORDS: 20,
+  mainAudioPath: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/',
+  correctSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/correct.mp3',
+  errorSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3',
+  WORDS_DATA_URL_ADDITIONAL:'https://wordsapiv1.p.rapidapi.com/words/',
 };
 
 const authenticationConstants = {
@@ -50,6 +54,7 @@ const authenticationConstants = {
   AUTHORIZATION_KEY: 'authorization',
   REGISTRATION_KEY: 'registration',
   MAX_NAME_LENGTH: 30,
+
 };
 
 const wordsToLearnSelectConstants = {
@@ -67,6 +72,7 @@ const wordsToLearnSelectConstants = {
     'Группа 5',
     'Группа 6',
   ],
+
 };
 
 const errorTypes = {
@@ -287,6 +293,35 @@ const shortTermStatisticsConstants = {
   STAT_CLOSE: 'Закрыть',
 };
 
+const auditionGameVariables = {
+  maxPages:29,
+  maxGroups:5,
+  possibleWordsAmount:5,
+  Lives: 5,
+  Rounds: 5,
+  gameTitle: 'Аудиовызов',
+  gameDescription: 'Тренировка улучшает восприятие английской речи на слух.',
+  gameStartBtn: 'Начать',
+  idkBtn: 'Не знаю',
+  modalAlarm: 'Тренировка не закончена!',
+  modalDesc: 'Если вы вернётесь к списку, ваши результаты не будут сохранены',
+  close: 'Закрыть',
+  cancel: 'Отмена',
+  arrowSymbol: '&rarr;',
+  checkMark: '<span>&#10004;</span>',
+  noun: 'noun',
+  correct: 'correct',
+  fail: 'fail',
+  statist: 'Статистика',
+  know: 'Знаю',
+  errors: 'Ошибок',
+  IDK: 'IDK',
+  zeroPercent: '0%',
+  Enter: 'Enter',
+  bg: ['bg1', 'bg2', 'bg3', 'bg4'],
+  digits: ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5'],
+};
+
 const startWindow = {
   START_BUTTON: 'Начать',
   GO_TO_MAIN_PAGE_BUTTON: 'На главную',
@@ -342,9 +377,11 @@ const gamesInfo = {
   },
 };
 
+
 export {
   urls,
   savannahConstants,
+  auditionGameVariables,
   findAPairText,
   authenticationConstants,
   errorTypes,
