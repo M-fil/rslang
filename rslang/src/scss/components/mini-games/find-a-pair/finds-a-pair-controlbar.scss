@@ -40,9 +40,11 @@
   fill: none;
   animation: countdown 90s linear infinite forwards;
   animation-iteration-count: 1;
+  animation-play-state: running;
 }
 
-.find-a-pair_on-pause circle {
+.find-a-pair_on-pause circle,
+.find-a-pair_short-term-statistics circle {
   animation-play-state: paused;
 }
 
