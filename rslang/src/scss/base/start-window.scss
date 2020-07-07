@@ -12,24 +12,29 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 15%;
+  @include media-tablet {
+    width: 90%;
+    margin-top: 0;
+  }
 }
 .start-button {
-  margin-top: 20px;
   padding: 10px;
-  width: 100px;
+  width: 120px;
   text-transform: uppercase;
+  margin: 20px auto 0;
+  display: block;
 }
 .game-name {
-  font-size: 30px;
+  @include font(3rem);
 }
 .game-rules {
-  font-size: 22px;
+  @include font(2.2rem);
 }
 .select__container {
   padding-top: 25px;
 }
 .select__title {
-  font-size: 20px;
+  @include font(2.0rem);
 }
 .select__item {
   margin-top: 10px;

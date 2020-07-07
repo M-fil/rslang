@@ -11,6 +11,9 @@ import Statistics from '../statistics/Statistics';
 
 import MainPage from '../main-page/MainPage';
 
+import CloseButton from '../mini-games/common/CloseButton';
+import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
+
 import {
   createUser,
   loginUser,
@@ -33,6 +36,8 @@ const {
 
 class App {
   constructor() {
+    this.closeButton = new CloseButton();
+    this.shortTermStatistics = new ShortTermStatistics();
     this.state = {
       user: {
         isAuthrorized: false,
@@ -48,6 +53,24 @@ class App {
     };
 
     this.container = null;
+  }
+
+  createMiniGameParameterObject() {
+    return {
+      user: this.state.user,
+      closeButton: this.closeButton,
+      shortTermStatistics: this.shortTermStatistics,
+    };
+  }
+
+  activateGoToTheMainPageButton() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('#button-go-to-main-page');
+
+      if (target) {
+        this.container.innerHTML = '';
+      }
+    });
   }
 
   async run() {
