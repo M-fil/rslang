@@ -3,8 +3,7 @@ import create from '../../utils/сreate';
 import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
-import MainGame from '../main-game/MainGame';
-import Preloader from '../preloader/Preloader';
+import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 import Statistics from '../statistics/Statistics';
@@ -15,6 +14,8 @@ import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 import SavannahGame from '../mini-games/savannah/Savannah';
+
+import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
 
 import {
   createUser,
@@ -142,6 +143,11 @@ class App {
     this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
     await this.speakIt.run();
   }
+  
+  async renderEnglishPuzzle() {
+    this.englishPuzzle = new EnglishPuzzle(this.state.user);
+    await this.englishPuzzle.start();
+  }
 
   activateAuthenticationForm() {
     document.addEventListener('submit', async (event) => {
@@ -241,11 +247,6 @@ class App {
       await this.initAuxilaryComponents();
       this.renderMainPage();
     }
-  }
-
-  static async renderMainGame(userState) {
-    const mainGame = new MainGame(userState);
-    await mainGame.render('.main-content');
   }
 
   renderToggleAuthentication() {
