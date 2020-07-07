@@ -1,6 +1,7 @@
 import {
   create,
   gamesInfo,
+  mainPageConstants,
 } from '../pathes';
 
 const {
@@ -13,6 +14,10 @@ const {
   englishPuzzle,
 } = gamesInfo;
 
+const {
+  GAME_TITLE_TEXT,
+} = mainPageConstants;
+
 class MainBlock {
   constructor() {
     this.HTML = null;
@@ -20,8 +25,10 @@ class MainBlock {
 
   render() {
     this.HTML = create('div', 'main-page__main-block');
-    this.mainGameContainer = create('div', 'main-block__main-game-container', '', this.HTML);
-    this.miniGameContainer = create('div', 'main-block__mini-games-container', '', this.HTML);
+    this.wrapper = create('div', 'main-block__wrapper', '', this.HTML);
+    this.titleHTML = create('div', 'main-block__title', GAME_TITLE_TEXT, this.wrapper);
+    this.mainGameContainer = create('div', 'main-block__main-game-container', '', this.wrapper);
+    this.miniGameContainer = create('div', 'main-block__mini-games-container', '', this.wrapper);
 
     this.mainGameContainer.append(
       MainBlock.renderGameButton(...Object.values(mainGame), ' main-gape__main-game-button'),
@@ -42,7 +49,11 @@ class MainBlock {
     const container = create(
       'div', `main-page__game-button${extraClassName}`, '', null, ['gameCode', gameCode],
     );
+    this.infoIcon = create('i', 'fas fa-info-circle game-button__info-icon');
+    this.gameButtonIcon = create('i', 'fas fa-info-circle game-button__game-icon');
+    create('div', 'game-button__info-button', this.infoIcon, container);
     create('div', 'game-button__name', gameName, container);
+    create('div', 'game-button__icon-container', this.gameButtonIcon, container);
     create('div', 'game-button__description', gameDescription, container);
 
     return container;

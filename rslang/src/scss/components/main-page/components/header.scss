@@ -1,0 +1,8 @@
+.header__buttons-list {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__button {
+  @include font(2rem);
+}

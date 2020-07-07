@@ -1,0 +1,47 @@
+.main-page__game-button {
+  cursor: pointer;
+  position: relative;
+
+  padding: 3px 3px 20px 3px;
+  width: 25%;
+  background: $main-page-game-buttons-background;
+  margin-bottom: 50px;
+}
+
+.main-gape__main-game-button {
+  width: 100%;
+}
+
+.game-button__info-button {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+}
+
+.game-button__name {
+  @include font(2rem);
+
+  color: $main-page-text-color;
+  margin-bottom: 20px;
+}
+
+.game-button__icon-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 3rem;
+}
+
+.game-button__icon-container {
+  position: relative;
+}
+
+.game-button__info-icon {
+  font-size: 2rem;
+}
+
+.game-button__game-icon {
+  position: absolute;
+  right: 20px;
+  font-size: 3rem;
+}
