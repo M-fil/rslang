@@ -7,7 +7,7 @@ export default class SprintGame {
   }
 
   SprintRender() {
-    const body = document.querySelector('body');
+    const { body } = document;
     const container = create('div', 'container main-container', '', body);
     const GameWindow = create('div', 'start-game-window', '', container);
     const GameRules = 'Лео-спринт – скоростная тренировка. За 60 секунд надо угадывать, правильный ли перевод предложен к английскому слову.';

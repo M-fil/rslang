@@ -7,8 +7,8 @@ export default class AuditionGame {
     this.user = user;
   }
 
-  render(lives, roundsAll) {
-    const wrapper = create('div', 'audition-game__wrapper', '', document.querySelector('body'));
+  render(lives, roundsAll, elementQuery) {
+    const wrapper = create('div', 'audition-game__wrapper', '', document.querySelector(elementQuery));
     this.gameService = new GameService(this.user);
     this.gameService.getVocabularyData();
     const gameStartScreen = new StartGameScreen();

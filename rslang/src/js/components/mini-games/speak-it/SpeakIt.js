@@ -80,18 +80,18 @@ export default class SpeakIt {
     this.recognition.start();
   }
 
-  async run() {
-    await this.renderStartGamePage();
+  async run(elementQuery) {
+    await this.renderStartGamePage(elementQuery);
   }
 
-  async renderStartGamePage() {
+  async renderStartGamePage(elementQuery) {
     await this.vocabulary.init();
     this.learnedWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE);
     const isShowLearnedWordsOption = this.learnedWords.length >= WORDS_LIMIT_NUMBER;
     const startWindowHTML = this.startWindow.render(
       SPEAKIT_TITLE, this.startWindow.renderExplanations(), isShowLearnedWordsOption,
     );
-    document.body.append(startWindowHTML);
+    document.querySelector(elementQuery).append(startWindowHTML);
     this.preloader.render();
     this.activateSelectLevelOnStartPage();
     await this.activateWordsToLearnSelect();

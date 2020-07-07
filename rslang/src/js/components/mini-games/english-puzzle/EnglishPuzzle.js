@@ -56,7 +56,7 @@ export default class EnglishPuzzle {
     this.painting = null;
   }
 
-  async start() {
+  async start(elementQuery) {
     await this.vocabulary.init();
     await this.statistics.init();
 
@@ -72,9 +72,8 @@ export default class EnglishPuzzle {
 
     this.preloader.render();
 
-    [this.body] = document.getElementsByTagName('body');
     this.wrapper = create('div', 'english-puzzle-wrapper', [this.startMenu, this.gameForm, this.resultForm, startWindow.closeButton.render()]);
-    this.body.appendChild(this.wrapper);
+    document.querySelector(elementQuery).appendChild(this.wrapper);
 
     startWindow.closeButton.addCloseCallbackFn((this.actionOnCloseButton).bind(this));
     this.actionsOnSupportButtons();
