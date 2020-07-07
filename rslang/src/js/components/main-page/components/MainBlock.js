@@ -24,10 +24,10 @@ class MainBlock {
     this.miniGameContainer = create('div', 'main-block__mini-games-container');
 
     this.mainGameContainer.append(
-      MainBlock.renderGameButton(...Object.values(mainGame), ' main-gape__main-game-button');
+      MainBlock.renderGameButton(...Object.values(mainGame), ' main-gape__main-game-button'),
     );
     this.miniGameContainer.append(
-      MainBlock.renderGameButton(...Object.values(savannah));
+      MainBlock.renderGameButton(...Object.values(savannah)),
       MainBlock.renderGameButton(...Object.values(speakIt)),
       MainBlock.renderGameButton(...Object.values(findAPair)),
       MainBlock.renderGameButton(...Object.values(sprint)),

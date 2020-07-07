@@ -56,8 +56,8 @@ export default class SprintGame {
   }
 
   Random(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
+    return Math.floor(Math.random() * Math.floor(max));
+  }
 
   Game() {
     this.Timer.style.display = 'none';
@@ -93,18 +93,18 @@ export default class SprintGame {
   	if ((window.correctAnswers) % 4 == 0) this.GameAnswers.innerHTML = '';
   	const prevScore = this.Score.innerHTML;
   	this.Score.innerHTML = +prevScore + 10 * power;
-  	let p = document.createElement('p');
+  	const p = document.createElement('p');
   	p.classList.toggle('correct');
-  	p.innerHTML = this.Word.innerHTML + ' - ' + window.ScoreTranslate;
+  	p.innerHTML = `${this.Word.innerHTML} - ${window.ScoreTranslate}`;
   	this.CorrectStatContainer.append(p);
   }
 
   Incorrect() {
   	window.correctAnswers = 0;
   	this.GameAnswers.innerHTML = '';
-  	let p = document.createElement('p');
+  	const p = document.createElement('p');
   	p.classList.toggle('incorrect');
-  	p.innerHTML = this.Word.innerHTML + ' - ' + window.ScoreTranslate;
+  	p.innerHTML = `${this.Word.innerHTML} - ${window.ScoreTranslate}`;
   	this.IncorrectStatContainer.append(p);
   }
 
@@ -114,11 +114,11 @@ export default class SprintGame {
 		<svg>
     	<circle r="18" cx="20" cy="20"></circle>
 		</svg>`;
-		var countdownNumberEl = document.querySelector('.countdown-number');
-    var countdown = 10;
+    const countdownNumberEl = document.querySelector('.countdown-number');
+    let countdown = 10;
     countdownNumberEl.textContent = countdown;
     const self = this;
-    const myTimer = setInterval(function() {
+    const myTimer = setInterval(() => {
       countdown -= 1;
       if (countdown == 0) {
         clearInterval(myTimer);
@@ -129,37 +129,37 @@ export default class SprintGame {
     }, 1000);
   }
 
-	EndGame() {
-		this.countdown.innerHTML = '';
-		this.GameContainer.style.display = 'none';
-		this.StatContainer.style.display = 'flex';
-		this.exitButton.style.display = 'none';
-		this.finalScore.innerHTML = "Ваш счёт: " + this.Score.innerHTML;
-		let errors = document.getElementsByClassName('incorrect');
-		this.incorrect_answers.innerHTML += errors.length;
-		let rights = document.getElementsByClassName('correct');
-		this.correct_answers.innerHTML += rights.length;
-	}
+  EndGame() {
+    this.countdown.innerHTML = '';
+    this.GameContainer.style.display = 'none';
+    this.StatContainer.style.display = 'flex';
+    this.exitButton.style.display = 'none';
+    this.finalScore.innerHTML = `Ваш счёт: ${this.Score.innerHTML}`;
+    const errors = document.getElementsByClassName('incorrect');
+    this.incorrect_answers.innerHTML += errors.length;
+    const rights = document.getElementsByClassName('correct');
+    this.correct_answers.innerHTML += rights.length;
+  }
 
-	ClearGameData() {
-		this.incorrect_answers.innerHTML = 'Ошибок: ';
-		this.correct_answers.innerHTML = 'Знаю: ';
-		this.Score.innerHTML = '0';
-		this.finalScore.innerHTML = '';
-		this.GameAnswers.innerHTML = '';
-		window.correctAnswers = 0;
-		window.incorrectAnswers = 0;
-		while (this.IncorrectStatContainer.childNodes.length > 1) {
+  ClearGameData() {
+    this.incorrect_answers.innerHTML = 'Ошибок: ';
+    this.correct_answers.innerHTML = 'Знаю: ';
+    this.Score.innerHTML = '0';
+    this.finalScore.innerHTML = '';
+    this.GameAnswers.innerHTML = '';
+    window.correctAnswers = 0;
+    window.incorrectAnswers = 0;
+    while (this.IncorrectStatContainer.childNodes.length > 1) {
     	this.IncorrectStatContainer.removeChild(this.IncorrectStatContainer.lastChild);
   	}
  		while (this.CorrectStatContainer.childNodes.length > 1) {
     	this.CorrectStatContainer.removeChild(this.CorrectStatContainer.lastChild);
   	}
-		this.GameBegin();
-	}
+    this.GameBegin();
+  }
 
   Close() {
-    const answer = confirm("Вы, действительно, хотите вернуться в меню игры?");
+    const answer = confirm('Вы, действительно, хотите вернуться в меню игры?');
     return answer;
   }
 
@@ -169,4 +169,3 @@ export default class SprintGame {
     this.GameContainer.style.display = 'none';
   }
 }
-

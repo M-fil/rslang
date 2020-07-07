@@ -1,3 +1,4 @@
+import { Swappable } from '@shopify/draggable';
 import MainBlock from './components/main-block';
 import createResultBlock from './components/result-block';
 import create from '../../../utils/сreate';
@@ -26,7 +27,6 @@ import Preloader from '../../preloader/preloader';
 import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
 import Statistics from '../../statistics/Statistics';
-import { Swappable } from '@shopify/draggable';
 
 const {
   SELECT_OPTION_LEARNED_WORDS_VALUE,
@@ -63,7 +63,7 @@ export default class EnglishPuzzle {
     const gameZone = new MainBlock();
     const startWindow = new StartWindow((this.startMenuButtonAction).bind(this));
     this.gameForm = gameZone.createMainForm();
-    
+
     this.words = this.vocabulary.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE);
     const isShowLearnedWordsOption = this.words.length >= GAME_BLOCK.gameZoneRows;
     this.startMenu = create('div', 'start-window', startWindow.render(
@@ -167,9 +167,9 @@ export default class EnglishPuzzle {
         ], [
           document.querySelector('.result-button'),
         ]);
-        this.gameStatus === SELECT_OPTION_LEARNED_WORDS_VALUE ? 
-          viewElement([document.querySelector('.repeat-button')], []) : 
-          viewElement([], [document.querySelector('.repeat-button')]);
+        this.gameStatus === SELECT_OPTION_LEARNED_WORDS_VALUE
+          ? viewElement([document.querySelector('.repeat-button')], [])
+          : viewElement([], [document.querySelector('.repeat-button')]);
       }
     }
   }
@@ -418,7 +418,7 @@ export default class EnglishPuzzle {
     this.activeRow.addEventListener('dragenter', dragEnter);
     this.activeRow.addEventListener('dragleave', dragLeave);
     this.activeRow.addEventListener('click', (event) => {
-      if(event.target.classList.contains('active-card')) {
+      if (event.target.classList.contains('active-card')) {
         this.cardClickAction(event.target);
       }
     });
@@ -426,7 +426,7 @@ export default class EnglishPuzzle {
     const swappable = new Swappable(this.activeRow, {
       draggable: '.active-card',
     });
-    
+
     document.querySelector('.game-block_field--description').addEventListener('drop', (event) => {
       event.preventDefault();
       document.querySelector('.game-block_field--description').appendChild(this.dropped);
@@ -436,7 +436,7 @@ export default class EnglishPuzzle {
     document.querySelector('.game-block_field--description').addEventListener('dragenter', dragEnter);
     document.querySelector('.game-block_field--description').addEventListener('dragleave', dragLeave);
     document.querySelector('.game-block_field--description').addEventListener('click', (event) => {
-      if(event.target.classList.contains('active-card')) {
+      if (event.target.classList.contains('active-card')) {
         this.cardClickAction(event.target);
       }
     });

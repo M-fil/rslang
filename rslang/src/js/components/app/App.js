@@ -77,7 +77,7 @@ class App {
   }
 
   async run() {
-    this.container = create('main', 'main-content', '', document.body);
+    this.container = create('main', 'main-page__content', '', document.body);
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
@@ -138,7 +138,7 @@ class App {
     this.mainPage = new MainPage(this.state.user.name);
     this.container.append(this.mainPage.render());
   }
-  
+
   async renderSpeakItGame() {
     this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
     await this.speakIt.run();

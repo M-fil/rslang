@@ -1,4 +1,3 @@
-
 import create from '../../utils/сreate';
 
 export default class StatisticsChart {
