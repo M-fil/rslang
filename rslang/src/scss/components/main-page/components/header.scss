@@ -1,8 +1,55 @@
-.header__buttons-list {
+.main-page__header {
+  position: fixed;
+
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 15px;
+  width: calc(100% - 30px);
+  height: 90px;
+  z-index: 1000
+  
+  ;
+  background: $main-gage-header-background;
+}
+
+.header__buttons-list {
+  display: flex;
+  justify-content: space-around;
+  flex-grow: 1;
 }
 
 .header__button {
+  @include font(2rem);
+}
+
+.header__logout-button {
+  @include font(2.5rem, 3rem, bold);
+
+  cursor: pointer;
+  background: $main-page-logout-button-background;
+  min-width: 100px;
+  padding: 15px 0;
+  text-align: center;
+  border: none;
+  outline: none;
+}
+
+.header__user-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.header__user-icon {
+  font-size: 2rem;
+  margin-right: 5px;
+}
+
+.header__user-name {
+  margin-bottom: 10px;
+}
+
+.user-name__text {
   @include font(2rem);
 }

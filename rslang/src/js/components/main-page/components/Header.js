@@ -1,6 +1,6 @@
 import {
   create,
-  mainPageHeaderConstants,
+  mainPageHeaderButtonConstants,
 } from '../pathes';
 
 const {
@@ -13,7 +13,8 @@ const {
   PROMO_CODE,
   ABOUT_TEAM_CODE,
   SETTINGS_CODE,
-} = mainPageHeaderConstants;
+  LOG_OUT_BUTTON_TEXT,
+} = mainPageHeaderButtonConstants;
 
 class Header {
   constructor(userName) {
@@ -27,12 +28,22 @@ class Header {
     this.buttonsList = create('div', 'header__buttons-list', '', this.HTML);
     this.renderHeaderButton(VOCABULARY_BUTTON_TEXT, VOCABULARY_CODE);
     this.renderHeaderButton(STATISTICS_BUTTON_TEXT, STATISTICS_CODE);
-    this.renderHeaderButton(settingsIconHTML, SETTINGS_CODE);
     this.renderHeaderButton(PROMO_BUTTON_TEXT, PROMO_CODE);
     this.renderHeaderButton(ABOUT_TEAM_TEXT, ABOUT_TEAM_CODE);
-    create('div', 'header__user-name', this.userName, this.HTML);
+    this.renderHeaderButton(settingsIconHTML, SETTINGS_CODE);
+    this.HTML.append(this.renderUserBlock());
 
     return this.HTML;
+  }
+
+  renderUserBlock() {
+    const container = create('div', 'header__user-block');
+    const userIcon = create('i', 'fas fa-user header__user-icon');
+    const userName = create('span', 'user-name__text', this.userName);
+    create('div', 'header__user-name', [userIcon, userName], container);
+    create('button', 'header__logout-button', LOG_OUT_BUTTON_TEXT, container);
+
+    return container;
   }
 
   renderHeaderButton(buttonText, buttonCode) {

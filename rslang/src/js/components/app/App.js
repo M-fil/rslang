@@ -13,6 +13,7 @@ import MainPage from '../main-page/MainPage';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 
+import MainGame from '../main-game/MainGame';
 import SavannahGame from '../mini-games/savannah/Savannah';
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
@@ -29,7 +30,7 @@ import {
 import {
   errorTypes,
   authenticationConstants,
-  mainPageHeaderConstants,
+  mainPageHeaderButtonConstants,
   gamesInfo,
 } from '../../constants/constants';
 
@@ -58,7 +59,7 @@ const {
   PROMO_CODE,
   ABOUT_TEAM_CODE,
   SETTINGS_CODE,
-} = mainPageHeaderConstants;
+} = mainPageHeaderButtonConstants;
 
 class App {
   constructor() {
@@ -81,6 +82,33 @@ class App {
     this.container = null;
   }
 
+  async run() {
+    this.container = create('main', 'main-page__content', '', document.body);
+    try {
+      await this.checkIsUserAuthorized();
+    } catch (error) {
+      this.renderAuthorizationBlock();
+      this.prelodaer.hide();
+    }
+  }
+
+  activateMainPageHandlers() {
+    this.activateLogOutButton();
+    this.activateGoToTheMainPageButton();
+    this.activateHeaderButtons();
+    this.activateGameButtons();
+  }
+
+  renderAuthorizationBlock() {
+    App.removeModalElements();
+    localStorage.setItem('user-data', '');
+    this.state.user.isAuthrorized = false;
+    this.container.innerHTML = '';
+    this.renderAuthenticationBlock('authorization');
+    this.renderToggleAuthentication();
+    this.activateAuthenticationForm();
+  }
+
   createMiniGameParameterObject() {
     return {
       user: this.state.user,
@@ -94,7 +122,7 @@ class App {
       const target = event.target.closest('#button-go-to-main-page');
 
       if (target) {
-        this.container.innerHTML = '';
+        this.renderMainPage();
       }
     });
   }
@@ -148,7 +176,7 @@ class App {
     document.addEventListener('click', async (event) => {
       const target = event.target.closest('[gameCode]');
 
-      if (taget) {
+      if (target) {
         const { gameCode } = target.dataset;
         switch (gameCode) {
           case mainGame.code:
@@ -222,23 +250,6 @@ class App {
     this.renderStartPage('.main-page__content');
   }
 
-  async run() {
-    this.container = create('main', 'main-page__content', '', document.body);
-    try {
-      await this.checkIsUserAuthorized();
-    } catch (error) {
-      console.log(error);
-      App.removeModalElements();
-      localStorage.setItem('user-data', '');
-      this.state.user.isAuthrorized = false;
-      this.container.innerHTML = '';
-      this.renderAuthenticationBlock('authorization');
-      this.renderToggleAuthentication();
-      this.activateAuthenticationForm();
-      this.prelodaer.hide();
-    }
-  }
-
   static removeModalElements() {
     const startGameWindow = document.querySelector('.start-game-window');
     const exitButton = document.querySelector('.exit-button');
@@ -276,11 +287,19 @@ class App {
 
   renderMainPage() {
     this.container.innerHTML = '';
-    console.log(this.container);
     this.mainPage = new MainPage(this.state.user.name);
     const html = this.mainPage.render();
-    console.log(html);
     this.container.append(html);
+  }
+
+  activateLogOutButton() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.header__logout-button');
+
+      if (target) {
+        this.renderAuthorizationBlock();
+      }
+    });
   }
 
   activateAuthenticationForm() {
@@ -371,6 +390,7 @@ class App {
         name: data.name,
       };
       await this.initAuxilaryComponents();
+      this.activateMainPageHandlers();
       this.renderMainPage();
       this.prelodaer.hide();
     } catch (error) {
@@ -383,6 +403,7 @@ class App {
         ...data,
       };
       await this.initAuxilaryComponents();
+      this.activateMainPageHandlers();
       this.renderMainPage();
       this.prelodaer.hide();
     }

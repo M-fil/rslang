@@ -1,13 +1,15 @@
 import create from '../../utils/сreate';
 import {
-  mainPageHeaderConstants,
+  mainPageHeaderButtonConstants,
   gamesInfo,
   mainPageConstants,
+  mainPageEnglishGoal,
 } from '../../constants/constants';
 
 export {
   create,
-  mainPageHeaderConstants,
+  mainPageHeaderButtonConstants,
   gamesInfo,
   mainPageConstants,
+  mainPageEnglishGoal,
 };

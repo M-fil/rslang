@@ -327,7 +327,7 @@ const startWindow = {
   GO_TO_MAIN_PAGE_BUTTON: 'На главную',
 };
 
-const mainPageHeaderConstants = {
+const mainPageHeaderButtonConstants = {
   STATISTICS_BUTTON_TEXT: 'Статистика',
   VOCABULARY_BUTTON_TEXT: 'Словарь',
   PROMO_BUTTON_TEXT: 'Промо',
@@ -337,6 +337,7 @@ const mainPageHeaderConstants = {
   PROMO_CODE: 'PROMO_CODE',
   ABOUT_TEAM_CODE: 'ABOUT_TEAM_CODE',
   SETTINGS_CODE: 'SETTINGS_CODE',
+  LOG_OUT_BUTTON_TEXT: 'Выйти',
 };
 
 const gamesInfo = {
@@ -381,6 +382,15 @@ const mainPageConstants = {
   GAME_TITLE_TEXT: 'Выберите чем хотите заниматься:',
 };
 
+const mainPageEnglishGoal = {
+  TRAVEL: 'Путешествовать',
+  WORK: 'Работать',
+  STUDY: 'Учиться',
+  WATCH_AND_READ: 'Смотреть фильмы и читать книги',
+  PROGRESS: 'Совершенствоваться',
+  GO_TO_THE_NEW_COUNTRY: 'Переехать в другую страну',
+};
+
 export {
   urls,
   savannahConstants,
@@ -402,7 +412,8 @@ export {
   shortTermStatisticsConstants,
   startWindow,
   HTTPCodesConstants,
-  mainPageHeaderConstants,
+  mainPageHeaderButtonConstants,
   gamesInfo,
   mainPageConstants,
+  mainPageEnglishGoal,
 };
