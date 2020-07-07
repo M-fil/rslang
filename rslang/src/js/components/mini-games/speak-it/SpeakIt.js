@@ -51,7 +51,6 @@ export default class SpeakIt {
   constructor(miniGameParameters) {
     this.userState = miniGameParameters.user;
     this.closeButton = miniGameParameters.closeButton;
-    this.shortTermStatistics = miniGameParameters.shortTermStatistics;
 
     this.currentArrayOfWords = [];
     this.words = [];
@@ -115,6 +114,7 @@ export default class SpeakIt {
 
   async initMainGamePage() {
     this.closeButton.addCloseCallbackFn(this.goToTheStartPageHandler.bind(this));
+    this.shortTermStatistics.modalClose.addEventListener('click', this.goToTheStartPageHandler.bind(this));
     SpeakIt.createMainContainerWrapper();
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
     this.startWindow.gameWindow.remove();
