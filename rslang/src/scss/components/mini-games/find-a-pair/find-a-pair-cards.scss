@@ -3,6 +3,9 @@
   margin: 20px 25px;
   width: 125px;
   height: 125px;
+  @include media-mobile {
+    margin: 20px 5px;
+  }
 }
 
 .find-a-pair-card__container {

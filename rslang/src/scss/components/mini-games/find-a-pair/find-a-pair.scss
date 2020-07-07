@@ -5,6 +5,10 @@
   text-align: center;
   margin: 0 auto;
   width: $content-width;
+  @include media-tablet {
+    width: auto;
+    min-width: 320px;
+  }
 }
 
 .find-a-pair__start-page {
