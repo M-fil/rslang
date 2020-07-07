@@ -1,0 +1,55 @@
+.main-content {
+  background-color: #1695A3;
+}
+.container {
+  @include font(1rem, 1.2);
+  width: 80%;
+  height: 100%;
+}
+.team_title {
+  font-size: 3rem;
+  text-align: center;
+  margin-top: 25px;
+}
+#button-go-to-main-page {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  font-size: 4rem;
+}
+.team_block {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding-bottom: 25px;
+}
+.team_card {
+  width: 28%;
+  max-width: 340px;
+  height: 500px;
+  margin-top: 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+.person-photo-block {
+  justify-content: center;
+  display: flex;
+}
+
+.person-photo {
+  min-width: 180px;
+  max-width: 225px;
+  max-height: 200px;
+  min-height: 210px;
+  object-fit: cover;
+  margin-top: 10px;
+}
+.person-name {
+  font-size: 2.3rem;
+  text-align: center;
+  margin: 10px 0;
+}
+.person-quality, .person-work {
+  font-size: 1.7rem;
+  margin: 10px;
+}

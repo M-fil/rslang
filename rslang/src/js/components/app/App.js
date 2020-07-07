@@ -7,6 +7,7 @@ import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import AboutTeam from '../about-team/AboutTeam';
 
 import {
   createUser,
@@ -122,8 +123,10 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      this.aboutTeam = new AboutTeam();
+      this.aboutTeam.render();
+      // await App.renderMainGame(this.state.user);
+      // await this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -162,8 +165,9 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      // await App.renderMainGame(this.state.user);
+      // await this.renderVocabulary(this.state.user);
+      this.aboutTeam.render();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
