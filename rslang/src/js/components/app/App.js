@@ -6,9 +6,9 @@ import Authentication from '../authentication/Authentication';
 import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
-
+import CloseButton from '../mini-games/common/CloseButton';
+import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
-
 import {
   createUser,
   loginUser,
@@ -31,6 +31,8 @@ const {
 
 class App {
   constructor() {
+    this.closeButton = new CloseButton();
+    this.shortTermStatistics = new ShortTermStatistics();
     this.state = {
       user: {
         isAuthrorized: false,
@@ -46,6 +48,24 @@ class App {
     };
 
     this.container = null;
+  }
+
+  createMiniGameParameterObject() {
+    return {
+      user: this.state.user,
+      closeButton: this.closeButton,
+      shortTermStatistics: this.shortTermStatistics,
+    };
+  }
+
+  activateGoToTheMainPageButton() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('#button-go-to-main-page');
+
+      if (target) {
+        this.container.innerHTML = '';
+      }
+    });
   }
 
   async run() {
@@ -77,7 +97,7 @@ class App {
   }
 
   async renderEnglishPuzzle() {
-    this.englishPuzzle = new EnglishPuzzle(this.state.user);
+    this.englishPuzzle = new EnglishPuzzle(this.createMiniGameParameterObject());
     await this.englishPuzzle.start();
   }
 

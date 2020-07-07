@@ -34,12 +34,13 @@ const {
 } = wordsToLearnSelectConstants;
 
 export default class EnglishPuzzle {
-  constructor(userState) {
+  constructor(obj) {
+    this.backData = obj;
     this.gameForm = null;
     this.startMenu = null;
     this.resultForm = createResultBlock();
-    this.vocabulary = new Vocabulary(userState);
-    this.statistics = new Statistics(userState);
+    this.vocabulary = new Vocabulary(this.backData.user);
+    this.statistics = new Statistics(this.backData.user);
     this.preloader = new Preloader();
 
     this.sinth = window.speechSynthesis;
@@ -63,7 +64,9 @@ export default class EnglishPuzzle {
     const gameZone = new MainBlock();
     const startWindow = new StartWindow((this.startMenuButtonAction).bind(this));
     this.gameForm = gameZone.createMainForm();
-    
+    this.backData.closeButton.show();
+    this.gameForm.appendChild(this.backData.closeButton.render());
+
     this.words = this.vocabulary.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE);
     const isShowLearnedWordsOption = this.words.length >= GAME_BLOCK.gameZoneRows;
     this.startMenu = create('div', 'start-window', startWindow.render(
@@ -73,10 +76,10 @@ export default class EnglishPuzzle {
     this.preloader.render();
 
     [this.body] = document.getElementsByTagName('body');
-    this.wrapper = create('div', 'english-puzzle-wrapper', [this.startMenu, this.gameForm, this.resultForm, startWindow.closeButton.render()]);
+    this.wrapper = create('div', 'english-puzzle-wrapper', [this.startMenu, this.gameForm, this.resultForm]);
     this.body.appendChild(this.wrapper);
 
-    startWindow.closeButton.addCloseCallbackFn((this.actionOnCloseButton).bind(this));
+    this.backData.closeButton.addCloseCallbackFn((this.actionOnCloseButton).bind(this));
     this.actionsOnSupportButtons();
     this.controlButtonsAction();
   }
