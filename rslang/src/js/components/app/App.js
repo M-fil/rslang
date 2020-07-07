@@ -14,6 +14,7 @@ import MainPage from '../main-page/MainPage';
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
+import SavannahGame from '../mini-games/savannah/Savannah';
 
 import {
   createUser,
