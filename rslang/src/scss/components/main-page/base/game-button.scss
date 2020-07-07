@@ -5,6 +5,7 @@
   width: 250px;
   background: $main-page-game-buttons-background;
   margin-bottom: 50px;
+  overflow: hidden;
 
   &:hover {
     & .game-button__name {
@@ -20,10 +21,16 @@
   position: absolute;
   right: 3px;
   top: 3px;
+  z-index: 100;
 
   &:hover {
     color: $main-page-logour-hover-color;
     transform: scale(1.1);
+
+    & ~ .game-button__description {
+      opacity: 1;
+      right: 0;
+    }
   }
 }
 
@@ -58,4 +65,23 @@
 
 .main-game__main-game-button {
   width: 350px;
+}
+
+.game-button__description {
+  @extend %standard-button-transition;
+  @include font(1.5rem);
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  right: -100%;
+  top: 0;
+  opacity: 0;
+  background: $main-page-game-buttons-background;
+  overflow: auto;
+
+  &:hover {
+    opacity: 1;
+    right: 0;
+  }
 }
