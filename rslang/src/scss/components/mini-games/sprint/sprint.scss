@@ -1,0 +1,189 @@
+body {
+	background: linear-gradient(#4CAF50, transparent);
+	height: 100vh;
+	justify-content: center;
+}
+
+.main-container {
+	display: flex;
+	justify-content: center;
+}
+
+.exit-button {
+	width: 3rem;
+	height: 3rem;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+.start-game-window {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.start-game-window h2 {
+	font-size: 6rem;
+}
+
+.game-rules {
+	font-size: 3rem;
+	width: 70vw;
+	line-height: normal;
+	text-align: center;
+}
+
+.start-button, .restart-button {
+	font-size: 4rem;
+	width: 20rem;
+	background: linear-gradient(#FF5722, #FFEB3B);
+	border: none;
+	border-radius: 12px;
+	margin-top: 5rem;
+	color: white;
+}
+
+button:active {
+	border-style: inset;
+	transform: scale(0.9);
+}
+
+button:active, button:focus, input:active, input:focus {
+  outline: none !important;
+}
+
+button::-moz-focus-inner {
+  border: 0 !important;
+}
+
+.timer {
+	font-size: 12rem;
+	text-align: center;
+}
+
+.game-container {
+	display: none;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: 100%;
+	margin: 10%;
+	border: 5px solid white;
+}
+
+.answers_buttons-container button {
+	width: 10rem;
+	height: 5rem;
+	font-size: 2rem;
+	margin: 0 2rem;
+	border: none;
+	border-radius: 12px;
+	color: white;
+}
+
+.yes-button {
+	background: linear-gradient(#07b900, #8BC34A);
+}
+
+.no-button {
+	 background: linear-gradient(#e63b05, #F44336);
+}
+
+.game_answers-container {
+	width: 15rem;
+	height: 5rem;
+	background: white;
+	border-radius: 24px;
+	font-size: 5rem;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+
+.countdown {
+  position: absolute;
+	top: -70px;
+	left: 40px;
+  margin: auto;
+  margin-top: 100px;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.countdown-number {
+  color: white;
+  display: inline-block;
+  line-height: 40px;
+}
+
+svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  transform: rotateY(-180deg) rotateZ(-90deg);
+}
+
+svg circle {
+  stroke-dasharray: 113px;
+  stroke-dashoffset: 0px;
+  stroke-linecap: round;
+  stroke-width: 2px;
+  stroke: white;
+  fill: none;
+  animation: countdown 60s linear infinite forwards;
+}
+
+@keyframes countdown {
+  from {
+    stroke-dashoffset: 0px;
+  }
+  to {
+    stroke-dashoffset: 113px;
+  }
+}
+
+.score {
+	color: white;
+	font-size: 4rem;
+	position: absolute;
+	top: 5%;
+}
+
+.stat-container {
+	display: none;
+	position: absolute;
+	top: 0;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	min-height: 100vh;
+	overflow: auto;
+	background: white;
+	font-size: 2rem;
+}
+
+.incorrect-answers, .correct-answers {
+	font-size: 2rem;
+}
+
+.incorrect-stat-container, .correct-stat-container {
+	width: 100%;
+	padding-left: 10%;
+}
+
+.word, .Translation {
+	font-size: 3rem;
+}
+
+.restart-button {
+	position: absolute;
+	bottom: 10%;
+	right: 10%;
+}
