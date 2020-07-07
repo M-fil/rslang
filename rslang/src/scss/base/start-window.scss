@@ -20,7 +20,8 @@
 .start-button {
   position: relative;
   padding: 10px;
-  width: 100px;
+  min-width: 120px;
+  margin: 0 10px 0 10px;
   background: none;
   outline: none;
   cursor: pointer;
@@ -80,6 +81,7 @@
 .gameWindow__container .select__item {
   margin-top: 10px;
   height: 20%;
+  font-size: 1.1em;
   border-radius: 5px;
   border: 1px solid $game-bacground-or-hover-for-buttons;
   background-color: none;
@@ -149,6 +151,10 @@
 
   .gameWindow__container {
     height: 30%;
+  }
+
+  .start-button {
+    margin: 0 5px 0 5px;
   }
 }
 
