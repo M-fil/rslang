@@ -94,14 +94,17 @@ export default class FindAPair {
     this.container.classList.remove('find-a-pair__start-page');
 
     const timerEl = create('i', 'find-a-pair-timer__seconds', `${findAPairConst.gameTimerSec}`, undefined, ['id', 'remain_seconds']);
-    const timerSpan = create('span', 'find-a-pair-timer__text', `${findAPairText.remainSec}: ${timerEl.outerHTML}`);
-    const timerContainer = create('div', 'find-a-pair-timer', timerSpan);
+    const timerContainer = create('div', 'find-a-pair-timer', timerEl);
+    timerContainer.innerHTML += `
+    <svg class="find-a-pair-timer__svg">
+      <circle r="13" cx="15" cy="15"></circle>
+    </svg>`;
 
-    const findCardsEl = create('i', 'find-a-pair-findcards__count', '0', undefined, ['id', 'findcards_count']);
-    const findCardsSpan = create('span', 'find-a-pair-findcards__text', `${findAPairText.findCards}: ${findCardsEl.outerHTML}`);
-    const findCardsContainer = create('div', 'find-a-pair-findcards', findCardsSpan);
+    const findCardsEl = create('i', 'find-a-pair-findcards__count', `0 / ${findAPairConst.cardsCount}`, undefined, ['id', 'findcards_count']);
+    const findCardsSpan = create('i', 'find-a-pair-findcards__text fas fa-search');
+    const findCardsContainer = create('div', 'find-a-pair-findcards', [findCardsSpan, findCardsEl]);
 
-    const pauseButton = create('button', 'find-a-pair__pause-button', findAPairText.pauseButton, undefined, ['id', 'find-a-pair-pause-button']);
+    const pauseButton = create('button', 'find-a-pair__pause-button', '<i class="fas fa-pause"></i>', undefined, ['id', 'find-a-pair-pause-button'], ['title', findAPairText.pauseButton]);
     const controlbar = create('div', 'find-a-pair__controlbar', [timerContainer, findCardsContainer, pauseButton]);
     const playingField = create('div', 'find-a-pair__playing-field');
 
@@ -202,7 +205,7 @@ export default class FindAPair {
   }
 
   updateFindPairs() {
-    document.querySelector('#findcards_count').innerText = this.findPairs;
+    document.querySelector('#findcards_count').innerText = `${this.findPairs} / ${findAPairConst.cardsCount}`;
   }
 
   resultsPage() {
@@ -244,7 +247,16 @@ export default class FindAPair {
 
   pauseGameHandler() {
     this.gameOnPause = !this.gameOnPause;
-    document.querySelector('#find-a-pair-pause-button').innerText = (this.gameOnPause) ? findAPairText.onPauseButton : findAPairText.pauseButton;
+    const pauseButton = document.querySelector('#find-a-pair-pause-button');
+    if (this.gameOnPause) {
+      this.container.classList.add('find-a-pair_on-pause');
+      pauseButton.innerHTML = '<i class="fas fa-play"></i>';
+      pauseButton.setAttribute('title', findAPairText.onPauseButton);
+    } else {
+      this.container.classList.remove('find-a-pair_on-pause');
+      pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+      pauseButton.setAttribute('title', findAPairText.pauseButton);
+    }
   }
 
   mouseEnterHandler() {
@@ -280,6 +292,7 @@ export default class FindAPair {
   }
 
   newGameHandler() {
+    this.clearTimer();
     this.clearPage();
     this.ShortTermStatistics.hide();
     this.renderStartPage();
@@ -319,6 +332,7 @@ export default class FindAPair {
   }
 
   checkWordsCountInVocabulary() {
-    return (this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= findAPairConst.cardsCount);
+    const vocabuleryLength = this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE);
+    return (vocabuleryLength >= findAPairConst.cardsCount);
   }
 }
