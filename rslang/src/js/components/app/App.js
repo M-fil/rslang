@@ -143,7 +143,7 @@ class App {
     this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
     await this.speakIt.run();
   }
-  
+
   async renderEnglishPuzzle() {
     this.englishPuzzle = new EnglishPuzzle(this.state.user);
     await this.englishPuzzle.start();
