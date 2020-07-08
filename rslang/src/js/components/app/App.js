@@ -220,7 +220,6 @@ class App {
       };
       await this.initSettings();
       await this.renderMainGame();
-      await this.renderVocabulary(this.state.user);
     }
   }
 

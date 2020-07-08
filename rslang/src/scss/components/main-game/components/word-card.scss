@@ -1,0 +1,123 @@
+.main-game__word-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.word-card-letter {
+  @include font(2.5rem);
+
+  &_correct {
+    color: $main-game-correct-letter-color;
+  }
+
+  &_not-many-mistakes {
+    color: $main-game-not-main-game-many-mistakes-letter-color;
+  }
+
+  &_many-mistakes {
+    color: $main-game-many-mistakes-letter-color;
+  }
+}
+
+.word-card__fake-word-container {
+  display: inline-block;
+  height: 0;
+}
+
+.word-card__word-info {
+  display: flex;
+  margin-bottom: 10px;
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.word-card__fake-word {
+  @include font(2.5rem);
+
+  display: inline;
+  opacity: 0;
+}
+
+
+.word-card__input-container {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.word-card__vocabulary-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.word-card__input {
+  @include font(2.1rem);
+}
+
+.word-card__input-container {
+  position: relative;
+}
+
+.word-card__input-wrapper {
+  position: relative;
+}
+
+.word-card__user-answer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  text-align: center;
+  z-index: -1;
+
+  &_visible {
+    z-index: 1;
+  }
+
+  &_translucent {
+    z-index: 1;
+    opacity: 0.5;
+  } 
+}
+
+.word-card__sentences {
+  text-align: center;
+  margin-bottom: 10px;
+
+  & > *:not(:last-child) {
+    margin-bottom: 5px;
+  }
+}
+
+.word-card__sentence-word-container {
+  border-bottom: 1px solid $main-game-standard-border-color;
+  padding-bottom: 3px;
+}
+
+.word-card__sentence-word {
+  opacity: 0;
+
+  &_visible {
+    opacity: 1;
+  }
+}
+
+.word-card__translation {
+  opacity: 1;
+
+  &_hidden {
+    opacity: 0;
+  }
+}

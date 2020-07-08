@@ -1,0 +1,21 @@
+.main-game__estimate-buttons {
+  display: flex;
+  justify-content: space-evenly;
+
+  width: 100%;
+  margin-top: 15px;
+}
+
+.main-game__form-buttons {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.exit-button_relative {
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-left: 5px;
+}
