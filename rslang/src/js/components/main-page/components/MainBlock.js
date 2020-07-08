@@ -48,7 +48,7 @@ class MainBlock {
 
   static renderGameButton(gameCode, gameName, gameDescription, imageSrc, extraClassName = '') {
     const container = create(
-      'div', `main-page__game-button${extraClassName}`, '', null, ['gameCode', gameCode],
+      'div', `main-page__game-button${extraClassName}`, '', null, ['pageCode', gameCode],
     );
     this.infoIcon = create('i', 'fas fa-info-circle game-button__info-icon', '', null);
     this.gameButtonIcon = create('img', 'game-button__game-image', '', null, ['src', imageSrc]);

@@ -63,7 +63,7 @@ class Header {
   }
 
   renderHeaderButton(buttonText, buttonCode) {
-    create('div', 'header__button', buttonText, this.buttonsList, ['headerPageCode', buttonCode]);
+    create('div', 'header__button', buttonText, this.buttonsList, ['pageCode', buttonCode]);
   }
 
   renderBurgerMenuIcon() {

@@ -53,9 +53,3 @@
 .goal__image {
   margin-right: 35px;
 }
-
-.goal__text {
-  @include media-tablet {
-    text-align: right;
-  }
-}

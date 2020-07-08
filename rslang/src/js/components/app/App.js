@@ -74,9 +74,7 @@ class App {
         email: '',
         name: '',
       },
-      vocabulary: {},
-      settings: {},
-      statistics: {},
+      currentPage: localStorage.getItem('current-page'),
     };
 
     const arrowSavedState = localStorage.getItem('arrow-bottom-clicked');
@@ -97,8 +95,7 @@ class App {
   activateMainPageHandlers() {
     this.activateLogOutButton();
     this.activateGoToTheMainPageButton();
-    this.activateHeaderButtons();
-    this.activateGameButtons();
+    this.activatePagesRenders();
   }
 
   renderAuthorizationBlock() {
@@ -129,31 +126,9 @@ class App {
     });
   }
 
-  activateHeaderButtons() {
-    document.addEventListener('click', async (event) => {
-      const target = event.target.closest('[headerPageCode]');
-
-      if (target) {
-        const { headerPageCode } = target.dataset;
-
-        switch (headerPageCode) {
-          case STATISTICS_CODE:
-          default:
-            this.renderStatistics();
-            break;
-          case VOCABULARY_CODE:
-            await this.renderVocabulary();
-            break;
-          case PROMO_CODE:
-            break;
-          case ABOUT_TEAM_CODE:
-            break;
-          case SETTINGS_CODE:
-            this.renderSettingsBlock();
-            break;
-        }
-      }
-    });
+  saveCurrentPage(page) {
+    this.state.currentPage = page;
+    localStorage.setItem('current-page', page);
   }
 
   renderStatistics() {
@@ -163,54 +138,80 @@ class App {
 
   async renderVocabulary() {
     this.container.innerHTML = '';
-    await this.vocabulary.render();
+    const html = await this.vocabulary.render();
+    this.container.append(html);
   }
 
   renderPromoPage() {}
 
   renderAboutTeamPage() {}
 
-  renderSettingsBlock() {
-    this.settings.renderSettingsWindow();
+  renderSettingsBlock(isRenderAfterReload = false) {
+    if (isRenderAfterReload) {
+      this.renderMainPage();
+    }
+    const { background: settingsBackground } = this.settings.modalWindow;
+    this.settings.openSettingsWindow();
+    settingsBackground.classList.add('modal-block_top-layer');
   }
 
-  activateGameButtons() {
+  activatePagesRenders() {
     document.addEventListener('click', async (event) => {
-      const target = event.target.closest('[gameCode]');
+      const target = event.target.closest('[data-page-code]');
 
       if (target) {
-        const { gameCode } = target.dataset;
-        switch (gameCode) {
-          case mainGame.code:
-          default:
-            await this.renderMainGame();
-            break;
-          case speakIt.code:
-            await this.renderSpeakItGame();
-            break;
-          case englishPuzzle.code:
-            await this.renderEnglishPuzzle();
-            break;
-          case audioGame.code:
-            this.renderAuditionGame();
-            break;
-          case savannah.code:
-            await this.renderSavannah();
-            break;
-          case sprint.code:
-            await this.renderSprintGame();
-            break;
-          case findAPair.code:
-            await this.renderFindAPair();
-            break;
-        }
+        const { pageCode } = target.dataset;
+        await this.selectPageRenderingByPageCode(pageCode, false);
       }
     });
   }
 
+  async selectPageRenderingByPageCode(pageCode, isRenderAfterReload = true) {
+    this.saveCurrentPage(pageCode);
+
+    switch (pageCode) {
+      case mainGame.code:
+        await this.renderMainGame();
+        break;
+      case speakIt.code:
+        await this.renderSpeakItGame();
+        break;
+      case englishPuzzle.code:
+        await this.renderEnglishPuzzle();
+        break;
+      case audioGame.code:
+        this.renderAuditionGame();
+        break;
+      case savannah.code:
+        await this.renderSavannah();
+        break;
+      case sprint.code:
+        await this.renderSprintGame();
+        break;
+      case findAPair.code:
+        await this.renderFindAPair();
+        break;
+      case STATISTICS_CODE:
+        this.renderStatistics();
+        break;
+      case VOCABULARY_CODE:
+        await this.renderVocabulary();
+        break;
+      case PROMO_CODE:
+        break;
+      case ABOUT_TEAM_CODE:
+        break;
+      case SETTINGS_CODE:
+        this.renderSettingsBlock(isRenderAfterReload);
+        break;
+      default:
+        this.renderMainPage();
+    }
+  }
+
   async renderMainGame() {
     this.container.innerHTML = '';
-    this.mainGame = new MainGame(this.createMiniGameParameterObject());
+    this.mainGame = new MainGame(this.state.user);
     await this.mainGame.render('.main-page__content');
   }
 
@@ -268,7 +269,6 @@ class App {
   async initSettings() {
     this.settings = new Settings(this.state.user);
     await this.settings.init();
-    this.state.settings = this.settings.getSettings();
   }
 
   async initStatistics() {
@@ -359,7 +359,8 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initAuxilaryComponents();
-      this.renderMainPage();
+      this.activateMainPageHandlers();
+      await this.selectPageRenderingByPageCode(this.state.currentPage);
     } catch (error) {
       console.log(error);
       Authentication.createErrorBlock(error.message);
@@ -400,7 +401,7 @@ class App {
       };
       await this.initAuxilaryComponents();
       this.activateMainPageHandlers();
-      this.renderMainPage();
+      await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.prelodaer.hide();
     } catch (error) {
       console.log(error);
@@ -413,7 +414,7 @@ class App {
       };
       await this.initAuxilaryComponents();
       this.activateMainPageHandlers();
-      this.renderMainPage();
+      await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.prelodaer.hide();
     }
   }
