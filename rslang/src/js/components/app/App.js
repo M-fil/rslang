@@ -72,7 +72,7 @@ class App {
   }
 
   goToTheMainPageHanlder() {
-    this.container.innerHTML = ''; 
+    this.container.innerHTML = '';
   }
 
   async run() {

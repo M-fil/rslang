@@ -134,7 +134,6 @@ class MainGame {
       await this.initVocabulary();
       await this.initStatistics();
       await this.setStatisticsData(null, false);
-      console.log(this.settings.getSettingsByGroup('main'));
       this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.parseUserWordsData();
@@ -357,7 +356,6 @@ class MainGame {
     );
     return this.exitButton;
   }
-
 
   renderMainGameControls() {
     const container = create('div', 'main-game__controls');
