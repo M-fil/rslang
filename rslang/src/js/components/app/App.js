@@ -12,6 +12,7 @@ import MainPage from '../main-page/MainPage';
 
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
+import BurgerMenu from '../main-page/components/BurgerMenu';
 
 import MainGame from '../main-game/MainGame';
 import SavannahGame from '../mini-games/savannah/Savannah';
@@ -96,6 +97,7 @@ class App {
     this.activateLogOutButton();
     this.activateGoToTheMainPageButton();
     this.activatePagesRenders();
+    BurgerMenu.activateBurgerMenuHandler();
   }
 
   renderAuthorizationBlock() {
@@ -121,12 +123,14 @@ class App {
       const target = event.target.closest('#button-go-to-main-page');
 
       if (target) {
+        this.saveCurrentPage();
         this.renderMainPage();
+        BurgerMenu.makeBurgerMenuIconVisible();
       }
     });
   }
 
-  saveCurrentPage(page) {
+  saveCurrentPage(page = '') {
     this.state.currentPage = page;
     localStorage.setItem('current-page', page);
   }
@@ -162,6 +166,7 @@ class App {
       if (target) {
         const { pageCode } = target.dataset;
         await this.selectPageRenderingByPageCode(pageCode, false);
+        BurgerMenu.closeBurgerMenu();
       }
     });
   }
@@ -293,6 +298,7 @@ class App {
     this.mainPage = new MainPage(name || email);
     const html = this.mainPage.render();
     this.container.append(html);
+    BurgerMenu.makeBurgerMenuIconVisible();
 
     if (this.isArrowBottomButtonClicked) {
       setTimeout(() => {
