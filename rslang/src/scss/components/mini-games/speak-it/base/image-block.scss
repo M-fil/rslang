@@ -1,0 +1,53 @@
+.game-page__word-info {
+  margin-bottom: 40px;
+}
+
+.word-info__image {
+  width: 450px;
+  height: 200px;
+}
+
+.word-info__image-block {
+  width: 450px;
+  height: 200px;
+  box-shadow: 0 0 10px $speak-it-standard-box-shadow;
+}
+
+.word-info__translation {
+  @include font(3rem, 4.2rem);
+
+  background: $speak-it-standard-button-text-color;
+  border-radius: 5px;
+  color: $speak-it-standard-button-background;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.word-info__speech-recognition {
+  @include font(3rem, 4.2rem);
+
+  margin-top: 10px;
+  background-color: $speak-it-standard-button-text-color;
+  color: $speak-it-standard-button-background;
+  border: 2px solid $speak-it-standard-button-background;
+  padding: 10px 5px;
+
+  display: flex;
+  align-items: center;
+
+  & i {
+    font-size: 3rem;
+    color: $speak-it-standard-button-background;
+    margin-right: 5px;
+  }
+
+  & span {
+    flex-grow: 1;
+    text-align: center;
+
+    max-width: 390px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

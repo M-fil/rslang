@@ -1,0 +1,48 @@
+.navigation__list {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  margin-bottom: 20px;
+}
+
+.navigation__item {
+  @include font(4rem, 5rem, 900);
+  
+  cursor: pointer;
+  transition: 0.4s ease all;
+  text-align: center;
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  background-color: $speak-it-standard-button-background;
+  border: 5px solid $speak-it-standard-button-text-color;
+  margin-right: 20px;
+  color: $speak-it-standard-button-text-color;
+
+  &:hover {
+    color: $speak-it-standard-button-background;
+    border-color: $speak-it-standard-button-background;
+    background-color: $speak-it-standard-button-text-color;
+  }
+
+  &_selected {
+    border-radius: 50%;
+    box-shadow: 0 0 20px $speak-it-standard-button-background;
+
+    &:hover {
+      border-radius: none;
+    }
+  }
+}
+
+.navigation__select-container {
+  @include font(2.5rem);
+
+  & > *:not(:last-child) {
+    margin-right: 5px;
+  }
+}
+
+.navigation__select-label {
+  color: $speak-it-standard-button-text-color;
+}

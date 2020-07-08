@@ -1,0 +1,105 @@
+.word-card {
+  position: relative;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  
+  border: 2px solid transparent;
+  background-color: $speak-it-standard-button-background;
+  color: $speak-it-standard-button-text-color;
+  box-shadow: 0 0 0 4px $speak-it-standard-button-background, 0 0 6px $speak-it-standard-button-text-color;
+
+  min-width: 15%;
+  padding: 5px 20px;
+  margin-bottom: 30px;
+  margin-right: 20px;
+  transition: 0.5s ease all;
+
+  &_guessed {
+    border-color: $speak-it-guessed-card-border-color;
+    box-shadow: 0 0 0 4px $speak-it-guessed-card-border-color;
+
+    & .word-card__skip-word-button {
+      display: none;
+    }
+  }
+
+  &_selected, &:hover {
+    border-color: $speak-it-standard-button-text-color;
+  }
+
+  &_skipped {
+    border-color: $speak-it-skipped-card-border-color;
+    box-shadow: 0 0 0 4px $speak-it-skipped-card-border-color;
+    opacity: 0.7;
+  }
+
+  &_in-game:hover {
+    border-color: $speak-it-standard-button-text-color;
+
+    & .word-card__skip-word-button {
+      display: block;
+    }
+  }
+  
+  &_skipped:hover {
+    & .word-card__skip-word-button {
+      display: none;
+    }
+  }
+
+  &_guessed:hover {
+    & .word-card__skip-word-button {
+      display: none;
+    }
+  }
+
+  & i {
+    font-size: 3rem;
+  }
+}
+
+.word-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-left: 15px;
+}
+
+.word-card__word {
+  @include font(2.2rem, 3rem);
+}
+
+.word-card__transcription {
+  @include font(1.5rem, 2rem, 300);
+
+  color: $speak-it-transcription-color;
+}
+
+.word-card__skip-word-button {
+  @include font(1.5rem, 2rem);
+
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+  border: none;
+  outline: none;
+  color: $speak-it-standard-button-text-color;
+  background-color: $speak-it-standard-button-background;
+
+  &_start-page {
+    @include font(2.5rem, 3rem);
+    position: relative;
+    display: block;
+    margin: 5px;
+    box-shadow: 0 0 2px $speak-it-standard-button-text-color;
+  }
+
+  &:hover {
+    background-color: $speak-it-microphone-disabled-color;
+  }
+}

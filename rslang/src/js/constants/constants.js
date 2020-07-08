@@ -7,6 +7,9 @@ const urls = {
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
+  DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
+  CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
+  SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
 };
 
 const authenticationConstants = {
@@ -119,6 +122,31 @@ const findAPairText = {
   resultText: 'Раунд завершен',
   nextLevel: 'Уровень игры',
   newGameButton: 'Сыграть снова',
+};
+
+const speakItConstants = {
+  SPEAKIT_TITLE: 'SpeakIt',
+  RESTART_BUTTON: 'Начать занаво',
+  START_GAME_BUTTON: 'Начать игру',
+  RESULTS_BUTTON: 'Результаты',
+  GAME_COMPLEXITY: 'Сложность игры',
+  DESCRIPTION_OF_LEVELS: '1 - самый легкий уровень; 6 - самый сложный',
+  FILES_PATH: 'files/',
+  START_GAME_DESCRIPTION_1: 'Нажимайте на слова, чтобы услышать их звучание.',
+  START_GAME_DESCRIPTION_2: 'Нажмите на кнопку и произнесите слова в микрофон.',
+  START_GAME_DESCRIPTION_3: 'Если у Вас не получается правильно произнести слово, то Вы можете нажать кнопку',
+  START_GAME_DESCRIPTION_4: 'Тогда слово добавиться в список "Я не знаю" в статистике мини-игры',
+  START_PAGE_BUTTON_TEXT: 'Старт',
+  CORRECT_WORDS_TEXT: 'Я знаю',
+  INCORRECT_WORDS_TEXT: 'Я не знаю',
+  NEW_GAME_BUTTON: 'Новая Игра',
+  CONTINUE_BUTTON: 'Продолжить',
+  SKIP_BUTTON: 'Пропустить',
+  GROUPS_OF_WORDS_TEXT: 'Группа слов:',
+  NUMBER_OF_GROUPS: 6,
+  NUMBER_OF_PAGES: 29,
+  WORDS_LIMIT_NUMBER: 10,
+  NOT_ENOUGHT_WORDS: 'Недостаточно слов',
 };
 
 const vocabularyConstants = {
@@ -240,6 +268,7 @@ export {
   findAPairText,
   authenticationConstants,
   errorTypes,
+  speakItConstants,
   mainGameConstants,
   estimateButtonsTypes,
   wordsToLearnOptions,
