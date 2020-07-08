@@ -60,9 +60,9 @@
 
 .word-card__input {
   @include main-game-input;
+  @include font(2.5rem);
 
-  width: 65px;
-  height: 20px;
+  padding: 0 2px;
 }
 
 .word-card__input-container {

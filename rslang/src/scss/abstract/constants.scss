@@ -32,13 +32,16 @@ $main-game-word-card-background: #F3FFE2;
 $main-game-standard-border-color: #000000;
 $main-game-standard-text-color: #000000;
 $main-game-input-background: #EB7F00;
-
+$main-game-button-hover-text: #ffffff;
 $main-game-correct-letter-color: #28C38A;
 $main-game-not-main-game-many-mistakes-letter-color: #FF934D;
 $main-game-many-mistakes-letter-color:#FF0000;
-$main-game-standard-progress-bar-background: rgba(49, 158, 201, 0.5);
-$main-game-standard-progress-bar-line-color: #1974C1;
+$main-game-remove-button-background-hover:#FF0000;
+$main-game-standard-progress-bar-background: rgba(22, 149, 163, 0.3);
+$main-game-standard-progress-bar-line-color: #1695A3;
 $main-game-completed-progress-bar-line-color: #16C60C;
+$main-game-header-box-shadow-color: rgba(0, 0, 0, 0.25);
+$main-game-chicken-image-path: '../../src/assets/images/main-game/main-game-chicken.png';
 
 $daily-statistics-overlay-background: rgba(19, 19, 19, 0.3);
 $daily-statistics-text-color: #ffffff;

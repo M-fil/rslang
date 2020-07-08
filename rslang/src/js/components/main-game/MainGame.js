@@ -35,6 +35,7 @@ const {
   DAILY_NORM_IS_COMPLETED,
   ADD_TO_DIFFICULT_WORDS_CLICKED,
   REMOVE_WORD_BUTTON_CLICKED,
+  LOGO_PATH,
 } = mainGameConstants;
 
 const {
@@ -74,6 +75,7 @@ class MainGame {
     this.settings = null;
     this.statistics = null;
     this.preloader = new Preloader();
+    document.body.classList.add('main-game_opened');
 
     this.state = {
       stats: {
@@ -124,6 +126,7 @@ class MainGame {
     const { currentWordIndex } = this.state;
 
     const mainGameHTML = create('div', 'main-game');
+    mainGameHTML.append(this.renderMainGameHeader());
     document.querySelector(elementQuery).append(mainGameHTML);
 
     try {
@@ -366,7 +369,6 @@ class MainGame {
       gameSettingsBlock.render(),
       vocabularyButtons,
       this.wordsSelectList.render(),
-      this.renderExitButton(),
     );
 
     return container;
@@ -403,6 +405,14 @@ class MainGame {
     wordCardInput.focus();
     this.formControl.updateInputWidth(currentWordCard.word);
     this.toggleWordCardTranslation();
+  }
+
+  renderMainGameHeader() {
+    const container = create('div', 'main-game__header');
+    this.logoHTML = create('img', 'main-game__logo-image', '', container, ['src', LOGO_PATH]);
+    container.append(this.renderExitButton());
+
+    return container;
   }
 
   renderVocabularyButtons() {

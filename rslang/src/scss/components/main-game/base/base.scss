@@ -1,3 +1,7 @@
+body.main-game_opened {
+  background: $main-game-background-color;
+}
+
 .main-game {
   @include font(2rem, 2.5rem);
 
@@ -7,20 +11,38 @@
 
   min-height: 100vh;
   background: $main-game-background-color;
+  overflow: hidden;
 }
 
 .main-game__main-container {
+  position: relative;
+
   border: 0.5px solid $main-game-standard-border-color;
   border-radius: 3px;
   padding: 30px 10px;
   margin-bottom: 50px;
   min-width: 65vw;
   background: $main-game-word-card-background;
+
+  &::after {
+    content: "";
+
+    @include main-game-chicken-image;
+    left: calc(-118px - 5%);
+  }
+
+  &::before {
+    content: "";
+
+    @include main-game-chicken-image;
+    right: calc(-118px - 5%);
+    transform: scale(-1, 1);
+  }
 }
 
 .main-game__controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 
   width: 100%;
   margin-bottom: 50px;

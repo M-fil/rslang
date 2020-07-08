@@ -7,8 +7,10 @@
 }
 
 @mixin main-game-input {
+  @extend %main-game-button-transition;
   @include font(1.5rem, 2rem, 300);
 
+  cursor: pointer;
   background: $main-game-input-background;
   border: 0.5px solid $main-game-standard-border-color;
   border-radius: 3px;
@@ -52,6 +54,16 @@
   & input[type=checkbox]:checked + .main-game__fake-checkbox::before {
     opacity: 1;
   }
+}
+
+@mixin main-game-chicken-image {
+  background: url($main-game-chicken-image-path);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  width: 118px;
+  height: 120px;
 }
 
 @mixin laptop-l {

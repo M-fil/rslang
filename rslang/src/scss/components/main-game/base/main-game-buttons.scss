@@ -24,6 +24,10 @@
   @include main-game-input;
 
   padding: 3px 30px;
+
+  &:hover {
+    color: $main-game-button-hover-text;
+  }
 }
 
 .main-game__show-answer-button {
@@ -31,6 +35,11 @@
 
   background: transparent;
   padding: 0 5px;
+
+  &:hover {
+    border-color: $main-game-input-background;
+    color: $main-game-input-background;
+  }
 }
 
 .main-game__vocabulary-button {
@@ -39,4 +48,13 @@
   font-weight: 700;
   background: $main-game-word-card-background;
   padding: 3px 10px;
+
+  &:hover {
+    background: $main-game-input-background;
+    color: $main-game-button-hover-text;
+  }
+}
+
+.main-game__remove-word:hover {
+  background: $main-game-remove-button-background-hover;
 }

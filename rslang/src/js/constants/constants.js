@@ -76,6 +76,7 @@ const mainGameConstants = {
   NUMBER_OF_WORD_PAGES: 30,
   HIGHEST_PERCENTAGE_STRING: '100%',
   DAYS_CONTRACTION: 'дн',
+  LOGO_PATH: './src/assets/images/main-game/main-game-logo.png',
 };
 
 const dailyStatisticsConstants = {
