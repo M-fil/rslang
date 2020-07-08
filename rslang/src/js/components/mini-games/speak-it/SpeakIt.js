@@ -113,7 +113,6 @@ export default class SpeakIt {
   }
 
   async initMainGamePage() {
-    this.closeButton.addCloseCallbackFn(this.goToTheStartPageHandler.bind(this));
     this.shortTermStatistics.modalClose.addEventListener('click', this.goToTheStartPageHandler.bind(this));
     SpeakIt.createMainContainerWrapper();
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
@@ -121,13 +120,8 @@ export default class SpeakIt {
     mainContainerWrapper.innerHTML = '';
     document.querySelector('.speak-it__main').classList.add('in-game');
 
-    const microphone = new MicrophoneButton();
-    mainContainerWrapper.append(microphone.render());
-    microphone.HTML.classList.remove('hidden');
     mainContainerWrapper.append(create('div', 'score hidden'));
     mainContainerWrapper.append(create('div', 'overlay hidden'));
-    this.closeButton.show();
-    mainContainerWrapper.append(this.closeButton.render());
     this.preloader.show();
 
     await this.statistics.init();
@@ -150,6 +144,10 @@ export default class SpeakIt {
     this.navigation = new Navigation();
     const navigationHTML = this.navigation.render();
     const navigationContainer = create('div', 'navigation');
+    const microphone = new MicrophoneButton();
+    navigationContainer.append(microphone.render());
+    microphone.HTML.classList.remove('hidden');
+
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
     if (isPrepand) {
       mainContainerWrapper.prepend(navigationHTML);
@@ -163,6 +161,11 @@ export default class SpeakIt {
     } else {
       this.navigation.show();
     }
+
+    this.closeButton.addCloseCallbackFn(this.goToTheStartPageHandler.bind(this));
+    this.closeButton.show();
+    this.closeButton.exitButton.classList.add('speak-it__exit-button');
+    navigationContainer.append(this.closeButton.render());
   }
 
   async getColectionWords() {

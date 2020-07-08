@@ -1,11 +1,8 @@
 .score {
-  @include font(4rem, 5.6rem, 900);
-
-  position: fixed;
-  top: 10px;
-  left: 10px;
+  @extend %speakit-button-transition;
+  @include font(4rem, 5.5rem, 700);
   
   color: $speak-it-score-color;
-  width: 50px;
-  height: 50px;
+  width: 100%;
+  text-align: center;
 }

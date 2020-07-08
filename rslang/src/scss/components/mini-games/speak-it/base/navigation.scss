@@ -1,8 +1,17 @@
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include media-tablet {
+    margin-bottom: 20px;
+  }
+}
+
 .navigation__list {
   display: flex;
   justify-content: center;
   list-style-type: none;
-  margin-bottom: 20px;
 }
 
 .navigation__item {
@@ -45,4 +54,18 @@
 
 .navigation__select-label {
   color: $speak-it-standard-button-text-color;
+
+  @include media-tablet {
+    display: none;
+  }
+}
+
+.navigation__select-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navigation__group-select {
+  @include font(2rem);
 }

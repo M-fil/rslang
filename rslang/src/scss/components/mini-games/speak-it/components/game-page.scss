@@ -18,12 +18,23 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  flex-basis: 15%;
 
   margin-bottom: 30px;
 
-  &::after {
-    width: 15%;
+
+  @include media-tablet {
+    justify-content: space-between;
+    width: 90%;
+    margin: 0;
+    margin-bottom: 30px;
+
+    & > * {
+      width: 30%;
+    }
+  }
+
+  @include media-mobile {
+    margin-bottom: 40px;
   }
 }
 
