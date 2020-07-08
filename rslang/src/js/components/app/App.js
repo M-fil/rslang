@@ -218,8 +218,13 @@ class App {
   clearMainContainersBeforeRender() {
     this.container.innerHTML = '';
     const startGameWindow = document.querySelector('.start-game-window');
+    const dailyStatistics = document.querySelector('.daily-statistics__overlay');
+
     if (startGameWindow) {
       startGameWindow.remove();
+    }
+    if (dailyStatistics) {
+      dailyStatistics.remove();
     }
   }
 
