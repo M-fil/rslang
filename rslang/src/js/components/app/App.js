@@ -145,7 +145,7 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      this.sprint = new Sprint(this.state.user);
+      this.sprint = new Sprint(this.createMiniGameParameterObject());
       this.sprint.SprintRender();
       // await App.renderMainGame(this.state.user);
       // await this.renderVocabulary(this.state.user);
@@ -188,8 +188,9 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      this.sprint.SprintRender();
+      // await App.renderMainGame(this.state.user);
+      // await this.renderVocabulary(this.state.user);
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
@@ -199,6 +200,7 @@ class App {
         ...data,
       };
       await this.initSettings();
+      this.sprint.SprintRender();
       // await App.renderMainGame(this.state.user);
       // await this.renderVocabulary(this.state.user);
     }
@@ -246,3 +248,4 @@ class App {
 }
 
 export default App;
+
