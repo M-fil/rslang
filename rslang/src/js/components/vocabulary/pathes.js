@@ -3,6 +3,7 @@ import {
   vocabularyConstants,
   urls,
   estimateButtonsTypes,
+  progressLearningConstants,
 } from '../../constants/constants';
 import {
   getAllUserWords,
@@ -13,6 +14,8 @@ import {
 import {
   playAudio,
 } from '../../utils/audio';
+import dateFormat from '../../utils/dateformat';
+import { addDaysToTheDate } from '../../utils/calculations';
 
 export default create;
 export {
@@ -24,4 +27,7 @@ export {
   getUserSettings,
   estimateButtonsTypes,
   createUserWord,
+  dateFormat,
+  addDaysToTheDate,
+  progressLearningConstants,
 };
