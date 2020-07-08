@@ -33,7 +33,11 @@ class DailyStatistics {
       this.renderParameter(NEW_WORDS_TEXT, this.newWordsNumber);
     }
     this.renderParameter(LONGEST_SERIES_OF_ANSWERS_TEXT, this.longestSeriesOfAnswers);
-    this.goToTheMainButton = create('button', 'daily-statistics__button', GO_TO_THE_MAIN_PAGE, this.statisticsBlock);
+    this.goToTheMainButton = create(
+      'button', 'daily-statistics__button',
+      GO_TO_THE_MAIN_PAGE, this.statisticsBlock,
+      ['id', 'button-go-to-main-page'],
+    );
     return this.HTML;
   }
 
