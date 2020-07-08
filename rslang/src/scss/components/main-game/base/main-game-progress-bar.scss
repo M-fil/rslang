@@ -16,3 +16,7 @@
     background-color: $main-game-completed-progress-bar-line-color;
   }
 }
+
+.progress-bar__number {
+  @include font(1.5rem, 2rem, 300);
+}

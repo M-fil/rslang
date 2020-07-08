@@ -6,14 +6,16 @@
   align-items: center;
 
   min-height: 100vh;
+  background: $main-game-background-color;
 }
 
 .main-game__main-container {
-  box-shadow: 0 0 10px $main-game-standard-border-color;
-  border-radius: 20px;
+  border: 0.5px solid $main-game-standard-border-color;
+  border-radius: 3px;
   padding: 30px 10px;
   margin-bottom: 50px;
   min-width: 65vw;
+  background: $main-game-word-card-background;
 }
 
 .main-game__controls {

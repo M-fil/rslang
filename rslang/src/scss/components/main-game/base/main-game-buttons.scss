@@ -19,3 +19,24 @@
   right: 0;
   margin-left: 5px;
 }
+
+.main-game__next-button {
+  @include main-game-input;
+
+  padding: 3px 30px;
+}
+
+.main-game__show-answer-button {
+  @include main-game-input;
+
+  background: transparent;
+  padding: 0 5px;
+}
+
+.main-game__vocabulary-button {
+  @include main-game-input;
+
+  font-weight: 700;
+  background: $main-game-word-card-background;
+  padding: 3px 10px;
+}

@@ -1,0 +1,12 @@
+.main-game__setting {
+  @include standard-checkbox;
+  display: flex;
+  align-items: center;
+}
+
+.main-game__label-text {
+  @include font(1.5rem, 2rem, 300);
+
+  color: $main-game-standard-text-color;
+  margin-right: 7px;
+}

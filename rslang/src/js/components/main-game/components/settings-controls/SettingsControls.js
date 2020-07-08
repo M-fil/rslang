@@ -24,13 +24,14 @@ class SettingsControls {
 
   static renderCheckbox(classNameType, labelText) {
     const inputId = `${classNameType}-checkbox`;
-    const container = create('div', 'main-game__setting');
-    create('label', 'main-game__label', labelText, container, ['for', inputId]);
+    const container = create('label', 'main-game__setting', '', null, ['for', inputId]);
+    create('span', 'main-game__label-text', labelText, container);
     create(
       'input',
-      `main-game__setting main-game__${classNameType}`, '', container,
+      `main-game__checkbox main-game__${classNameType}`, '', container,
       ['type', 'checkbox'], ['id', inputId], ['checked', 'true'],
     );
+    create('span', 'main-game__fake-checkbox', '', container);
 
     return container;
   }

@@ -1,8 +1,57 @@
 @mixin font ($size, $height: $size, $weight: normal, $style: normal) {
+  font-family: 'IBM Plex Mono', monospace;
   font-size: $size;
   line-height: $height;
   font-weight: $weight;
   font-style: $style;
+}
+
+@mixin main-game-input {
+  @include font(1.5rem, 2rem, 300);
+
+  background: $main-game-input-background;
+  border: 0.5px solid $main-game-standard-border-color;
+  border-radius: 3px;
+  color: $main-game-standard-text-color;
+}
+
+@mixin standard-checkbox(
+  $background: $main-game-word-card-background, $borderColor: $main-game-standard-border-color,
+) {
+  & input[type=checkbox] {
+    display: none;
+  }
+
+  & .main-game__fake-checkbox {
+    position: relative;
+    top: 2px;
+
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 0.5px solid $borderColor;
+
+    &::before {
+      content: "";
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: block;
+      background-color: $background;
+      width: 20px;
+      height: 20px;
+      background-image: url($checkbox-tick-path);
+      background-repeat: no-repeat;
+      background-position: 0.25rem;
+      opacity: 0;
+    } 
+  }
+
+  & input[type=checkbox]:checked + .main-game__fake-checkbox::before {
+    opacity: 1;
+  }
 }
 
 @mixin laptop-l {

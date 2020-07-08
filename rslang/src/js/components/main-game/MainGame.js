@@ -411,10 +411,12 @@ class MainGame {
     const container = create('div', 'word-card__vocabulary-buttons');
     if (showButtonDelete) {
       const removeWordButton = FormControll.renderButton('remove-word', REMOVE_WORD_BUTTON);
+      removeWordButton.classList.add('main-game__vocabulary-button');
       container.append(removeWordButton);
     }
     if (showButtonHard) {
       const addToDifficultButton = FormControll.renderButton('add-to-difficult', ADD_TO_DIFFICULT_WORDS);
+      addToDifficultButton.classList.add('main-game__vocabulary-button');
       container.append(addToDifficultButton);
     }
 
