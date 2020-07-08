@@ -52,7 +52,11 @@ const {
 } = StatisticsGameCodes;
 
 export default class SavannahGame {
-  constructor(userState) {
+  constructor(miniGameParameters) {
+    this.userState = miniGameParameters.user;
+    this.closeButton = miniGameParameters.closeButton;
+    this.shortTermStatistics = miniGameParameters.shortTermStatistics;
+
     this.HTML = null;
     this.preloader = new Preloader();
     this.audio = new Audio();
@@ -61,14 +65,13 @@ export default class SavannahGame {
     this.modalWindow = new ModalWindow();
     this.startWindow = new StartWindow((this.reverseReport).bind(this));
     this.closeButton = new CloseButton();
-    this.vocabulary = new Vocabulary(userState);
-    this.statistics = new Statistics(userState);
+    this.vocabulary = new Vocabulary(this.userState);
+    this.statistics = new Statistics(this.userState);
   }
 
   async render() {
     this.learnedWords();
     this.startPage = this.startWindow.render(GAME_NAME, RULES, this.isVocabularyWords);
-    this.closeButton.show();
     this.content = document.querySelector('.main-content');
     this.container = create('div', 'container', this.startPage, this.content);
     this.container.append(this.closeButton.render());
@@ -78,16 +81,8 @@ export default class SavannahGame {
     this.gameWindow = document.querySelector('.start-game-window');
     this.startButton = document.querySelector('.start-button');
     await this.vocabulary.init();
-  }
-
-  goToTheStartPageHandler() {
-    this.content.remove();
-    this.startWindow.gameWindow.remove();
-    // const isShowLearnedWordsOption = this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS;
-    // const startWindowHTML = this.startWindow.render(
-    //   GAME_NAME, RULES, this.isVocabularyWords,
-    // );
-    // document.body.append(this.startPage);
+    this.wordClick();
+    this.keyboardClick();
   }
 
   learnedWords() {
@@ -100,7 +95,6 @@ export default class SavannahGame {
 
   reverseReport(collection, group) {
     playAudio(AUDIO_TICKING, this.audio);
-    this.closeButton.hide();
     this.numberReverse = create('span', 'number-reverse', '', this.container);
     SavannahGame.changeDisplay(this.gameWindow, 'none');
     SavannahGame.changeDisplay(this.numberReverse, 'block');
@@ -123,7 +117,6 @@ export default class SavannahGame {
     this.page = Math.floor(Math.random() * MAX_PAGE);
     this.data = await getWords(this.page, group);
     this.crateCardsData(collection);
-    this.wordClick();
     this.offAudio();
     this.createModal();
     await this.statistics.init();
@@ -133,16 +126,13 @@ export default class SavannahGame {
     this.rusBut = document.querySelectorAll('.word_russian');
     this.rightWords = [];
     this.wrongWords = [];
-    this.keyboardClick();
     this.correctWordNumber = 0;
     this.countLives = 0;
     this.pauseAudio();
   }
 
   crateCardsData(collection) {
-    if (
-      this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS
-      && collection === SELECT_OPTION_LEARNED_WORDS_VALUE) {
+    if (this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS && collection === SELECT_OPTION_LEARNED_WORDS_VALUE) {
       this.engRandomWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE, true);
     } else {
       this.engRandomWords = this.data;
@@ -167,10 +157,7 @@ export default class SavannahGame {
       if (this.engBut.dataset.translate === this.engRandomWords[i].wordTranslate) {
         this.wordsTranslate.push(this.engBut.dataset.translate);
       }
-      if (
-        this.engBut.dataset.translate !== this.engRandomWords[i].wordTranslate
-        && this.wordsTranslate.length < MAX_WORDS_LINE
-      ) {
+      if (this.engBut.dataset.translate !== this.engRandomWords[i].wordTranslate && this.wordsTranslate.length < MAX_WORDS_LINE) {
         this.wordsTranslate.push(this.engRandomWords[i].wordTranslate);
       }
     }
@@ -195,7 +182,6 @@ export default class SavannahGame {
     });
     this.closeButton.disabled(false);
     this.wordsTranslate.length = 0;
-
     this.num += 1;
     this.engBut.innerHTML = this.engRandomWords[this.num].word;
     this.engBut.setAttribute('data-translate', this.engRandomWords[this.num].wordTranslate);
@@ -223,6 +209,7 @@ export default class SavannahGame {
 
   checkWord(event, target) {
     clearInterval(this.timer);
+    clearTimeout(this.errorTimer);
     const englishWord = document.querySelector('.word_english');
     const engTranslate = englishWord.dataset.translate;
     if (target.dataset.translate === engTranslate) {
@@ -244,12 +231,6 @@ export default class SavannahGame {
       this.correctWordNumber = 0;
       target.classList.add('word_error');
       this.errorWord();
-      if (
-        this.error === (LIVES + this.countLives)
-        || (this.rightWords.length + this.wrongWords.length) === MAX_WORDS
-      ) {
-        this.createStatistics();
-      }
     }
   }
 
@@ -257,6 +238,7 @@ export default class SavannahGame {
     clearInterval(this.timer);
     clearTimeout(this.errorTimer);
     this.shortTermStatistics.render(this.wrongWords, this.rightWords);
+    this.shortTermStatistics.modalClose.addEventListener('click', this.goToTheStartPageHandler.bind(this));
     const arrayOfPromises = this.wrongWords
       .map((word) => this.vocabulary.addWordToTheVocabulary(word, WORDS_TO_LEARN_TITLE));
     await Promise.all(arrayOfPromises);
@@ -315,9 +297,8 @@ export default class SavannahGame {
   }
 
   createModal() {
-    this.modalCancelButton = document.querySelector('#closebutton').querySelector('.cancel_button');
     this.closeButton.addExitButtonClickCallbackFn((this.clearTime).bind(this));
-    this.modalCancelButton.addEventListener('click', (this.clickCancelButton).bind(this));
+    this.closeButton.addCancelCallbackFn((this.clickCancelButton).bind(this));
     this.closeButton.addCloseCallbackFn(this.goToTheStartPageHandler.bind(this));
   }
 
@@ -378,6 +359,9 @@ export default class SavannahGame {
     this.errorTimer = setTimeout(async () => {
       await this.changeCard();
     }, 2000);
+    if (this.error === (LIVES + this.countLives) || (this.rightWords.length + this.wrongWords.length) === MAX_WORDS) {
+      this.createStatistics();
+    }
   }
 
   disabledButtons() {
@@ -395,5 +379,20 @@ export default class SavannahGame {
     } else {
       el.style.display = 'block';
     }
+  }
+
+  goToTheStartPageHandler() {
+    this.container.innerHTML = '';
+    this.startWindow.gameWindow.remove();
+    const isShowLearnedWordsOption = this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS;
+    const startWindowHTML = this.startWindow.render(
+      GAME_NAME, RULES, isShowLearnedWordsOption,
+    );
+    this.container.append(startWindowHTML);
+    SavannahGame.changeDisplay(this.gameWindow, 'block');
+    this.container.append(this.closeButton.render());
+    this.closeButton.hide();
+    this.error = 0;
+    this.closeButton.disabled(false);
   }
 }

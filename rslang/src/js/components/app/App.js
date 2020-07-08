@@ -36,6 +36,8 @@ class App {
   constructor() {
     this.closeButton = new CloseButton();
     this.shortTermStatistics = new ShortTermStatistics();
+    this.preloader = new Preloader();
+
     this.state = {
       user: {
         isAuthrorized: false,
@@ -82,7 +84,7 @@ class App {
       this.renderAuthenticationBlock('authorization');
       this.renderToggleAuthentication();
       this.activateAuthenticationForm();
-      this.prelodaer.hide();
+      this.preloader.hide();
     }
   }
 
@@ -104,13 +106,13 @@ class App {
       event.preventDefault();
 
       if (event.target.classList.contains('authorization__form')) {
-        this.prelodaer.show();
+        this.preloader.show();
         await this.signInUser();
-        this.prelodaer.hide();
+        this.preloader.hide();
       }
       if (event.target.classList.contains('registration__form')) {
         try {
-          this.prelodaer.show();
+          this.preloader.show();
           const data = await Authentication.submitData(createUser);
           this.state = {
             ...this.state,
@@ -121,9 +123,9 @@ class App {
             },
           };
           await this.signInUser();
-          this.prelodaer.hide();
+          this.preloader.hide();
         } catch (error) {
-          this.prelodaer.hide();
+          this.preloader.hide();
           Authentication.createErrorBlock(error.message);
         }
       }
@@ -146,21 +148,22 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      this.savannahGame = new SavannahGame(this.createMiniGameParameterObject());
-      this.savannahGame.render();
-      // await App.renderMainGame(this.state.user);
-      // await this.renderVocabulary(this.state.user);
+      await this.renderSavannahGame();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
   }
 
+  async renderSavannahGame() {
+    this.savannahGame = new SavannahGame(this.createMiniGameParameterObject());
+    await this.savannahGame.render();
+  }
+
   async checkIsUserAuthorized() {
     const savedUserData = localStorage.getItem('user-data');
     try {
-      this.prelodaer = new Preloader();
-      this.prelodaer.render();
-      this.prelodaer.show();
+      this.preloader.render();
+      this.preloader.show();
 
       let data = null;
       switch (true) {
@@ -188,9 +191,8 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      // await App.renderMainGame(this.state.user);
-      // await this.renderVocabulary(this.state.user);
-      this.savannahGame.render();
+      await this.renderSavannahGame();
+      this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
@@ -200,8 +202,8 @@ class App {
         ...data,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
+      await this.renderSavannahGame();
+      this.preloader.hide();
     }
   }
 
