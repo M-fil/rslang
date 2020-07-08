@@ -31,7 +31,6 @@ class BurgerMenu extends Header {
 
       this.container = create('div', 'burger-menu');
       this.wrapper = create('div', 'burger-menu__wrapper', '', this.container);
-      this.wrapper.append(this.renderUserBlock());
       this.buttonsList = create('div', 'burger-menu__buttons-list', '', this.wrapper);
       this.renderHeaderButton(VOCABULARY_BUTTON_TEXT, VOCABULARY_CODE);
       this.renderHeaderButton(STATISTICS_BUTTON_TEXT, STATISTICS_CODE);

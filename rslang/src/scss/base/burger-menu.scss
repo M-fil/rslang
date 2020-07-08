@@ -27,12 +27,6 @@
     opacity: 1;
   }
 
-  & .header__user-block {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
   & .header__button {
     @include font(3rem, 3.5rem);
     position: relative;
