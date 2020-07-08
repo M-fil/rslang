@@ -1,5 +1,17 @@
-.main-game__settings > *:not(:last-child) {
-  margin-bottom: 10px;
+.main-game__settings {
+  & > *:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  @include media-laptop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @include media-mobile {
+    padding: 0 10px;
+  }
 }
 
 .main-game__setting {
@@ -13,4 +25,10 @@
 
   color: $main-game-standard-text-color;
   margin-right: 7px;
+}
+
+.main-game__fake-checkbox {
+  @include media-mobile {
+    border: none;
+  }
 }

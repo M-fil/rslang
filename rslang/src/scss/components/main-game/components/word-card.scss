@@ -30,6 +30,10 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
+
+  @include media-mobile {
+    @include font(2rem, 2.5rem, 300);
+  }
 }
 
 .word-card__fake-word {
@@ -46,6 +50,10 @@
 
   width: 100%;
   margin-bottom: 10px;
+
+  @include media-tablet {
+    margin-bottom: 30px;
+  }
 }
 
 .word-card__vocabulary-buttons {
@@ -107,7 +115,7 @@
 
 .word-card__sentence-word-container {
   border-bottom: 3px dashed $main-game-standard-border-color;
-  padding-bottom: 3px;
+  padding-bottom: 1px;
 }
 
 .word-card__sentence-word {
@@ -132,4 +140,10 @@
 
 .word-card__transcription {
   text-align: center;
+}
+
+.word-card__image-block img {
+  @include media-mobile {
+    width: 250px;
+  }
 }

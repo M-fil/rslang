@@ -126,7 +126,6 @@ class MainGame {
     const { currentWordIndex } = this.state;
 
     const mainGameHTML = create('div', 'main-game');
-    mainGameHTML.append(this.renderMainGameHeader());
     document.querySelector(elementQuery).append(mainGameHTML);
 
     try {
@@ -162,7 +161,9 @@ class MainGame {
         const mainGameMainContainer = create(
           'div', 'main-game__main-container', [wordCard.render(), this.formControl.render()],
         );
+
         mainGameHTML.append(
+          this.renderMainGameHeader(),
           mainGameControls,
           mainGameMainContainer,
           this.progressBar.render(),

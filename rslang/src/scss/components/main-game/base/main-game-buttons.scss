@@ -11,6 +11,18 @@
   justify-content: space-between;
 
   width: 100%;
+
+  @include media-mobile {
+    flex-direction: column-reverse;
+
+    & > *:not(:first-child) {
+      margin-bottom: 20px;
+    }
+
+    & > * {
+      width: 100%;
+    }
+  }
 }
 
 .exit-button_relative {
@@ -39,6 +51,10 @@
   &:hover {
     border-color: $main-game-input-background;
     color: $main-game-input-background;
+  }
+
+  @include media-mobile {
+    padding: 3px 30px;
   }
 }
 

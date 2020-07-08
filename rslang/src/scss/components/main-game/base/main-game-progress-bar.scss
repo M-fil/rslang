@@ -1,5 +1,9 @@
 .main-game__progress-bar {
   height: 10px;
+
+  @include media-mobile {
+    width: 80%;
+  }
 }
 
 .main-game__progress-background {
