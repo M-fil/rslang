@@ -50,11 +50,8 @@ class MainVocabulary {
       .forEach((word) => {
         const { allData } = word.optional;
         const { daysInterval, valuationDate } = word.optional;
-        const nextTimeOfReivise = addDaysToTheDate(daysInterval, valuationDate);
-        const date = MainVocabulary.createStandardDateFormat(new Date(nextTimeOfReivise));
-        this.learningProgressObject = MainVocabulary.createLearningProgressObject(
-          0, 0, date.toString(), 0,
-        );
+        const date = addDaysToTheDate(daysInterval, valuationDate);
+        const nextTimeOfReivise = MainVocabulary.createStandardDateFormat(new Date(date));
         const wordItem = new VocabularyItem(
           allData.id || allData._id,
           allData.word,
@@ -63,9 +60,9 @@ class MainVocabulary {
           allData.textMeaning,
           allData.textExample,
           allData.image,
+          nextTimeOfReivise,
           this.vacabularyTitle,
           this.settings,
-          this.learningProgressObject,
         );
         container.append(wordItem.render());
       });
@@ -75,17 +72,6 @@ class MainVocabulary {
 
   static createStandardDateFormat(date) {
     return dateFormat(date.getDate(), date.getMonth() + 1, date.getFullYear());
-  }
-
-  static createLearningProgressObject(
-    timesOfRevise, lastTimeOfRevise, nextTimeOfReivise, commonNumberOfCorrectAnswers,
-  ) {
-    return {
-      timesOfRevise,
-      lastTimeOfRevise,
-      nextTimeOfReivise,
-      commonNumberOfCorrectAnswers,
-    };
   }
 }
 

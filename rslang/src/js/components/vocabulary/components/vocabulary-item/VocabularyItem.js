@@ -12,8 +12,8 @@ const {
 class VocabularyItem {
   constructor(
     id, word, wordTranslate, transcription,
-    textMeaning, textExample, image, vocabularyType,
-    settings, learningProgressObject = null,
+    textMeaning, textExample, image, nextTimeOfReivise,
+    vocabularyType, settings,
   ) {
     this.HTML = null;
     this.id = id;
@@ -23,9 +23,9 @@ class VocabularyItem {
     this.textMeaning = textMeaning;
     this.textExample = textExample;
     this.image = image;
+    this.nextTimeOfReivise = nextTimeOfReivise;
     this.vocabularyType = vocabularyType;
     this.settings = settings;
-    this.learningProgressObject = learningProgressObject;
 
     this.audioElement = new Audio();
   }
@@ -51,7 +51,7 @@ class VocabularyItem {
       create('div', 'word-item__sentence', this.textExample, sentencesBlock);
     }
     if (this.vocabularyType === WORDS_TO_LEARN_TITLE) {
-      this.learningProgress = new LearningProgress(...Object.values(this.learningProgressObject));
+      this.learningProgress = new LearningProgress(this.nextTimeOfReivise);
     }
     create('div', 'word-item__main-container',
       [mainHTML, sentencesBlock, this.learningProgress && this.learningProgress.render()],
