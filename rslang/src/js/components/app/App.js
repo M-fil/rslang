@@ -79,6 +79,8 @@ class App {
       statistics: {},
     };
 
+    const arrowSavedState = localStorage.getItem('arrow-bottom-clicked');
+    this.isArrowBottomButtonClicked = arrowSavedState && JSON.parse(arrowSavedState);
     this.container = null;
   }
 
@@ -291,6 +293,12 @@ class App {
     this.mainPage = new MainPage(name || email);
     const html = this.mainPage.render();
     this.container.append(html);
+
+    if (this.isArrowBottomButtonClicked) {
+      setTimeout(() => {
+        MainPage.scrollIntoGamesBlock();
+      }, 1000);
+    }
   }
 
   activateLogOutButton() {

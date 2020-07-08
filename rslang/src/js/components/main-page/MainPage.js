@@ -75,6 +75,7 @@ class MainPage {
   static scrollIntoGamesBlock() {
     const blockId = document.querySelector('[data-scroll-id="games-block"]');
     if (blockId) {
+      localStorage.setItem('arrow-bottom-clicked', 'true');
       blockId.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
   }
