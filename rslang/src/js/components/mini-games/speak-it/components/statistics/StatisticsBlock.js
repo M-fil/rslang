@@ -15,8 +15,8 @@ const {
 } = shortTermStatisticsConstants;
 
 export default class StatisticsBlock extends ShortTermStatistics {
-  constructor(wrongWords, rightWords) {
-    super(wrongWords, rightWords);
+  constructor() {
+    super();
     this.exists = false;
 
     if (!this.exists) {

@@ -4,6 +4,7 @@ import {
   wordsToLearnSelectConstants,
   vocabularyConstants,
   shortTermStatisticsConstants,
+  StatisticsGameCodes,
 } from '../../../constants/constants';
 import create from '../../../utils/сreate';
 import {
@@ -22,6 +23,7 @@ export {
   getAggregatedWordsByFilter,
   playAudio,
   shortTermStatisticsConstants,
+  StatisticsGameCodes,
 };
 export { getWords };
 export default create;

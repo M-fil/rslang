@@ -27,9 +27,9 @@ class WordsToLearnSelect {
         SELECT_OPTION_LEARNED_WORDS, SELECT_OPTION_LEARNED_WORDS_VALUE,
       ));
     }
-    optionsArr.push(
-      this.renderOption(SELECT_OPTION_WORDS_FROM_COLLECTIONS, SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE),
-    );
+    optionsArr.push(this.renderOption(
+      SELECT_OPTION_WORDS_FROM_COLLECTIONS, SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE,
+    ));
 
     create('div', `select__title ${this.containerClassNameType}__select-title`, SELECT_TITLE, this.HTML);
     this.select = create(

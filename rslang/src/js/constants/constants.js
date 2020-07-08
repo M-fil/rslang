@@ -253,6 +253,10 @@ const modalConstants = {
   CANCEL_BUTTON: 'Отмена',
 };
 
+const progressLearningConstants = {
+  NEXT_TIME_OF_REVISE_TEXT: 'Будет повторяться снова:',
+};
+
 const shortTermStatisticsConstants = {
   ERROR_STAT: 'Ошибок',
   CORRECT_STAT: 'Знаю',
@@ -285,4 +289,5 @@ export {
   shortTermStatisticsConstants,
   startWindow,
   HTTPCodesConstants,
+  progressLearningConstants,
 };

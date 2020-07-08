@@ -80,6 +80,7 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      App.removeModalElements();
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';
@@ -87,6 +88,19 @@ class App {
       this.renderToggleAuthentication();
       this.activateAuthenticationForm();
       this.prelodaer.hide();
+    }
+  }
+
+  static removeModalElements() {
+    const startGameWindow = document.querySelector('.start-game-window');
+    const exitButton = document.querySelector('.exit-button');
+
+    if (startGameWindow) {
+      startGameWindow.remove();
+    }
+
+    if (exitButton) {
+      exitButton.remove();
     }
   }
 
@@ -101,6 +115,11 @@ class App {
     await this.vocabulary.init();
     const html = await this.vocabulary.render();
     document.body.append(html);
+  }
+
+  async renderSpeakItGame() {
+    this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
+    await this.speakIt.run();
   }
 
   activateAuthenticationForm() {

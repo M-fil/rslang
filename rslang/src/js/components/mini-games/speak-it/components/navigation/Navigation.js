@@ -1,10 +1,14 @@
-import create, { speakItConstants } from '../../pathes';
+import create, { speakItConstants, wordsToLearnSelectConstants } from '../../pathes';
 
 const {
   DESCRIPTION_OF_LEVELS,
   NUMBER_OF_GROUPS,
-  GROUPS_OF_WORDS_TEXT,
 } = speakItConstants;
+
+const {
+  SELECT_GROUP_OPTIONS_TITLE_LIST,
+  SELECT_GROUP_TITLE,
+} = wordsToLearnSelectConstants;
 
 export default class Navigation {
   constructor() {
@@ -14,11 +18,15 @@ export default class Navigation {
   render() {
     this.container = create('div', 'navigation__list');
     const selectContainer = create('div', 'navigation__select-container', '', this.container);
-    create('label', 'navigation__select-label', GROUPS_OF_WORDS_TEXT, selectContainer);
+    create('label', 'navigation__select-label', SELECT_GROUP_TITLE, selectContainer);
     this.select = create('select', 'navigation__group-select', '', selectContainer, ['title', DESCRIPTION_OF_LEVELS]);
     Array.from({ length: NUMBER_OF_GROUPS })
       .map((_, index) => index)
-      .map((item) => create('option', 'navigation__option', String(item + 1), this.select, ['value', item]));
+      .map((item) => create(
+        'option', 'navigation__option',
+        SELECT_GROUP_OPTIONS_TITLE_LIST[item],
+        this.select, ['value', item],
+      ));
 
     return this.container;
   }
