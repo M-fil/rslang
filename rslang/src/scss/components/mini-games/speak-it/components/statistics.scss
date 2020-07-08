@@ -54,6 +54,19 @@
 
   & > *:not(:last-child) {
     margin-right: 10px;
+
+    @include media-tablet {
+      margin: 0;
+      margin-bottom: 20px;
+    }
+  }
+
+  @include media-tablet {
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 30px;
+    padding: 0 10px;
   }
 }
 
@@ -70,5 +83,11 @@
   &:hover {
     color: $speak-it-incorrect-color;
     border-color: $speak-it-incorrect-color;
+  }
+
+  @include media-tablet {
+    @include font(2rem, 2.5rem);
+
+    width: 60%;
   }
 }

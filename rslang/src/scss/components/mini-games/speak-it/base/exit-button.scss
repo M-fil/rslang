@@ -1,13 +1,6 @@
 .speak-it__exit-button {
   cursor: pointer;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-
-  width: 30px;
-  height: 30px;
-
-  i {
-    font-size: 2rem;
-  }
+  position: relative;
+  right: 0;
+  top: 0;
 }
