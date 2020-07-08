@@ -349,9 +349,15 @@ class MainGame {
     return data;
   }
 
-  goToTheMainPage() {
-
+  renderExitButton() {
+    this.exitButton = create(
+      'button', 'standard__exit-button main-game__exit-button',
+      '<i class="fas fa-times"></i>', null,
+      ['id', 'button-go-to-main-page'],
+    );
+    return this.exitButton;
   }
+
 
   renderMainGameControls() {
     const container = create('div', 'main-game__controls');
@@ -362,6 +368,7 @@ class MainGame {
       gameSettingsBlock.render(),
       vocabularyButtons,
       this.wordsSelectList.render(),
+      this.renderExitButton(),
     );
 
     return container;
