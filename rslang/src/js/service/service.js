@@ -26,17 +26,20 @@ const getWords = async (page = 0, group = 0) => {
 
   return data;
 };
+
 const getWordsAdditionalInfo = async (word) => {
   const response = await fetch(`${WORDS_DATA_URL_ADDITIONAL}${word}`, {
-	"method": "GET",
-	"headers": {
-		"x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
-		"x-rapidapi-key": "bbfd4a02a1msh37e5e02afd1dafap13728ejsnfaf5795cd64b"
-	}
-});
-const data = await response.json();
-return data;
-}
+    method: 'GET',
+    headers: {
+      'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+      'x-rapidapi-key': 'bbfd4a02a1msh37e5e02afd1dafap13728ejsnfaf5795cd64b',
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
 const createUser = async (user) => {
   const rawResponse = await fetch(CREATE_USER_URL, {
     method: 'POST',

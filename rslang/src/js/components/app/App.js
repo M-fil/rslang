@@ -352,6 +352,7 @@ class App {
   async signInUser() {
     try {
       const data = await Authentication.submitData(loginUser);
+      const userData = await getUserById(data.userId, data.token);
       this.state = {
         ...this.state,
         user: {
@@ -359,7 +360,8 @@ class App {
           userId: data.userId,
           token: data.token,
           refreshToken: data.refreshToken,
-          name: data.name,
+          name: userData.name,
+          email: userData.email,
         },
       };
       document.querySelector('.authentication').remove();
