@@ -16,40 +16,32 @@ const {
   WORDS_AUDIOS_URL,
 } = urls;
 
+const {
+  WORDS_TO_LEARN_TITLE,
+  LEARNED_WORDS_TITLE,
+} = vocabularyConstants;
+
 export default class SprintGame {
   constructor(userState) {
     this.HTML = null;
+    this.user = userState.user;
     // this.preloader = new Preloader();
     // this.audio = new Audio();
     // this.shortTermStatistics = new ShortTermStatistics();
     // this.error = 0;
     // this.modalWindow = new ModalWindow();
-    // this.startWindow = new StartWindow((this.reverseReport).bind(this));
+    this.startWindow = new StartWindow((this.GameBegin).bind(this));
     // this.closeButton = new CloseButton();
-    // this.vocabulary = new Vocabulary(userState);
+    this.vocabulary = new Vocabulary(this.user);
     // this.statistics = new Statistics(userState);
   }
 
-  SprintRender() {
+  async SprintRender() {
+    await this.vocabulary.init();
     const body = document.querySelector('body');
     const container = create('div', 'container main-container', '', body);
     const GameWindow = create('div', 'start-game-window', '', container);
-    this.GameName = create('h2', 'game-name', 'Спринт', GameWindow);
-    this.GameRules = create('div', 'game-rules', sprint.GAME_RULES, GameWindow);
-    this.GameChoice = create('div', 'game-choice', '', GameWindow);
-    this.WordsChoice = create('select', 'words-select-container', '', this.GameChoice);
-    this.WordOption1 = create('option', 'word-select_option1', 'Выученные слова', this.WordsChoice);
-    this.WordOption2 = create('option', 'word-select_option2', 'Слова из коллекций', this.WordsChoice);
-    this.SELECT_H3 = create('h3', 'h3_select none', 'Уровень: ', this.GameChoice);
-    this.LvlSelect = create('select', 'lvl-select-container none', '', this.GameChoice);
-    this.Option1 = create('option', 'select_option1', '1', this.LvlSelect);
-    this.Option2 = create('option', 'select_option2', '2', this.LvlSelect);
-    this.Option3 = create('option', 'select_option3', '3', this.LvlSelect);
-    this.Option4 = create('option', 'select_option4', '4', this.LvlSelect);
-    this.Option5 = create('option', 'select_option5', '5', this.LvlSelect);
-    this.Option6 = create('option', 'select_option6', '6', this.LvlSelect);
-    this.StartButton = create('button', 'start-button', 'Start', GameWindow);
-    this.exitButton = create('button', 'exit-button', 'X', body);
+    create('div', 'audition-game__startScreen', this.startWindow.render('SPRINT', sprint.GAME_RULES, this.CheckVocabularyLength()), GameWindow);
     this.Timer = create('span', 'timer', '', body);
     this.TimerAudio = create('audio', 'timer-audio', '', body);
     this.TimerAudio.src = 'src/assets/audio/timer.mp3';
@@ -85,111 +77,74 @@ export default class SprintGame {
     this.SoundIcon = create('div', 'sound-icon', '', this.GameContainer);
     this.EndSoundGame = create('audio', '', '', body);
     this.EndSoundGame.src = "src/assets/audio/end.mp3";
-    const startButton = document.querySelector('.start-button');
-    startButton.addEventListener('click', () => {
-      this.GameBegin();
-    });
-
-    const WORD_CHOICE = document.querySelector('.words-select-container');
-    const H3_LVL_SELECT = document.querySelector('.h3_select');
-    const LVL_SELECT = document.querySelector('.lvl-select-container');
-    WORD_CHOICE.addEventListener('click', () => {
-      if(WORD_CHOICE.value === 'Слова из коллекций') {
-        H3_LVL_SELECT.classList.remove('none');
-        LVL_SELECT.classList.remove('none');
-      }
-      else {
-        H3_LVL_SELECT.classList.add('none');
-        LVL_SELECT.classList.add('none');
-      }
-    });
-
     const closeButton = document.querySelector('.exit-button');
-    closeButton.addEventListener('click', () => {
-      if (this.Close()) this.Home();
-    });
-
     const yesButton = document.querySelector('.yes-button');
-    yesButton.addEventListener('click', () => {
-      if (window.answer) this.Correct();
-      else this.Incorrect();
-      this.GetWordData();
-      Disabled();
-    });
-
     const noButton = document.querySelector('.no-button');
-    noButton.addEventListener('click', () => {
-        if (!window.answer) this.Correct();
-      else this.Incorrect();
-      this.GetWordData();
-      Disabled();
-    });
-
     const restartButton = document.querySelector('.restart-button');
-    restartButton.addEventListener('click', () => {
-        this.ClearGameData();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') {
-        if (window.answer) this.Correct();
-        else this.Incorrect();
-        this.GetWordData();
-      }
-      if (e.key === 'ArrowLeft') {
-        if (!window.answer) this.Correct();
-        else this.Incorrect();
-        this.GetWordData();
-      }
-    });
-
-    const STAT_CONTAINER = document.querySelector('.stat-container');
-    STAT_CONTAINER.addEventListener('click', (e) => {
-      if (e.target.classList[0] === 'audio-icon');
-      e.target.childNodes[0].play();
-    });
-
-    function Disabled() {
-      yesButton.disabled = true;
-      setTimeout(() => { yesButton.disabled = false; }, 1000);
-      noButton.disabled = true;
-      setTimeout(() => { noButton.disabled = false; }, 1000);
-      yesButton.disabled = true;
-    }
-
     const GameAudio = document.querySelector('.game-audio');
     const WrongAnswer = document.querySelector('.wrong-answer');
     const CorrectAnswer = document.querySelector('.correct-answer');
     const SoundIcon = document.querySelector('.sound-icon');
-    SoundIcon.addEventListener('click', () => {
-      SoundIcon.classList.toggle('muted');
-      WrongAnswer.muted = (WrongAnswer.muted) ? false : true;
-      CorrectAnswer.muted = (CorrectAnswer.muted) ? false : true;
-      GameAudio.muted = (GameAudio.muted) ? false : true;
-    });
-
+    const STAT_CONTAINER = document.querySelector('.stat-container');
     const Word = document.querySelector(".word");
     const AudioWord = document.querySelector(".audio-word_game");
-    Word.addEventListener('click', () => {
-      AudioWord.play();
-    });
-
-    let counter = 4;
     const GameAudioButton = document.querySelector(".game-audio_button");
-    GameAudioButton.addEventListener('click', () => {
-      if(counter != 7) counter++;
-      else counter = 1;
-      GameAudio.src = `src/assets/audio/game_audio/${counter}.mp3`;
-      GameAudio.play();
+    let counter = 4;
+    document.addEventListener('click', (e) => {
+      if (e.target.classList[0] === 'yes-button') {
+        if (window.answer) this.Correct();
+        else this.Incorrect();
+        this.GetWordData();
+        Disabled();
+        }
+      if (e.target.classList[0] === 'no-button') {
+        if (!window.answer) this.Correct();
+        else this.Incorrect();
+        this.GetWordData();
+        Disabled();
+        }
+        function Disabled() {
+        yesButton.disabled = true;
+        setTimeout(() => { yesButton.disabled = false; }, 1000);
+        noButton.disabled = true;
+        setTimeout(() => { noButton.disabled = false; }, 1000);
+        yesButton.disabled = true;
+        }
+        switch (e.target) {
+          case restartButton:
+            this.ClearGameData();
+            break;
+          case SoundIcon:
+            SoundIcon.classList.toggle('muted');
+            WrongAnswer.muted = (WrongAnswer.muted) ? false : true;
+            CorrectAnswer.muted = (CorrectAnswer.muted) ? false : true;
+            GameAudio.muted = (GameAudio.muted) ? false : true;
+            break;
+          case Word:
+            AudioWord.play();
+            break;
+          case GameAudioButton:
+            if(counter !== 7) counter++;
+            else counter = 1;
+            GameAudio.src = `src/assets/audio/game_audio/${counter}.mp3`;
+            GameAudio.play();
+            break;
+          default:
+            break;
+        }
+        if (e.target.classList[0] === 'audio-icon') e.target.childNodes[0].play();
+
     });
     return this.HTML;
   }
 
   GameBegin() {
     const StartGameWindow = document.querySelector('.start-game-window');
+    this.WordSelected = document.querySelector('.gameWindow__learn-words-select').value;
+    this.LvlSelect = document.querySelector('#selectGroup').value;
     StartGameWindow.classList.add('none');
     this.Timer.classList.add('block');
-    this.exitButton.classList.add('none');
+    //this.exitButton.classList.add('none');
     this.StatContainer.classList.remove('flex');
     this.StatContainer.classList.add('none');
 		setTimeout(() => {
@@ -211,13 +166,19 @@ export default class SprintGame {
     }, 1000);
   }
 
+  CheckVocabularyLength() {
+    let result = false;
+    if (this.vocabulary.getVocabularyWordsLength(WORDS_TO_LEARN_TITLE) > 30) result = true;
+    return result;
+  }
+
   Random(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
   Game() {
     this.Timer.classList.remove('block');
-    this.exitButton.classList.remove('none');
+    //this.exitButton.classList.remove('none');
     this.Timer.innerHTML = '';
     this.GameContainer.classList.remove('none');
     this.GameContainer.classList.add('flex');
@@ -226,12 +187,22 @@ export default class SprintGame {
   }
 
   async GetWordData() {
-    const ARRAY_WORDS = await getWords(this.Random(30), +this.LvlSelect.value - 1);
-    const RANDOM_WORD = await getWords(this.Random(30), +this.LvlSelect.value - 1);
+    const vocLength = this.vocabulary.getVocabularyWordsLength(WORDS_TO_LEARN_TITLE);
+    const vocWords = this.vocabulary.getWordsByVocabularyType(WORDS_TO_LEARN_TITLE);
+    console.log(this.WordSelected);
+    if (this.WordSelected === 'LEARNED_WORDS' && vocLength > 9) {
+      this.WordGameRender(vocWords[this.Random(vocLength)].optional.allData,
+      vocWords[this.Random(vocLength)].optional.allData);
+    }
+    else {
+    const ARRAY_WORDS = await getWords(this.Random(30), this.LvlSelect);
+    const RANDOM_WORD = await getWords(this.Random(30), this.LvlSelect);
     this.WordGameRender(ARRAY_WORDS[this.Random(20)], RANDOM_WORD[this.Random(20)]);
+    }
   }
 
   async WordGameRender(word, randomWord) {
+    console.log(word, randomWord);
   	const arr = [randomWord.wordTranslate, word.wordTranslate];
     this.Word.innerHTML = word.word;
     this.Translation.innerHTML = arr[this.Random(2)];
@@ -325,7 +296,7 @@ export default class SprintGame {
     this.GameContainer.classList.add('none');
     this.StatContainer.classList.add('flex');
     this.StatContainer.classList.remove('none');
-    this.exitButton.classList.add('none');
+    //this.exitButton.classList.add('none');
     this.finalScore.innerHTML = `${sprint.SCORE} ${this.Score.innerHTML}`;
     const errors = document.getElementsByClassName('incorrect');
     this.incorrect_answers.innerHTML += errors.length;
@@ -333,6 +304,8 @@ export default class SprintGame {
     this.correct_answers.innerHTML += rights.length;
     this.Translation.innerHTML = 'ПЕРЕВОД';
     this.Word.innerHTML = 'СЛОВО';
+    this.GameAudio.pause();
+    this.GameAudio.currentTime = 0;
   }
 
   ClearGameData() {
@@ -371,5 +344,3 @@ export default class SprintGame {
 		this.GameAnswers.innerHTML = '';
   }
 }
-
-
