@@ -22,10 +22,11 @@ import ProgressBar from './components/progress-bar/ProgressBar';
 import Preloader from '../preloader/Preloader';
 import FormControll from './components/form-control/FormControl';
 import Authentication from '../authentication/Authentication';
-import DailyStatistics from './components/daily-statistics/DailyStatistics';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 import Statistics from '../statistics/Statistics';
+
+import DailyStatistics from './components/daily-statistics/DailyStatistics';
 import DifficultWordsDailyStatistics from './components/daily-statistics/DifficultWordsDailyStatistics';
 
 const {
@@ -35,6 +36,7 @@ const {
   DAILY_NORM_IS_COMPLETED,
   ADD_TO_DIFFICULT_WORDS_CLICKED,
   REMOVE_WORD_BUTTON_CLICKED,
+  LOGO_PATH,
 } = mainGameConstants;
 
 const {
@@ -74,6 +76,7 @@ class MainGame {
     this.settings = null;
     this.statistics = null;
     this.preloader = new Preloader();
+    document.body.classList.add('main-game_opened');
 
     this.state = {
       stats: {
@@ -133,6 +136,7 @@ class MainGame {
       await this.initSettings();
       await this.initVocabulary();
       await this.initStatistics();
+
       await this.setStatisticsData(null, false);
       this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
@@ -159,7 +163,9 @@ class MainGame {
         const mainGameMainContainer = create(
           'div', 'main-game__main-container', [wordCard.render(), this.formControl.render()],
         );
+
         mainGameHTML.append(
+          this.renderMainGameHeader(),
           mainGameControls,
           mainGameMainContainer,
           this.progressBar.render(),
@@ -366,7 +372,6 @@ class MainGame {
       gameSettingsBlock.render(),
       vocabularyButtons,
       this.wordsSelectList.render(),
-      this.renderExitButton(),
     );
 
     return container;
@@ -405,16 +410,26 @@ class MainGame {
     this.toggleWordCardTranslation();
   }
 
+  renderMainGameHeader() {
+    const container = create('div', 'main-game__header');
+    this.logoHTML = create('img', 'main-game__logo-image', '', container, ['src', LOGO_PATH]);
+    container.append(this.renderExitButton());
+
+    return container;
+  }
+
   renderVocabularyButtons() {
     const { showButtonDelete, showButtonHard } = this.settings.getSettingsByGroup('main');
 
     const container = create('div', 'word-card__vocabulary-buttons');
     if (showButtonDelete) {
       const removeWordButton = FormControll.renderButton('remove-word', REMOVE_WORD_BUTTON);
+      removeWordButton.classList.add('main-game__vocabulary-button');
       container.append(removeWordButton);
     }
     if (showButtonHard) {
       const addToDifficultButton = FormControll.renderButton('add-to-difficult', ADD_TO_DIFFICULT_WORDS);
+      addToDifficultButton.classList.add('main-game__vocabulary-button');
       container.append(addToDifficultButton);
     }
 

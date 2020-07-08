@@ -13,6 +13,66 @@
   margin-bottom: 40px;
 }
 
+@mixin main-game-input {
+  @extend %main-game-button-transition;
+  @include font(1.5rem, 2rem, 300);
+
+  cursor: pointer;
+  background: $main-game-input-background;
+  border: 0.5px solid $main-game-standard-border-color;
+  border-radius: 3px;
+  color: $main-game-standard-text-color;
+}
+
+@mixin standard-checkbox(
+  $background: $main-game-word-card-background, $borderColor: $main-game-standard-border-color,
+) {
+  & input[type=checkbox] {
+    display: none;
+  }
+
+  & .main-game__fake-checkbox {
+    position: relative;
+    top: 2px;
+
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 0.5px solid $borderColor;
+
+    &::before {
+      content: "";
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: block;
+      background-color: $background;
+      width: 20px;
+      height: 20px;
+      background-image: url($checkbox-tick-path);
+      background-repeat: no-repeat;
+      background-position: 0.25rem;
+      opacity: 0;
+    } 
+  }
+
+  & input[type=checkbox]:checked + .main-game__fake-checkbox::before {
+    opacity: 1;
+  }
+}
+
+@mixin main-game-chicken-image {
+  background: url($main-game-chicken-image-path);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  width: 118px;
+  height: 120px;
+}
+
 @mixin laptop-l {
   @media (max-width: $labtop-l-width) { @content; }
 }

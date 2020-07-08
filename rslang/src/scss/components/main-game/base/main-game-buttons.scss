@@ -1,0 +1,76 @@
+.main-game__estimate-buttons {
+  display: flex;
+  justify-content: space-evenly;
+
+  width: 100%;
+  margin-top: 15px;
+}
+
+.main-game__form-buttons {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+
+  @include media-mobile {
+    flex-direction: column-reverse;
+
+    & > *:not(:first-child) {
+      margin-bottom: 20px;
+    }
+
+    & > * {
+      width: 100%;
+    }
+  }
+}
+
+.exit-button_relative {
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-left: 5px;
+}
+
+.main-game__next-button {
+  @include main-game-input;
+
+  padding: 3px 30px;
+
+  &:hover {
+    color: $main-game-button-hover-text;
+  }
+}
+
+.main-game__show-answer-button {
+  @include main-game-input;
+
+  background: transparent;
+  padding: 0 5px;
+
+  &:hover {
+    border-color: $main-game-input-background;
+    color: $main-game-input-background;
+  }
+
+  @include media-mobile {
+    padding: 3px 30px;
+  }
+}
+
+.main-game__vocabulary-button {
+  @include main-game-input;
+
+  font-weight: 700;
+  background: $main-game-word-card-background;
+  padding: 3px 10px;
+
+  &:hover {
+    background: $main-game-input-background;
+    color: $main-game-button-hover-text;
+  }
+}
+
+.main-game__remove-word:hover {
+  background: $main-game-remove-button-background-hover;
+}

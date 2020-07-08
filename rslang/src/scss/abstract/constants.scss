@@ -1,3 +1,11 @@
+$labtop-l-width: 1440px;
+$content-width: 1024px;
+$tablet-width: 768px;
+$mobile-big-width: 425px;
+$mobile-small-width: 320px;
+
+$checkbox-tick-path: '../../src/assets/images/main-game/checkbox-tick.svg';
+
 $speak-it-overlay-background: rgba(241, 243, 245, 0.5);
 $speak-it-microphone-background: #ffffff;
 $speak-it-microphone-enabled-color: rgb(130, 201, 30);
@@ -20,23 +28,25 @@ $speak-it-correct-color: #ff0000;
 $speak-it-incorrect-color: #7fff00;
 $speak-it-linear-gradient-background: radial-gradient(circle, rgba(98,149,181,1) 14%, rgba(1,46,77,1) 78%);
 
+$main-game-background-color: #ACF0F2;
+$main-game-word-card-background: #F3FFE2;
+$main-game-standard-border-color: #000000;
+$main-game-standard-text-color: #000000;
+$main-game-input-background: #EB7F00;
+$main-game-button-hover-text: #ffffff;
 $main-game-correct-letter-color: #28C38A;
 $main-game-not-main-game-many-mistakes-letter-color: #FF934D;
 $main-game-many-mistakes-letter-color:#FF0000;
-$main-game-standard-border-color: #131313;
-$main-game-standard-progress-bar-background: rgba(49, 158, 201, 0.5);
-$main-game-standard-progress-bar-line-color: #1974C1;
+$main-game-remove-button-background-hover:#FF0000;
+$main-game-standard-progress-bar-background: rgba(22, 149, 163, 0.3);
+$main-game-standard-progress-bar-line-color: #1695A3;
 $main-game-completed-progress-bar-line-color: #16C60C;
+$main-game-header-box-shadow-color: rgba(0, 0, 0, 0.25);
+$main-game-chicken-image-path: '../../src/assets/images/main-game/main-game-chicken.png';
 
 $daily-statistics-overlay-background: rgba(19, 19, 19, 0.3);
 $daily-statistics-text-color: #ffffff;
-$daily-statistics-background: #303B44;
-
-$labtop-l-width: 1440px;
-$content-width: 1024px;
-$tablet-width: 768px;
-$mobile-big-width: 425px;
-$mobile-small-width: 320px;
+$daily-statistics-background: #1695A3;
 
 $savannah-background: linear-gradient(to top, #df89b5 0%, #bfd9fe 100%);;
 $savannah-number-reverse: #008000;
