@@ -1,0 +1,42 @@
+.microphone-button {
+  cursor: pointer;
+  position: fixed;
+  width: 70px;
+  height: 70px;
+  right: 100px;
+  top: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 5px solid $speak-it-microphone-enabled-color;
+  border-radius: 50%;
+  transition: 0.5s ease-in all;
+  background-color: $speak-it-microphone-background;
+
+  & i {
+    font-size: 5rem;
+    color: $speak-it-microphone-enabled-color;
+  }
+
+  &:hover {
+    box-shadow: 
+      0 0 0 5px $speak-it-microphone-enabled-shadow-1,
+      0 0 0 10px $speak-it-microphone-enabled-shadow-2;
+  }
+
+  &_disabled {
+    border-color: $speak-it-microphone-disabled-color;
+
+    & i {
+      color: $speak-it-microphone-disabled-color;
+    }
+
+    &:hover {
+      box-shadow: 
+        0 0 0 5px $speak-it-microphone-disabled-shadow-1,
+        0 0 0 10px $speak-it-microphone-disabled-shadow-2;
+    }
+  }
+}

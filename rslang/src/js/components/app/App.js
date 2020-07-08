@@ -6,6 +6,7 @@ import Authentication from '../authentication/Authentication';
 import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
@@ -73,6 +74,7 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      App.removeModalElements();
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';
@@ -80,6 +82,19 @@ class App {
       this.renderToggleAuthentication();
       this.activateAuthenticationForm();
       this.prelodaer.hide();
+    }
+  }
+
+  static removeModalElements() {
+    const startGameWindow = document.querySelector('.start-game-window');
+    const exitButton = document.querySelector('.exit-button');
+
+    if (startGameWindow) {
+      startGameWindow.remove();
+    }
+
+    if (exitButton) {
+      exitButton.remove();
     }
   }
 
@@ -99,6 +114,11 @@ class App {
   async renderEnglishPuzzle() {
     this.englishPuzzle = new EnglishPuzzle(this.createMiniGameParameterObject());
     await this.englishPuzzle.start();
+  }
+  
+  async renderSpeakItGame() {
+    this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
+    await this.speakIt.run();
   }
 
   activateAuthenticationForm() {
@@ -198,7 +218,7 @@ class App {
         ...data,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
+      await this.renderSpeakItGame(this.state.user);
       await this.renderVocabulary(this.state.user);
     }
   }

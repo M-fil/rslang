@@ -1,10 +1,31 @@
-$correct-letter-color: #28C38A;
-$not-many-mistakes-letter-color: #FF934D;
-$many-mistakes-letter-color:#FF0000;
-$standard-border-color: #131313;
-$standard-progress-bar-background: rgba(49, 158, 201, 0.5);
-$standard-progress-bar-line-color: #1974C1;
-$completed-progress-bar-line-color: #16C60C;
+$speak-it-overlay-background: rgba(241, 243, 245, 0.5);
+$speak-it-microphone-background: #ffffff;
+$speak-it-microphone-enabled-color: rgb(130, 201, 30);
+$speak-it-microphone-disabled-color: #dc143c;
+$speak-it-microphone-enabled-shadow-1:rgba(130, 201, 30, 0.5);
+$speak-it-microphone-enabled-shadow-2:rgba(130, 201, 30, 0.2);
+$speak-it-microphone-disabled-shadow-1:rgba(220, 20, 60, 0.5);
+$speak-it-microphone-disabled-shadow-2:rgba(220, 20, 60, 0.2);
+$speak-it-standard-button-background: #012E4D;
+$speak-it-standard-button-background-hover: #8597A1;
+$speak-it-standard-button-text-color: #ffffff;
+$speak-it-standard-box-shadow: #131131;
+$speak-it-score-color: #2ecc71;
+$speak-it-guessed-card-border-color:#21A465;
+$speak-it-skipped-card-border-color: #ED8044;
+$speak-it-transcription-color: rgb(162, 148, 148);
+$speak-it-standard-text-shadow: #131313;
+$speak-it-start-button-background: #CBFFFD;
+$speak-it-correct-color: #ff0000;
+$speak-it-incorrect-color: #7fff00;
+
+$main-game-correct-letter-color: #28C38A;
+$main-game-not-main-game-many-mistakes-letter-color: #FF934D;
+$main-game-many-mistakes-letter-color:#FF0000;
+$main-game-standard-border-color: #131313;
+$main-game-standard-progress-bar-background: rgba(49, 158, 201, 0.5);
+$main-game-standard-progress-bar-line-color: #1974C1;
+$main-game-completed-progress-bar-line-color: #16C60C;
 
 $daily-statistics-overlay-background: rgba(19, 19, 19, 0.3);
 $daily-statistics-text-color: #ffffff;
