@@ -24,7 +24,7 @@ class MainBlock {
   }
 
   render() {
-    this.HTML = create('div', 'main-page__main-block');
+    this.HTML = create('div', 'main-page__main-block', '', null, ['scrollId', 'games-block']);
     this.wrapper = create('div', 'main-block__wrapper', '', this.HTML);
     this.titleHTML = create('div', 'main-block__title', GAME_TITLE_TEXT, this.wrapper);
     this.gamesContainer = create('div', 'main-block__games-container', '', this.wrapper);

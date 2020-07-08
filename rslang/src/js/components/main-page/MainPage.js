@@ -8,6 +8,7 @@ import {
 
 import Header from './components/Header';
 import MainBlock from './components/MainBlock';
+import BurgerMenu from './components/BurgerMenu';
 
 const {
   TRAVEL,
@@ -43,9 +44,11 @@ class MainPage {
 
   render() {
     this.HTML = create('div', 'main-page');
+    this.burgerMenu = new BurgerMenu(this.userName);
     this.header = new Header(this.userName);
     this.mainBlock = new MainBlock();
 
+    document.body.append(this.burgerMenu.render());
     this.HTML.append(this.header.render());
     this.userContent = create(
       'div', 'main-page__user-content',
@@ -63,9 +66,17 @@ class MainPage {
     const container = create('div', 'main-page__start-page');
     this.mainImage = create('img', 'start-page__main-image', '', null, ['src', MAIN_PAGE_CHICKEN_IMAGE]);
     create('div', 'start-page__main-image-container', this.mainImage, container);
-    create('button', 'start-page__arrow-bottom', '<i class="fas fa-arrow-down"></i>', container);
+    this.arrowButton = create('button', 'start-page__arrow-bottom', '<i class="fas fa-arrow-down"></i>', container);
+    this.arrowButton.addEventListener('click', MainPage.scrollIntoGamesBlock);
 
     return container;
+  }
+
+  static scrollIntoGamesBlock() {
+    const blockId = document.querySelector('[data-scroll-id="games-block"]');
+    if (blockId) {
+      blockId.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
   }
 
   static renderGoalBlock() {
@@ -87,7 +98,7 @@ class MainPage {
   static renderGoal(goalText, imageSrc) {
     const container = create('div', 'main-page__goal');
     create('img', 'goal__image', '', container, ['src', imageSrc]);
-    create('div', 'goalText', goalText, container);
+    create('div', 'goal__text', goalText, container);
   
     return container;
   }

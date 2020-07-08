@@ -28,10 +28,10 @@ class Header {
   }
 
   render() {
+    Header.activateBurgerMenuHandler();
     const settingsIconHTML = '<i class="fas fa-cog"></i>';
     this.HTML = create('header', 'main-page__header');
-    this.startPageLogoImage = create('img', 'main-page__image-logo', '', null, ['src', MAIN_PAGE_LOGO_URL]);
-    create('div', 'main-page__logo', this.startPageLogoImage, this.HTML);
+    this.HTML.append(this.renderBurgerMenuIcon(), this.renderLogo());
     this.buttonsList = create('div', 'header__buttons-list', '', this.HTML);
     this.renderHeaderButton(VOCABULARY_BUTTON_TEXT, VOCABULARY_CODE);
     this.renderHeaderButton(STATISTICS_BUTTON_TEXT, STATISTICS_CODE);
@@ -41,6 +41,11 @@ class Header {
     this.HTML.append(this.renderUserBlock());
 
     return this.HTML;
+  }
+
+  renderLogo() {
+    this.startPageLogoImage = create('img', 'main-page__image-logo', '', null, ['src', MAIN_PAGE_LOGO_URL]);
+    return create('div', 'main-page__logo', this.startPageLogoImage);
   }
 
   renderUserBlock() {
@@ -55,6 +60,32 @@ class Header {
 
   renderHeaderButton(buttonText, buttonCode) {
     create('div', 'header__button', buttonText, this.buttonsList, ['headerPageCode', buttonCode]);
+  }
+
+  renderBurgerMenuIcon() {
+    this.burgerMenuIcon = create('div', 'burger-menu-icon');
+    create('div', 'burger-menu-icon__line', '', this.burgerMenuIcon);
+    create('div', 'burger-menu-icon__line', '', this.burgerMenuIcon);
+    create('div', 'burger-menu-icon__line', '', this.burgerMenuIcon);
+
+    return this.burgerMenuIcon;
+  }
+
+  static activateBurgerMenuHandler() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.burger-menu-icon');
+      const { body } = document;
+
+      if (target) {
+        if (body.classList.contains('nav_is_visible')) {
+          body.classList.remove('nav_is_visible');
+          target.classList.remove('close')
+        } else {
+          body.classList.add('nav_is_visible');
+          target.classList.add('close')
+        }
+      }
+    });
   }
 }
 

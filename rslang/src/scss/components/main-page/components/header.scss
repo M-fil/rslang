@@ -8,11 +8,26 @@
   padding: 10px 15px;
   width: calc(100% - 30px);
   height: 90px;
-  z-index: 1000
+  z-index: 1000;
   
-  ;
   background: $main-gage-header-background;
   border-bottom: 3px solid $main-page-border-color;
+
+  @include media-tablet {
+    justify-content: flex-end;
+  }
+
+  & .main-page__logo {
+    @include media-tablet {
+      display: none;
+    }
+  }
+
+  & .header__buttons-list {
+    @include media-tablet {
+      display: none;
+    }
+  }
 }
 
 .header__buttons-list {

@@ -23,16 +23,44 @@
 .main-block__game-line {
   display: flex;
   justify-content: space-between;
+
+  @include media-laptop {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @include media-laptop {
+    width: 80% !important;
+  }
 }
 
 .main-block__games-first-line {
   width: 80%;
+
+  @include laptop-l {
+    width: 95%;
+  }
+
+  @include media-laptop {
+    & > *:first-child {
+      order: 1;
+    }
+  }
 }
 
 .main-block__games-second-line {
-  width: 60%
+  width: 60%;
+
+  @include laptop-l {
+    width: 75%;
+  }
 }
 
 .main-block__games-third-line {
-  width: 40%
+  width: 40%;
+
+  @include laptop-l {
+    width: 55%;
+  }
 }

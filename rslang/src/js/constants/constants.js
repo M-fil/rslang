@@ -332,6 +332,7 @@ const mainPageHeaderButtonConstants = {
   VOCABULARY_BUTTON_TEXT: 'Словарь',
   PROMO_BUTTON_TEXT: 'Промо',
   ABOUT_TEAM_TEXT: 'О Команде',
+  SETTINGS_BUTTON_TEXT: 'Настройки',
   STATISTICS_CODE: 'STATISTICS_CODE',
   VOCABULARY_CODE: 'VOCABULARY_CODE',
   PROMO_CODE: 'PROMO_CODE',

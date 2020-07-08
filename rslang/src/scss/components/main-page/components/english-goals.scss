@@ -17,6 +17,14 @@
   flex-wrap: wrap;
 
   width: 80%;
+
+  @include media-laptop {
+    width: 90%;
+  }
+
+  @include media-tablet {
+    justify-content: center;
+  }
 }
 
 .main-page__goal {
@@ -27,8 +35,27 @@
 
   width: 30%;
   margin-bottom: 70px;
+
+  @include media-laptop {
+    width: 40%;
+  }
+
+  @include media-tablet {
+    justify-content: space-between;
+    width: 60%;
+  }
+
+  @include media-mobile {
+    width: 90%;
+  }
 }
 
 .goal__image {
   margin-right: 35px;
+}
+
+.goal__text {
+  @include media-tablet {
+    text-align: right;
+  }
 }

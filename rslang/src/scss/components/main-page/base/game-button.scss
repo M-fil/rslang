@@ -12,6 +12,10 @@
       color: $main-page-logour-hover-color;
     }
   }
+
+  @include media-laptop {
+    width: 100%;
+  }
 }
 
 .game-button__info-button {
@@ -65,6 +69,11 @@
 
 .main-game__main-game-button {
   width: 350px;
+
+  @include media-laptop {
+    width: 100%;
+    order: 0;
+  }
 }
 
 .game-button__description {

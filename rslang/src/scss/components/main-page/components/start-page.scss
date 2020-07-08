@@ -8,6 +8,14 @@
   height: calc(100vh - 180px);
   padding-top: 25px;
   background: $main-page-start-page-background;
+
+  @include media-tablet {
+    height: calc(100vh - 380px);
+  }
+
+  @include media-tablet {
+    height: calc(100vh - 480px);
+  }
 }
 
 .start-page__arrow-bottom {
@@ -36,5 +44,17 @@
 
   i {
     font-size: 2.5rem;
+  }
+}
+
+.start-page__main-image {
+  @include media-tablet {
+    width: 400px;
+    height: 300px;
+  }
+
+  @include media-mobile {
+    width: 280px;
+    height: 200px;
   }
 }
