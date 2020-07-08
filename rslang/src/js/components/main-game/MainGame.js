@@ -26,7 +26,6 @@ import DailyStatistics from './components/daily-statistics/DailyStatistics';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 import Statistics from '../statistics/Statistics';
-import CloseButton from '../mini-games/common/CloseButton';
 import DifficultWordsDailyStatistics from './components/daily-statistics/DifficultWordsDailyStatistics';
 
 const {
@@ -135,7 +134,6 @@ class MainGame {
       await this.initVocabulary();
       await this.initStatistics();
       await this.setStatisticsData(null, false);
-      console.log(this.settings.getSettingsByGroup('main'));
       this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.parseUserWordsData();
@@ -350,19 +348,25 @@ class MainGame {
     return data;
   }
 
+  renderExitButton() {
+    this.exitButton = create(
+      'button', 'standard__exit-button main-game__exit-button',
+      '<i class="fas fa-times"></i>', null,
+      ['id', 'button-go-to-main-page'],
+    );
+    return this.exitButton;
+  }
+
   renderMainGameControls() {
     const container = create('div', 'main-game__controls');
     const gameSettingsBlock = new SettingsControls();
     const vocabularyButtons = this.renderVocabularyButtons();
     this.wordsSelectList = new WordsSelectList();
-    this.closeButton = new CloseButton();
-    this.closeButton.exitButton.classList.add('exit-button_relative');
-    this.closeButton.show();
     container.append(
       gameSettingsBlock.render(),
       vocabularyButtons,
       this.wordsSelectList.render(),
-      this.closeButton.render(),
+      this.renderExitButton(),
     );
 
     return container;
