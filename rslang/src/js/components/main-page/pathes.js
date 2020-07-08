@@ -6,6 +6,7 @@ import {
   mainPageEnglishGoal,
   mainPageGoalsImages,
   mainPageUrls,
+  logoutModalWindowContstants,
 } from '../../constants/constants';
 
 export {
@@ -16,4 +17,5 @@ export {
   mainPageEnglishGoal,
   mainPageGoalsImages,
   mainPageUrls,
+  logoutModalWindowContstants,
 };

@@ -395,6 +395,11 @@ const mainPageConstants = {
   ENGLISH_GOALS_TITLE: 'Английский для Ваших целей',
 };
 
+const logoutModalWindowContstants = {
+  LOGOUT_MODAL_WINDOW_TITLE: 'Вы действительно хотите выйти?',
+  LOGOUT_EXIT_CONFIRM: 'Да, я хочу выйти',
+};
+
 const mainPageUrls = {
   MAIN_PAGE_LOGO_URL: './src/assets/images/main-page/start-page-logo.png',
   MAIN_PAGE_CHICKEN_IMAGE: './src/assets/images/main-page/chicken-start-page.png',
@@ -447,4 +452,5 @@ export {
   mainPageGoalsImages,
   mainPageUrls,
   progressLearningConstants,
+  logoutModalWindowContstants,
 };

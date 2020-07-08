@@ -3,6 +3,7 @@ import {
   mainPageHeaderButtonConstants,
   mainPageUrls,
 } from '../pathes';
+import LogoutModalWindow from './LogoutModalWindow';
 
 const {
   MAIN_PAGE_LOGO_URL,
@@ -25,6 +26,7 @@ class Header {
   constructor(userName) {
     this.HTML = null;
     this.userName = userName;
+    this.modalWindow = new LogoutModalWindow();
   }
 
   render() {
@@ -54,6 +56,7 @@ class Header {
     const userName = create('span', 'user-name__text', this.userName);
     create('div', 'header__user-name', [userIcon, userName], container);
     this.logoutButton = create('button', 'header__logout-button', LOG_OUT_BUTTON_TEXT, container);
+    this.logoutButton.addEventListener('click', this.modalWindow.show.bind(this.modalWindow));
 
     return container;
   }

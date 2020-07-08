@@ -20,8 +20,11 @@ export default class ModalWindow {
   }
 
   openModal() {
+    console.log('this.id', this.id);
     const modal = document.querySelector(`#${this.id}`);
+    console.log('modal', modal);
     if (modal) {
+      console.log('modal', modal);
       modal.classList.remove('modal-block_hidden');
     }
   }

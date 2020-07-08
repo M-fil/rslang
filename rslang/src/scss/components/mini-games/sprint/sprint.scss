@@ -39,11 +39,6 @@
 	color: white;
 }
 
-button:active {
-	border-style: inset;
-	transform: scale(0.9);
-}
-
 button:active, button:focus, input:active, input:focus {
   outline: none !important;
 }

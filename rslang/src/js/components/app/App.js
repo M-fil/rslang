@@ -295,7 +295,7 @@ class App {
 
   activateLogOutButton() {
     document.addEventListener('click', (event) => {
-      const target = event.target.closest('.header__logout-button');
+      const target = event.target.closest('#logout-trigger');
 
       if (target) {
         this.renderAuthorizationBlock();
