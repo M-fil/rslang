@@ -146,7 +146,7 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      this.savannahGame = new SavannahGame(this.state.user);
+      this.savannahGame = new SavannahGame(this.createMiniGameParameterObject());
       this.savannahGame.render();
       // await App.renderMainGame(this.state.user);
       // await this.renderVocabulary(this.state.user);

@@ -67,10 +67,10 @@ export default class SavannahGame {
 
   async render() {
     this.learnedWords();
-    const startPage = this.startWindow.render(GAME_NAME, RULES, this.isVocabularyWords);
+    this.startPage = this.startWindow.render(GAME_NAME, RULES, this.isVocabularyWords);
     this.closeButton.show();
-    const content = document.querySelector('.main-content');
-    this.container = create('div', 'container', startPage, content);
+    this.content = document.querySelector('.main-content');
+    this.container = create('div', 'container', this.startPage, this.content);
     this.container.append(this.closeButton.render());
     this.allWords = document.querySelectorAll('.word');
     this.arrayBeforeClickWords = [];
@@ -78,6 +78,16 @@ export default class SavannahGame {
     this.gameWindow = document.querySelector('.start-game-window');
     this.startButton = document.querySelector('.start-button');
     await this.vocabulary.init();
+  }
+
+  goToTheStartPageHandler() {
+    this.content.remove();
+    this.startWindow.gameWindow.remove();
+    // const isShowLearnedWordsOption = this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS;
+    // const startWindowHTML = this.startWindow.render(
+    //   GAME_NAME, RULES, this.isVocabularyWords,
+    // );
+    // document.body.append(this.startPage);
   }
 
   learnedWords() {
@@ -308,6 +318,7 @@ export default class SavannahGame {
     this.modalCancelButton = document.querySelector('#closebutton').querySelector('.cancel_button');
     this.closeButton.addExitButtonClickCallbackFn((this.clearTime).bind(this));
     this.modalCancelButton.addEventListener('click', (this.clickCancelButton).bind(this));
+    this.closeButton.addCloseCallbackFn(this.goToTheStartPageHandler.bind(this));
   }
 
   clickCancelButton() {
