@@ -1,3 +1,7 @@
+$game-baсkground-color: #1d5278;
+$game-background-or-hover-for-buttons: #ec8000;
+$standard-border-color: black;
+
 $speak-it-overlay-background: rgba(241, 243, 245, 0.5);
 $speak-it-microphone-background: #ffffff;
 $speak-it-microphone-enabled-color: rgb(130, 201, 30);
@@ -49,3 +53,7 @@ $find-a-pair-shadow-color-on-hover: rgba(0,0,0,0.9);
 $find-a-pair-card-text-color: #000000;
 $find-a-pair-card-text-background-color: #ffffff;
 $find-a-pair-card-background-image: url(/src/assets/images/find-a-pair-card-image.png);
+
+$settings-result-text-correct: #008000;
+$settings-result-text-wrong: #ff0000;
+$settings-tabs-background: #ACF0F2;
