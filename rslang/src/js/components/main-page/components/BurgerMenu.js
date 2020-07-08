@@ -24,6 +24,9 @@ class BurgerMenu extends Header {
   }
 
   render() {
+    this.burgerMenuOverlay = create('div', 'burger-menu-overlay');
+    document.body.append(this.burgerMenuOverlay);
+
     this.container = create('div', 'burger-menu');
     this.wrapper = create('div', 'burger-menu__wrapper', '', this.container);
     this.wrapper.append(this.renderUserBlock());

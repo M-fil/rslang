@@ -1,17 +1,31 @@
 .burger-menu {
-  display: none;
+  @extend %burger-menu-transition;
   position: fixed;
   top: 0;
 
-  width: 60vw;
+  display: none;
+  width: 70vw;
   height: 100vh;
   background: $main-gage-header-background;
   border-right: 3px solid $main-page-border-color;
   z-index: 1500;
   padding-left: 10px;
 
+  transform: translateX(-150%);
   opacity: 0;
-  transform: translateX(-60vw);
+
+  @include media-tablet {
+    display: block;
+  }
+
+  @include media-mobile {
+    width: 80vw;
+  }
+
+  &_opened {
+    transform: translateX(0);
+    opacity: 1;
+  }
 
   & .header__user-block {
     flex-direction: row;

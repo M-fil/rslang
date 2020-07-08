@@ -41,7 +41,7 @@
   }
 
   @include media-tablet {
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 60%;
   }
 

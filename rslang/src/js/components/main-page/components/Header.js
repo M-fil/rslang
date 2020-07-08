@@ -33,7 +33,8 @@ class Header {
     Header.activateBurgerMenuHandler();
     const settingsIconHTML = '<i class="fas fa-cog"></i>';
     this.HTML = create('header', 'main-page__header');
-    this.HTML.append(this.renderBurgerMenuIcon(), this.renderLogo());
+    document.body.append(this.renderBurgerMenuIcon());
+    this.HTML.append(this.renderLogo());
     this.buttonsList = create('div', 'header__buttons-list', '', this.HTML);
     this.renderHeaderButton(VOCABULARY_BUTTON_TEXT, VOCABULARY_CODE);
     this.renderHeaderButton(STATISTICS_BUTTON_TEXT, STATISTICS_CODE);
@@ -77,16 +78,22 @@ class Header {
   static activateBurgerMenuHandler() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.burger-menu-icon');
-      const { body } = document;
+      const overlayTarget = event.target.closest('.burger-menu-overlay');
+
+      const burgetMenuIcon = document.querySelector('.burger-menu-icon')
+      const burgerMenu = document.querySelector('.burger-menu');
+      const burgerMenuOverlay = document.querySelector('.burger-menu-overlay');
 
       if (target) {
-        if (body.classList.contains('nav_is_visible')) {
-          body.classList.remove('nav_is_visible');
-          target.classList.remove('close')
-        } else {
-          body.classList.add('nav_is_visible');
-          target.classList.add('close')
-        }
+        target.classList.toggle('burger-icon__closed');
+        burgerMenu.classList.toggle('burger-menu_opened');
+        burgerMenuOverlay.classList.toggle('burger-menu-overlay_visible');
+      }
+
+      if (overlayTarget) {
+        burgetMenuIcon.classList.remove('burger-icon__closed');
+        burgerMenu.classList.remove('burger-menu_opened');
+        burgerMenuOverlay.classList.remove('burger-menu-overlay_visible');
       }
     });
   }
