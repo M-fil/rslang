@@ -22,10 +22,11 @@ import ProgressBar from './components/progress-bar/ProgressBar';
 import Preloader from '../preloader/Preloader';
 import FormControll from './components/form-control/FormControl';
 import Authentication from '../authentication/Authentication';
-import DailyStatistics from './components/daily-statistics/DailyStatistics';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 import Statistics from '../statistics/Statistics';
+
+import DailyStatistics from './components/daily-statistics/DailyStatistics';
 import DifficultWordsDailyStatistics from './components/daily-statistics/DifficultWordsDailyStatistics';
 
 const {
@@ -135,6 +136,7 @@ class MainGame {
       await this.initSettings();
       await this.initVocabulary();
       await this.initStatistics();
+
       await this.setStatisticsData(null, false);
       this.getStatisticsData();
       this.state.userWords = await this.getAllUserWordsFromBackend();
