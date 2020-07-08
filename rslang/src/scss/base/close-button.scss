@@ -1,9 +1,32 @@
 .exit-button {
   display: none;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   position: absolute;
   top: 15px;
-  right: 30px;
-  border-radius: 50%;
+  right: 15px;
+  opacity: 0.5;
+  transition: all 300ms;
+}
+
+.exit-button:hover {
+  transform: rotateX(180deg);
+  opacity: 1;
+}
+
+.exit-button:before, .exit-button:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: $game-bacground-or-hover-for-buttons;
+}
+
+.exit-button:before {
+  transform: rotate(45deg);
+}
+
+.exit-button:after {
+  transform: rotate(-45deg);
 }
