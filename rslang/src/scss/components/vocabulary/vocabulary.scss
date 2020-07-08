@@ -1,25 +1,93 @@
-.vocabulary__header {
+* {
+  margin: 0 auto;
+}
+
+body {
+  width: 100vw;
+}
+
+.vocabulary-container {
+  width: 100vw;
+  min-height: 100vh;
   position: relative;
+  min-width: 320px;
+  z-index: 1;
+}
+
+.vocabulary__header {
   display: flex;
-  width: 90%;
-  height: 10%;
+  width: 87%;
+  min-height: 50px;
   justify-content: space-evenly;
   align-items: center;
   flex-wrap: wrap;
+  margin: 1% auto 1% auto;
 }
 
-.vocabulary__word-item {
-  @include font(2rem);
+.vocabulary__header-item {
+  position: relative;
+  color: #aaa;
+  border: none;
+  text-transform: uppercase;
+  width: 185px;
+  height: 30px;
+  font-size: 15px;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  transition: 0.5s;
+  overflow: hidden;
+}
 
-  display: flex;
+.vocabulary__header-item::before {
+  content: '';
+  position: absolute;
+  top: calc(50% - 2px);
+  left: -100%;
+  width: 100%;
+  height: 4px;
+  background: $game-background-or-hover-for-buttons;
+  transition: 0.5s;
+}
 
-  width: 75%;
-  border-bottom: 3px solid;
-  margin-bottom: 20px;
+.vocabulary__header-item:hover {
+  color: #fff;
+}
+
+.vocabulary__header-item:hover::before {
+  animation: animate .5s linear forwards; 
+}
+
+@keyframes animate {
+  0% {
+    top: calc(50% - 2px);
+    left: -100%;
+    height: 4px;
+    z-index: 1;
+  }
+  50% {
+    top: calc(50% - 2px);
+    left: 0;
+    height: 4px;
+    z-index: 1;
+  }
+  100% {
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: -1;
+  }
+}
+
+.vocabulary__main-content {
+  height: 60%;
+  max-height: 600px;
 }
 
 .vocabulary__title-container {
   text-align: center;
+  margin-bottom: 2%;
 }
 
 .vocabulary__title {
@@ -30,23 +98,45 @@
   @include font(1.6rem, 2rem);
 }
 
-.vocabulary__words-list {
+.vocabulary__word-item {
+  @include font(2rem);
+
   display: flex;
   flex-direction: column;
-  align-items: center;
+
+  width: 75%;
+  margin-bottom: 20px;
 }
 
-.word-item__main-container {
+.vocabulary {
+  height: 100%;
+}
+
+.vocabulary__words-list {
   display: flex;
+  height: 100%;
   flex-direction: column;
-  justify-content: space-evenly;
-  flex-grow: 1;
+  align-items: center;
+  overflow: auto;
+}
+
+.word-item__additional-data {
+  width: 100%;
+  display: none;
+  background-color: $game-background-light-yellow;
+  border-radius: 10px;
+}
+
+.active-vocword {
+  display: flex;
 }
 
 .word-item__main {
   display: flex;
-  justify-content: space-evenly;
   width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 40px;
 }
 
 .word-item__main-info {
@@ -95,7 +185,7 @@
   height: 35px;
   position: absolute;
   top: 15px;
-  right: 15px;
+  right: 20px;
   opacity: 0.5;
   transition: all 300ms;
 }
@@ -112,7 +202,7 @@
   content: ' ';
   height: 33px;
   width: 2px;
-  background-color: $game-bacground-or-hover-for-buttons;
+  background-color: $game-background-or-hover-for-buttons;
 }
 
 .vocabulary__exit-button:before {
