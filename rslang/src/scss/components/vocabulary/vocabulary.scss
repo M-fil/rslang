@@ -1,6 +1,11 @@
 .vocabulary__header {
+  position: relative;
   display: flex;
+  width: 90%;
+  height: 10%;
   justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .vocabulary__word-item {
