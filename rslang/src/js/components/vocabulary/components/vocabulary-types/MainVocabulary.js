@@ -1,4 +1,7 @@
-import create, { vocabularyConstants, dateFormat } from '../../pathes';
+import create, {
+  vocabularyConstants,
+  dateFormat,
+} from '../../pathes';
 import VocabularyItem from '../vocabulary-item/VocabularyItem';
 import { addDaysToTheDate } from '../../../main-game/pathes';
 
