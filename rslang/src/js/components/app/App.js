@@ -145,7 +145,6 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
       await this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
@@ -185,7 +184,6 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      await App.renderMainGame(this.state.user);
       await this.renderVocabulary(this.state.user);
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
