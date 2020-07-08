@@ -104,7 +104,7 @@ class App {
     App.removeModalElements();
     localStorage.setItem('user-data', '');
     this.state.user.isAuthrorized = false;
-    this.container.innerHTML = '';
+    this.clearMainContainersBeforeRender();
     this.renderAuthenticationBlock('authorization');
     this.renderToggleAuthentication();
     this.activateAuthenticationForm();
@@ -123,6 +123,7 @@ class App {
       const target = event.target.closest('#button-go-to-main-page');
 
       if (target) {
+        this.clearMainContainersBeforeRender();
         this.saveCurrentPage();
         this.renderMainPage();
         BurgerMenu.makeBurgerMenuIconVisible();
@@ -136,12 +137,10 @@ class App {
   }
 
   renderStatistics() {
-    this.container.innerHTML = '';
     this.statistics.render('.main-page__content');
   }
 
   async renderVocabulary() {
-    this.container.innerHTML = '';
     const html = await this.vocabulary.render();
     this.container.append(html);
   }
@@ -174,6 +173,8 @@ class App {
   async selectPageRenderingByPageCode(pageCode, isRenderAfterReload = true) {
     this.saveCurrentPage(pageCode);
 
+    this.clearMainContainersBeforeRender();
+    document.body.scrollIntoView();
     switch (pageCode) {
       case mainGame.code:
         await this.renderMainGame();
@@ -214,45 +215,46 @@ class App {
     }
   }
 
-  async renderMainGame() {
+  clearMainContainersBeforeRender() {
     this.container.innerHTML = '';
+    const startGameWindow = document.querySelector('.start-game-window');
+    if (startGameWindow) {
+      startGameWindow.remove();
+    }
+  }
+
+  async renderMainGame() {
     this.mainGame = new MainGame(this.state.user);
     await this.mainGame.render('.main-page__content');
   }
 
   async renderSpeakItGame() {
-    this.container.innerHTML = '';
     this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
     await this.speakIt.run('.main-page__content');
   }
 
   async renderEnglishPuzzle() {
-    this.container.innerHTML = '';
     this.englishPuzzle = new EnglishPuzzle(this.createMiniGameParameterObject());
     await this.englishPuzzle.start('.main-page__content');
   }
 
   renderAuditionGame() {
-    this.container.innerHTML = '';
     this.auditionGame = new AuditionGame(this.createMiniGameParameterObject());
     this.auditionGame.render(5, 5, '.main-page__content');
   }
 
   async renderSavannah() {
-    this.container.innerHTML = '';
     this.savannah = new SavannahGame(this.createMiniGameParameterObject());
     await this.savannah.render('.main-page__content');
   }
 
   renderSprintGame() {
-    this.container.innerHTML = '';
     this.sprintGame = new SprintGame(this.createMiniGameParameterObject());
     const html = this.SprintGame.SprintRender();
     this.container.append(html);
   }
 
   async renderFindAPair() {
-    this.container.innerHTML = '';
     this.findAPair = new FindAPair(this.createMiniGameParameterObject());
     await this.findAPair.init();
     this.renderStartPage('.main-page__content');
@@ -293,7 +295,6 @@ class App {
   }
 
   renderMainPage() {
-    this.container.innerHTML = '';
     const { name, email } = this.state.user;
     this.mainPage = new MainPage(name || email);
     const html = this.mainPage.render();
