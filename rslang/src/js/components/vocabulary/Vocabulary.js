@@ -6,6 +6,8 @@ import create, {
   playAudio,
   urls,
   estimateButtonsTypes,
+  addDaysToTheDate,
+  dateFormat,
 } from './pathes';
 
 import VocabularyHeader from './components/vocabulary-header/VocabularyHeader';
@@ -92,10 +94,15 @@ class Vocabulary {
     }
   }
 
+  static createStandardDateFormat(date) {
+    return dateFormat(date.getDate(), date.getMonth() + 1, date.getFullYear());
+  }
+
   createWordDataForBackend(
     currentWord, estimation, vocabulary = WORDS_TO_LEARN_TITLE,
   ) {
     const daysInterval = this.getDaysIntervalByEstimation(estimation);
+    const nextTimeOfReivise = addDaysToTheDate(daysInterval, new Date());
     const wordData = {
       id: currentWord.id || currentWord._id,
       word: currentWord.word,
@@ -103,6 +110,7 @@ class Vocabulary {
       vocabulary,
       daysInterval,
       valuationDate: new Date(),
+      nextTimeOfReivise,
       allData: currentWord,
     };
     const {
@@ -177,7 +185,8 @@ class Vocabulary {
   }
 
   getWordsByVocabularyType(vocabularyType, getNormalObject = false) {
-    const wordsArr = this.state.allUserWords.filter((word) => word.optional.vocabulary === vocabularyType);
+    const wordsArr = this.state.allUserWords
+      .filter((word) => word.optional.vocabulary === vocabularyType);
     return (getNormalObject) ? wordsArr.map((word) => word.optional.allData) : wordsArr;
   }
   getAllVocabulariesData(getNormalObjects = false) {

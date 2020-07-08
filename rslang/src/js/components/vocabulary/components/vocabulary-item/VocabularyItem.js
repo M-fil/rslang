@@ -1,14 +1,19 @@
-import create, { urls } from '../../pathes';
+import create, { urls, vocabularyConstants } from '../../pathes';
+import LearningProgress from './LearningProgress';
 
 const {
   WORDS_IMAGES_URL,
 } = urls;
 
+const {
+  WORDS_TO_LEARN_TITLE,
+} = vocabularyConstants;
+
 class VocabularyItem {
   constructor(
     id, word, wordTranslate, transcription,
-    textMeaning, textExample, image, vocabularyType,
-    settings,
+    textMeaning, textExample, image, nextTimeOfReivise,
+    vocabularyType, settings,
   ) {
     this.HTML = null;
     this.id = id;
@@ -18,6 +23,7 @@ class VocabularyItem {
     this.textMeaning = textMeaning;
     this.textExample = textExample;
     this.image = image;
+    this.nextTimeOfReivise = nextTimeOfReivise;
     this.vocabularyType = vocabularyType;
     this.settings = settings;
 
@@ -44,7 +50,12 @@ class VocabularyItem {
     if (showWordExample) {
       create('div', 'word-item__sentence', this.textExample, sentencesBlock);
     }
-    create('div', 'word-item__main-container', [mainHTML, sentencesBlock], this.HTML);
+    if (this.vocabularyType === WORDS_TO_LEARN_TITLE) {
+      this.learningProgress = new LearningProgress(this.nextTimeOfReivise);
+    }
+    create('div', 'word-item__main-container',
+      [mainHTML, sentencesBlock, this.learningProgress && this.learningProgress.render()],
+      this.HTML);
 
     if (showImageAssociations) {
       const imageBlock = create('div', 'word-item__image-block', '', this.HTML);
