@@ -1,5 +1,10 @@
 import Chart from 'chart.js';
 import create from '../../utils/сreate';
+import {
+  statisticsText,
+} from '../../constants/constants';
+
+const GameTitles = statisticsText.gametitles;
 
 export default class StatisticsChart {
   constructor() {
@@ -25,7 +30,7 @@ export default class StatisticsChart {
       data: {
         labels: dateLabels,
         datasets: [{
-          label: 'learned words',
+          label: statisticsText.texts.learnedWords,
           data,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
@@ -71,7 +76,7 @@ export default class StatisticsChart {
     new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['Правильно', 'Неправильно'],
+        labels: [statisticsText.texts.correctAnswers, statisticsText.texts.wrongAnswers],
         datasets: [
           {
             fill: true,
@@ -92,7 +97,7 @@ export default class StatisticsChart {
     const gameLabels = [];
     const data = [];
     for (let i = 0; i < arr.length; i += 1) {
-      gameLabels.push(arr[i][0]);
+      gameLabels.push(GameTitles[arr[i][0]]);
       data.push(arr[i][1]);
     }
     new Chart(ctx, {
