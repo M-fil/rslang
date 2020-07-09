@@ -3,7 +3,7 @@
   background: $savannah-background;
 }
 .container {
-  @include font(1rem, 1.2);
+  @include font(1rem, 1.2rem);
   width: 80%;
 }
 .number-reverse {
