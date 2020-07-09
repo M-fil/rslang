@@ -7,6 +7,7 @@ import Preloader from '../preloader/Preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 import Statistics from '../statistics/Statistics';
+import AboutTeam from '../about-team/AboutTeam';
 
 import MainPage from '../main-page/MainPage';
 
