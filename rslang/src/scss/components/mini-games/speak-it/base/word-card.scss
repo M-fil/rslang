@@ -73,7 +73,7 @@
 }
 
 .word-card__transcription {
-  @include font(1.5rem, 2rem, 300);
+  @include font(2rem, initial);
 
   color: $speak-it-transcription-color;
 }

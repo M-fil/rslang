@@ -19,7 +19,7 @@ const {
 
 export default class ShortTermStatistics extends ModalWindow {
   constructor() {
-    super();
+    super('short-term-statistics');
     if (ShortTermStatistics.exists) {
       return ShortTermStatistics.instance;
     }

@@ -1,0 +1,123 @@
+.main-content {
+  height: 100vh;
+  background: $savannah-background;
+}
+.container {
+  @include font(1rem, 1.2rem);
+  width: 80%;
+}
+.number-reverse {
+  display: none;
+  position: absolute;
+  top: calc(50% - 35px);
+  left: calc(50% - 15px);
+  color: $savannah-number-reverse;
+  font-size: 5rem;
+}
+
+.word {
+  width: 200px;
+  user-select: none;
+  background-color: transparent;
+}
+.word_english {
+  border: none;
+  color: $savannah-english-word;
+  font-size: 4rem; 
+  text-align: center;
+}
+.word_russian {
+  min-width: 23%;
+  margin-top: 1rem;
+  position: relative;
+  height: 70px;
+  color: $savannah-russian-word;
+  font-size: 2.2rem;
+  cursor: pointer;
+  border: 1px solid $savannah-russian-word-border;
+  word-break: break-word;
+  padding: 5px 20px;
+}
+.word_number {
+  position: absolute;
+  top: 30%;
+  left: 3%;
+  color: $savannah-russian-word-number;
+}
+.word_correct {
+  background-color: $savannah-word-correct;
+  opacity: 0.7;
+}
+.word_error {
+  background-color: $savannah-word-error;
+  opacity: 0.7;
+}
+.english-line {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 100px);
+  display: flex;
+  justify-content: center;
+}
+.russian-line {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin-top: 8%;
+}
+
+.lives {
+  max-width: 280px;
+  height: 90px;
+}
+.add-lives-number {
+  position: absolute;
+  top: 80px;
+  right: 10rem;
+  font-size: 4rem;
+  color: $savannah-plus-lives;
+  opacity: 0;
+}
+
+.show-number-live {
+  animation: appearance 4s ease-in-out;
+}
+
+@keyframes appearance {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.live {
+  width: 40px;
+  height: 40px;
+}
+
+.sound {
+  border: 1px solid $savannah-russian-word-border;
+  font-size: 3rem;
+  padding: 5px 10px;
+  height: 45px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 5px;
+}
+.sound_off {
+  background-color: $savannah-background-sound-off;
+}
+.sound_on {
+  background-color: $savannah-background-white;
+}
+
+.line-info {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
