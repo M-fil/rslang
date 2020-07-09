@@ -794,13 +794,12 @@ class MainGame {
               return;
           }
 
+          await this.setStatisticsData();
+          this.preloader.hide();
           this.wordsSelectList.enable();
           this.renderNextWordCard();
           this.state.audio.pause();
         }
-
-        await this.setStatisticsData();
-        this.preloader.hide();
       }
     });
   }

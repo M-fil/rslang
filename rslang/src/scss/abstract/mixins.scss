@@ -1,5 +1,4 @@
 @mixin font ($size, $height: $size, $weight: normal, $style: normal) {
-  font-family: 'IBM Plex Mono', monospace;
   font-size: $size;
   line-height: $height;
   font-weight: $weight;
