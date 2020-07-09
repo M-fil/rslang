@@ -4,7 +4,6 @@
   align-items: center;
   transition: 1s;
   opacity: 0.8;
-  z-index: 1000;
 }
 .preloader__visible {
   display: block;
@@ -17,6 +16,7 @@
   left: calc(50% - 100px);
   width: 200px;
   height: 200px;
+  z-index: 1000;
 }
 
 .preloader__visible > .preloader_content {
