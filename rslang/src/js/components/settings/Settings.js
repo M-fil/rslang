@@ -214,8 +214,8 @@ export default class Settings {
   static defaultSettingsOptions() {
     const options = {
       main: {
-        newCardsPerDay: 7,
-        maxCardsPerDay: 10,
+        newCardsPerDay: 20,
+        maxCardsPerDay: 25,
         showTranslateWord: true,
         showWordMeaning: true,
         showWordExample: true,

@@ -9,6 +9,7 @@ import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 import SavannahGame from '../mini-games/savannah/Savannah';
 
+import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 
@@ -78,6 +79,7 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      App.removeModalElements();
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';
@@ -85,6 +87,19 @@ class App {
       this.renderToggleAuthentication();
       this.activateAuthenticationForm();
       this.preloader.hide();
+    }
+  }
+
+  static removeModalElements() {
+    const startGameWindow = document.querySelector('.start-game-window');
+    const exitButton = document.querySelector('.exit-button');
+
+    if (startGameWindow) {
+      startGameWindow.remove();
+    }
+
+    if (exitButton) {
+      exitButton.remove();
     }
   }
 
@@ -99,6 +114,11 @@ class App {
     await this.vocabulary.init();
     const html = await this.vocabulary.render();
     document.body.append(html);
+  }
+
+  async renderSpeakItGame() {
+    this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
+    await this.speakIt.run();
   }
 
   activateAuthenticationForm() {
@@ -148,7 +168,8 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await this.renderSavannahGame();
+      // await this.renderSavannahGame();
+      await this.renderSpeakItGame();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -191,8 +212,9 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      await this.renderSavannahGame();
-      this.preloader.hide();
+      // await this.renderSavannahGame();
+      await this.renderSpeakItGame();
+      this.prelodaer.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
@@ -202,8 +224,10 @@ class App {
         ...data,
       };
       await this.initSettings();
-      await this.renderSavannahGame();
+      // await this.renderSavannahGame();
       this.preloader.hide();
+      await this.renderSpeakItGame(this.state.user);
+      await this.renderVocabulary(this.state.user);
     }
   }
 

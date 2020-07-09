@@ -18,6 +18,18 @@ const {
 } = urls;
 
 export default class ShortTermStatistics extends ModalWindow {
+  constructor() {
+    super();
+    if (ShortTermStatistics.exists) {
+      return ShortTermStatistics.instance;
+    }
+
+    ShortTermStatistics.exists = true;
+    shortTermStatisticsConstants.instance = this;
+    this.audio = new Audio();
+    this.initilized = false;
+  }
+
   render(wrongWords, rightWords) {
     ModalWindow.changeDisplay(this.modal, 'block');
     ModalWindow.changeDisplay(this.modalCancel, 'none');
@@ -52,6 +64,7 @@ export default class ShortTermStatistics extends ModalWindow {
   clickStatisticaAudio() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.audio-pictures');
+
       if (target) {
         this.audio.src = `${WORDS_AUDIOS_URL}${event.target.nextSibling.dataset.audiosrc}`;
         this.audio.play();
