@@ -24,12 +24,14 @@
   padding-bottom: 25px;
 }
 .team_card {
-  width: 28%;
-  max-width: 340px;
-  height: 500px;
+  min-width: 28%;
+  max-width: 28rem;
+  // height: 500px;
   margin-top: 20px;
   border-radius: 10px;
   background-color: white;
+  box-shadow: 10px 10px 5px lightblue;
+  overflow: hidden;
 }
 .person-photo-block {
   justify-content: center;

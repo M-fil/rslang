@@ -20,6 +20,12 @@ const {
   WORK_ZHDANOV,
   WORK_ANDREEV,
   WORK_SHNIRKEVICH,
+  PHOTO_FILANOVVICH,
+  PHOTO_LATUSHKINA,
+  PHOTO_ANTONOV,
+  PHOTO_ZHDANOV,
+  PHOTO_ANDREEV,
+  PHOTO_SHNIRKEVICH,
 } = aboutTeam;
 
 export default class AboutTeam {
@@ -32,12 +38,12 @@ export default class AboutTeam {
   }
 
   render() {
-    this.createAboutPerson(NAME_FILANOVVICH, ABOUT_FILANOVVICH, WORK_FILANOVVICH, './src/assets/images/filanovich.jpg');
-    this.createAboutPerson(NAME_LATUSHKINA, ABOUT_LATUSHKINA, WORK_LATUSHKINA, './src/assets/images/latushkina.png');
-    this.createAboutPerson(NAME_ANTONOV, ABOUT_ANTONOV, WORK_ANTONOV, './src/assets/images/no_photo.png');
-    this.createAboutPerson(NAME_ZHDANOV, ABOUT_ZHDANOV, WORK_ZHDANOV, './src/assets/images/no_photo.png');
-    this.createAboutPerson(NAME_ANDREEV, ABOUT_ANDREEV, WORK_ANDREEV, './src/assets/images/andreev.png');
-    this.createAboutPerson(NAME_SHNIRKEVICH, ABOUT_SHNIRKEVICH, WORK_SHNIRKEVICH, './src/assets/images/no_photo.png');
+    this.createAboutPerson(NAME_FILANOVVICH, ABOUT_FILANOVVICH, WORK_FILANOVVICH, PHOTO_FILANOVVICH);
+    this.createAboutPerson(NAME_LATUSHKINA, ABOUT_LATUSHKINA, WORK_LATUSHKINA, PHOTO_LATUSHKINA);
+    this.createAboutPerson(NAME_ANTONOV, ABOUT_ANTONOV, WORK_ANTONOV, PHOTO_ANTONOV);
+    this.createAboutPerson(NAME_ZHDANOV, ABOUT_ZHDANOV, WORK_ZHDANOV, PHOTO_ZHDANOV);
+    this.createAboutPerson(NAME_ANDREEV, ABOUT_ANDREEV, WORK_ANDREEV, PHOTO_ANDREEV);
+    this.createAboutPerson(NAME_SHNIRKEVICH, ABOUT_SHNIRKEVICH, WORK_SHNIRKEVICH, PHOTO_SHNIRKEVICH);
   }
 
   createAboutPerson(name, aboutPerson, work, photoSrc) {
