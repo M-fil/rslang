@@ -75,7 +75,7 @@ class App {
   }
 
   async run() {
-    this.container = create('main', 'main-content', '', document.body);
+    this.container = create('main', 'main-page__content', '', document.body);
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
@@ -168,7 +168,6 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      // await this.renderSavannahGame();
       await this.renderSpeakItGame();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
@@ -212,9 +211,8 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      // await this.renderSavannahGame();
       await this.renderSpeakItGame();
-      this.prelodaer.hide();
+      this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
@@ -224,16 +222,14 @@ class App {
         ...data,
       };
       await this.initSettings();
-      // await this.renderSavannahGame();
+      await this.renderSpeakItGame();
       this.preloader.hide();
-      await this.renderSpeakItGame(this.state.user);
-      await this.renderVocabulary(this.state.user);
     }
   }
 
   static async renderMainGame(userState) {
     const mainGame = new MainGame(userState);
-    await mainGame.render('.main-content');
+    await mainGame.render('.main-page__content');
   }
 
   renderToggleAuthentication() {
