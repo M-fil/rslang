@@ -91,7 +91,7 @@ class App {
       await this.checkIsUserAuthorized();
     } catch (error) {
       this.renderAuthorizationBlock();
-      this.prelodaer.hide();
+      this.preloader.hide();
     }
   }
 
@@ -180,6 +180,7 @@ class App {
 
     this.clearMainContainersBeforeRender();
     document.body.scrollIntoView();
+    this.preloader.show();
     switch (pageCode) {
       case mainGame.code:
         await this.renderMainGame();
@@ -218,6 +219,7 @@ class App {
       default:
         this.renderMainPage();
     }
+    this.preloader.hide();
   }
 
   clearMainContainersBeforeRender() {
@@ -297,7 +299,7 @@ class App {
   async initSettings() {
     this.settings = new Settings(this.state.user);
     await this.settings.init();
-    this.settings.setUserChangesListener(this.updateUserState);
+    this.settings.setUserChangesListener(this.updateUserState.bind(this));
   }
 
   async initStatistics() {
@@ -365,7 +367,7 @@ class App {
           this.preloader.hide();
         } catch (error) {
           console.log(error);
-          this.prelodaer.hide();
+          this.preloader.hide();
           Authentication.createErrorBlock(error.message);
         }
       }
@@ -437,7 +439,7 @@ class App {
       await this.initAuxilaryComponents();
       this.activateMainPageHandlers();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
-      this.prelodaer.hide();
+      this.preloader.hide();
     } catch (error) {
       console.log(error);
       const parsedData = JSON.parse(savedUserData);
@@ -450,7 +452,7 @@ class App {
       await this.initAuxilaryComponents();
       this.activateMainPageHandlers();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
-      this.prelodaer.hide();
+      this.preloader.hide();
     }
   }
 
