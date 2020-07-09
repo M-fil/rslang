@@ -164,11 +164,11 @@ export default class Statistics {
   controlGroupInStatistics(group, requestedDate) {
     const date = requestedDate || this.currentdate;
     if (!Object.prototype.hasOwnProperty.call(this.statistics.optional, date)) {
-      this.statistics.optional[this.currentdate] = {};
+      this.statistics.optional[date] = {};
     }
 
     if (!Object.prototype.hasOwnProperty.call(this.statistics.optional[date], group)) {
-      this.statistics.optional[this.currentdate][group] = Statistics.getDefaultStatisticObject();
+      this.statistics.optional[date][group] = Statistics.getDefaultStatisticObject();
     }
   }
 
