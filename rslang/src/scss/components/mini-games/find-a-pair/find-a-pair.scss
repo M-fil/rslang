@@ -7,12 +7,17 @@
   width: auto;
   max-width: $content-width;
   @include media-tablet {
-    min-width: 320px;
+    min-width: 285px;
   }
 }
 
 .find-a-pair__start-page {
-  width: fit-content;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  @include font(1.6rem, normal);
 }
 
 .find-a-pair__about,

@@ -2,11 +2,12 @@
   display: flex;
   justify-content: space-between;
   vertical-align: baseline;
-  width: 100%;
+  padding: 3px 40px 0;
   @include font(1.5rem);
   @include media-tablet {
     position: relative;
     justify-content: left;
+    padding-left: 10px;
   }
 }
 
