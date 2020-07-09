@@ -5,7 +5,7 @@
 }
 
 .word-card-letter {
-  @include font(2.5rem);
+  @include font(2rem);
 
   &_correct {
     color: $main-game-correct-letter-color;
@@ -37,7 +37,7 @@
 }
 
 .word-card__fake-word {
-  @include font(2.5rem);
+  @include font(2.1rem);
 
   display: inline;
   opacity: 0;
@@ -68,9 +68,12 @@
 
 .word-card__input {
   @include main-game-input;
-  @include font(2.5rem);
+  @include font(2.1rem);
 
+  background: $main-game-word-card-input-background;
+  border-width: 1px;
   padding: 0 2px;
+  height: 3.1rem;
 }
 
 .word-card__input-container {
@@ -87,8 +90,12 @@
   bottom: 0;
   left: 0;
   right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   height: 100%;
-  text-align: center;
   z-index: -1;
 
   &_visible {
@@ -102,7 +109,7 @@
 }
 
 .word-card__sentences {
-  @include font(1.5rem, 2rem, 300);
+  @include font(2rem, 2.5rem, 300);
 
   text-align: center;
   margin-bottom: 10px;

@@ -20,14 +20,14 @@ class FormControll {
 
     const userAnswerHTML = create('div', 'word-card__user-answer');
     this.inputHTML = create('input', 'word-card__input', '', null, ['type', 'text']);
-    const inputWrapper = create('div', 'word-card__input-wrapper', [this.inputHTML, userAnswerHTML]);
+    this.inputWrapper = create('div', 'word-card__input-wrapper', [this.inputHTML, userAnswerHTML]);
     this.inputHTML.style.width = this.getInputCSSWidth();
 
     this.buttonsContainer = create(
       'div', 'main-game__form-buttons',
       [this.showButtonShowAnswer ? showAnswerButton : '', nextButton],
     );
-    const inputContainer = create('div', 'word-card__input-container', inputWrapper);
+    const inputContainer = create('div', 'word-card__input-container', this.inputWrapper);
 
     this.HTML = create('form', 'main-game__form', [inputContainer, this.buttonsContainer]);
     return this.HTML;
@@ -48,6 +48,7 @@ class FormControll {
     this.fakeWord = create('div', 'word-card__fake-word', this.word);
     create('div', 'word-card__fake-word-container', this.fakeWord, document.body);
 
+    console.log('fakeWord', this.word)
     return `${this.fakeWord.offsetWidth}px`;
   }
 
