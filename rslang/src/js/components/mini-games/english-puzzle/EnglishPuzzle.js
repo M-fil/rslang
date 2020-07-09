@@ -72,10 +72,9 @@ export default class EnglishPuzzle {
 
     this.preloader.render();
 
-    this.wrapper = create('div', 'english-puzzle-wrapper', [this.startMenu, this.gameForm, this.resultForm, startWindow.closeButton.render()]);
+    this.wrapper = create('div', 'english-puzzle-wrapper', [this.startMenu, this.gameForm, this.resultForm]);
     document.querySelector(elementQuery).appendChild(this.wrapper);
 
-    startWindow.closeButton.addCloseCallbackFn((this.actionOnCloseButton).bind(this));
     this.actionsOnSupportButtons();
     this.controlButtonsAction();
   }

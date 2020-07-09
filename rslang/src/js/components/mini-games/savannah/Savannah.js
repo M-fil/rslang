@@ -72,7 +72,7 @@ export default class SavannahGame {
   async render(elementQuery) {
     this.learnedWords();
     this.startPage = this.startWindow.render(GAME_NAME, RULES, this.isVocabularyWords);
-    this.content = document.querySelector('.main-content');
+    this.content = document.querySelector(elementQuery);
     this.container = create('div', 'container', this.startPage, this.content);
     this.container.append(this.closeButton.render());
     this.allWords = document.querySelectorAll('.word');

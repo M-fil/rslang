@@ -19,6 +19,7 @@
     margin-top: 0;
   }
 }
+
 .start-button {
   padding: 10px;
   width: 120px;
@@ -26,18 +27,23 @@
   margin: 20px auto 0;
   display: block;
 }
+
 .game-name {
   @include font(3rem);
 }
+
 .game-rules {
   @include font(2.2rem);
 }
+
 .select__container {
   padding-top: 25px;
 }
+
 .select__title {
   @include font(2.0rem);
 }
+
 .select__item {
   margin-top: 10px;
 }
