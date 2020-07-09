@@ -339,9 +339,12 @@ class Vocabulary {
   static actionsOnListComponent() {
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('word-item__main')) {
-        console.log('adasd');
         const parent = event.target.parentNode;
-        console.log(parent);
+        event.target.classList.toggle('active-vocword-button');
+        parent.childNodes[1].classList.toggle('active-vocword');
+      } else if (event.target.parentNode.classList.contains('word-item__main-info')) {
+        const parent = event.target.parentNode.parentNode.parentNode;
+        event.target.parentNode.parentNode.classList.toggle('active-vocword-button');
         parent.childNodes[1].classList.toggle('active-vocword');
       }
     });
