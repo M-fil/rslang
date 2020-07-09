@@ -302,7 +302,7 @@ class App {
 
   async initStatistics() {
     this.statistics = new Statistics();
-    await this.settings.init();
+    await this.statistics.init();
   }
 
   async initVocabulary() {

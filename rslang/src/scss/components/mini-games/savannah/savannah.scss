@@ -2,10 +2,7 @@
   height: 100vh;
   background: $savannah-background;
 }
-.container {
-  @include font(1rem, 1.2);
-  width: 80%;
-}
+
 .number-reverse {
   display: none;
   position: absolute;
