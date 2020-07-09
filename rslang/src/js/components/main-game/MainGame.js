@@ -71,11 +71,12 @@ const defaultStatisticsAdditional = {
 };
 
 class MainGame {
-  constructor(userState) {
+  constructor(parameters) {
     this.vocabulary = null;
     this.settings = null;
     this.statistics = null;
     this.preloader = new Preloader();
+    this.exitButton = parameters.closeButton;
     document.body.classList.add('main-game_opened');
 
     this.state = {
@@ -103,7 +104,7 @@ class MainGame {
         isAudioPlaybackEnabled: true,
         isTranslationsEnabled: true,
       },
-      userState,
+      userState: parameters.user,
     };
   }
 
@@ -355,12 +356,12 @@ class MainGame {
   }
 
   renderExitButton() {
-    this.exitButton = create(
-      'button', 'standard__exit-button main-game__exit-button',
-      '<i class="fas fa-times"></i>', null,
-      ['id', 'button-go-to-main-page'],
-    );
-    return this.exitButton;
+    const { modalClose } = this.exitButton.modalWindow;
+    modalClose.id = 'button-go-to-main-page';
+    this.exitButton.exitButton.classList.add('main-game__exit-button');
+    this.exitButton.show();
+
+    return this.exitButton.render();
   }
 
   renderMainGameControls() {
