@@ -235,7 +235,7 @@ class App {
   }
 
   async renderMainGame() {
-    this.mainGame = new MainGame(this.state.user);
+    this.mainGame = new MainGame(this.createMiniGameParameterObject());
     await this.mainGame.render('.main-page__content');
   }
 
