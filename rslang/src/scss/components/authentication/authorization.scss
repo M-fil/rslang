@@ -144,4 +144,13 @@ $xs: 500px;
   .chicken {
   	display: none;
   }
+
+  .authorization__field-container {
+  	display: flex;
+		flex-direction: column;
+  }
+
+  .main-content button {
+  	width: 200px;
+  }
 }

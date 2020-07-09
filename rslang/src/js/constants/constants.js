@@ -249,7 +249,7 @@ const sprint = {
   BONUS_ANSWERS: 12,
   BONUS_TIME: 5,
   RIGHT_ANSWER: '✓',
-  GAME_TIMER: 10,
+  GAME_TIMER: 60,
   SCORE: 'Ваш счёт: ',
   CORRECT_ANSWERS: 'Знаю ',
   INCORRECT_ANSWERS: 'Ошибок ',
