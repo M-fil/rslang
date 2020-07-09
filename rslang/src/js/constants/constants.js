@@ -237,6 +237,7 @@ const startWindow = {
 
 const sprint = {
   START_TIMER: 5,
+  GAME_NAME: 'Спринт',
   GAME_RULES: 'Лео-спринт – скоростная тренировка. За 60 секунд надо угадывать, правильный ли перевод предложен к английскому слову.<br>Допфункционал: за 12 подряд правильно угаданных слов даётся +5 секунд к таймеру игры.',
   POWER1: 1,
   POWER2: 2,
@@ -248,11 +249,13 @@ const sprint = {
   BONUS_ANSWERS: 12,
   BONUS_TIME: 5,
   RIGHT_ANSWER: '✓',
-  GAME_TIMER: 60,
+  GAME_TIMER: 10,
   SCORE: 'Ваш счёт: ',
   CORRECT_ANSWERS: 'Знаю ',
   INCORRECT_ANSWERS: 'Ошибок ',
   EXIT_ANSWER: 'Вы, действительно, хотите вернуться в меню игры?',
+  KEYBOARD_BUTTON_WRONG: 'ArrowLeft',
+  KEYBOARD_BUTTON_CORRECT: 'ArrowRight',
 };
 
 export {

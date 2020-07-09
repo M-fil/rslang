@@ -146,10 +146,8 @@ class App {
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
       this.sprint = new Sprint(this.createMiniGameParameterObject());
+      console.log(this.createMiniGameParameterObject());
       this.sprint.SprintRender();
-      // await App.renderMainGame(this.state.user);
-      // await this.renderVocabulary(this.state.user);
-
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -189,8 +187,6 @@ class App {
       };
       await this.initSettings();
       this.sprint.SprintRender();
-      // await App.renderMainGame(this.state.user);
-      // await this.renderVocabulary(this.state.user);
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
@@ -201,8 +197,6 @@ class App {
       };
       await this.initSettings();
       this.sprint.SprintRender();
-      // await App.renderMainGame(this.state.user);
-      // await this.renderVocabulary(this.state.user);
     }
   }
 
