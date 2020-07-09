@@ -5,3 +5,15 @@
 %main-game-button-transition {
   transition: 0.2s ease-in;
 }
+
+%start-window-start-button-transition {
+  transition: all 300ms ease;
+}
+
+%start-window-start-button-before-transition {
+  transition: all 0ms ease;
+}
+
+%start-window-start-button-before-hover-transition {
+  transition: all 300ms ease;
+}

@@ -1,45 +1,165 @@
 .container {
-  width: 70%;
-  height: 100vh;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: $game-background-color;
 }
+
 .start-game-window {
   width: 50%;
+  height: 55%;
+  background-color: $modal-window-main-background;
   padding: 10px 15px;
-  border: 1px solid $start-game-window-border-color;
+  border-radius: 10px;
   text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 15%;
-  @include media-tablet {
-    width: 90%;
-    margin-top: 0;
+}
+
+.start-button {
+  position: relative;
+  padding: 10px;
+  min-width: 120px;
+  margin: 0 10px 0 10px;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  border: 1.5px solid $start-game-window-border-color;
+  text-transform: uppercase;
+  @extend %start-window-start-button-transition;
+  box-shadow: 0px 4px 10px 2px rgba($start-game-window-border-color, 0.2);
+  z-index: 1;
+
+  &:before{
+    position: absolute;
+    content: '';
+    width: 0%;
+    height: 100%;
+    background: $game-background-or-hover-for-buttons;
+    top: 0;
+    left: 50%;
+    z-index: -1;
+    @extend %start-window-start-button-before-transition;
+  }
+  
+  &:hover{
+    color: $start-game-window-text-hover-color; 
+    box-shadow:none;
+    &:before{
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      background: $game-background-or-hover-for-buttons;
+      top: 0;
+      left: 0%;
+      z-index: -1;
+      @extend %start-window-start-button-before-hover-transition;
+    }
   }
 }
-.start-button {
-  padding: 10px;
-  width: 120px;
-  text-transform: uppercase;
-  margin: 20px auto 0;
-  display: block;
-}
+
 .game-name {
-  @include font(3rem);
+  font-size: 2em;
+  margin-bottom: 15px;
 }
+
 .game-rules {
-  @include font(2.2rem);
+  font-size: 1.5em;
 }
-.select__container {
-  padding-top: 25px;
-}
-.select__title {
-  @include font(2.0rem);
-}
-.select__item {
+
+.gameWindow__container {
   margin-top: 10px;
+  height: 40%;
+}
+
+.gameWindow__select-title {
+  font-size: 1.2em;
+}
+
+.gameWindow__container .select__item {
+  margin-top: 10px;
+  height: 20%;
+  font-size: 1.1em;
+  border-radius: 5px;
+  border: 1px solid $game-background-or-hover-for-buttons;
+  background-color: none;
+}
+
+.gameWindow__container .select__item:focus,
+.gameWindow__container .select__item:hover {
+  cursor: pointer;
+  outline: none;
+  border-color: 1px solid $game-background-color;
 }
 
 .select_hidden {
   display: none;
+}
+
+@media(max-width: 1150px) {
+  .start-game-window {
+    width: 55%;
+  }
+}
+
+@media(max-width: 1024px) {
+  .start-game-window {
+    height: 60%;
+  }
+}
+
+@media(max-width: 820px) {
+  .game-rules {
+    font-size: 1.3em;
+  }
+}
+
+@media(max-width: 600px) {
+  .start-game-window {
+    height: 70%;
+    width: 65%;
+  }
+}
+
+@media(max-width: 500px) {
+  .start-game-window {
+    height: 75%;
+    width: 80%;
+  }
+}
+
+@media(max-width: 400px) {
+  .start-game-window {
+    width: 85%;
+  }
+
+  .gameWindow__container {
+    height: 35%;
+  }
+}
+
+@media(max-width: 360px) {
+  .game-rules {
+    font-size: 1.2em;
+  }
+
+  .gameWindow__select-title {
+    font-size: 1.1em;
+  }
+
+  .gameWindow__container {
+    height: 30%;
+  }
+
+  .start-button {
+    margin: 0 5px 0 5px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  * {
+    overflow-x: hidden;
+  }
 }
