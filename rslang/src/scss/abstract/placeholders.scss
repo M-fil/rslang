@@ -5,3 +5,15 @@
 %close-button-transition {
   transition: all 300ms;
 }
+
+%modal-window-button-hover {
+  transition: all 300ms ease;
+}
+
+%modal-window-button-before {
+  transition: all 0ms ease;
+}
+
+%modal-window-button-before-hover {
+  transition: all 300ms ease;
+}
