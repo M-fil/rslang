@@ -248,7 +248,7 @@ const aboutTeam = {
   ABOUT_ANDREEV: '',
   ABOUT_SHNIRKEVICH: '',
   PHOTO_FILANOVVICH: './src/assets/images/filanovich.jpg',
-  PHOTO_LATUSHKINA: './src/assets/images/latushkina.png',
+  PHOTO_LATUSHKINA: './src/assets/images/latushkina.jpg',
   PHOTO_ANTONOV: './src/assets/images/antonov.jpg',
   PHOTO_ZHDANOV: './src/assets/images/no_photo.png',
   PHOTO_ANDREEV: './src/assets/images/andreev.png',
