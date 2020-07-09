@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 .sprint-game-wrapper {
-	background: linear-gradient(#4CAF50, transparent);
+	background: url(/assets/images/sprint_img.jpg) no-repeat;
+	background-size: cover;
+	background-position: center;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -34,11 +38,20 @@
 	font-size: 6rem;
 }
 
+.game-name {
+	font-family: 'Press Start 2P', cursive;
+	color: #3bffe4;
+}
+
 .game-rules {
 	font-size: 3rem;
 	width: 70vw;
 	line-height: normal;
 	text-align: center;
+	margin-bottom: 2rem;
+	font-family: 'Press Start 2P', cursive;
+	color: #FFEB3B;
+	line-height: 2;
 }
 
 .game-choice {
@@ -48,6 +61,13 @@
 	justify-content: center;
 	margin: 4rem 0;
 	font-size: 2rem;
+}
+
+.select__container.gameWindow__container select {
+	font-family: 'Press Start 2P', cursive;
+	font-size: 14px;
+	margin: 1rem 0;
+	height: 3rem;
 }
 
 .game-choice select {
@@ -67,13 +87,14 @@
 }
 
 .start-button, .restart-button, .GoToMenu-button {
-	font-size: 4rem;
-	width: 20rem;
-	background: linear-gradient(#FF5722, #FFEB3B);
+	font-size: 3rem;
+	background: linear-gradient(#2196F3, #3d3bff);
 	border: none;
 	border-radius: 12px;
 	margin-top: 5rem;
 	color: white;
+	font-family: 'Press Start 2P', cursive;
+	padding: 2rem;
 }
 
 .sprint-btn:active {
@@ -92,6 +113,8 @@
 .timer {
 	font-size: 12rem;
 	text-align: center;
+	color: white;
+	font-family: 'Press Start 2P', cursive;
 }
 
 .game-container {
@@ -112,14 +135,15 @@
 	border: none;
 	border-radius: 12px;
 	color: white;
+	font-family: 'Press Start 2P', cursive;
 }
 
 .yes-button {
-	background: linear-gradient(#07b900, #8BC34A);
+	background: linear-gradient(#046500, #7bb13d);
 }
 
 .no-button {
-	 background: linear-gradient(#e63b05, #F44336);
+	 background: linear-gradient(#bf0000, #F44336);
 }
 
 .game_answers-container {
@@ -185,11 +209,13 @@ svg circle {
 	font-size: 4rem;
 	position: absolute;
 	top: 5%;
+	font-family: 'Press Start 2P', cursive;
 }
 
 .factor {
 	font-size: 2rem;
 	font-weight: bold;
+	font-family: 'Press Start 2P', cursive;
 }
 
 .stat-container {
@@ -201,6 +227,7 @@ svg circle {
 	min-height: 100vh;
 	background: white;
 	font-size: 2rem;
+	font-family: 'Press Start 2P', cursive;
 }
 
 .incorrect-answers, .correct-answers {
@@ -215,6 +242,7 @@ svg circle {
 
 .word, .Translation {
 	font-size: 3rem;
+	color: white;
 }
 
 .word:hover {
@@ -225,7 +253,7 @@ svg circle {
 
 .restart-button {
 	position: fixed;
-	bottom: 30%;
+	bottom: 8vh;
 	right: 10%;
 }
 
@@ -245,6 +273,7 @@ svg circle {
 .answer-cont {
 	display: flex;
 	align-items: center;
+	margin: 1rem 0;
 }
 
 .sound-icon {
@@ -289,3 +318,65 @@ svg circle {
 .game-audio_button:active {
 	transform: scale(1);
 }
+@media (max-width: 1400px) {
+  .game-rules {
+  	font-size: 2rem;
+  }
+}
+
+@media (max-width: 775px) {
+  .start-button, .restart-button, .GoToMenu-button {
+  	font-style: 2rem;
+  }
+
+  .game-rules {
+  	font-size: 16px;
+  }
+
+  .start-game-window h2 {
+    font-size: 4rem;
+  }
+
+  .game-container {
+  	width: 80vw;
+  }
+}
+
+@media (max-width: 500px) {
+  .game-rules {
+  	font-size: 14px;
+  	width: 80%;
+  }
+
+  .start-button, .restart-button, .GoToMenu-button {
+  	margin-top: 2rem;
+  	font-size: 2rem;
+  }
+
+  .answers_buttons-container {
+  	display: flex;
+    flex-direction: column;
+  }
+
+  .no-button {
+  	order: 1;
+    margin-top: 2rem !important;
+  }
+
+  .factor {
+  	font-size: 1.5rem;
+  }
+
+  .word {
+  	font-size: 2rem;
+  }
+
+  .score {
+  	top: 15%;
+  }
+
+  .stat-container {
+  	font-size: 1rem;
+  }
+}
+

@@ -86,13 +86,14 @@ export default class SprintGame {
     const GameAudioButton = document.querySelector(".game-audio_button");
     let counter = 4;
     document.addEventListener('click', (e) => {
-      if (e.target.classList[0] === 'yes-button') {
+      console.log(e.target);
+      if (e.target === yesButton) {
         if (window.answer) this.Correct();
         else this.Incorrect();
         this.GetWordData();
         Disabled();
         }
-      if (e.target.classList[0] === 'no-button') {
+      if (e.target === noButton) {
         if (!window.answer) this.Correct();
         else this.Incorrect();
         this.GetWordData();
