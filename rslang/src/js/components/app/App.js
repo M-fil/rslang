@@ -69,9 +69,13 @@ class App {
       const target = event.target.closest('#button-go-to-main-page');
 
       if (target) {
-        this.container.innerHTML = '';
+        this.goToTheMainPageHanlder();
       }
     });
+  }
+
+  goToTheMainPageHanlder() {
+    this.container.innerHTML = '';
   }
 
   async run() {
@@ -168,7 +172,7 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderMainGame();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
