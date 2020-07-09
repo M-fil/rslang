@@ -1,0 +1,25 @@
+.speak-it-statistics__buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.speak-it-statistics__button {
+  @include font(4rem, 5rem);
+  
+  color: $speak-it-standard-button-text-color;
+  border: 3px solid $speak-it-standard-button-text-color;
+  background-color: $speak-it-standard-button-background;
+  border-radius: 20px;
+  padding: 5px 10px;
+  transition: 0.3s ease all;
+
+  &:hover {
+    color: $speak-it-incorrect-color;
+    border-color: $speak-it-incorrect-color;
+  }
+}
