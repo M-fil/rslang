@@ -89,7 +89,7 @@ export default class EnglishPuzzle {
       this.dragAndDropActions();
       document.querySelector('.bonus-button').classList.remove('active-bonus');
     } catch (e) {
-      console.error(e);
+      this.preloader.hide();
     }
   }
 

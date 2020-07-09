@@ -66,6 +66,7 @@ export default class SpeakIt {
     this.vocabulary = new Vocabulary(this.userState);
     this.statistics = new Statistics(this.userState);
     this.preloader = new Preloader();
+    this.preloader.render();
     this.shortTermStatistics = new StatisticsBlock();
 
     this.state = {
@@ -103,7 +104,6 @@ export default class SpeakIt {
     const startWindowHTML = this.startWindow.render(
       SPEAKIT_TITLE, this.startWindow.renderExplanations(), isShowLearnedWordsOption,
     );
-    this.preloader.render();
     this.activateSelectLevelOnStartPage();
     await this.activateWordsToLearnSelect();
     this.startWindowContainer = create('div', 'start-window-container', startWindowHTML);
@@ -158,7 +158,6 @@ export default class SpeakIt {
       mainContainerWrapper.append(navigationContainer);
     }
 
-    console.log(this.state.currentWordsType);
     if (this.state.currentWordsType === SELECT_OPTION_LEARNED_WORDS_VALUE) {
       this.navigation.hide();
     } else {

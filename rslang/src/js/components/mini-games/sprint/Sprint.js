@@ -80,7 +80,6 @@ export default class SprintGame {
     this.Translation.innerHTML = arr[this.Random(2)];
     window.answer = this.Translation.innerHTML === arr[1];
     window.ScoreTranslate = word.wordTranslate;
-    console.log(word);
   }
 
   Correct() {

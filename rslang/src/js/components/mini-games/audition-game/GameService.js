@@ -5,28 +5,29 @@ import create from '../../../utils/сreate';
 import { shuffle } from '../../../utils/shuffle';
 import { urls, auditionGameVariables, vocabularyConstants } from '../../../constants/constants';
 import Preloader from '../../preloader/Preloader';
-import Vocabulary from  '../../vocabulary/Vocabulary'
+import Vocabulary from '../../vocabulary/Vocabulary';
 
 export default class GameService {
   constructor(user) {
     this.user = user;
-   /* this.user = {
+    /* this.user = {
       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZmNlZGJmMjM3ODBlMDAxNzQ4N2MyYSIsImlhdCI6MTU5MzcxMTAxMSwiZXhwIjoxNTkzNzI1NDExfQ.ffkTcQtdTj6BvZnHiG9wbZ1cxgr_kK0IcjJ76bdnuSM',
       userId: '5efcedbf23780e0017487c2a',
-      };*/
+      }; */
   }
-  async getVocabularyData(){
+
+  async getVocabularyData() {
     this.voc = new Vocabulary(this.user);
     await this.voc.init();
-    this.vocabulary  =  await this.voc.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE,  true);  
+    this.vocabulary = await this.voc.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE, true);
   }
+
   async preloaderInit() {
     this.preloader = new Preloader();
     this.preloader.render();
     this.isMuted = false;
     this.isHintAvailable = true;
     this.correctAnswersCounter = 0;
-    
   }
 
   async initRound(lives, roundsAll, currentRound, roundResults) {
@@ -36,7 +37,7 @@ export default class GameService {
     const data = await gameDataService.mapping(currentRound, this.isMuted);
     const answers = document.querySelector('.audition-game__answers');
     const arr = data.array;
-    console.log('DATA:',data);
+    console.log('DATA:', data);
     const mainWord = data.mainWordToAsk;
     this.createPossibleWords(arr, answers);
     const audio = new Audio(`${urls.mainAudioPath}${mainWord.audio}`);
@@ -54,14 +55,15 @@ export default class GameService {
     this.soundHandler();
     this.hintHandler(mainWord);
   }
-  genGame(){
+
+  genGame() {
     const wrapper = document.querySelector('.audition-game__wrapper');
     this.container = create('div', 'audition-game__container hide', '', wrapper);
     const soundCont = create('div', 'audition-game__sound__container', '', this.container);
     const hintCont = create('div', 'audition-game__hint__container', '', this.container);
     if (!this.isMuted) create('div', 'audition-game__sound__button', '', soundCont);
     else create('div', 'audition-game__sound__button audition-game__sound__buttonMuted', '', soundCont);
-    document.querySelector('.audition-game__sound__button')
+    document.querySelector('.audition-game__sound__button');
     create('div', 'audition-game__hint__button', '', hintCont);
     create('div', 'close', '', this.container);
     const game = create('div', 'audition-game__game', '', this.container);
@@ -70,6 +72,7 @@ export default class GameService {
     create('div', 'audition-game__answers', '', game);
     create('button', 'audition-game__button__next Enter', `${auditionGameVariables.idkBtn}`, game);
   }
+
   nextRound(lives, roundsAll, currentRound, roundResults) {
     if (lives > 0 && currentRound !== roundsAll) {
       let curr = currentRound;
@@ -105,7 +108,7 @@ export default class GameService {
         this.designUncheckedPossibleWords(elements);
         document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.translate}`;
         document.querySelector('.audition-game__audio__pulse').style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
-       // this.vocabulary.addWordToTheVocabulary(mainWord, vocabularyConstants.LEARNED_WORDS_TITLE);
+        // this.vocabulary.addWordToTheVocabulary(mainWord, vocabularyConstants.LEARNED_WORDS_TITLE);
         if (event.target.innerText.includes(mainWord.translate)) {
           event.target.innerHTML = `${auditionGameVariables.checkMark}${event.target.innerText}`;
           const audioRoundResult = new Audio(urls.correctSound);

@@ -190,8 +190,9 @@ class Vocabulary {
       .filter((word) => word.optional.vocabulary === vocabularyType);
     return (getNormalObject) ? wordsArr.map((word) => word.optional.allData) : wordsArr;
   }
+
   getAllVocabulariesData(getNormalObjects = false) {
-   let vocabulariesWordsObject;
+    let vocabulariesWordsObject;
     if (getNormalObjects) {
       vocabulariesWordsObject = {
         wordsToLearn: this.state.vocabularies.wordsToLearn.map((word) => word.optional.allData),
@@ -203,8 +204,7 @@ class Vocabulary {
       vocabulariesWordsObject = this.state.vocabularies;
     }
     return vocabulariesWordsObject;
-  }	  
-
+  }
 
   getAllVocabulariesData(getNormalObjects = false) {
     let vocabulariesWordsObject;

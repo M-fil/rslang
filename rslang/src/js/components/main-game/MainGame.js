@@ -75,7 +75,6 @@ class MainGame {
     this.vocabulary = null;
     this.settings = null;
     this.statistics = null;
-    this.preloader = new Preloader();
     this.exitButton = parameters.closeButton;
     document.body.classList.add('main-game_opened');
 
@@ -125,13 +124,13 @@ class MainGame {
   }
 
   async render(elementQuery) {
+    this.preloader = new Preloader();
     const { currentWordIndex } = this.state;
 
     const mainGameHTML = create('div', 'main-game');
     document.querySelector(elementQuery).append(mainGameHTML);
 
     try {
-      this.preloader.render();
       this.preloader.show();
 
       await this.initSettings();
@@ -909,7 +908,6 @@ class MainGame {
       const removeWordTarget = event.target.closest('.main-game__remove-word');
       const addToDifficultTarget = event.target.closest('.main-game__add-to-difficult');
 
-      this.preloader.show();
       if (removeWordTarget && showButtonDelete) {
         await this.renderWordAfterVocabularyButtonClick(
           removeWordTarget, REMOVED_WORDS_TITLE,
@@ -922,13 +920,13 @@ class MainGame {
           ADD_TO_DIFFICULT_WORDS, ADD_TO_DIFFICULT_WORDS_CLICKED,
         );
       }
-      this.preloader.hide();
     });
   }
 
   async renderWordAfterVocabularyButtonClick(
     target, vocbularyType, buttonText, activeButtonText,
   ) {
+    this.preloader.show();
     this.toggleVocabularyButtons(false);
     await this.checkIfDailyNormCompleted();
     target.textContent = activeButtonText;
@@ -938,6 +936,7 @@ class MainGame {
     await this.setStatisticsData();
     this.wordsSelectList.enable();
     this.state.audio.pause();
+    this.preloader.hide();
 
     setTimeout(() => {
       target.textContent = buttonText;

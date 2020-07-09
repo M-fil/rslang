@@ -99,12 +99,12 @@ class MainPage {
 
     return container;
   }
-  
+
   static renderGoal(goalText, imageSrc) {
     const container = create('div', 'main-page__goal');
     create('img', 'goal__image', '', container, ['src', imageSrc]);
     create('div', 'goal__text', goalText, container);
-  
+
     return container;
   }
 }

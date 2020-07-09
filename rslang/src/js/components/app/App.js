@@ -132,6 +132,7 @@ class App {
         this.saveCurrentPage();
         this.renderMainPage();
         BurgerMenu.makeBurgerMenuIconVisible();
+        document.body.classList.add('main-game_opened');
       }
     });
   }
@@ -187,6 +188,7 @@ class App {
 
     this.clearMainContainersBeforeRender(pageCode);
     document.body.scrollIntoView();
+    document.body.classList.remove('main-game_opened');
     this.preloader.show();
     switch (pageCode) {
       case mainGame.code:

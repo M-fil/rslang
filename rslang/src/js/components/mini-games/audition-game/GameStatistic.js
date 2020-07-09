@@ -1,12 +1,13 @@
 import create from '../../../utils/сreate';
 import { urls, auditionGameVariables } from '../../../constants/constants';
 import AuditionGame from './AuditionGame';
-import Statistics from '../../statistics/Statistics'
+import Statistics from '../../statistics/Statistics';
 
 export default class GameStatistic {
   constructor(userData) {
-    this.user = userData;  
+    this.user = userData;
   }
+
   statistics(resultObj) {
     const correctArray = resultObj.filter((res) => res.result === auditionGameVariables.correct);
     const failArray = resultObj.filter((res) => res.result === auditionGameVariables.fail);
@@ -14,12 +15,12 @@ export default class GameStatistic {
     const user = {
       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZmNlZGJmMjM3ODBlMDAxNzQ4N2MyYSIsImlhdCI6MTU5MzcxMTAxMSwiZXhwIjoxNTkzNzI1NDExfQ.ffkTcQtdTj6BvZnHiG9wbZ1cxgr_kK0IcjJ76bdnuSM',
       userId: '5efcedbf23780e0017487c2a',
-      };
+    };
     const stat = new Statistics(user);
     stat.init();
-    setTimeout(()=>{
-      stat.saveGameStatistics('auditiongame',correctArray.length,failArray.length);
-    },5000);
+    setTimeout(() => {
+      stat.saveGameStatistics('auditiongame', correctArray.length, failArray.length);
+    }, 5000);
     const wrapper = document.querySelector('.audition-game__wrapper');
     const modal = create('div', 'modalAudition', '', wrapper);
     const modalContent = create('div', 'modal-content', '', modal);
@@ -44,9 +45,9 @@ export default class GameStatistic {
   closeEventHandler() {
     document.querySelector('.cancelToClose').addEventListener('click', () => {
       document.querySelector('.audition-game__wrapper').remove();
-      //document.querySelector('.audition-game__startScreen').classList.toggle('hide');
+      // document.querySelector('.audition-game__startScreen').classList.toggle('hide');
       const audition = new AuditionGame();
-    audition.render(auditionGameVariables.Lives,auditionGameVariables.Rounds);
+      audition.render(auditionGameVariables.Lives, auditionGameVariables.Rounds);
     });
   }
 

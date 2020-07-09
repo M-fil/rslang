@@ -39,14 +39,14 @@ class BurgerMenu extends Header {
       this.renderHeaderButton(SETTINGS_BUTTON_TEXT, SETTINGS_CODE);
       this.wrapper.append(this.renderLogo());
 
-      return this.container; 
+      return this.container;
     }
 
     return this.burgerMenuHTML;
   }
 
   static closeBurgerMenu() {
-    const burgetMenuIcon = document.querySelector('.burger-menu-icon')
+    const burgetMenuIcon = document.querySelector('.burger-menu-icon');
     const burgerMenu = document.querySelector('.burger-menu');
     const burgerMenuOverlay = document.querySelector('.burger-menu-overlay');
 
@@ -59,7 +59,7 @@ class BurgerMenu extends Header {
   }
 
   static makeBurgerMenuIconVisible() {
-    const burgetMenuIcon = document.querySelector('.burger-menu-icon')
+    const burgetMenuIcon = document.querySelector('.burger-menu-icon');
 
     if (burgetMenuIcon) {
       burgetMenuIcon.classList.remove('hidden');
@@ -71,7 +71,7 @@ class BurgerMenu extends Header {
       const target = event.target.closest('.burger-menu-icon');
       const overlayTarget = event.target.closest('.burger-menu-overlay');
 
-      const burgetMenuIcon = document.querySelector('.burger-menu-icon')
+      const burgetMenuIcon = document.querySelector('.burger-menu-icon');
       const burgerMenu = document.querySelector('.burger-menu');
       const burgerMenuOverlay = document.querySelector('.burger-menu-overlay');
 
