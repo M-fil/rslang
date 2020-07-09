@@ -1,5 +1,4 @@
 import create from '../../utils/сreate';
-
 import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
@@ -33,8 +32,6 @@ const {
 
 class App {
   constructor() {
-    this.closeButton = new CloseButton();
-    this.shortTermStatistics = new ShortTermStatistics();
     this.state = {
       user: {
         isAuthrorized: false,
@@ -63,7 +60,6 @@ class App {
   activateGoToTheMainPageButton() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('#button-go-to-main-page');
-
       if (target) {
         this.container.innerHTML = '';
       }
@@ -144,6 +140,7 @@ class App {
       };
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
+      document.querySelector('.auth-wrapper').remove();
       await this.initSettings();
       this.sprint = new Sprint(this.createMiniGameParameterObject());
       this.sprint.SprintRender();
