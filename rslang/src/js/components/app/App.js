@@ -137,7 +137,11 @@ class App {
 
   saveCurrentPage(page = '') {
     this.state.currentPage = page;
-    localStorage.setItem('current-page', page);
+    if (page === SETTINGS_CODE) {
+      this.state.currentPage = '';
+    }
+
+    localStorage.setItem('current-page', this.state.currentPage);
   }
 
   renderStatistics() {
@@ -177,7 +181,7 @@ class App {
   async selectPageRenderingByPageCode(pageCode, isRenderAfterReload = true) {
     this.saveCurrentPage(pageCode);
 
-    this.clearMainContainersBeforeRender();
+    this.clearMainContainersBeforeRender(pageCode);
     document.body.scrollIntoView();
     this.preloader.show();
     switch (pageCode) {
@@ -221,9 +225,10 @@ class App {
     this.preloader.hide();
   }
 
-  clearMainContainersBeforeRender() {
-    this.container.innerHTML = '';
+  clearMainContainersBeforeRender(targetPage = '') {
+    if (targetPage === SETTINGS_CODE) return;
 
+    this.container.innerHTML = '';
     const startGameWindow = document.querySelector('.start-game-window');
     const dailyStatistics = document.querySelector('.daily-statistics__overlay');
     if (startGameWindow) {
@@ -287,6 +292,7 @@ class App {
   updateUserState(newUserData) {
     const { name, email } = newUserData;
 
+    this.mainPage.updateUserName(name || email);
     this.state.user = {
       ...this.state.user,
       name,

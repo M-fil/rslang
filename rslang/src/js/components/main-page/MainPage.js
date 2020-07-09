@@ -62,6 +62,10 @@ class MainPage {
     return this.HTML;
   }
 
+  updateUserName(userName) {
+    this.header.userNameHTML.textContent = userName;
+  }
+
   renderStartPageForMainPage() {
     const container = create('div', 'main-page__start-page');
     this.mainImage = create('img', 'start-page__main-image', '', null, ['src', MAIN_PAGE_CHICKEN_IMAGE]);

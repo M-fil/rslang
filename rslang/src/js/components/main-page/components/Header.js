@@ -53,8 +53,8 @@ class Header {
   renderUserBlock() {
     const container = create('div', 'header__user-block');
     const userIcon = create('i', 'fas fa-user header__user-icon');
-    const userName = create('span', 'user-name__text', this.userName);
-    create('div', 'header__user-name', [userIcon, userName], container);
+    this.userNameHTML = create('span', 'user-name__text', this.userName);
+    create('div', 'header__user-name', [userIcon, this.userNameHTML], container);
     this.logoutButton = create('button', 'header__logout-button', LOG_OUT_BUTTON_TEXT, container);
     this.logoutButton.addEventListener('click', this.modalWindow.show.bind(this.modalWindow));
 
