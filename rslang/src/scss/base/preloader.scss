@@ -4,6 +4,7 @@
   align-items: center;
   transition: 1s;
   opacity: 0.8;
+  z-index: 1000;
 }
 .preloader__visible {
   display: block;

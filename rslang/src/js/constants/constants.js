@@ -12,6 +12,34 @@ const urls = {
   errorSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3',
   WORDS_DATA_URL_ADDITIONAL:'https://wordsapiv1.p.rapidapi.com/words/',
   audioPNG: './src/assets/images/audio.png',
+  DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
+  CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
+  SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
+};
+
+const savannahConstants = {
+  SAVANNAH_SECONDS_COUNT: 3,
+  GAME_NAME: 'Саванна',
+  RULES: 'Тренировка Саванна развивает словарный запас. За каждые изученные 5 слов, ты повышаешь количество жизней в игре.',
+  START_BUTTON: 'Начать',
+  LAST_NUMBER: 1,
+  MAX_PAGE: 29,
+  MAX_WORDS_LINE: 4,
+  RANDOM_WORDS: 3,
+  LIVES: 5,
+  MIN_VOCABULARY_WORDS: 20,
+  END_ANIMATION: 6000,
+  FRAME: 24,
+  DIVIDER: 20,
+  ADD_LIVES: 5,
+  PLUS_LIVE: '+1 &#9829',
+  AUDIO_TICKING: './src/assets/audio/clock_ticking_loop.mp3',
+  AUDIO_CORRECT: './src/assets/audio/correct.mp3',
+  AUDIO_ERROR: './src/assets/audio/error.mp3',
+  AUDIO_BONUS: './src/assets/audio/bonus.mp3',
+  LIVES_IMAGE_BLACK: './src/assets/images/heart_black.png',
+  LIVES_IMAGE_INHERIT: './src/assets/images/heart_inherit.png',
+  MAX_WORDS: 20,
 };
 
 const authenticationConstants = {
@@ -87,8 +115,11 @@ const dailyStatisticsConstants = {
   COMPLETED_CARDS_TEXT: 'Карточек завершено',
   CORRECT_ANSWERS_PERCENTAGE_TEXT: 'Процент правильных ответов',
   NEW_WORDS_TEXT: 'Новые слова',
-  LONGEST_SERIES_OF_ANSWERS_TEXT: 'Саммая длинная серия правильных ответов',
+  LONGEST_SERIES_OF_ANSWERS_TEXT: 'Самая длинная серия правильных ответов',
   GO_TO_THE_MAIN_PAGE: 'Перейти на главную',
+  DIFFICULT_WORDS_TITLE_TEXT: 'Поздравляем! Вы повторили все сложные слова!',
+  DIFFICULT_WORDS_COUNT_TEXT: (count) => `Всего сложных слов: ${count}.`,
+  REVISE_DIFFICULT_WORDS_AGAIN: 'Повторить еще раз',
 };
 
 const wordsToLearnOptions = {
@@ -128,6 +159,30 @@ const findAPairText = {
   newGameButton: 'Сыграть снова',
 };
 
+const speakItConstants = {
+  SPEAKIT_TITLE: 'SpeakIt',
+  RESTART_BUTTON: 'Начать занаво',
+  START_GAME_BUTTON: 'Начать игру',
+  RESULTS_BUTTON: 'Результаты',
+  GAME_COMPLEXITY: 'Сложность игры',
+  DESCRIPTION_OF_LEVELS: '1 - самый легкий уровень; 6 - самый сложный',
+  FILES_PATH: 'files/',
+  START_GAME_DESCRIPTION_1: 'Нажимайте на слова, чтобы услышать их звучание.',
+  START_GAME_DESCRIPTION_2: 'Нажмите на кнопку и произнесите слова в микрофон.',
+  START_GAME_DESCRIPTION_3: 'Если у Вас не получается правильно произнести слово, то Вы можете нажать кнопку',
+  START_GAME_DESCRIPTION_4: 'Тогда слово добавиться в список "Я не знаю" в статистике мини-игры',
+  START_PAGE_BUTTON_TEXT: 'Старт',
+  CORRECT_WORDS_TEXT: 'Я знаю',
+  INCORRECT_WORDS_TEXT: 'Я не знаю',
+  NEW_GAME_BUTTON: 'Новая Игра',
+  CONTINUE_BUTTON: 'Продолжить',
+  SKIP_BUTTON: 'Пропустить',
+  GROUPS_OF_WORDS_TEXT: 'Группа слов:',
+  NUMBER_OF_GROUPS: 6,
+  NUMBER_OF_PAGES: 29,
+  WORDS_LIMIT_NUMBER: 10,
+  NOT_ENOUGHT_WORDS: 'Недостаточно слов',
+};
 
 const vocabularyConstants = {
   NUMBER_OF_WORDS_TEXT: 'Всего слов',
@@ -230,12 +285,15 @@ const modalConstants = {
   CANCEL_BUTTON: 'Отмена',
 };
 
+const progressLearningConstants = {
+  NEXT_TIME_OF_REVISE_TEXT: 'Будет повторяться снова:',
+};
+
 const shortTermStatisticsConstants = {
   ERROR_STAT: 'Ошибок',
   CORRECT_STAT: 'Знаю',
   STAT_TITLE: 'Статистика',
   STAT_CLOSE: 'Закрыть',
-  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 const auditionGameVariables = {
@@ -269,15 +327,18 @@ const auditionGameVariables = {
 
 const startWindow = {
   START_BUTTON: 'Начать',
+  GO_TO_MAIN_PAGE_BUTTON: 'На главную',
 };
 
 
 export {
   urls,
   auditionGameVariables,
+  savannahConstants,
   findAPairText,
   authenticationConstants,
   errorTypes,
+  speakItConstants,
   mainGameConstants,
   estimateButtonsTypes,
   wordsToLearnOptions,
@@ -291,4 +352,5 @@ export {
   shortTermStatisticsConstants,
   startWindow,
   HTTPCodesConstants,
+  progressLearningConstants,
 };

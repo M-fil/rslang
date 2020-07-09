@@ -6,7 +6,6 @@
   align-items: center;
 
   min-height: 100vh;
-  margin: 0 20px;
 }
 
 .main-game__message {
@@ -19,10 +18,11 @@
 
   width: 100%;
   margin-bottom: 50px;
+  margin-top: 5px;
 }
 
 .main-game__main-container {
-  box-shadow: 0 0 10px $standard-border-color;
+  box-shadow: 0 0 10px $main-game-standard-border-color;
   border-radius: 20px;
   padding: 30px 10px;
   margin-bottom: 50px;
@@ -77,9 +77,12 @@
 
 .word-card__vocabulary-buttons {
   display: flex;
-  flex-grow: 1;
   justify-content: space-evenly;
   align-items: center;
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
+  }
 }
 
 .word-card__input {
@@ -118,15 +121,15 @@
   @include font(2.5rem);
 
   &_correct {
-    color: $correct-letter-color;
+    color: $main-game-correct-letter-color;
   }
 
   &_not-many-mistakes {
-    color: $not-many-mistakes-letter-color;
+    color: $main-game-not-main-game-many-mistakes-letter-color;
   }
 
   &_many-mistakes {
-    color: $many-mistakes-letter-color;
+    color: $main-game-many-mistakes-letter-color;
   }
 }
 
@@ -160,7 +163,7 @@
 }
 
 .word-card__sentence-word-container {
-  border-bottom: 1px solid $standard-border-color;
+  border-bottom: 1px solid $main-game-standard-border-color;
   padding-bottom: 3px;
 }
 
@@ -189,16 +192,23 @@
 }
 
 .main-game__progress-background {
-  background-color: $standard-progress-bar-background;
+  background-color: $main-game-standard-progress-bar-background;
   height: 10px;
   max-width: 30rem;
   margin: 0 10px;
 }
 
 .main-game__progress-bar-line {
-  background-color: $standard-progress-bar-line-color;
+  background-color: $main-game-standard-progress-bar-line-color;
 
   &_completed {
-    background-color: $completed-progress-bar-line-color;
+    background-color: $main-game-completed-progress-bar-line-color;
   }
+}
+
+.exit-button_relative {
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-left: 5px;
 }

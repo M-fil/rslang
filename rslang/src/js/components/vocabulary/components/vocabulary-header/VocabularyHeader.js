@@ -18,8 +18,18 @@ class VocabularyHeader {
     this.renderHeaderItem(WORDS_TO_LEARN_TITLE);
     this.renderHeaderItem(REMOVED_WORDS_TITLE);
     this.renderHeaderItem(DIFFUCULT_WORDS_TITLE);
+    this.container.append(this.renderExitButton());
 
     return this.container;
+  }
+
+  renderExitButton() {
+    this.exitButton = create(
+      'button', 'standard__exit-button vocabulary__exit-button',
+      '<i class="fas fa-times"></i>', null,
+      ['id', 'button-go-to-main-page'],
+    );
+    return this.exitButton;
   }
 
   renderHeaderItem(innerText) {
