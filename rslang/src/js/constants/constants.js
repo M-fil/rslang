@@ -292,6 +292,7 @@ const progressLearningConstants = {
 const shortTermStatisticsConstants = {
   ERROR_STAT: 'Ошибок',
   CORRECT_STAT: 'Знаю',
+  IDK_STAT: 'Не знаю',
   STAT_TITLE: 'Статистика',
   STAT_CLOSE: 'Закрыть',
 };

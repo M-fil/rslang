@@ -9,8 +9,9 @@ import Vocabulary from  '../../vocabulary/Vocabulary';
 
 
 export default class GameService {
-  constructor(user, lives,roundsAll,roundResults, collectionLengthEnough) {
-    this.user = user;
+  constructor(miniGameObj, lives,roundsAll,roundResults, collectionLengthEnough) {
+    this.user = miniGameObj.user;
+    this.ShortTermStatistics = miniGameObj.shortTermStatistics;
     this.lives = lives;
     this.roundsAll = roundsAll;
     this.roundResults = roundResults;
@@ -86,16 +87,26 @@ export default class GameService {
       curr += 1;
       this.initRound(lives, roundsAll, curr, roundResults);
     } else {
-      const gameStats = new GameStatistic();
-      gameStats.statistics(roundResults);
+      //const gameStats = new GameStatistic();
+      //gameStats.statistics(roundResults);
       document.querySelector('.progress').style.width = auditionGameVariables.zeroPercent;
       document.querySelector('.audition-game__wrapper').className = 'audition-game__wrapper';
+      const correctArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.correct));
+      const failArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.fail));
+      const idkArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.IDK));
+      this.ShortTermStatistics.render(failArray, correctArray,idkArray);
     }
   }
-
+  normalize(arrayToNormalize){
+    const res = [];
+      for(let i = 0; i< arrayToNormalize.length; i++){
+        res.push(arrayToNormalize[i].word);
+      }
+      return res;
+  }
   createPossibleWords(arrayOfWords, answersBlock) {
     for (let i = 0; i < auditionGameVariables.possibleWordsAmount; i += 1) {
-      create('div', `audition-game__element Digit${i + 1}`, `${i + 1}.${arrayOfWords[i]?.translate}`, answersBlock);
+      create('div', `audition-game__element Digit${i + 1}`, `${i + 1}.${arrayOfWords[i]?.wordTranslate}`, answersBlock);
     }
   }
 
@@ -113,10 +124,10 @@ export default class GameService {
         event.target.classList.toggle('checked');
         const elements = document.querySelectorAll('.audition-game__element');
         this.designUncheckedPossibleWords(elements);
-        document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.translate}`;
+        document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.wordTranslate}`;
         document.querySelector('.audition-game__audio__pulse').style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
        // this.vocabulary.addWordToTheVocabulary(mainWord, vocabularyConstants.LEARNED_WORDS_TITLE);
-        if (event.target.innerText.includes(mainWord.translate)) {
+        if (event.target.innerText.includes(mainWord.wordTranslate)) {
           event.target.innerHTML = `${auditionGameVariables.checkMark}${event.target.innerText}`;
           const audioRoundResult = new Audio(urls.correctSound);
           if (!this.sound.classList.contains('audition-game__sound__buttonMuted')) audioRoundResult.play();
@@ -157,7 +168,7 @@ export default class GameService {
         this.correctAnswersCounter = 0;
         const nextBtn = document.querySelector('.audition-game__button__next');
         nextBtn.innerHTML = auditionGameVariables.arrowSymbol;
-        document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.translate}`;
+        document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.wordTranslate}`;
         document.querySelector('.audition-game__audio__pulse').style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
         const elements = document.querySelectorAll('.audition-game__element');
         this.designUncheckedPossibleWords(elements);
@@ -178,7 +189,7 @@ export default class GameService {
         let cnt = 0;
         const el = shuffle(elements);
         for (let i = 0; i < el.length; i += 1) {
-          if (!el[i].innerText.includes(mainWord.translate)) {
+          if (!el[i].innerText.includes(mainWord.wordTranslate)) {
             cnt += 1;
             el[i].classList.add('unchecked');
             el[i].classList.add('line-through');

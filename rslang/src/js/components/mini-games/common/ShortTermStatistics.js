@@ -8,6 +8,7 @@ import {
 const {
   ERROR_STAT,
   CORRECT_STAT,
+  IDK_STAT,
   STAT_TITLE,
   STAT_CLOSE,
 } = shortTermStatisticsConstants;
@@ -30,7 +31,8 @@ export default class ShortTermStatistics extends ModalWindow {
     this.initilized = false;
   }
 
-  render(wrongWords, rightWords) {
+  render(wrongWords, rightWords, IdkWords) {
+    console.log(wrongWords,rightWords, IdkWords);
     ModalWindow.changeDisplay(this.modal, 'block');
     ModalWindow.changeDisplay(this.modalCancel, 'none');
     this.modalTitle.innerHTML = STAT_TITLE;
@@ -44,9 +46,14 @@ export default class ShortTermStatistics extends ModalWindow {
     this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
     this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${rightWords.length}`, this.modalText, ['id', 'short_term_right_words']);
     this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
+  
 
     ShortTermStatistics.statisticaWords(wrongWords, this.statisticaWrongWords);
     ShortTermStatistics.statisticaWords(rightWords, this.statisticaRightWords);
+    if(IdkWords){
+    this.statisticaIdkWordsText = create('p', 'modal_title', `${IDK_STAT} ${IdkWords.length}`, this.modalText, ['id', 'short_term_idk_words']);
+    this.statisticaIdkWords = create('p', 'modal_words', '', this.statisticaIdkWordsText);
+    ShortTermStatistics.statisticaWords(IdkWords, this.statisticaIdkWords);}
     this.clickStatisticaAudio();
   }
 
@@ -66,8 +73,9 @@ export default class ShortTermStatistics extends ModalWindow {
       const target = event.target.closest('.audio-pictures');
 
       if (target) {
+        if(this.audio.ended || this.audio.paused){
         this.audio.src = `${WORDS_AUDIOS_URL}${event.target.nextSibling.dataset.audiosrc}`;
-        this.audio.play();
+        this.audio.play();}
       }
     });
   }
@@ -80,6 +88,10 @@ export default class ShortTermStatistics extends ModalWindow {
     const rightWords = document.querySelector('#short_term_right_words');
     if (rightWords) {
       rightWords.remove();
+    }
+    const IdkWords = document.querySelector('#short_term_idk_words');
+    if (IdkWords) {
+      IdkWords.remove();
     }
   }
 }

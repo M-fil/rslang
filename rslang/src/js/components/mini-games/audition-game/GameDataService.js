@@ -26,7 +26,7 @@ export default class GameDataService {
       const partOfSpeech = test.results ? test?.results[0]?.partOfSpeech : auditionGameVariables.IDK;
       if (this.shuffledValue[i]?.wordTranslate) {
         wordsInfo.push({
-          word: this.shuffledValue[i].word, translate: this.shuffledValue[i].wordTranslate, audio: this.shuffledValue[i].audio, partOfSpeech, image: this.shuffledValue[i].image, id: this.shuffledValue[i].id,
+          word: this.shuffledValue[i].word, wordTranslate: this.shuffledValue[i].wordTranslate, audio: this.shuffledValue[i].audio, partOfSpeech, image: this.shuffledValue[i].image, id: this.shuffledValue[i].id,
         });
       }
     }

@@ -6,23 +6,29 @@ import Vocabulary from  '../../vocabulary/Vocabulary';
 import CloseButton from '../common/CloseButton';
 
 export default class AuditionGame {
-  constructor(user) {
-    this.user = user;
+  constructor(miniGameObj, container) {
+    console.log('userOBJ',miniGameObj)
+    this.miniGameObj = miniGameObj;
+    this.user = miniGameObj.user;
+    this.closeButton = miniGameObj.closeButton;
+    this.ShortTermStatistics = miniGameObj.shortTermStatistics;
+    this.container = container;
   }
 
   async render(lives, roundsAll) {
-    this.wrapper = create('div', 'audition-game__wrapper', '', document.querySelector('.main-content'));
+    console.log(this.user)
+    this.wrapper = create('div', 'audition-game__wrapper', '', this.container);
     const roundResults = [];
     this.vocabulary = new Vocabulary(this.user);
     await this.vocabulary.init();
     this.wordsLength = this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE);
     const collectionLengthEnough = true;//(this.wordsLength <= (auditionGameVariables.possibleWordsAmount * roundsAll));
-    this.gameService = new GameService(this.user,lives, roundsAll, roundResults, collectionLengthEnough);
+    this.gameService = new GameService(this.miniGameObj,lives, roundsAll, roundResults, collectionLengthEnough);
     this.gameService.getVocabularyData();
     this.showUserCollection = true;
     this.StartWindow = new StartWindow((this.gameService.startGame).bind(this.gameService));
-    this.closeButton = new CloseButton();
     this.closeButton.addCloseCallbackFn((this.restart).bind(this));
+    this.ShortTermStatistics.addCallbackFnOnClose((this.restart).bind(this));
     //create('div', '', this.closeButton.render(), wrapper);
     this.wrapper.appendChild(this.closeButton.render());
     this.closeButton.show();
@@ -37,7 +43,7 @@ export default class AuditionGame {
     });*/
   }
   restart(){
-    document.querySelector('.main-content').innerHTML = '';
+    this.container.innerHTML = '';
     this.render(auditionGameVariables.Lives,auditionGameVariables.Rounds);
   }
 }

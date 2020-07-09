@@ -175,7 +175,7 @@ class App {
       await this.initSettings();
       //await App.renderMainGame(this.state.user);
       //await this.renderVocabulary(this.state.user);
-      this.auditiongame(this.state.user);
+      this.auditiongame(this.createMiniGameParameterObject(),this.container);
 
     } catch (error) {
       Authentication.createErrorBlock(error.message);
@@ -221,7 +221,7 @@ class App {
       await this.initSettings();
       //await App.renderMainGame(this.state.user);
       //await this.renderVocabulary(this.state.user);
-      this.auditiongame(this.state.user);
+      this.auditiongame(this.createMiniGameParameterObject());
       this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
@@ -241,9 +241,9 @@ class App {
     const mainGame = new MainGame(userState);
     await mainGame.render('.main-page__content');
   }
-  auditiongame(userState){
-    const audition = new AuditionGame(userState);
-    audition.render(5,5);
+  async auditiongame(userState){
+    const audition = new AuditionGame(userState, this.container);
+    await audition.render(5,1);
   }	 
 
   renderToggleAuthentication() {
