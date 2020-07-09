@@ -6,6 +6,10 @@ $mobile-small-width: 320px;
 
 $checkbox-tick-path: '../../src/assets/images/main-game/checkbox-tick.svg';
 
+$game-baсkground-color: #1d5278;
+$game-background-or-hover-for-buttons: #ec8000;
+$standard-border-color: black;
+
 $speak-it-overlay-background: rgba(241, 243, 245, 0.5);
 $speak-it-microphone-background: #ffffff;
 $speak-it-microphone-enabled-color: rgb(130, 201, 30);
@@ -94,3 +98,7 @@ $main-page-start-page-background: #1695A3;
 $main-page-english-goals-background: #F3FFE2;
 $main-page-logour-hover-color: #ffffff;
 $main-page--burger-menu-overlay: rgba(0, 0, 0, 0.4);
+
+$settings-result-text-correct: #008000;
+$settings-result-text-wrong: #ff0000;
+$settings-tabs-background: #ACF0F2;

@@ -200,14 +200,20 @@ const vocabularyConstants = {
 const settingsText = {
   title: 'Настройки',
   tabList: {
-    mainGame: 'Main Game',
-    dictionary: 'Dictionary',
-    findapair: 'Find a pair Game',
+    profile: 'Профиль',
+    mainGame: 'Основная игра',
+    dictionary: 'Словарь',
+    findapair: '"Найди пару"',
   },
   form: {
     submitButton: 'Сохранить',
   },
   tabs: {
+    profile: {
+      userName: 'Имя',
+      userEmail: 'E-Mail',
+      userPassword: 'Пароль',
+    },
     mainGame: {
       maxCardsPerDay: 'Количество карточек в день',
       newCardsPerDay: 'Количество новых карточек в день',
@@ -241,6 +247,12 @@ const settingsText = {
       showCardsTextOnStart: 'Показывать текст карточек при старте игры',
       showingCardsTime: 'Время показа карточек (с)',
     },
+  },
+  results: {
+    dataSaved: 'Данные сохранены',
+    dataNotSaved: 'Упс... Возникла ошибка, попробуйте сохранить еще раз',
+    wrongEmail: 'Введите корректный E-Mail',
+    wrongPassword: 'Пароль должен содержать не менее 8 символов и должен включать как минимум одну прописную букву, одну заглавную букву, одну цифру и один спецсимвол',
   },
 };
 

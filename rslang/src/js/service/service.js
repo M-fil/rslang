@@ -103,6 +103,23 @@ const getUserById = async (id, token) => {
   return content;
 };
 
+const saveUserData = async (id, token, body) => {
+  let content = false;
+  const response = await fetch(`${GET_USER_URL}${id}`, {
+    method: 'PUT',
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (response.status === HTTP_STATUS_200) content = await response.json();
+  return content;
+};
+
 const createUserWord = async (userId, wordId, word, token) => {
   const rawResponse = await fetch(`${GET_USER_URL}${userId}/words/${wordId}`, {
     method: 'POST',
@@ -312,6 +329,7 @@ export {
   createUser,
   loginUser,
   getUserById,
+  saveUserData,
   createUserWord,
   getUserWord,
   getAllUserWords,
