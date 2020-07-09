@@ -48,7 +48,6 @@ class FormControll {
     this.fakeWord = create('div', 'word-card__fake-word', this.word);
     create('div', 'word-card__fake-word-container', this.fakeWord, document.body);
 
-    console.log('fakeWord', this.word)
     return `${this.fakeWord.offsetWidth}px`;
   }
 
