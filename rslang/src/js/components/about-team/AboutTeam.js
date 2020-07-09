@@ -26,14 +26,18 @@ const {
   PHOTO_ZHDANOV,
   PHOTO_ANDREEV,
   PHOTO_SHNIRKEVICH,
+  TEAM,
+  BACK_BUTTON,
+  GITHUB,
+  VK,
 } = aboutTeam;
 
 export default class AboutTeam {
   constructor() {
     const mainContent = document.querySelector('.main-content');
     this.container = create('div', 'container', '', mainContent);
-    this.backButton = create('div', '', '<i class="fas fa-long-arrow-alt-left"></i>', this.container, ['id', 'button-go-to-main-page']);
-    this.teamTitle = create('div', 'team_title', 'Наша команда', this.container);
+    this.backButton = create('div', '', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
+    this.teamTitle = create('div', 'team_title', TEAM, this.container);
     this.teamBlock = create('div', 'team_block', '', this.container);
   }
 
@@ -46,13 +50,18 @@ export default class AboutTeam {
     this.createAboutPerson(NAME_SHNIRKEVICH, ABOUT_SHNIRKEVICH, WORK_SHNIRKEVICH, PHOTO_SHNIRKEVICH);
   }
 
-  createAboutPerson(name, aboutPerson, work, photoSrc) {
+  createAboutPerson(name, aboutPerson, work, photoSrc, gitLink, vkLink) {
     this.teamCard = create('div', 'team_card', '', this.teamBlock);
     this.personPhotoBlock = create('div', 'person-photo-block', '', this.teamCard);
     this.personPhoto = create('img', 'person-photo', '', this.personPhotoBlock);
     this.personPhoto.src = photoSrc;
     this.personName = create('h3', 'person-name', `${name}`, this.teamCard);
-    this.personQuality = create('span', 'person-quality', `${aboutPerson}`, this.teamCard);
+    this.personQuality = create('div', 'person-quality', `${aboutPerson}`, this.teamCard);
+    this.github = create('a', 'person-link', GITHUB, this.personQuality);
+    this.github.href = gitLink;
+    this.vk = create('a', 'person-link', VK, this.personQuality);
+    this.vk.href = vkLink;
+    this.another = create('a', 'person-link', '', this.personQuality);
     this.personWork = create('p', 'person-work', `${work}`, this.teamCard);
   }
 }

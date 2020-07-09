@@ -235,6 +235,10 @@ const startWindow = {
 };
 
 const aboutTeam = {
+  TEAM: 'Наша команда',
+  BACK_BUTTON: '<i class="fas fa-long-arrow-alt-left"></i>',
+  GITHUB: '<i class="fab fa-github"></i>',
+  VK: '<i class="fab fa-vk"></i>',
   NAME_FILANOVVICH: 'Максим Филанович',
   NAME_LATUSHKINA: 'Екатерина Латушкина',
   NAME_ANTONOV: 'Максим Антонов',
@@ -250,39 +254,39 @@ const aboutTeam = {
   PHOTO_FILANOVVICH: './src/assets/images/filanovich.jpg',
   PHOTO_LATUSHKINA: './src/assets/images/latushkina.jpg',
   PHOTO_ANTONOV: './src/assets/images/antonov.jpg',
-  PHOTO_ZHDANOV: './src/assets/images/no_photo.png',
+  PHOTO_ZHDANOV: './src/assets/images/zhdanov.png',
   PHOTO_ANDREEV: './src/assets/images/andreev.png',
   PHOTO_SHNIRKEVICH: './src/assets/images/shnirkevich.png',
   WORK_FILANOVVICH: `${'<i class="fas fa-user-edit"></i>'}  Авторизация/Регистрация${'<br>'}
   ${'<i class="fas fa-home"></i>'}  Главная страница приложения${'<br>'}
   ${'<i class="fas fa-gamepad"></i>'}  Основная игра${'<br>'}
   ${'<i class="fas fa-info"></i>'}  Методика интервального повторения${'<br>'}
-  ${'<i class="fas fa-microphone-alt"></i>'}  мини-игра SpeakIt${'<br>'}
+  ${'<i class="fas fa-microphone-alt"></i>'}  Мини-игра SpeakIt${'<br>'}
   ${'<i class="fas fa-book"></i>'}  Словарь${'<br>'}
   ${'<i class="far fa-address-card"></i>'}  Описание для страницы «Промо»${'<br>'}
-  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптивы для страниц: мини-игра SpeakIt, Главная страница приложения, Основная игра`,
+  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для страниц: мини-игра SpeakIt, Главная страница приложения, Основная игра`,
   WORK_LATUSHKINA: `${'<i class="fas fa-paw"></i>'}  Мини-игра «Саванна»${'<br>'}
   ${'<i class="fas fa-network-wired"></i>'}  Общие элементы для мини-игр: модальные окна, краткосрочная статистика, стартовая страница${'<br>'}
   ${'<i class="fas fa-angle-double-down"></i>'}  Прелоудер для всего приложения${'<br>'}
   ${'<i class="far fa-address-card"></i>'}  Описание для страницы «Промо»${'<br>'}
   ${'<i class="fas fa-film"></i>'}  Видео для страницы «Промо»${'<br>'}
-  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптивы для страниц: «Промо», «О Команде», мини-игра «Саванна»${'<br>'}
+  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для страниц: «Промо», «О Команде», мини-игра «Саванна»${'<br>'}
   ${'<i class="fas fa-user-friends"></i>'}  Страница «О Команде»`,
   WORK_ANTONOV: `${'<i class="fas fa-crosshairs"></i>'}  Мини-игра «Найди пару» («Своя игра»)${'<br>'}
   ${'<i class="fas fa-cog"></i>'}  Настройки${'<br>'}
   ${'<i class="far fa-chart-bar"></i>'}  Логика для страницы «Статистика»${'<br>'}
-  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптивы для страниц: Настройки, Статистика, мини-игра «Найди пару».
+  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для страниц: Настройки, Статистика, мини-игра «Найди пару».
   `,
   WORK_ZHDANOV: `${'<i class="fas fa-headset"></i>'}  Мини-игра «Аудиовызов»${'<br>'}
   ${'<i class="fas fa-chart-line"></i>'}  Графики для страницы «Статистика»${'<br>'}
-  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптивы для страниц: Статистика, мини-игра «Аудиовызов»
+  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для страниц: Статистика, мини-игра «Аудиовызов»
   `,
   WORK_ANDREEV: `${'<i class="fas fa-stopwatch-20"></i>'}  Мини-игра «Спринт»${'<br>'}
   ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для мини-игры «Спринт» и Авторизации/Регистрации
   `,
   WORK_SHNIRKEVICH: `${'<i class="fas fa-puzzle-piece"></i>'}  Мини-игра «English Puzzle»${'<br>'}
   ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для мини-игры «English Puzzle» и страницы «Словарь»${'<br>'}
-  ${'<i class="fas fa-palette"></i>'}  Стили и адптивы для общих элементов мини-игр
+  ${'<i class="fas fa-palette"></i>'}  Стили и адптив для общих элементов мини-игр
   `,
 };
 
