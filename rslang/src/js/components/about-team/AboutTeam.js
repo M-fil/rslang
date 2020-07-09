@@ -30,6 +30,25 @@ const {
   BACK_BUTTON,
   GITHUB,
   VK,
+  LINKEDIN,
+  GIT_FILANOVVICH,
+  VK_FILANOVVICH,
+  LINKEDIN_FILANOVVICH,
+  GIT_LATUSHKINA,
+  VK_LATUSHKINA,
+  LINKEDIN_LATUSHKINA,
+  GIT_ANTONOV,
+  VK_ANTONOV,
+  LINKEDIN_ANTONOV,
+  GIT_ZHDANOV,
+  VK_ZHDANOV,
+  LINKEDIN_ZHDANOV,
+  GIT_ANDREEV,
+  VK_ANDREEV,
+  LINKEDIN_ANDREEV,
+  GIT_SHNIRKEVICH,
+  VK_SHNIRKEVICH,
+  LINKEDIN_SHNIRKEVICH,
 } = aboutTeam;
 
 export default class AboutTeam {
@@ -42,26 +61,27 @@ export default class AboutTeam {
   }
 
   render() {
-    this.createAboutPerson(NAME_FILANOVVICH, ABOUT_FILANOVVICH, WORK_FILANOVVICH, PHOTO_FILANOVVICH);
-    this.createAboutPerson(NAME_LATUSHKINA, ABOUT_LATUSHKINA, WORK_LATUSHKINA, PHOTO_LATUSHKINA);
-    this.createAboutPerson(NAME_ANTONOV, ABOUT_ANTONOV, WORK_ANTONOV, PHOTO_ANTONOV);
-    this.createAboutPerson(NAME_ZHDANOV, ABOUT_ZHDANOV, WORK_ZHDANOV, PHOTO_ZHDANOV);
-    this.createAboutPerson(NAME_ANDREEV, ABOUT_ANDREEV, WORK_ANDREEV, PHOTO_ANDREEV);
-    this.createAboutPerson(NAME_SHNIRKEVICH, ABOUT_SHNIRKEVICH, WORK_SHNIRKEVICH, PHOTO_SHNIRKEVICH);
+    this.createAboutPerson(NAME_FILANOVVICH, WORK_FILANOVVICH, PHOTO_FILANOVVICH, GIT_FILANOVVICH, VK_FILANOVVICH, LINKEDIN_FILANOVVICH);
+    this.createAboutPerson(NAME_LATUSHKINA, WORK_LATUSHKINA, PHOTO_LATUSHKINA, GIT_LATUSHKINA, VK_LATUSHKINA, LINKEDIN_LATUSHKINA);
+    this.createAboutPerson(NAME_ANTONOV, WORK_ANTONOV, PHOTO_ANTONOV, GIT_ANTONOV, VK_ANTONOV, LINKEDIN_ANTONOV);
+    this.createAboutPerson(NAME_ZHDANOV, WORK_ZHDANOV, PHOTO_ZHDANOV, GIT_ZHDANOV, VK_ZHDANOV, LINKEDIN_ZHDANOV);
+    this.createAboutPerson(NAME_ANDREEV, WORK_ANDREEV, PHOTO_ANDREEV, GIT_ANDREEV, VK_ANDREEV, LINKEDIN_ANDREEV);
+    this.createAboutPerson(NAME_SHNIRKEVICH, WORK_SHNIRKEVICH, PHOTO_SHNIRKEVICH, GIT_SHNIRKEVICH, VK_SHNIRKEVICH, LINKEDIN_SHNIRKEVICH);
   }
 
-  createAboutPerson(name, aboutPerson, work, photoSrc, gitLink, vkLink) {
+  createAboutPerson(name, work, photoSrc, gitLink, vkLink, linkedinLink) {
     this.teamCard = create('div', 'team_card', '', this.teamBlock);
     this.personPhotoBlock = create('div', 'person-photo-block', '', this.teamCard);
     this.personPhoto = create('img', 'person-photo', '', this.personPhotoBlock);
     this.personPhoto.src = photoSrc;
     this.personName = create('h3', 'person-name', `${name}`, this.teamCard);
-    this.personQuality = create('div', 'person-quality', `${aboutPerson}`, this.teamCard);
+    this.personQuality = create('div', 'person-quality', '', this.teamCard);
     this.github = create('a', 'person-link', GITHUB, this.personQuality);
     this.github.href = gitLink;
     this.vk = create('a', 'person-link', VK, this.personQuality);
     this.vk.href = vkLink;
-    this.another = create('a', 'person-link', '', this.personQuality);
+    this.linkedin = create('a', 'person-link', LINKEDIN, this.personQuality);
+    this.linkedin.href = linkedinLink;
     this.personWork = create('p', 'person-work', `${work}`, this.teamCard);
   }
 }
