@@ -156,7 +156,10 @@ class App {
 
   renderPromoPage() {}
 
-  renderAboutTeamPage() {}
+  renderAboutTeamPage() {
+    this.aboutTeam = new AboutTeam('.main-page__content');
+    this.aboutTeam.render();
+  }
 
   renderSettingsBlock(isRenderAfterReload = false) {
     if (isRenderAfterReload) {
@@ -214,8 +217,10 @@ class App {
         await this.renderVocabulary();
         break;
       case PROMO_CODE:
+        this.renderPromoPage();
         break;
       case ABOUT_TEAM_CODE:
+        this.renderAboutTeamPage();
         break;
       case SETTINGS_CODE:
         this.renderSettingsBlock(isRenderAfterReload);

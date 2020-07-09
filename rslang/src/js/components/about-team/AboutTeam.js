@@ -8,12 +8,6 @@ const {
   NAME_ZHDANOV,
   NAME_ANDREEV,
   NAME_SHNIRKEVICH,
-  ABOUT_FILANOVVICH,
-  ABOUT_LATUSHKINA,
-  ABOUT_ANTONOV,
-  ABOUT_ZHDANOV,
-  ABOUT_ANDREEV,
-  ABOUT_SHNIRKEVICH,
   WORK_FILANOVVICH,
   WORK_LATUSHKINA,
   WORK_ANTONOV,
@@ -52,8 +46,8 @@ const {
 } = aboutTeam;
 
 export default class AboutTeam {
-  constructor() {
-    const mainContent = document.querySelector('.main-content');
+  constructor(elementQuery) {
+    const mainContent = document.querySelector(elementQuery);
     this.container = create('div', 'container', '', mainContent);
     this.backButton = create('div', '', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
     this.teamTitle = create('div', 'team_title', TEAM, this.container);
@@ -61,12 +55,30 @@ export default class AboutTeam {
   }
 
   render() {
-    this.createAboutPerson(NAME_FILANOVVICH, WORK_FILANOVVICH, PHOTO_FILANOVVICH, GIT_FILANOVVICH, VK_FILANOVVICH, LINKEDIN_FILANOVVICH);
-    this.createAboutPerson(NAME_LATUSHKINA, WORK_LATUSHKINA, PHOTO_LATUSHKINA, GIT_LATUSHKINA, VK_LATUSHKINA, LINKEDIN_LATUSHKINA);
-    this.createAboutPerson(NAME_ANTONOV, WORK_ANTONOV, PHOTO_ANTONOV, GIT_ANTONOV, VK_ANTONOV, LINKEDIN_ANTONOV);
-    this.createAboutPerson(NAME_ZHDANOV, WORK_ZHDANOV, PHOTO_ZHDANOV, GIT_ZHDANOV, VK_ZHDANOV, LINKEDIN_ZHDANOV);
-    this.createAboutPerson(NAME_ANDREEV, WORK_ANDREEV, PHOTO_ANDREEV, GIT_ANDREEV, VK_ANDREEV, LINKEDIN_ANDREEV);
-    this.createAboutPerson(NAME_SHNIRKEVICH, WORK_SHNIRKEVICH, PHOTO_SHNIRKEVICH, GIT_SHNIRKEVICH, VK_SHNIRKEVICH, LINKEDIN_SHNIRKEVICH);
+    this.createAboutPerson(
+      NAME_FILANOVVICH, WORK_FILANOVVICH,
+      PHOTO_FILANOVVICH, GIT_FILANOVVICH, VK_FILANOVVICH, LINKEDIN_FILANOVVICH,
+    );
+    this.createAboutPerson(
+      NAME_LATUSHKINA, WORK_LATUSHKINA,
+      PHOTO_LATUSHKINA, GIT_LATUSHKINA, VK_LATUSHKINA, LINKEDIN_LATUSHKINA,
+    );
+    this.createAboutPerson(
+      NAME_ANTONOV, WORK_ANTONOV,
+      PHOTO_ANTONOV, GIT_ANTONOV, VK_ANTONOV, LINKEDIN_ANTONOV,
+    );
+    this.createAboutPerson(
+      NAME_ZHDANOV, WORK_ZHDANOV,
+      PHOTO_ZHDANOV, GIT_ZHDANOV, VK_ZHDANOV, LINKEDIN_ZHDANOV,
+    );
+    this.createAboutPerson(
+      NAME_ANDREEV, WORK_ANDREEV,
+      PHOTO_ANDREEV, GIT_ANDREEV, VK_ANDREEV, LINKEDIN_ANDREEV,
+    );
+    this.createAboutPerson(
+      NAME_SHNIRKEVICH, WORK_SHNIRKEVICH,
+      PHOTO_SHNIRKEVICH, GIT_SHNIRKEVICH, VK_SHNIRKEVICH, LINKEDIN_SHNIRKEVICH,
+    );
   }
 
   createAboutPerson(name, work, photoSrc, gitLink, vkLink, linkedinLink) {
