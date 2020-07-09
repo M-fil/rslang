@@ -251,8 +251,8 @@ class App {
   }
 
   async renderSpeakItGame() {
-    this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
-    await this.speakIt.run('.main-page__content');
+    this.speakIt = new SpeakIt(this.createMiniGameParameterObject(), '.main-page__content');
+    await this.speakIt.run();
   }
 
   async renderEnglishPuzzle() {

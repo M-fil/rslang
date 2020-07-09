@@ -14,9 +14,9 @@ export default class ButtonsBlock {
   render() {
     this.container = create('div', 'buttons-container');
 
-    create('button', 'restart-button buttons-container__button', RESTART_BUTTON, this.container);
-    create('button', 'start-game-button buttons-container__button', START_GAME_BUTTON, this.container);
-    create('button', 'result-button buttons-container__button', RESULTS_BUTTON, this.container);
+    create('button', 'speak-it__restart-button buttons-container__button', RESTART_BUTTON, this.container);
+    create('button', 'speak-it__start-game-button buttons-container__button', START_GAME_BUTTON, this.container);
+    create('button', 'speak-it__result-button buttons-container__button', RESULTS_BUTTON, this.container);
 
     return this.container;
   }
