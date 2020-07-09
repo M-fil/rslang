@@ -256,7 +256,7 @@ const statisticsText = {
   texts: {
     learnedWords: 'Изучено новых слов',
     playingCount: 'Сыграно игр',
-    correctAnswers: 'Правильны ответов',
+    correctAnswers: 'Правильных ответов',
     wrongAnswers: 'Ошибок',
   },
 };
