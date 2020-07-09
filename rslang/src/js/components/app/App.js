@@ -103,6 +103,8 @@ class App {
   renderAuthorizationBlock() {
     App.removeModalElements();
     localStorage.setItem('user-data', '');
+    localStorage.setItem('arrow-bottom-clicked', '');
+    localStorage.setItem('current-page', '');
     this.state.user.isAuthrorized = false;
     this.clearMainContainersBeforeRender();
     this.renderAuthenticationBlock('authorization');
@@ -127,6 +129,7 @@ class App {
         this.saveCurrentPage();
         this.renderMainPage();
         BurgerMenu.makeBurgerMenuIconVisible();
+        document.body.classList.remove('main-game_opened');
       }
     });
   }
@@ -217,9 +220,10 @@ class App {
 
   clearMainContainersBeforeRender() {
     this.container.innerHTML = '';
+    document.body.classList.remove('main-game_opened');
+
     const startGameWindow = document.querySelector('.start-game-window');
     const dailyStatistics = document.querySelector('.daily-statistics__overlay');
-
     if (startGameWindow) {
       startGameWindow.remove();
     }
