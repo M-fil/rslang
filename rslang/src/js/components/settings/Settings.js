@@ -434,6 +434,10 @@ export default class Settings {
 
         if (res) {
           this.addCorrectResultText(settingsText.results.dataSaved);
+          if (this.userChangesListenerFn) {
+            body.password = undefined;
+            this.userChangesListenerFn(body);
+          }
         } else {
           this.addWrongResultText(settingsText.results.dataNotSaved);
         }
@@ -516,6 +520,12 @@ export default class Settings {
         }
       });
       parentElement.classList.remove('form-hidden');
+    }
+  }
+
+  setUserChangesListener(listenerFn) {
+    if (typeof listenerFn === 'function') {
+      this.userChangesListenerFn = listenerFn;
     }
   }
 }
