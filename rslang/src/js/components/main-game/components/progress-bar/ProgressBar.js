@@ -31,8 +31,6 @@ class ProgressBar {
   }
 
   updateSize(learnedWordsNumber, allWordsNumber) {
-    console.log('learnedWordsNumber', learnedWordsNumber);
-    console.log('allWordsNumber', allWordsNumber)
     this.learnedWordsNumber = learnedWordsNumber < 0 ? 0 : learnedWordsNumber;
     this.allWordsNumber = allWordsNumber;
     this.startValueHTML.textContent = this.learnedWordsNumber;
