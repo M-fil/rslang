@@ -66,6 +66,8 @@ class App {
   constructor() {
     this.closeButton = new CloseButton();
     this.shortTermStatistics = new ShortTermStatistics();
+    this.preloader = new Preloader();
+
     this.state = {
       user: {
         isAuthrorized: false,
@@ -332,13 +334,13 @@ class App {
       event.preventDefault();
 
       if (event.target.classList.contains('authorization__form')) {
-        this.prelodaer.show();
+        this.preloader.show();
         await this.signInUser();
-        this.prelodaer.hide();
+        this.preloader.hide();
       }
       if (event.target.classList.contains('registration__form')) {
         try {
-          this.prelodaer.show();
+          this.preloader.show();
           const data = await Authentication.submitData(createUser);
           this.state = {
             ...this.state,
@@ -349,7 +351,7 @@ class App {
             },
           };
           await this.signInUser();
-          this.prelodaer.hide();
+          this.preloader.hide();
         } catch (error) {
           console.log(error);
           this.prelodaer.hide();
@@ -385,12 +387,16 @@ class App {
     }
   }
 
+  async renderSavannahGame() {
+    this.savannahGame = new SavannahGame(this.createMiniGameParameterObject());
+    await this.savannahGame.render();
+  }
+
   async checkIsUserAuthorized() {
     const savedUserData = localStorage.getItem('user-data');
     try {
-      this.prelodaer = new Preloader();
-      this.prelodaer.render();
-      this.prelodaer.show();
+      this.preloader.render();
+      this.preloader.show();
 
       let data = null;
       switch (true) {
