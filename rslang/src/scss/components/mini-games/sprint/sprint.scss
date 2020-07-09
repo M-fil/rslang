@@ -61,7 +61,7 @@ body {
 	display: flex;
 }
 
-.start-button, .restart-button {
+.start-button, .restart-button, .GoToMenu-button {
 	font-size: 4rem;
 	width: 20rem;
 	background: linear-gradient(#FF5722, #FFEB3B);
@@ -71,16 +71,16 @@ body {
 	color: white;
 }
 
-button:active {
+.sprint-btn:active {
 	border-style: inset;
 	transform: scale(0.9);
 }
 
-button:active, button:focus, input:active, input:focus {
+.sprint-btn:active, .sprint-btn:focus, input:active, input:focus {
   outline: none !important;
 }
 
-button::-moz-focus-inner {
+.sprint-btn::-moz-focus-inner {
   border: 0 !important;
 }
 
@@ -219,7 +219,7 @@ svg circle {
 
 .restart-button {
 	position: fixed;
-	bottom: 10%;
+	bottom: 30%;
 	right: 10%;
 }
 

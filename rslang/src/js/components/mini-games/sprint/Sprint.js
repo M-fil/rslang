@@ -24,9 +24,9 @@ export default class SprintGame {
   constructor(userState) {
     this.HTML = null;
     this.user = userState.user;
-   // this.modalWindow = new ModalWindow();
+    this.modalWindow = new ModalWindow();
     this.startWindow = new StartWindow((this.GameBegin).bind(this));
-    // this.closeButton = new CloseButton();
+    this.closeButton = new CloseButton();
     this.vocabulary = new Vocabulary(this.user);
     this.statistics = new Statistics(this.user);
   }
@@ -42,6 +42,7 @@ export default class SprintGame {
     this.TimerAudio = create('audio', 'timer-audio', '', body);
     this.TimerAudio.src = 'src/assets/audio/timer.mp3';
     this.GameContainer = create('div', 'game-container none', '', body);
+    this.GameContainer.append(this.closeButton.render());
     this.GameAudio = create('audio', 'game-audio', '', this.GameContainer);
     this.GameAudio.src = "src/assets/audio/game_audio/4.mp3";
     this.GameAudio.loop = true;
@@ -54,8 +55,8 @@ export default class SprintGame {
     this.AudioWord = create('audio', 'audio-word_game', '', this.GameContainer);
     this.Translation = create('h1', 'Translation', 'ПЕРЕВОД', this.GameContainer);
     this.answerButtonsContainer = create('div', 'answers_buttons-container', '', this.GameContainer);
-    this.NoButton = create('button', 'no-button', 'No', this.answerButtonsContainer);
-    this.YesButton = create('button', 'yes-button', 'Yes', this.answerButtonsContainer);
+    this.NoButton = create('button', 'sprint-btn no-button', 'No', this.answerButtonsContainer);
+    this.YesButton = create('button', 'sprint-btn yes-button', 'Yes', this.answerButtonsContainer);
     this.countdown = create('div', 'countdown', '', body);
     this.StatContainer = create('div', 'stat-container none', '', body);
     this.finalScore = create('h1', 'final-score', '', this.StatContainer);
@@ -63,7 +64,7 @@ export default class SprintGame {
     this.incorrect_answers = create('p', 'incorrect-answers', 'Ошибок: ', this.IncorrectStatContainer);
     this.CorrectStatContainer = create('div', 'correct-stat-container', '', this.StatContainer);
     this.correct_answers = create('p', 'correct-answers', 'Знаю: ', this.CorrectStatContainer);
-    this.restartButton = create('button', 'restart-button', 'Новая игра', this.StatContainer);
+    this.restartButton = create('button', 'sprint-btn restart-button', 'Новая игра', this.StatContainer);
     this.audio = create('audio', 'audio', '', body);
     this.AudioAnswers = create('div', 'audio-answers', '', body);
     this.CorrectAnswer = create('audio', 'correct-answer', '', this.AudioAnswers);
@@ -77,6 +78,7 @@ export default class SprintGame {
     const yesButton = document.querySelector('.yes-button');
     const noButton = document.querySelector('.no-button');
     const restartButton = document.querySelector('.restart-button');
+    const GoToMenuButton = document.querySelector('.GoToMenu-button');
     const GameAudio = document.querySelector('.game-audio');
     const WrongAnswer = document.querySelector('.wrong-answer');
     const CorrectAnswer = document.querySelector('.correct-answer');
@@ -125,6 +127,12 @@ export default class SprintGame {
             GameAudio.src = `src/assets/audio/game_audio/${counter}.mp3`;
             GameAudio.play();
             break;
+          case (closeButton):
+            if (this.Close()) this.Home();
+            break;
+          case (document.querySelector('.fas')):
+            if (this.Close()) this.Home();
+            break;
           default:
             break;
         }
@@ -152,7 +160,6 @@ export default class SprintGame {
     this.LvlSelect = document.querySelector('#selectGroup').value;
     StartGameWindow.classList.add('none');
     this.Timer.classList.add('block');
-    //this.exitButton.classList.add('none');
     this.StatContainer.classList.remove('flex');
     this.StatContainer.classList.add('none');
 		setTimeout(() => {
@@ -186,7 +193,6 @@ export default class SprintGame {
 
   Game() {
     this.Timer.classList.remove('block');
-    //this.exitButton.classList.remove('none');
     this.Timer.innerHTML = '';
     this.GameContainer.classList.remove('none');
     this.GameContainer.classList.add('flex');
@@ -302,7 +308,6 @@ export default class SprintGame {
     this.GameContainer.classList.add('none');
     this.StatContainer.classList.add('flex');
     this.StatContainer.classList.remove('none');
-    //this.exitButton.classList.add('none');
     this.finalScore.innerHTML = `${sprint.SCORE} ${this.Score.innerHTML}`;
     const errors = document.getElementsByClassName('incorrect');
     this.incorrect_answers.innerHTML += errors.length;

@@ -253,7 +253,7 @@ const sprint = {
   SCORE: 'Ваш счёт: ',
   CORRECT_ANSWERS: 'Знаю ',
   INCORRECT_ANSWERS: 'Ошибок ',
-  EXIT_ANSWER: 'Вы, действительно, хотите вернуться в меню игры?',
+  EXIT_ANSWER: 'Игра не закончена! \nВы, действительно, хотите вернуться в меню игры?',
   KEYBOARD_BUTTON_WRONG: 'ArrowLeft',
   KEYBOARD_BUTTON_CORRECT: 'ArrowRight',
 };

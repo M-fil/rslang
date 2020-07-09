@@ -146,7 +146,6 @@ class App {
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
       this.sprint = new Sprint(this.createMiniGameParameterObject());
-      console.log(this.createMiniGameParameterObject());
       this.sprint.SprintRender();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
