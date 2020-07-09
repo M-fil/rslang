@@ -5,22 +5,32 @@ import create from '../../../utils/сreate';
 import { shuffle } from '../../../utils/shuffle';
 import { urls, auditionGameVariables, vocabularyConstants } from '../../../constants/constants';
 import Preloader from '../../preloader/Preloader';
-import Vocabulary from  '../../vocabulary/Vocabulary'
+import Vocabulary from  '../../vocabulary/Vocabulary';
+
 
 export default class GameService {
-  constructor(user) {
+  constructor(user, lives,roundsAll,roundResults, collectionLengthEnough) {
     this.user = user;
-   /* this.user = {
-      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZmNlZGJmMjM3ODBlMDAxNzQ4N2MyYSIsImlhdCI6MTU5MzcxMTAxMSwiZXhwIjoxNTkzNzI1NDExfQ.ffkTcQtdTj6BvZnHiG9wbZ1cxgr_kK0IcjJ76bdnuSM',
-      userId: '5efcedbf23780e0017487c2a',
-      };*/
+    this.lives = lives;
+    this.roundsAll = roundsAll;
+    this.roundResults = roundResults;
+    this.collectionLengthEnough = collectionLengthEnough;
+  }
+  startGame(collection, group){
+    console.log(collection,group);
+    this.preloaderInit();
+    this.initRound( this.lives, this.roundsAll, 1, this.roundResults);
+    document.querySelector('.audition-game__startScreen').classList.toggle('hide');
+    this.collection = collection;
+    this.group = group;
+    
   }
   async getVocabularyData(){
     this.voc = new Vocabulary(this.user);
     await this.voc.init();
     this.vocabulary  =  await this.voc.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE,  true);  
   }
-  async preloaderInit() {
+   preloaderInit() {
     this.preloader = new Preloader();
     this.preloader.render();
     this.isMuted = false;
@@ -32,11 +42,10 @@ export default class GameService {
   async initRound(lives, roundsAll, currentRound, roundResults) {
     this.preloader.show();
     this.genGame();
-    const gameDataService = new GameDataService(this.vocabulary);
+    const gameDataService = new GameDataService(this.vocabulary, this.collection,this.group, this.collectionLengthEnough);
     const data = await gameDataService.mapping(currentRound, this.isMuted);
     const answers = document.querySelector('.audition-game__answers');
     const arr = data.array;
-    console.log('DATA:',data);
     const mainWord = data.mainWordToAsk;
     this.createPossibleWords(arr, answers);
     const audio = new Audio(`${urls.mainAudioPath}${mainWord.audio}`);
@@ -47,7 +56,7 @@ export default class GameService {
     this.mainEventHandler(lives, mainWord, roundsAll, currentRound, roundResults);
     this.idkBtnHandler(lives, mainWord, roundsAll, currentRound, roundResults);
     this.repeatAudioHandler(audio);
-    this.closeBtnHandler();
+    // this.closeBtnHandler();
     this.progressBarHandler(roundsAll, currentRound);
     this.bgRandomize();
     this.keyboardEventsHandler();
@@ -63,9 +72,10 @@ export default class GameService {
     else create('div', 'audition-game__sound__button audition-game__sound__buttonMuted', '', soundCont);
     document.querySelector('.audition-game__sound__button')
     create('div', 'audition-game__hint__button', '', hintCont);
-    create('div', 'close', '', this.container);
+    // create('div', 'close', '', this.container);
     const game = create('div', 'audition-game__game', '', this.container);
-    create('div', 'audition-game__audio__pulse', '', game);
+   const audioPulse = create('div', 'audition-game__audio__pulse', '', game);
+   audioPulse.style.backgroundImage = `url(${urls.audioPNG})`;
     create('p', 'audition-game__correctanswer', '', game);
     create('div', 'audition-game__answers', '', game);
     create('button', 'audition-game__button__next Enter', `${auditionGameVariables.idkBtn}`, game);
@@ -116,7 +126,7 @@ export default class GameService {
 
           this.nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound, roundResults);
         } else {
-          this.vocabulary.addWordToTheVocabulary(mainWord, vocabularyConstants.WORDS_TO_LEARN_TITLE);
+          this.voc.addWordToTheVocabulary(mainWord, vocabularyConstants.WORDS_TO_LEARN_TITLE);
           this.correctAnswersCounter = 0;
           const audioRoundResult = new Audio(urls.errorSound);
           if (!this.sound.classList.contains('audition-game__sound__buttonMuted')) audioRoundResult.play();
@@ -188,12 +198,12 @@ export default class GameService {
     });
   }
 
-  closeBtnHandler() {
+ /* closeBtnHandler() {
     document.querySelector('.close').addEventListener('click', () => {
       this.modalDialog();
     });
   }
-
+*/
   progressBarHandler(roundsAll, currentRound) {
     document.querySelector('.progress').style.width = `${100 * (currentRound / roundsAll)}%`;
   }

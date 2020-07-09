@@ -2,25 +2,23 @@ import create from '../../../utils/сreate';
 import { getWords, getWordsAdditionalInfo } from '../../../service/service';
 import { simpleShuffle, shuffle } from '../../../utils/shuffle';
 import { auditionGameVariables, vocabularyConstants } from '../../../constants/constants';
-//import Vocabulary from  '../../vocabulary/Vocabulary'
 
 export default class GameDataService {
-  constructor(vocabulary){
+  constructor(vocabulary, collection, group, collectionLengthEnough){
     this.vocabulary = vocabulary;  
+    this.collection = collection;
+    this.group = group;
+    this.collectionLength = collectionLengthEnough;
   }
   async mapping(currentRound, isMuted) {
-    const curr = currentRound <= auditionGameVariables.maxGroups && currentRound > 0 ? currentRound - 1 : Math.floor(Math.random() * Math.floor(auditionGameVariables.maxGroups));
-   // await this.vocabulary.init();
-    //const tst =  this.vocabulary;//.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE,  true); 
+    //const curr = currentRound <= auditionGameVariables.maxGroups && currentRound > 0 ? currentRound - 1 : Math.floor(Math.random() * Math.floor(auditionGameVariables.maxGroups));
     const wordsInfo = [];
   console.log( this.vocabulary);
-    if( this.vocabulary?.length >= 5 &&  this.vocabulary[0]?.audio){
+    if( this.vocabulary?.length >= auditionGameVariables.possibleWordsAmount && this.collection === vocabularyConstants.LEARNED_WORDS_TITLE && this.collectionLengthEnough){
       this.shuffledValue =  this.vocabulary.sort(simpleShuffle);
-     // alert('1');
     }
     else {
-      this.data = await getWords(Math.floor(Math.random() * Math.floor(auditionGameVariables.maxPages)), curr);
-     // alert('2');
+      this.data = await getWords(Math.floor(Math.random() * Math.floor(auditionGameVariables.maxPages)), this.group);
     this.shuffledValue = this.data.sort(simpleShuffle);
   
     for (let i = 0; i < this.shuffledValue.length - 1; i += 1) {
@@ -33,11 +31,10 @@ export default class GameDataService {
       }
     }
    }
-    //console.log('wordsINFO:',wordsInfo);
     const filteredWordsInfo = wordsInfo.length > 0 ? wordsInfo.filter((word) => word.partOfSpeech === auditionGameVariables.noun):this.vocabulary;
     const possibleAnswers = filteredWordsInfo.slice(0, auditionGameVariables.possibleWordsAmount);
     const mainWordToAsk = possibleAnswers[0];
-    if(this.vocabulary.length >= auditionGameVariables.possibleWordsAmount){
+    if(this.vocabulary.length >= auditionGameVariables.possibleWordsAmount  && this.collection === vocabularyConstants.LEARNED_WORDS_TITLE && this.collectionLengthEnough){
     const index = this.vocabulary.indexOf(mainWordToAsk);
     this.vocabulary.splice(index,1);
     }

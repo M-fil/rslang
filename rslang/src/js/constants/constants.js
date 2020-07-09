@@ -11,6 +11,7 @@ const urls = {
   correctSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/correct.mp3',
   errorSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3',
   WORDS_DATA_URL_ADDITIONAL:'https://wordsapiv1.p.rapidapi.com/words/',
+  audioPNG: './src/assets/images/audio.png',
 };
 
 const authenticationConstants = {

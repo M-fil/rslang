@@ -44,6 +44,7 @@ export default class GameStatistic {
   closeEventHandler() {
     document.querySelector('.cancelToClose').addEventListener('click', () => {
       document.querySelector('.audition-game__wrapper').remove();
+      document.querySelector('.main-content').innerHTML = '';
       //document.querySelector('.audition-game__startScreen').classList.toggle('hide');
       const audition = new AuditionGame();
     audition.render(auditionGameVariables.Lives,auditionGameVariables.Rounds);
