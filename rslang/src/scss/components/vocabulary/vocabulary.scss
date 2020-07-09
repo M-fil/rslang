@@ -41,7 +41,7 @@
   background: none;
   cursor: pointer;
   outline: none;
-  transition: 0.5s;
+  @extend %vocabulary-header-button-transition;
   overflow: hidden;
 }
 
@@ -53,11 +53,11 @@
   width: 100%;
   height: 4px;
   background: $game-background-or-hover-for-buttons;
-  transition: 0.5s;
+  @extend %vocabulary-header-button-before-transition;
 }
 
 .vocabulary__header-item:hover {
-  color: $daily-statistics-text-color;
+  color: $vocabluary-text-hover-color;
 }
 
 .vocabulary__header-item:hover::before {
@@ -102,7 +102,7 @@
   padding: 5px;
   width: 140px;
   background-color: $game-background-or-hover-for-buttons;
-  color: $daily-statistics-text-color;
+  color: $vocabluary-text-hover-color;
 }
 
 .vocabulary__word-item {
@@ -111,7 +111,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  transition: all 500ms cubic-bezier(0.77, 0, 0.175, 1);  
+  @extend %vocabulary-word-item-transition;  
   cursor: pointer;
   user-select: none;
 }
@@ -143,7 +143,7 @@
 }
 
 .vocabulary__word-item:hover {
-  color: $daily-statistics-text-color;
+  color: $vocabluary-text-hover-color;
   transition-delay: .5s;
 }
 
@@ -191,12 +191,12 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  color: $find-a-pair-card-text-color;
+  color: $vocabluary-text-color;
 }
 
 .active-vocword-button {
   background-color: $game-background-or-hover-for-buttons;
-  color:  $daily-statistics-text-color;
+  color:  $vocabluary-text-hover-color;
 }
 
 .word-item__main {
@@ -256,7 +256,7 @@
   top: 50%;
   height: 2px;
   background: $game-background-or-hover-for-buttons;
-  transition: all 0.3s ease;
+  @extend %vocabulary-restore-button-transition;
 }
 
 .word-item__restore-button:before {
@@ -286,11 +286,11 @@
   display: flex;
   align-items: center;
   padding: 5px;
-  transition: all 0.5s;
+  @extend %vocabulary-audio-icon-transition;
 }
 
 .word-item__audio:hover {
-  color: $daily-statistics-text-color;
+  color: $vocabluary-text-hover-color;
   transform: scale(1.2);
   opacity: 0.7;
 }
@@ -329,7 +329,7 @@
   top: 15px;
   right: 20px;
   opacity: 0.5;
-  transition: all 300ms;
+  @extend %vocabulary-exit-button-transition;
 }
 
 .vocabulary__exit-button:hover {
