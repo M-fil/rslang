@@ -284,9 +284,20 @@ class App {
     }
   }
 
+  updateUserState(newUserData) {
+    const { name, email } = newUserData;
+
+    this.state.user = {
+      ...this.state.user,
+      name,
+      email,
+    };
+  }
+
   async initSettings() {
     this.settings = new Settings(this.state.user);
     await this.settings.init();
+    this.settings.setUserChangesListener(this.updateUserState);
   }
 
   async initStatistics() {
