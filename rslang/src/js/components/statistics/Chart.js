@@ -8,7 +8,7 @@ const GameTitles = statisticsText.gametitles;
 
 export default class StatisticsChart {
   constructor() {
-    this.myDiv = create('div', 'statisticsCharts');
+    this.myDiv = create('div', 'statistics__charts');
   }
 
   renderStatisticsCharts() {
