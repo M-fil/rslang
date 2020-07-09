@@ -1,53 +1,4 @@
-.statistics {
-  @include font(3rem, 6rem);
-  position: fixed;
-
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  width: 60vw;
-  height: 80vh;
-
-  background-color: $speak-it-standard-button-background;
-  border-radius: 5px;
-
-  z-index: 7000;
-  padding: 20px 40px;
-}
-
-.statistics__words {
-  flex-grow: 1;
-}
-
-.statistics__correct {
-  color: $speak-it-standard-button-text-color;
-  margin-bottom: 10px;
-}
-
-.statistics__correct-title {
-  color: $speak-it-standard-button-text-color;
-  padding: 5px 10px;
-  background-color: $speak-it-incorrect-color;
-}
-
-.statistics__mistakes {
-  color: $speak-it-standard-button-text-color;
-}
-
-.statistics__mistakes-title {
-  color: $speak-it-standard-button-text-color;
-  padding: 5px 10px;
-  background-color: $speak-it-correct-color;
-}
-
-.statistics__buttons {
+.speak-it-statistics__buttons {
   display: flex;
   justify-content: center;
   margin-top: 10px;
@@ -70,7 +21,7 @@
   }
 }
 
-.statistics__button {
+.speak-it-statistics__button {
   @include font(4rem, 5rem);
   
   color: $speak-it-standard-button-text-color;
