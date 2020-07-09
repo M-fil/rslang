@@ -24,7 +24,7 @@ class DailyStatistics {
   render() {
     this.HTML = create('div', 'daily-statistics__overlay');
     this.statisticsBlock = create('div', 'daily-statistics', '', this.HTML);
-    create('div', 'daily-statistics__title', TITLE, this.statisticsBlock);
+    this.titleHTML = create('div', 'daily-statistics__title', TITLE, this.statisticsBlock);
     this.content = create('div', 'daily-statistics__content', '', this.statisticsBlock);
     this.renderParameter(COMPLETED_CARDS_TEXT, this.completedCardsNumber);
     this.renderParameter(CORRECT_ANSWERS_PERCENTAGE_TEXT, this.correctAnswersPercentage, '%');
@@ -33,7 +33,11 @@ class DailyStatistics {
       this.renderParameter(NEW_WORDS_TEXT, this.newWordsNumber);
     }
     this.renderParameter(LONGEST_SERIES_OF_ANSWERS_TEXT, this.longestSeriesOfAnswers);
-    create('button', 'daily-statistics__button', GO_TO_THE_MAIN_PAGE, this.statisticsBlock);
+    this.goToTheMainButton = create(
+      'button', 'daily-statistics__button',
+      GO_TO_THE_MAIN_PAGE, this.statisticsBlock,
+      ['id', 'button-go-to-main-page'],
+    );
     return this.HTML;
   }
 
