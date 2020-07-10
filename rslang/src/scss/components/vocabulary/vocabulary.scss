@@ -4,6 +4,10 @@
   min-width: 320px;
   z-index: 1;
   background-image: $vocabluary-background;
+
+  & * {
+    margin: 0 auto;
+  }
 }
 
 .vocabulary__main-content {

@@ -1,5 +1,24 @@
-.main-content {
+.about-team__wrapper {
   background-color: $about-team-background-color;
+  padding-top: 10px;
+}
+
+.about-team__back-button {
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  font-size: 4rem;
+
+  i {
+    @extend %close-button-transition;
+  }
+
+  &:hover {
+    i {
+      color: $about-team-hover-back-button-color;
+    }
+  }
 }
 .about-team-container {
   @include font(1rem, 1.2);
@@ -11,7 +30,6 @@
 .team_title {
   font-size: 3rem;
   text-align: center;
-  margin-top: 25px;
 }
 .team_block {
   display: flex;
