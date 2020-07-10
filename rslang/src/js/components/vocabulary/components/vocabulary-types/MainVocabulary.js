@@ -1,5 +1,9 @@
-import create, { vocabularyConstants } from '../../pathes';
+import create, {
+  vocabularyConstants,
+  dateFormat,
+} from '../../pathes';
 import VocabularyItem from '../vocabulary-item/VocabularyItem';
+import { addDaysToTheDate } from '../../../main-game/pathes';
 
 const {
   NUMBER_OF_WORDS_TEXT,
@@ -46,16 +50,20 @@ class MainVocabulary {
     }
 
     this.words
-      .map((word) => word.optional.allData)
       .forEach((word) => {
+        const { allData } = word.optional;
+        const { daysInterval, valuationDate } = word.optional;
+        const date = addDaysToTheDate(daysInterval, valuationDate);
+        const nextTimeOfReivise = MainVocabulary.createStandardDateFormat(new Date(date));
         const wordItem = new VocabularyItem(
-          word.id || word._id,
-          word.word,
-          word.wordTranslate,
-          word.transcription,
-          word.textMeaning,
-          word.textExample,
-          word.image,
+          allData.id || allData._id,
+          allData.word,
+          allData.wordTranslate,
+          allData.transcription,
+          allData.textMeaning,
+          allData.textExample,
+          allData.image,
+          nextTimeOfReivise,
           this.vacabularyTitle,
           this.settings,
         );
@@ -63,6 +71,10 @@ class MainVocabulary {
       });
 
     return container;
+  }
+
+  static createStandardDateFormat(date) {
+    return dateFormat(date.getDate(), date.getMonth() + 1, date.getFullYear());
   }
 }
 

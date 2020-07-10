@@ -8,23 +8,104 @@
   width: 100%;
   height: 100%;
   background-color: $modal-window-background;
-  font-size: 20px;
 }
+
 .modal_text {
   background-color: $modal-window-main-background;
-  margin-top: 10%;
+  margin-top: 13%;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
-  border: 1px solid $modal-window-border-color;
-  border-radius: 5px;
-  width: 30%;
+  border: 1.5px solid $modal-window-border-color;
+  border-radius: 10px;
+  min-width: 260px;
+  min-height: 300px;
+  width: 35%;
+  height: 30%;
   overflow: auto;
   max-height: 450px;
   text-align: center;
   line-height: normal;
 }
 
+.modal_title {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+}
+
+.modal_warning {
+  font-size: 1.4em;
+  margin-bottom: 20px;
+}
+
 .modal_button {
   width: 53%;
+  margin-bottom: 10px;
+  position: relative;
+  padding: 10px;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  border: 1.5px solid $modal-window-border-color;
+  text-transform: uppercase;
+  @extend %modal-window-button-hover;
+  box-shadow: 0px 4px 10px 2px rgba($modal-window-border-color, 0.2);
+  z-index: 1;
+
+  &:before{
+    position: absolute;
+    content: '';
+    width: 0%;
+    height: 100%;
+    background: $game-background-or-hover-for-buttons;
+    top: 0;
+    left: 50%;
+    z-index: -1;
+    @extend %modal-window-button-before;
+  }
+  
+  &:hover{
+    color: white; 
+    box-shadow:none;
+    &:before{
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      background: $game-background-or-hover-for-buttons;
+      top: 0;
+      left: 0%;
+      z-index: -1;
+      @extend %modal-window-button-before-hover;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .modal_text {
+    margin-top: 20%;
+    height: 35%;
+    width: 40%
+  }
+}
+
+@media (max-width: 860px) {
+  .modal_text {
+    width: 50%
+  }
+}
+
+@media (max-width: 690px) {
+  .modal_text {
+    margin-top: 25%;
+    width: 60%;
+    height: 40%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal_text {
+    height: 40%;
+    margin-top: 35%;
+  }
 }
