@@ -1,19 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-.sprint-game-wrapper {
-	background: $sprint-main-background no-repeat;
-	background-size: cover;
-	background-position: center;
+body {
 	display: flex;
-	align-items: center;
 	justify-content: center;
-	overflow-x: hidden;
-	min-width: 100vw;
-	min-height: 100vh;
-	position: absolute;
-	top: 0;
+	align-items: center;
+	background: linear-gradient(green, transparent) no-repeat;
+	height: 100vh;
 }
-
 .main-container {
 	display: flex;
 	justify-content: center;
@@ -39,8 +30,6 @@
 }
 
 .game-name {
-	font-family: 'Press Start 2P', cursive;
-	color: #3bffe4;
 }
 
 .game-rules {
@@ -49,8 +38,6 @@
 	line-height: normal;
 	text-align: center;
 	margin-bottom: 2rem;
-	font-family: 'Press Start 2P', cursive;
-	color: #FFEB3B;
 	line-height: 2;
 }
 
@@ -64,7 +51,6 @@
 }
 
 .select__container.gameWindow__container select {
-	font-family: 'Press Start 2P', cursive;
 	font-size: 14px;
 	margin: 1rem 0;
 	height: 3rem;
@@ -93,7 +79,6 @@
 	border-radius: 12px;
 	margin-top: 5rem;
 	color: white;
-	font-family: 'Press Start 2P', cursive;
 	padding: 2rem;
 }
 
@@ -122,8 +107,6 @@
 .timer {
 	font-size: 12rem;
 	text-align: center;
-	color: white;
-	font-family: 'Press Start 2P', cursive;
 }
 
 .game-container {
@@ -132,7 +115,6 @@
 	align-items: center;
 	height: 50vh;
 	width: 50vw;
-	margin: 10%;
 	border: 5px solid white;
 }
 
@@ -144,7 +126,6 @@
 	border: none;
 	border-radius: 12px;
 	color: white;
-	font-family: 'Press Start 2P', cursive;
 }
 
 .yes-button {
@@ -218,13 +199,11 @@ svg circle {
 	font-size: 4rem;
 	position: absolute;
 	top: 5%;
-	font-family: 'Press Start 2P', cursive;
 }
 
 .factor {
 	font-size: 2rem;
 	font-weight: bold;
-	font-family: 'Press Start 2P', cursive;
 }
 
 .stat-container {
@@ -236,7 +215,6 @@ svg circle {
 	min-height: 100vh;
 	background: white;
 	font-size: 2rem;
-	font-family: 'Press Start 2P', cursive;
 }
 
 .incorrect-answers, .correct-answers {
@@ -251,7 +229,6 @@ svg circle {
 
 .word, .Translation {
 	font-size: 3rem;
-	color: white;
 }
 
 .word:hover {
