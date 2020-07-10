@@ -32,8 +32,8 @@ const {
 } = promoPage;
 
 export default class PromoPage {
-  constructor() {
-    const mainContent = document.querySelector('.main-content');
+  constructor(elementQuery) {
+    const mainContent = document.querySelector(elementQuery);
     this.container = create('div', 'promo-page-container', '', mainContent);
     this.backButton = create('button', '', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
     this.ptomoTitle = create('h3', 'promo_title', 'Промо', this.container);

@@ -156,7 +156,10 @@ class App {
     this.container.append(html);
   }
 
-  renderPromoPage() {}
+  renderPromoPage() {
+    this.promo = new PromoPage('.main-page__content');
+    this.promo.render();
+  }
 
   renderAboutTeamPage() {
     this.aboutTeam = new AboutTeam('.main-page__content');
@@ -360,13 +363,13 @@ class App {
       event.preventDefault();
 
       if (event.target.classList.contains('authorization__form')) {
-        this.prelodaer.show();
+        this.preloader.show();
         await this.signInUser();
-        this.prelodaer.hide();
+        this.preloader.hide();
       }
       if (event.target.classList.contains('registration__form')) {
         try {
-          this.prelodaer.show();
+          this.preloader.show();
           const data = await Authentication.submitData(createUser);
           this.state = {
             ...this.state,
@@ -377,7 +380,7 @@ class App {
             },
           };
           await this.signInUser();
-          this.prelodaer.hide();
+          this.preloader.hide();
         } catch (error) {
           console.log(error);
           this.preloader.hide();
@@ -415,9 +418,9 @@ class App {
   async checkIsUserAuthorized() {
     const savedUserData = localStorage.getItem('user-data');
     try {
-      this.prelodaer = new Preloader();
-      this.prelodaer.render();
-      this.prelodaer.show();
+      this.preloader = new Preloader();
+      this.preloader.render();
+      this.preloader.show();
 
       let data = null;
       switch (true) {
