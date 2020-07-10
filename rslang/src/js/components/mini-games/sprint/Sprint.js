@@ -369,7 +369,7 @@ export default class SprintGame {
     this.GameContainer.classList.add('none');
 
     this.shortTermStatistics.render(this.gameResults.errors, this.gameResults.correct);
-    this.shortTermStatistics.addCallbackFnOnClose((this.renderStartWindow).bind(this));
+    this.shortTermStatistics.addCallbackFnOnClose((this.Home).bind(this));
     /*
     this.StatContainer.classList.add('flex');
     this.StatContainer.classList.remove('none');
