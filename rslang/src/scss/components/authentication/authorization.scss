@@ -3,7 +3,7 @@
 		top: 0;
 		min-width: 100vw;
 		min-height: 100vh;
-		background: #225378 !important;
+		background: $authentication-input-background-color;
 		font-family: IBM Plex Mono !important;
 		font-style: normal !important;
 		user-select: none;
@@ -22,16 +22,18 @@
 	.logo {
 		width: 12rem;
 		height: 12rem;
-		background: url(/assets/images/logo.png) no-repeat;
+		background: $authentication-logo-img no-repeat;
 		background-size: contain;
 		margin-left: 10%;
+		position: relative;
+    bottom: 30%;
 	}
 
 
 	.chicken {
 		width: 30vw;
 		height: 30vh;
-		background: url(/assets/images/chicken.png) no-repeat;
+		background: $authentication-chicken-img no-repeat;
 		background-size: contain;
 	}
 
@@ -40,7 +42,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background: white;
+	background: $authentication-main-contain-background;
 	width: fit-content;
 	margin: 0 auto;
 	margin-top: 40vh;
@@ -57,15 +59,14 @@
 		box-sizing: border-box;
 		box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 		border-radius: 2px;
-		background: transparent;
 		font-size: 18px;
-		background: #EB7F00;
+		background: $authentication-btn-color;
 		margin: 2rem 0;
 		border: none;
 }
 
 .authentication__buttons {
-	margin: 3rem;
+	margin: 0 3rem;
 }
 
 	.main-auth-container {
@@ -82,9 +83,8 @@
 		border-radius: 50px;
 		padding: 1rem;
 		text-align: center;
-		box-shadow: 0 0 50px 23px rgb(212, 207, 166);
-		background: linear-gradient(45deg, #E91E63, #FFC107);
 		max-width: 40rem;
+		margin-left: 10%;
 	}
 
 	.discription {
@@ -132,6 +132,11 @@
 	.main-content input {
 		margin: 1rem 0;
 	}
+
+	.authorization__field-container {
+  	display: flex;
+		flex-direction: column;
+  }
 $breakpoint-tablet: 996px;
 @media (max-width: $breakpoint-tablet) {
   .discription-container {
@@ -144,67 +149,12 @@ $xs: 500px;
   .chicken {
   	display: none;
   }
+
+  .main-content button {
+  	width: 200px
+  }
+
+  .main-content input {
+  	width: 200px
+  }
 }
-// @include lg {
-// 	.chicken {
-// 		position: absolute;
-// 		top: 5%;
-// 		right: 15%;
-// 		width: 300px;
-// 		height: 300px;
-// 	}
-
-// 	.discription-container {
-// 		align-items: center;
-// 		margin-top: 2rem;
-// 		text-align: center;
-// 	}
-// }
-
-// @include sm {
-// 	.chicken {
-// 		position: absolute;
-// 		top: 3%;
-// 		right: 15%;
-// 		width: 200px;
-// 		height: 200px;
-// 	}
-
-// 	.discription-container {
-// 		display: none;
-// 	}
-
-// 	.authorization-container {
-// 	position: unset;
-// 	margin: 0 10%;
-// 	width: 100%;
-// 	}
-
-// 	.btn-entry, .btn-registry {
-// 		width: 100%;
-// 	}
-// }
-
-// 	.logo-container {
-// 		display: flex;
-// 		justify-content: center;
-// 		align-items: center;
-// 		margin-bottom: 3rem;
-// 	}
-
-// 	.logo {
-// 		margin-left: 0;
-// 	}
-
-// 	.chicken {
-// 		display: none;
-// 	}
-
-// 	.btn-registry {
-// 		font-size: 16px;
-// 	}
-
-// 	.main-container {
-// 		flex-direction: column;
-// 	}
-
