@@ -46,8 +46,8 @@ const {
 } = aboutTeam;
 
 export default class AboutTeam {
-  constructor() {
-    const mainContent = document.querySelector('.main-content');
+  constructor(elementQuery) {
+    const mainContent = document.querySelector(elementQuery);
     this.container = create('div', 'about-team-container', '', mainContent);
     this.backButton = create('div', '', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
     this.teamTitle = create('div', 'team_title', TEAM, this.container);
