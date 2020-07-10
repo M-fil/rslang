@@ -3,6 +3,9 @@
   margin: 20px 25px;
   width: 125px;
   height: 125px;
+  @include media-mobile {
+    margin: 20px 5px;
+  }
 }
 
 .find-a-pair-card__container {
@@ -16,6 +19,7 @@
   justify-content: center;
   text-align: center;
   border-radius: 15px;
+  background-color: $find-a-pair-card-text-background-color;
   box-shadow: 0 5px 10.5px 0 $find-a-pair-shadow-color;
   @media (hover: hover) {
     &:hover {
@@ -43,7 +47,6 @@
   transform: rotateY( 180deg );
   border-radius: 15px;
   height: auto;
-  background-color: $find-a-pair-card-text-background-color;
 }
 
 .find-a-pair-card__word {

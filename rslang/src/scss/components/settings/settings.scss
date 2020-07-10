@@ -46,7 +46,7 @@
   display: none;
   text-align: left;
   max-height: 290px;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-bottom: 10px;
 }
 
@@ -110,11 +110,11 @@
     content: '';
     width: 0%;
     height: 100%;
-    background: $game-background-or-hover-for-buttons;
+    background: $settings-background-or-hover-for-buttons;
     top: 0;
     left: 50%;
     z-index: -1;
-    transition: all 0ms ease;
+    @extend %setting-transition-for-button-before;
   }
 
   @media(hover: hover) {
@@ -125,7 +125,7 @@
         content: '';
         width: 100%;
         height: 100%;
-        background: $game-background-or-hover-for-buttons;
+        background: $settings-background-or-hover-for-buttons;
         top: 0;
         left: 0%;
         z-index: -1;

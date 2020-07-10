@@ -2,11 +2,79 @@
   display: flex;
   justify-content: space-between;
   vertical-align: baseline;
-  width: 100%;
+  padding: 3px 40px 0;
   @include font(1.5rem);
+  @include media-tablet {
+    position: relative;
+    justify-content: left;
+    padding-left: 10px;
+  }
 }
+
+.find-a-pair-timer {
+  position: relative;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+}
+
+.find-a-pair-timer__seconds {
+  color: black;
+  line-height: 30px;
+}
+
+.find-a-pair-timer__svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  transform: rotateY(-180deg) rotateZ(-90deg);
+}
+
+.find-a-pair-timer__svg circle {
+  stroke-dasharray: 81px;
+  stroke-dashoffset: 0px;
+  stroke-linecap: round;
+  stroke-width: 1px;
+  stroke: black;
+  fill: none;
+  animation: countdown 90s linear infinite forwards;
+  animation-iteration-count: 1;
+  animation-play-state: running;
+}
+
+.find-a-pair_on-pause circle,
+.find-a-pair_short-term-statistics circle {
+  animation-play-state: paused;
+}
+
+@keyframes countdown {
+  from {
+    stroke-dashoffset: 0px;
+  }
+  to {
+    stroke-dashoffset: 81px;
+  }
+}
+
+.find-a-pair-findcards {
+  @include media-tablet {
+    position: absolute;
+    left: 40%;
+  }
+}
+
+.find-a-pair-findcards__count {
+  padding-left: 5px;
+  height: 30px;
+  line-height: 30px;
+}
+
 
 .find-a-pair__pause-button {
   @include font(1.3rem);
-  width: 90px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }

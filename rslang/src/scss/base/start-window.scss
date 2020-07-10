@@ -62,12 +62,12 @@
 }
 
 .game-name {
-  font-size: 2em;
+  @include font(3rem);
   margin-bottom: 15px;
 }
 
 .game-rules {
-  font-size: 1.5em;
+  @include font(2.2rem);
 }
 
 .gameWindow__container {
@@ -79,7 +79,7 @@
 }
 
 .gameWindow__select-title {
-  font-size: 1.2em;
+  @include font(1.7rem);
 }
 
 .gameWindow__container .select__item {
@@ -116,7 +116,7 @@
 
 @media(max-width: 820px) {
   .game-rules {
-    font-size: 1.3em;
+    font-size: 1.8rem;
   }
 }
 
@@ -146,11 +146,7 @@
 
 @media(max-width: 360px) {
   .game-rules {
-    font-size: 1.2em;
-  }
-
-  .gameWindow__select-title {
-    font-size: 1.1em;
+    font-size: 1.6rem;
   }
 
   .gameWindow__container {
