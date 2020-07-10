@@ -48,6 +48,8 @@ const authenticationConstants = {
   AUTHORIZATION_KEY: 'authorization',
   REGISTRATION_KEY: 'registration',
   MAX_NAME_LENGTH: 30,
+  CHICKEN_IMAGE_PATH: './src/assets/images/authentication/chicken-image.png',
+  APP_DESCRIPTION: 'Возможно ли изучать английский язык не в формате привычных скучных уроков? Однозначно - ДА!',
 };
 
 const wordsToLearnSelectConstants = {

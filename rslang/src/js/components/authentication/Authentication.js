@@ -8,6 +8,8 @@ const {
   REGISTRATION_KEY,
   NAME_LABEL_TEXT,
   MAX_NAME_LENGTH,
+  CHICKEN_IMAGE_PATH,
+  APP_DESCRIPTION,
 } = authenticationConstants;
 
 const {
@@ -27,11 +29,22 @@ class Authentication {
   }
 
   render() {
+    this.wrapper = create('div', 'authentication__wrapper');
     const titleHTML = create('h3', `${this.classNameType}__title authentication__title`, this.title);
     const formHTML = this.renderForm();
 
     this.HTML = create('div', `${this.classNameType} authentication`, [titleHTML, formHTML]);
-    return this.HTML;
+    this.wrapper.append(this.renderLogoContainer(), this.HTML);
+
+    return this.wrapper;
+  }
+
+  renderLogoContainer() {
+    this.logoContainer = create('div', 'authentication__logo-container');
+    create('img', '', 'authentication__logo-image', this.logoContainer, ['src', CHICKEN_IMAGE_PATH]);
+    create('div', 'authentication__app-description', APP_DESCRIPTION, this.logoContainer);
+
+    return this.logoContainer;
   }
 
   renderForm() {

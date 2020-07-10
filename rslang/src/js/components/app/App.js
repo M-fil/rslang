@@ -169,8 +169,7 @@ class App {
           name: data.name,
         },
       };
-      document.querySelector('.authentication').remove();
-      document.querySelector('.authentication__buttons').remove();
+      document.querySelector('.authentication__wrapper').remove();
       await this.initSettings();
       await this.renderMainGame();
     } catch (error) {
@@ -245,7 +244,7 @@ class App {
       buttonsContainer,
       ['type', 'button'], ['authenticationType', 'authorization'],
     );
-    this.container.prepend(buttonsContainer);
+    document.querySelector('.authentication').prepend(buttonsContainer);
 
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.authentication__toggle-button');
@@ -262,7 +261,7 @@ class App {
   }
 
   renderAuthenticationBlock(type) {
-    const authenticationHTML = document.querySelector('.authentication');
+    const authenticationHTML = document.querySelector('.authentication__wrapper');
     if (authenticationHTML) {
       authenticationHTML.remove();
     }
