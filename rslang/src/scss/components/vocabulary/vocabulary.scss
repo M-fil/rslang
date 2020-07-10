@@ -176,12 +176,12 @@
   }
    
   &::-webkit-scrollbar-thumb {
-    background: $color-background-1; 
+    background: $game-background-light-blue; 
     border-radius: 10px;
   }
   
   &::-webkit-scrollbar-thumb:hover {
-    background: $color-pagination-bullet; 
+    background: $game-background-or-hover-for-buttons; 
   }
 }
 
