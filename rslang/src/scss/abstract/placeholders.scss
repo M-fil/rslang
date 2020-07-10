@@ -37,6 +37,10 @@
   transition: all 300ms ease;
 }
 
+%short-statistics-audio-hover-transition {
+  transition: all 0.5s ease-in;
+}
+
 %close-button-transition {
   transition: all 300ms;
 }
