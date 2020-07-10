@@ -152,6 +152,11 @@ export default class EnglishPuzzle {
         viewElement([], [document.querySelector('.bonus-button')]);
       }
     } else if (this.activeSentenseCounter + 1 === GAME_BLOCK.gameZoneRows) {
+      this.statistics.saveGameStatistics(
+        StatisticsGameCodes.ENGLISH_PUZZLE_GAME_CODE,
+        this.rightAnswers.length,
+        this.falseAnswers.length,
+      );
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
         await this.getCardsAndStartGame();
         viewElement([
@@ -382,11 +387,6 @@ export default class EnglishPuzzle {
 
   async actionOnCloseButton() {
     viewElement([this.gameForm], [this.startMenu]);
-    this.statistics.saveGameStatistics(
-      StatisticsGameCodes.ENGLISH_PUZZLE_GAME_CODE,
-      this.rightAnswers.length,
-      this.falseAnswers.length,
-    );
   }
 
   dragAndDropActions() {
@@ -449,7 +449,7 @@ export default class EnglishPuzzle {
     document.querySelector('.control-buttons_container').addEventListener('click', (event) => {
       if (event.target.classList.contains('help-button')) {
         event.target.classList.toggle('active-button');
-      } else if (event.target.classList.contains('fas')) {
+      } else if (event.target.classList.contains('fas') && event.target.parentNode.classList.contains('help-button')) {
         event.target.parentNode.classList.toggle('active-button');
       }
     });

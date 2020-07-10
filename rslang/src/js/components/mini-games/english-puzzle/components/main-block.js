@@ -35,6 +35,7 @@ export default class MainBlock {
   createControlButtons() {
     const buttonsContainer = create('div', 'control-buttons_container');
     const buttonStutMas = Object.values(this.buttonStat);
+    console.log(buttonStutMas);
     for (let i = 0; i < GAME_BLOCK.controlButtons; i += 1) {
       let button = null;
       switch (i) {
@@ -44,13 +45,12 @@ export default class MainBlock {
           break;
         case 1:
           button = create('div', 'button-sintezise help-button', '<i class="fas fa-music"></i>', buttonsContainer);
+          buttonStutMas[0] ? button.classList.add('active-button') : button.classList.remove('active-button');
           break;
         default:
           button = create('div', 'button-trunslate help-button', '<i class="fas fa-language"></i>', buttonsContainer);
+          buttonStutMas[1] ? button.classList.add('active-button') : button.classList.remove('active-button');
           break;
-      }
-      if (buttonStutMas[i]) {
-        button.classList.add('active-button');
       }
     }
     return buttonsContainer;
@@ -59,7 +59,7 @@ export default class MainBlock {
   static createGameButtons() {
     const gameButtons = create('div', 'game-block_field--buttons');
     for (let i = 0; i < GAME_BLOCK.gameButtons.length; i += 1) {
-      const gameButton = create('button', 'game-button', '', gameButtons);
+      const gameButton = create('div', 'game-button', '', gameButtons);
       gameButton.textContent = GAME_BLOCK.gameButtons[i];
       switch (i) {
         case 0:

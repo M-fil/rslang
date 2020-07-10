@@ -219,7 +219,6 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      await this.renderEnglishPuzzle();
       this.prelodaer.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
@@ -230,11 +229,11 @@ class App {
         ...data,
       };
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderEnglishPuzzle();
       this.preloader.hide();
     }
   }
-  
+
   static async renderMainGame(userState) {
     const mainGame = new MainGame(userState);
     await mainGame.render('.main-page__content');
