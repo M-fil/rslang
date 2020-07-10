@@ -2,25 +2,19 @@ import create from '../../utils/сreate';
 import { aboutTeam } from '../../constants/constants';
 
 const {
-  NAME_FILANOVVICH,
+  NAME_FILANOVICH,
   NAME_LATUSHKINA,
   NAME_ANTONOV,
   NAME_ZHDANOV,
   NAME_ANDREEV,
   NAME_SHNIRKEVICH,
-  ABOUT_FILANOVVICH,
-  ABOUT_LATUSHKINA,
-  ABOUT_ANTONOV,
-  ABOUT_ZHDANOV,
-  ABOUT_ANDREEV,
-  ABOUT_SHNIRKEVICH,
-  WORK_FILANOVVICH,
+  WORK_FILANOVICH,
   WORK_LATUSHKINA,
   WORK_ANTONOV,
   WORK_ZHDANOV,
   WORK_ANDREEV,
   WORK_SHNIRKEVICH,
-  PHOTO_FILANOVVICH,
+  PHOTO_FILANOVICH,
   PHOTO_LATUSHKINA,
   PHOTO_ANTONOV,
   PHOTO_ZHDANOV,
@@ -31,9 +25,9 @@ const {
   GITHUB,
   VK,
   LINKEDIN,
-  GIT_FILANOVVICH,
-  VK_FILANOVVICH,
-  LINKEDIN_FILANOVVICH,
+  GIT_FILANOVICH,
+  VK_FILANOVICH,
+  LINKEDIN_FILANOVICH,
   GIT_LATUSHKINA,
   VK_LATUSHKINA,
   LINKEDIN_LATUSHKINA,
@@ -54,14 +48,14 @@ const {
 export default class AboutTeam {
   constructor() {
     const mainContent = document.querySelector('.main-content');
-    this.container = create('div', 'container', '', mainContent);
+    this.container = create('div', 'about-team-container', '', mainContent);
     this.backButton = create('div', '', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
     this.teamTitle = create('div', 'team_title', TEAM, this.container);
     this.teamBlock = create('div', 'team_block', '', this.container);
   }
 
   render() {
-    this.createAboutPerson(NAME_FILANOVVICH, WORK_FILANOVVICH, PHOTO_FILANOVVICH, GIT_FILANOVVICH, VK_FILANOVVICH, LINKEDIN_FILANOVVICH);
+    this.createAboutPerson(NAME_FILANOVICH, WORK_FILANOVICH, PHOTO_FILANOVICH, GIT_FILANOVICH, VK_FILANOVICH, LINKEDIN_FILANOVICH);
     this.createAboutPerson(NAME_LATUSHKINA, WORK_LATUSHKINA, PHOTO_LATUSHKINA, GIT_LATUSHKINA, VK_LATUSHKINA, LINKEDIN_LATUSHKINA);
     this.createAboutPerson(NAME_ANTONOV, WORK_ANTONOV, PHOTO_ANTONOV, GIT_ANTONOV, VK_ANTONOV, LINKEDIN_ANTONOV);
     this.createAboutPerson(NAME_ZHDANOV, WORK_ZHDANOV, PHOTO_ZHDANOV, GIT_ZHDANOV, VK_ZHDANOV, LINKEDIN_ZHDANOV);
@@ -74,14 +68,20 @@ export default class AboutTeam {
     this.personPhotoBlock = create('div', 'person-photo-block', '', this.teamCard);
     this.personPhoto = create('img', 'person-photo', '', this.personPhotoBlock);
     this.personPhoto.src = photoSrc;
-    this.personName = create('h3', 'person-name', `${name}`, this.teamCard);
-    this.personQuality = create('div', 'person-quality', '', this.teamCard);
-    this.github = create('a', 'person-link', GITHUB, this.personQuality);
+    this.personName = create('h3', 'person-name', name, this.teamCard);
+    this.personQuality = create('ul', 'submenu', '', this.teamCard);
+    this.githubLI = create('li', 'person-link', '', this.personQuality);
+    this.github = create('a', 'person-link', GITHUB, this.githubLI);
+    this.vkLI = create('li', 'person-link', '', this.personQuality);
+    this.vk = create('a', 'person-link', VK, this.vkLI);
+    this.linkedinLI = create('li', 'person-link', '', this.personQuality);
+    this.linkedin = create('a', 'person-link', LINKEDIN, this.linkedinLI);
     this.github.href = gitLink;
-    this.vk = create('a', 'person-link', VK, this.personQuality);
     this.vk.href = vkLink;
-    this.linkedin = create('a', 'person-link', LINKEDIN, this.personQuality);
     this.linkedin.href = linkedinLink;
+    this.github.target = '_blank';
+    this.vk.target = '_blank';
+    this.linkedin.target = '_blank';
     this.personWork = create('p', 'person-work', `${work}`, this.teamCard);
   }
 }
