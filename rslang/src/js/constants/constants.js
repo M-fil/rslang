@@ -316,7 +316,7 @@ const startWindow = {
 const sprint = {
   START_TIMER: 5,
   GAME_NAME: 'Спринт',
-  GAME_RULES: 'Лео-спринт – скоростная тренировка. За 60 секунд надо угадывать, правильный ли перевод предложен к английскому слову.<br>Допфункционал: за 12 подряд правильно угаданных слов даётся +5 секунд к таймеру игры.',
+  GAME_RULES: 'Лео-спринт – скоростная тренировка. За 60 секунд необходимо определить, правильный ли перевод предложен к английскому слову.<br>Допфункционал: за 12 подряд правильно угаданных слов даётся +5 секунд к таймеру игры.',
   POWER1: 1,
   POWER2: 2,
   POWER3: 4,
@@ -329,18 +329,26 @@ const sprint = {
   RIGHT_ANSWER: '✓',
   GAME_TIMER: 60,
   SCORE: 'Ваш счёт: ',
-  CORRECT_ANSWERS: 'Знаю ',
-  INCORRECT_ANSWERS: 'Ошибок ',
+  CORRECT_ANSWERS: 'Знаю',
+  INCORRECT_ANSWERS: 'Ошибок',
   EXIT_ANSWER: 'Игра не закончена! \nВы, действительно, хотите вернуться в меню игры?',
   KEYBOARD_BUTTON_WRONG: 'ArrowLeft',
   KEYBOARD_BUTTON_CORRECT: 'ArrowRight',
+  PLUS_10_POINTS_PER_WORD: '+10 очков за слово',
+  PLUS_POINTS_PER_WORD: 'очков за слово',
+  WORD: 'СЛОВО',
+  TRANSLATE: 'ПЕРЕВОД',
+  BUTTON_NO: 'No',
+  BUTTON_YES: 'Yes',
+  NEW_GAME: 'Новая игра',
 };
 
 const sprintAudios = {
   GAME_AUDIO_4: 'src/assets/audio/game_audio/4.mp3',
   END_AUDIO_PATH: 'src/assets/audio/end.mp3',
   GAME_AUDIO_PATH: 'src/assets/audio/game_audio/',
-}
+  TIMER_AUDIO: 'src/assets/audio/timer.mp3',
+};
 
 export {
   urls,

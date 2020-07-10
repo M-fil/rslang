@@ -30,6 +30,7 @@ const {
   GAME_AUDIO_4,
   END_AUDIO_PATH,
   GAME_AUDIO_PATH,
+  TIMER_AUDIO,
 } = sprintAudios;
 
 export default class SprintGame {
@@ -75,21 +76,21 @@ export default class SprintGame {
   createGameElements() {
     this.Score = create('div', 'sprint__score', '0', this.GameContainer);
     this.GameAnswers = create('div', 'game_answers-container', '', this.GameContainer);
-    this.Factor = create('p', 'factor', '+10 очков за слово', this.GameContainer);
-    this.Word = create('h1', 'word', 'СЛОВО', this.GameContainer);
+    this.Factor = create('p', 'factor', sprint.PLUS_10_POINTS_PER_WORD, this.GameContainer);
+    this.Word = create('h1', 'word', sprint.WORD, this.GameContainer);
     this.AudioWord = create('audio', 'audio-word_game', '', this.GameContainer);
-    this.Translation = create('h1', 'Translation', 'ПЕРЕВОД', this.GameContainer);
+    this.Translation = create('h1', 'Translation', sprint.TRANSLATE, this.GameContainer);
     this.answerButtonsContainer = create('div', 'answers_buttons-container', '', this.GameContainer);
-    this.noButtonElement = create('button', 'sprint-btn no-button', 'No', this.answerButtonsContainer);
-    this.yesButtonElement = create('button', 'sprint-btn yes-button', 'Yes', this.answerButtonsContainer);
+    this.noButtonElement = create('button', 'sprint-btn no-button', sprint.BUTTON_NO, this.answerButtonsContainer);
+    this.yesButtonElement = create('button', 'sprint-btn yes-button', sprint.BUTTON_YES, this.answerButtonsContainer);
     this.countdown = create('div', 'countdown', '', this.SprintGameWrapper);
     this.StatContainer = create('div', 'stat-container none', '', this.SprintGameWrapper);
     this.finalScore = create('h1', 'final-score', '', this.StatContainer);
     this.IncorrectStatContainer = create('div', 'incorrect-stat-container', '', this.StatContainer);
-    this.incorrect_answers = create('p', 'incorrect-answers', 'Ошибок: ', this.IncorrectStatContainer);
+    this.incorrect_answers = create('p', 'incorrect-answers', `${sprint.INCORRECT_ANSWERS}: `, this.IncorrectStatContainer);
     this.CorrectStatContainer = create('div', 'correct-stat-container', '', this.StatContainer);
-    this.correct_answers = create('p', 'correct-answers', 'Знаю: ', this.CorrectStatContainer);
-    this.restartButton = create('button', 'sprint-btn restart-button', 'Новая игра', this.StatContainer);
+    this.correct_answers = create('p', 'correct-answers', `${sprint.CORRECT_ANSWERS}: `, this.CorrectStatContainer);
+    this.restartButton = create('button', 'sprint-btn restart-button', sprint.NEW_GAME, this.StatContainer);
   }
 
   setGameHTMLElements() {
@@ -175,7 +176,7 @@ export default class SprintGame {
   renderGameAfterStartButtonClick() {
     this.Timer = create('span', 'timer', '', this.SprintGameWrapper);
     this.TimerAudio = create('audio', 'timer-audio', '', this.SprintGameWrapper);
-    this.TimerAudio.src = 'src/assets/audio/timer.mp3';
+    this.TimerAudio.src = TIMER_AUDIO;
     this.GameContainer = create('div', 'game-container none', '', this.SprintGameWrapper);
     this.closeButton.show();
     this.GameContainer.append(this.closeButton.render());
@@ -297,7 +298,7 @@ export default class SprintGame {
     if ((window.correctAnswers) % 4 === 0) this.GameAnswers.innerHTML = '';
 
     const prevScore = this.Score.innerHTML;
-    this.Factor.innerHTML = `+${power * 10} очков за слово`;
+    this.Factor.innerHTML = `+${power * 10} ${sprint.PLUS_POINTS_PER_WORD}`;
     this.Score.innerHTML = +prevScore + 10 * power;
     const ANSWER_CONT = document.createElement('div');
     ANSWER_CONT.classList.toggle('answer-cont');
@@ -318,7 +319,7 @@ export default class SprintGame {
 
   Incorrect() {
     window.correctAnswers = 0;
-    this.Factor.innerHTML = '+10 очков за слово';
+    this.Factor.innerHTML = sprint.PLUS_10_POINTS_PER_WORD;
     this.GameAnswers.innerHTML = '';
     const ANSWER_CONT = document.createElement('div');
     ANSWER_CONT.classList.toggle('answer-cont');
@@ -364,26 +365,13 @@ export default class SprintGame {
   EndGame() {
     this.EndSoundGame.play();
     this.countdown.innerHTML = '';
-    this.Factor.innerHTML = '+10 очков за слово';
+    this.Factor.innerHTML = sprint.PLUS_10_POINTS_PER_WORD;
     this.GameContainer.classList.remove('flex');
     this.GameContainer.classList.add('none');
 
     this.shortTermStatistics.render(this.gameResults.errors, this.gameResults.correct);
     this.shortTermStatistics.addCallbackFnOnClose((this.Home).bind(this));
-    /*
-    this.StatContainer.classList.add('flex');
-    this.StatContainer.classList.remove('none');
-    this.finalScore.innerHTML = `${sprint.SCORE} ${this.Score.innerHTML}`;
-    const errors = document.getElementsByClassName('incorrect');
-    this.incorrect_answers.innerHTML += errors.length;
-    const rights = document.getElementsByClassName('correct');
-    this.correct_answers.innerHTML += rights.length;
-    this.Translation.innerHTML = 'ПЕРЕВОД';
-    this.Word.innerHTML = 'СЛОВО';
-    this.GameAudio.pause();
-    this.GameAudio.currentTime = 0;
-    console.log(this.gameResults);
-    */
+
     this.statistics.saveGameStatistics('sprint', this.gameResults.correct.length, this.gameResults.errors.length);
   }
 
