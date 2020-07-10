@@ -112,7 +112,7 @@
 
 @media(max-width: 820px) {
   .game-rules {
-    font-size: 1.3em;
+    font-size: 1.8rem;
   }
 }
 
@@ -142,11 +142,7 @@
 
 @media(max-width: 360px) {
   .game-rules {
-    font-size: 1.2em;
-  }
-
-  .gameWindow__select-title {
-    font-size: 1.1em;
+    font-size: 1.6rem;
   }
 
   .gameWindow__container {
@@ -155,11 +151,5 @@
 
   .start-button {
     margin: 0 5px 0 5px;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  * {
-    overflow-x: hidden;
   }
 }
