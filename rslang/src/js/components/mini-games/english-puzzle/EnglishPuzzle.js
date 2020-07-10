@@ -26,7 +26,6 @@ import Preloader from '../../preloader/preloader';
 import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
 import Statistics from '../../statistics/Statistics';
-import { Swappable } from '@shopify/draggable';
 
 const {
   SELECT_OPTION_LEARNED_WORDS_VALUE,
@@ -424,10 +423,6 @@ export default class EnglishPuzzle {
       if(event.target.classList.contains('active-card')) {
         this.cardClickAction(event.target);
       }
-    });
-
-    const swappable = new Swappable(this.activeRow, {
-      draggable: '.active-card',
     });
     
     document.querySelector('.game-block_field--description').addEventListener('drop', (event) => {
