@@ -7,6 +7,23 @@
   font-size: 5rem;
 }
 
+.savannah__start-game-window {
+  width: 55%;
+}
+
+.savannah__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh;
+  background: $savannah-background;
+
+  &_in-game {
+    display: block;
+  }
+}
+
 .word {
   width: 200px;
   user-select: none;
@@ -109,7 +126,8 @@
 }
 
 .line-info {
-  margin-top: 20px;
   display: flex;
   justify-content: space-between;
+  width: 80%;
+  margin: auto;
 }

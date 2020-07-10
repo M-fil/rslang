@@ -64,6 +64,7 @@ export default class SavannahGame {
     this.error = 0;
     this.modalWindow = new ModalWindow();
     this.startWindow = new StartWindow((this.reverseReport).bind(this));
+    this.startWindow.gameWindow.classList.add('savannah__start-game-window');
     this.closeButton = new CloseButton();
     this.vocabulary = new Vocabulary(this.userState);
     this.statistics = new Statistics(this.userState);
@@ -73,7 +74,7 @@ export default class SavannahGame {
     this.learnedWords();
     this.startPage = this.startWindow.render(GAME_NAME, RULES, this.isVocabularyWords);
     this.content = document.querySelector(elementQuery);
-    this.container = create('div', 'container', this.startPage, this.content);
+    this.container = create('div', 'savannah__container', this.startPage, this.content);
     this.container.append(this.closeButton.render());
     this.allWords = document.querySelectorAll('.word');
     this.arrayBeforeClickWords = [];
@@ -95,6 +96,7 @@ export default class SavannahGame {
 
   reverseReport(collection, group) {
     playAudio(AUDIO_TICKING, this.audio);
+    this.container.classList.add('savannah__container_in-game');
     this.numberReverse = create('span', 'number-reverse', '', this.container);
     SavannahGame.changeDisplay(this.gameWindow, 'none');
     SavannahGame.changeDisplay(this.numberReverse, 'block');
@@ -382,6 +384,7 @@ export default class SavannahGame {
   }
 
   goToTheStartPageHandler() {
+    this.container.classList.remove('savannah__container_in-game');
     this.container.innerHTML = '';
     this.startWindow.gameWindow.remove();
     const isShowLearnedWordsOption = this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS;

@@ -63,6 +63,7 @@ export default class EnglishPuzzle {
 
     const gameZone = new MainBlock();
     const startWindow = new StartWindow((this.startMenuButtonAction).bind(this));
+    startWindow.gameWindow.classList.add('english-puzzle__start-game-window');
     this.gameForm = gameZone.createMainForm();
     this.backData.closeButton.show();
     this.gameForm.appendChild(this.backData.closeButton.render());
@@ -75,7 +76,7 @@ export default class EnglishPuzzle {
 
     this.preloader.render();
 
-    const container = document.querySelector(elementQuery)
+    const container = document.querySelector(elementQuery);
     this.wrapper = create('div', 'english-puzzle-wrapper', [this.startMenu, this.gameForm, this.resultForm]);
     container.appendChild(this.wrapper);
 
