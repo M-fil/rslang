@@ -189,9 +189,12 @@ export default class Statistics {
       this.renderLongTerm(),
     ]);
 
+    const exitButton = create('span', 'exit-button statistics__exit-button', undefined, undefined, ['id', 'button-go-to-main-page']);
+
     const mainStatistics = create('div', 'statistics', [
       Statistics.renderNavigation(),
       statContainer,
+      exitButton,
     ]);
 
     create('div', 'statistics__wrapper', mainStatistics, appContainer);
@@ -231,11 +234,11 @@ export default class Statistics {
     const learnedWordsData = this.getLearnedWordsByDate();
     const summaryByAnswers = this.getSummaryByAnswers();
     const summaryByGames = this.getSummaryByGames();
-    setTimeout(() => {
+
     this.chrt.summaryByAnswersChart(summaryByAnswers);
     this.chrt.summaryByGamesChart(summaryByGames);
     this.chrt.learnedWordsChart(this.statistics.learnedWords, learnedWordsData);
-    },3000);
+
     return create('div', 'statistics-tab__item statistics__long-term', this.chrt.renderStatisticsCharts(), undefined, ['tabId', 'longterm']);
   }
 
