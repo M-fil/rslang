@@ -1,27 +1,80 @@
-.main-container {
+.sprint-game-wrapper {
+	background: url('/assets/images/sprint_img.jpg') no-repeat;
+	background-size: cover;
+	background-position: center;
+
 	display: flex;
+	align-items: center;
 	justify-content: center;
+	overflow-x: hidden;
+	min-width: 100vw;
+	min-height: 100vh;
+
+	& .word {
+		text-align: center;
+	}
+
+	& .sprint__score {
+		color: white;
+		font-size: 4rem;
+	}
 }
 
-button:active, button:focus, input:active, input:focus {
+.sprint__exit-button {
+	top: 9px;
+	right: 30px;
+}
+
+.game-choice {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: 4rem 0;
+	font-size: 2rem;
+}
+
+.game-choice select {
+	font-size: 2rem;
+}
+
+.none {
+	display: none;
+}
+
+.block {
+	display: block;
+}
+
+.flex {
+	display: flex;
+}
+
+.sprint-btn:active {
+	border-style: inset;
+	transform: scale(0.9);
+}
+
+.sprint-btn:active, .sprint-btn:focus, input:active, input:focus {
   outline: none !important;
 }
 
-button::-moz-focus-inner {
+.sprint-btn::-moz-focus-inner {
   border: 0 !important;
 }
 
 .timer {
 	font-size: 12rem;
 	text-align: center;
+	color: white;
 }
 
 .game-container {
-	display: none;
 	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
-	height: 100%;
+	height: 50vh;
+	width: 50vw;
 	margin: 10%;
 	border: 5px solid white;
 }
@@ -37,11 +90,11 @@ button::-moz-focus-inner {
 }
 
 .yes-button {
-	background: linear-gradient(#07b900, #8BC34A);
+	background: linear-gradient(#046500, #7bb13d);
 }
 
 .no-button {
-	 background: linear-gradient(#e63b05, #F44336);
+	 background: linear-gradient(#bf0000, #F44336);
 }
 
 .game_answers-container {
@@ -102,22 +155,18 @@ svg circle {
   }
 }
 
-.score {
-	color: white;
-	font-size: 4rem;
-	position: absolute;
-	top: 5%;
+.factor {
+	font-size: 2rem;
+	font-weight: bold;
 }
 
 .stat-container {
-	display: none;
 	position: absolute;
 	top: 0;
 	flex-direction: column;
 	align-items: center;
 	width: 100%;
 	min-height: 100vh;
-	overflow: auto;
 	background: white;
 	font-size: 2rem;
 }
@@ -129,14 +178,142 @@ svg circle {
 .incorrect-stat-container, .correct-stat-container {
 	width: 100%;
 	padding-left: 10%;
+	padding-bottom: 2rem;
 }
 
 .word, .Translation {
 	font-size: 3rem;
+	color: white;
+}
+
+.word:hover {
+	cursor: pointer;
+	transform: scale(1.1);
+	transition: transform 0.5s;
 }
 
 .restart-button {
-	position: absolute;
-	bottom: 10%;
+	position: fixed;
+	bottom: 8vh;
 	right: 10%;
 }
+
+.audio-icon {
+	width: 3rem;
+	height: 3rem;
+	background: url(../assets/images/audio.png) no-repeat;
+	background-size: cover;
+	margin-right: 2rem;
+}
+
+.audio-icon:hover {
+	cursor: pointer;
+	transform: scale(1.1);
+}
+
+.answer-cont {
+	display: flex;
+	align-items: center;
+	margin: 1rem 0;
+}
+
+.sound-icon {
+	width: 3rem;
+	height: 3rem;
+	background: url(../assets/images/sound_on.png) no-repeat;
+	background-size: cover;
+	position: absolute;
+	top: 10px;
+	right: 100px;
+}
+
+.sound-icon:hover {
+	cursor: pointer;
+	transform: scale(1.1);
+}
+
+.sound-icon:active {
+	transform: scale(1);
+}
+
+.muted {
+	background: url(../assets/images/mute.png) no-repeat;
+	background-size: cover;
+}
+
+.game-audio_button {
+	width: 3rem;
+	height: 3rem;
+	background: url(../assets/images/game_audio.png) no-repeat;
+	background-size: cover;
+	position: absolute;
+	top: 10px;
+	right: 140px;
+}
+
+.game-audio_button:hover {
+	cursor: pointer;
+	transform: scale(1.1);
+}
+
+.game-audio_button:active {
+	transform: scale(1);
+}
+@media (max-width: 1400px) {
+  .game-rules {
+  	font-size: 2rem;
+  }
+}
+
+@media (max-width: 775px) {
+  .start-button, .restart-button, .GoToMenu-button {
+  	font-style: 2rem;
+  }
+
+  .game-rules {
+  	font-size: 16px;
+  }
+
+  .start-game-window h2 {
+    font-size: 4rem;
+  }
+
+  .game-container {
+  	width: 80vw;
+  }
+}
+
+@media (max-width: 500px) {
+  .game-rules {
+  	font-size: 14px;
+  	width: 80%;
+  }
+
+  .start-button, .restart-button, .GoToMenu-button {
+  	margin-top: 2rem;
+  	font-size: 2rem;
+  }
+
+  .answers_buttons-container {
+  	display: flex;
+    flex-direction: column;
+  }
+
+  .no-button {
+  	order: 1;
+    margin-top: 2rem !important;
+  }
+
+  .factor {
+  	font-size: 1.5rem;
+  }
+
+  .word {
+  	font-size: 2rem;
+  }
+
+  .stat-container {
+  	font-size: 1rem;
+  }
+}
+

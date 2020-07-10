@@ -16,6 +16,7 @@ const urls = {
   audioPNG: './src/assets/images/audio.png',
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
   CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
+  ERROR_AUDIO_PATH: './src/assets/audio/error.mp3',
   SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
 };
 
@@ -604,6 +605,35 @@ const promoPage = {
   Игра заканчивается, когда вышло время или когда пользователь угадал все карточки до истечения указанного времени.`,
 };
 
+const sprint = {
+  START_TIMER: 5,
+  GAME_NAME: 'Спринт',
+  GAME_RULES: 'Лео-спринт – скоростная тренировка. За 60 секунд надо угадывать, правильный ли перевод предложен к английскому слову.<br>Допфункционал: за 12 подряд правильно угаданных слов даётся +5 секунд к таймеру игры.',
+  POWER1: 1,
+  POWER2: 2,
+  POWER3: 4,
+  POWER4: 8,
+  CORRECT1: 4,
+  CORRECT2: 8,
+  CORRECT3: 12,
+  BONUS_ANSWERS: 12,
+  BONUS_TIME: 5,
+  RIGHT_ANSWER: '✓',
+  GAME_TIMER: 60,
+  SCORE: 'Ваш счёт: ',
+  CORRECT_ANSWERS: 'Знаю ',
+  INCORRECT_ANSWERS: 'Ошибок ',
+  EXIT_ANSWER: 'Игра не закончена! \nВы, действительно, хотите вернуться в меню игры?',
+  KEYBOARD_BUTTON_WRONG: 'ArrowLeft',
+  KEYBOARD_BUTTON_CORRECT: 'ArrowRight',
+};
+
+const sprintAudios = {
+  GAME_AUDIO_4: 'src/assets/audio/game_audio/4.mp3',
+  END_AUDIO_PATH: 'src/assets/audio/end.mp3',
+  GAME_AUDIO_PATH: 'src/assets/audio/game_audio/',
+}
+
 export {
   urls,
   savannahConstants,
@@ -635,4 +665,6 @@ export {
   progressLearningConstants,
   logoutModalWindowContstants,
   promoPage,
+  sprint,
+  sprintAudios,
 };

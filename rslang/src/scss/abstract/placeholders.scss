@@ -26,6 +26,10 @@
 %start-window-start-button-transition {
   transition: all 300ms ease;
 }
+
+%setting-transition-for-button-before {
+  transition: all 0ms ease;
+}
 %close-button-transition {
   transition: all 300ms;
 }
@@ -34,7 +38,11 @@
   transition: all 0ms ease;
 }
 
-%start-window-start-button-before-hover-transition {
+%setting-transition-for-button-hover-before {
+  transition: all 300ms Wease;
+}
+
+%modal-window-button-hover {
   transition: all 300ms ease;
 }
 
@@ -43,6 +51,10 @@
 }
 
 %start-window-start-button-before-transition {
+  transition: all 0ms ease;
+}
+
+%modal-window-button-before {
   transition: all 0ms ease;
 }
 
@@ -89,11 +101,18 @@
   transition: all 300ms ease;
 }
 
-%modal-window-button-before {
+%authentication-button-transition {
+  transition: all 300ms ease;
+}
+%start-window-start-button-transition {
+  transition: all 300ms ease;
+}
+
+%start-window-start-button-before-transition {
   transition: all 0ms ease;
 }
 
-%modal-window-button-before-hover {
+%start-window-start-button-before-hover-transition {
   transition: all 300ms ease;
 }
 
@@ -123,4 +142,12 @@
 
 %start-window-start-button-before-hover-transition {
   transition: all 300ms ease;
+}
+
+%short-statistics-audio-hover-transition {
+  transition: all 0.5s ease-in;
+}
+
+%close-button-transition {
+  transition: all 300ms;
 }

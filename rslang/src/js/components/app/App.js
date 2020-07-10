@@ -1,5 +1,4 @@
 import create from '../../utils/сreate';
-
 import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
@@ -36,6 +35,7 @@ import {
   mainPageHeaderButtonConstants,
   gamesInfo,
 } from '../../constants/constants';
+import SprintGame from '../mini-games/sprint/Sprint';
 
 const {
   USER_IS_NOT_AUTHORIZED,
@@ -131,7 +131,6 @@ class App {
   activateGoToTheMainPageButton() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('#button-go-to-main-page');
-
       if (target) {
         this.clearMainContainersBeforeRender();
         this.saveCurrentPage();
@@ -501,3 +500,4 @@ class App {
 }
 
 export default App;
+
