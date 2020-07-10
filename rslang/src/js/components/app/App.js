@@ -129,7 +129,7 @@ class App {
   async renderFindAPair() {
     const findAPair = new FindAPair(this.createMiniGameParameterObject());
     await findAPair.init();
-    findAPair.renderStartPage('.main-content');
+    findAPair.renderStartPage('.main-page__content');
   }
 
   activateAuthenticationForm() {
