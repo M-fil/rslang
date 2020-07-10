@@ -599,7 +599,7 @@ export default class SpeakIt {
         if (words.length < WORDS_LIMIT_NUMBER) {
           await this.renderNewGameWithCollectionWords();
         } else {
-          this.renderNewGameWithLearnedWords();
+          await this.renderNewGameWithLearnedWords();
         }
         this.renderNavigation(true);
       }

@@ -14,6 +14,31 @@ const urls = {
   SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
 };
 
+const savannahConstants = {
+  SAVANNAH_SECONDS_COUNT: 3,
+  GAME_NAME: 'Саванна',
+  RULES: 'Тренировка Саванна развивает словарный запас. За каждые изученные 5 слов, ты повышаешь количество жизней в игре.',
+  START_BUTTON: 'Начать',
+  LAST_NUMBER: 1,
+  MAX_PAGE: 29,
+  MAX_WORDS_LINE: 4,
+  RANDOM_WORDS: 3,
+  LIVES: 5,
+  MIN_VOCABULARY_WORDS: 20,
+  END_ANIMATION: 6000,
+  FRAME: 24,
+  DIVIDER: 20,
+  ADD_LIVES: 5,
+  PLUS_LIVE: '+1 &#9829',
+  AUDIO_TICKING: './src/assets/audio/clock_ticking_loop.mp3',
+  AUDIO_CORRECT: './src/assets/audio/correct.mp3',
+  AUDIO_ERROR: './src/assets/audio/error.mp3',
+  AUDIO_BONUS: './src/assets/audio/bonus.mp3',
+  LIVES_IMAGE_BLACK: './src/assets/images/heart_black.png',
+  LIVES_IMAGE_INHERIT: './src/assets/images/heart_inherit.png',
+  MAX_WORDS: 20,
+};
+
 const authenticationConstants = {
   AUTHORIZATION_TITLE: 'Авторизация',
   REGISTRATION_TITLE: 'Регистрация',
@@ -85,8 +110,11 @@ const dailyStatisticsConstants = {
   COMPLETED_CARDS_TEXT: 'Карточек завершено',
   CORRECT_ANSWERS_PERCENTAGE_TEXT: 'Процент правильных ответов',
   NEW_WORDS_TEXT: 'Новые слова',
-  LONGEST_SERIES_OF_ANSWERS_TEXT: 'Саммая длинная серия правильных ответов',
+  LONGEST_SERIES_OF_ANSWERS_TEXT: 'Самая длинная серия правильных ответов',
   GO_TO_THE_MAIN_PAGE: 'Перейти на главную',
+  DIFFICULT_WORDS_TITLE_TEXT: 'Поздравляем! Вы повторили все сложные слова!',
+  DIFFICULT_WORDS_COUNT_TEXT: (count) => `Всего сложных слов: ${count}.`,
+  REVISE_DIFFICULT_WORDS_AGAIN: 'Повторить еще раз',
 };
 
 const wordsToLearnOptions = {
@@ -261,7 +289,6 @@ const shortTermStatisticsConstants = {
   CORRECT_STAT: 'Знаю',
   STAT_TITLE: 'Статистика',
   STAT_CLOSE: 'Закрыть',
-  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 const startWindow = {
@@ -271,6 +298,7 @@ const startWindow = {
 
 export {
   urls,
+  savannahConstants,
   findAPairText,
   authenticationConstants,
   errorTypes,
