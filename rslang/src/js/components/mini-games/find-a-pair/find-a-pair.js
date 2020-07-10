@@ -66,12 +66,14 @@ export default class FindAPair {
 
   renderStartPage(container) {
     if (!this.main) {
-      this.main = document.querySelector(container) || document.body;
+      this.main = FindAPair.getRootElement(container);
     }
+
     this.container = document.querySelector('#find-a-pair');
     if (!this.container) {
       this.container = create('div', 'find-a-pair', undefined, this.main, ['id', 'find-a-pair']);
     }
+
     this.container.append(this.StartWindow.render('Find a pair', findAPairText.about, this.checkWordsCountInVocabulary()));
     this.container.classList.add('find-a-pair__start-page');
     this.container.classList.remove('find-a-pair_short-term-statistics');
@@ -351,5 +353,28 @@ export default class FindAPair {
   checkWordsCountInVocabulary() {
     const vocabuleryLength = this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE);
     return (vocabuleryLength >= findAPairConst.cardsCount);
+  }
+
+  static getRootElement(container) {
+    const htmlElementNode = 1;
+    const typeOBJECT = 'object';
+    const typeSTRING = 'string';
+    let rootContainer;
+
+    switch (typeof container) {
+      case typeOBJECT:
+        if (container.nodeType === htmlElementNode) {
+          rootContainer = container;
+        }
+        break;
+      case typeSTRING:
+        rootContainer = document.querySelector(container);
+        break;
+      default:
+        rootContainer = document.body;
+        break;
+    }
+
+    return rootContainer;
   }
 }
