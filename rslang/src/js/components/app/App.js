@@ -83,6 +83,7 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      console.log(error);
       App.removeModalElements();
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
@@ -149,6 +150,7 @@ class App {
           await this.signInUser();
           this.preloader.hide();
         } catch (error) {
+          console.log(error);
           this.preloader.hide();
           Authentication.createErrorBlock(error.message);
         }
@@ -171,8 +173,9 @@ class App {
       };
       document.querySelector('.authentication__wrapper').remove();
       await this.initSettings();
-      await this.renderMainGame();
+      await this.renderSpeakItGame();
     } catch (error) {
+      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -217,6 +220,7 @@ class App {
       await this.renderSpeakItGame();
       this.preloader.hide();
     } catch (error) {
+      console.log(error);
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
       const data = await getRefreshToken(userId, refreshToken);
@@ -230,9 +234,9 @@ class App {
     }
   }
 
-  static async renderMainGame(userState) {
-    const mainGame = new MainGame(userState);
-    await mainGame.render('.main-page__content');
+  async renderMainGame(userState) {
+    this.mainGame = new MainGame(userState);
+    await this.mainGame.render('.main-page__content');
   }
 
   activateToggleAuthentication() {
