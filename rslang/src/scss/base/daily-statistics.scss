@@ -29,6 +29,7 @@
   width: 65vmax;
   height: 50vmin;
   padding: 20px;
+  z-index: 500;
 
   @include media-tablet {
     width: 80vmin;

@@ -44,9 +44,18 @@ class FormControll {
     this.inputHTML.style.width = this.getInputCSSWidth();
   }
 
-  getInputCSSWidth() {
+  renderFakeWord() {
     this.fakeWord = create('div', 'word-card__fake-word', this.word);
     create('div', 'word-card__fake-word-container', this.fakeWord, document.body);
+  }
+
+  getInputCSSWidth() {
+    if (this.fakeWord) {
+      this.fakeWord.remove();
+      this.renderFakeWord();
+    } else {
+      this.renderFakeWord();
+    }
 
     return `${this.fakeWord.offsetWidth}px`;
   }

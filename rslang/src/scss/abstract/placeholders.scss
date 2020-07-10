@@ -39,7 +39,7 @@
   transition: all 300ms ease;
 }
 
-%modal-window-button-before {
+%start-window-start-button-before-transition {
   transition: all 0ms ease;
 }
 
@@ -74,6 +74,21 @@
   transition: all 0.5s;
 }
 
-%vocabulary-exit-button-transition {
+%start-window-start-button-before-hover-transition {
+  transition: all 300ms ease;
+}
+%modal-window-button-hover {
+  transition: all 300ms ease;
+}
+
+%modal-window-button-before {
+  transition: all 0ms ease;
+}
+
+%modal-window-button-before-hover {
+  transition: all 300ms ease;
+}
+
+%close-button-transition {
   transition: all 300ms;
 }
