@@ -10,7 +10,7 @@ import {
 import create from '../../../utils/сreate';
 import shuffle from '../../../utils/shuffle';
 import wordsFilter from '../../../utils/wordsfilter';
-import Preloader from '../../preloader/Preloader';
+import Preloader from '../../preloader/preloader';
 import Settings from '../../settings/Settings';
 import Statistics from '../../statistics/Statistics';
 import StartWindow from '../common/StartWindow';
@@ -73,8 +73,9 @@ export default class FindAPair {
       this.container = create('div', 'find-a-pair', undefined, this.main, ['id', 'find-a-pair']);
     }
     this.container.append(this.StartWindow.render('Find a pair', findAPairText.about, this.checkWordsCountInVocabulary()));
-    this.container.classList.remove('find-a-pair_short-term-statistics');
     this.container.classList.add('find-a-pair__start-page');
+    this.container.classList.remove('find-a-pair_short-term-statistics');
+    this.container.classList.remove('find-a-pair_on-pause');
   }
 
   async startGame(collection, group) {
@@ -85,6 +86,7 @@ export default class FindAPair {
     this.findPairs = 0;
     this.clearTimer();
     this.gameOnPause = false;
+    this.closeButtonShowing = false;
     this.renderGame();
   }
 
@@ -114,9 +116,9 @@ export default class FindAPair {
     pauseButton.addEventListener('click', (this.pauseGameHandler).bind(this));
 
     this.CloseButton.show();
-    this.CloseButton.addExitButtonClickCallbackFn((this.pauseGameHandler).bind(this));
+    this.CloseButton.addExitButtonClickCallbackFn((this.closeButtonHandler).bind(this));
     this.CloseButton.addCloseCallbackFn((this.newGameHandler).bind(this));
-    this.CloseButton.addCancelCallbackFn((this.pauseGameHandler).bind(this));
+    this.CloseButton.addCancelCallbackFn((this.closeButtonHandler).bind(this));
 
     this.container.appendChild(controlbar);
     this.container.appendChild(playingField);
@@ -244,6 +246,20 @@ export default class FindAPair {
 
   startGameHandler() {
     this.startGame();
+  }
+
+  closeButtonHandler() {
+    if (!this.closeButtonShowing) {
+      if (!this.gameOnPause) {
+        this.pauseGameHandler();
+      }
+      this.closeButtonShowing = true;
+    } else {
+      if (this.gameOnPause) {
+        this.pauseGameHandler();
+      }
+      this.closeButtonShowing = false;
+    }
   }
 
   pauseGameHandler() {
