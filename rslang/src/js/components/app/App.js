@@ -91,6 +91,7 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      console.log(error);
       this.renderAuthorizationBlock();
       this.preloader.hide();
     }
@@ -111,7 +112,7 @@ class App {
     this.state.user.isAuthrorized = false;
     this.clearMainContainersBeforeRender();
     this.renderAuthenticationBlock('authorization');
-    this.renderToggleAuthentication();
+    this.activateToggleAuthentication();
     this.activateAuthenticationForm();
   }
 
