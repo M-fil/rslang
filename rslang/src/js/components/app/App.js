@@ -246,7 +246,7 @@ class App {
 
   renderSprintGame() {
     this.sprint = new SprintGame(this.createMiniGameParameterObject());
-    const html = this.sprint.render();
+    const html = this.sprint.SprintRender();
     this.container.append(html);
   }
 

@@ -41,8 +41,9 @@ export default class SprintGame {
     this.TimerAudio = create('audio', 'timer-audio', '', this.SprintGameWrapper);
     this.TimerAudio.src = 'src/assets/audio/timer.mp3';
     this.GameContainer = create('div', 'game-container none', '', this.SprintGameWrapper);
-    this.CloseBtn = create('button', 'exit-button', '', this.GameContainer);
-    this.CloseBtn.innerHTML = 'X';
+    this.closeButton.show();
+    this.GameContainer.append(this.closeButton.render());
+
     this.GameAudio = create('audio', 'game-audio', '', this.GameContainer);
     this.GameAudio.src = "src/assets/audio/game_audio/4.mp3";
     this.GameAudio.loop = true;
@@ -74,7 +75,7 @@ export default class SprintGame {
     this.SoundIcon = create('div', 'sound-icon', '', this.GameContainer);
     this.EndSoundGame = create('audio', '', '', this.SprintGameWrapper);
     this.EndSoundGame.src = "src/assets/audio/end.mp3";
-    const closeButton = document.querySelector('.exit-button');
+
     const yesButton = document.querySelector('.yes-button');
     const noButton = document.querySelector('.no-button');
     const restartButton = document.querySelector('.restart-button');
@@ -94,50 +95,48 @@ export default class SprintGame {
         else this.Incorrect();
         this.GetWordData();
         Disabled();
-        }
+      }
       if (e.target === noButton) {
         if (!window.answer) this.Correct();
         else this.Incorrect();
         this.GetWordData();
         Disabled();
-        }
-        function Disabled() {
+      }
+      function Disabled() {
         yesButton.disabled = true;
         setTimeout(() => { yesButton.disabled = false; }, 1000);
         noButton.disabled = true;
         setTimeout(() => { noButton.disabled = false; }, 1000);
         yesButton.disabled = true;
-        }
-        switch (e.target) {
-          case restartButton:
-            default:
-            this.ClearGameData();
-            break;
-          case SoundIcon:
-            SoundIcon.classList.toggle('muted');
-            WrongAnswer.muted = (WrongAnswer.muted) ? false : true;
-            CorrectAnswer.muted = (CorrectAnswer.muted) ? false : true;
-            GameAudio.muted = (GameAudio.muted) ? false : true;
-            break;
-          case Word:
-            AudioWord.play();
-            break;
-          case GameAudioButton:
-            if(counter !== 7) counter++;
-            else counter = 1;
-            GameAudio.src = `src/assets/audio/game_audio/${counter}.mp3`;
-            GameAudio.play();
-            break;
-          case (closeButton):
-            if (this.Close()) this.Home();
-            break;
-          case (document.querySelector('.fas')):
-            if (this.Close()) this.Home();
-            break;
-          default:
-            break;
-        }
-        if (e.target.classList[0] === 'audio-icon') e.target.childNodes[0].play();
+      }
+      switch (e.target) {
+        case restartButton:
+        default:
+          this.ClearGameData();
+          break;
+        case SoundIcon:
+          SoundIcon.classList.toggle('muted');
+          WrongAnswer.muted = !WrongAnswer.muted;
+          CorrectAnswer.muted = !CorrectAnswer.muted;
+          GameAudio.muted = !GameAudio.muted;
+          break;
+        case Word:
+          AudioWord.play();
+          break;
+        case GameAudioButton:
+          if (counter !== 7) counter += 1;
+          else counter = 1;
+          GameAudio.src = `src/assets/audio/game_audio/${counter}.mp3`;
+          GameAudio.play();
+          break;
+        case (this.closeButton):
+          if (this.Close()) this.Home();
+          break;
+        case (document.querySelector('.fas')):
+          if (this.Close()) this.Home();
+          break;
+      }
+      if (e.target.classList[0] === 'audio-icon') e.target.childNodes[0].play();
 
     });
     document.addEventListener('keydown', (e) => {
@@ -163,9 +162,9 @@ export default class SprintGame {
     this.Timer.classList.add('block');
     this.StatContainer.classList.remove('flex');
     this.StatContainer.classList.add('none');
-		setTimeout(() => {
-			this.TimerAudio.play();
-		}, 1000);
+    setTimeout(() => {
+      this.TimerAudio.play();
+    }, 1000);
     const sec = 5;
     let timeLeft = sec;
     const timer = setInterval(() => {
@@ -206,12 +205,12 @@ export default class SprintGame {
     const vocWords = this.vocabulary.getWordsByVocabularyType(WORDS_TO_LEARN_TITLE);
     if (this.WordSelected === 'LEARNED_WORDS' && vocLength > 9) {
       this.WordGameRender(vocWords[this.Random(vocLength)].optional.allData,
-      vocWords[this.Random(vocLength)].optional.allData);
+        vocWords[this.Random(vocLength)].optional.allData);
     }
     else {
-    const ARRAY_WORDS = await getWords(this.Random(30), this.LvlSelect);
-    const RANDOM_WORD = await getWords(this.Random(30), this.LvlSelect);
-    this.WordGameRender(ARRAY_WORDS[this.Random(20)], RANDOM_WORD[this.Random(20)]);
+      const ARRAY_WORDS = await getWords(this.Random(30), this.LvlSelect);
+      const RANDOM_WORD = await getWords(this.Random(30), this.LvlSelect);
+      this.WordGameRender(ARRAY_WORDS[this.Random(20)], RANDOM_WORD[this.Random(20)]);
     }
   }
 
@@ -283,7 +282,7 @@ export default class SprintGame {
 		<svg>
     	<circle r="18" cx="20" cy="20"></circle>
 		</svg>`;
-		this.GameAudio.play();
+    this.GameAudio.play();
     const countdownNumberEl = document.querySelector('.countdown-number');
     window.countdown = sprint.GAME_TIMER;
     countdownNumberEl.textContent = window.countdown;
@@ -353,7 +352,7 @@ export default class SprintGame {
     this.countdown.innerHTML = '';
     clearInterval(window.myTimer);
     this.GameAudio.pause();
-		this.GameAudio.currentTime = 0;
-		this.GameAnswers.innerHTML = '';
+    this.GameAudio.currentTime = 0;
+    this.GameAnswers.innerHTML = '';
   }
 }

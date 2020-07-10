@@ -1,7 +1,4 @@
 .sprint-game-wrapper {
-	background: url(/assets/images/sprint_img.jpg) no-repeat;
-	background-size: cover;
-	background-position: center;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -10,19 +7,6 @@
 	min-height: 100vh;
 	position: absolute;
 	top: 0;
-}
-
-.main-container {
-	display: flex;
-	justify-content: center;
-}
-
-.exit-button {
-	width: 3rem;
-	height: 3rem;
-	position: absolute;
-	top: 10px;
-	right: 10px;
 }
 
 .start-game-window {
@@ -36,20 +20,6 @@
 	font-size: 6rem;
 }
 
-.game-name {
-	color: #3bffe4;
-}
-
-.game-rules {
-	font-size: 3rem;
-	width: 70vw;
-	line-height: normal;
-	text-align: center;
-	margin-bottom: 2rem;
-	color: #FFEB3B;
-	line-height: 2;
-}
-
 .game-choice {
 	display: flex;
 	flex-direction: column;
@@ -57,12 +27,6 @@
 	justify-content: center;
 	margin: 4rem 0;
 	font-size: 2rem;
-}
-
-.select__container.gameWindow__container select {
-	font-size: 14px;
-	margin: 1rem 0;
-	height: 3rem;
 }
 
 .game-choice select {
@@ -79,16 +43,6 @@
 
 .flex {
 	display: flex;
-}
-
-.start-button, .restart-button, .GoToMenu-button {
-	font-size: 3rem;
-	background: linear-gradient(#2196F3, #3d3bff);
-	border: none;
-	border-radius: 12px;
-	margin-top: 5rem;
-	color: white;
-	padding: 2rem;
 }
 
 .sprint-btn:active {
