@@ -5,3 +5,23 @@
 %statistics-tab-item-button-transition {
   transition: 0.5s;
 }
+
+%setting-transition-for-button-before {
+  transition: all 0ms ease;
+}
+
+%setting-transition-for-button-hover-before {
+  transition: all 300ms ease;
+}
+
+%modal-window-button-hover {
+  transition: all 300ms ease;
+}
+
+%modal-window-button-before {
+  transition: all 0ms ease;
+}
+
+%modal-window-button-before-hover {
+  transition: all 300ms ease;
+}
