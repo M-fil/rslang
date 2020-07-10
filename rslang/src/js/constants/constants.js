@@ -238,7 +238,7 @@ const startWindow = {
 const sprint = {
   START_TIMER: 5,
   GAME_NAME: 'Спринт',
-  GAME_RULES: 'Лео-спринт – скоростная тренировка. За 60 секунд надо угадывать, правильный ли перевод предложен к английскому слову.<br>Допфункционал: за 12 подряд правильно угаданных слов даётся +5 секунд к таймеру игры.',
+  GAME_RULES: 'СПРИНТ – скоростная тренировка. За 60 секунд надо угадывать, правильный ли перевод предложен к английскому слову.<br>Допфункционал: за 12 подряд правильно угаданных слов даётся +5 секунд к таймеру игры.',
   POWER1: 1,
   POWER2: 2,
   POWER3: 4,
@@ -256,6 +256,14 @@ const sprint = {
   EXIT_ANSWER: 'Игра не закончена! \nВы, действительно, хотите вернуться в меню игры?',
   KEYBOARD_BUTTON_WRONG: 'ArrowLeft',
   KEYBOARD_BUTTON_CORRECT: 'ArrowRight',
+  TIMER_AUDIO: 'src/assets/audio/timer.mp3',
+  WORD: 'Слово',
+  TRANSLATION: 'Перевод',
+  MIN_VOCABULARY_LENGTH: 30,
+};
+
+const auth = {
+  DESCRIPTION: 'Возможно ли изучать английский язык не в формате привычных скучных уроков?\nОднозначно - ДА!',
 };
 
 export {
@@ -277,4 +285,5 @@ export {
   startWindow,
   HTTPCodesConstants,
   sprint,
+  auth,
 };

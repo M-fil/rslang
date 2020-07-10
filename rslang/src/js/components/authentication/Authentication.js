@@ -1,5 +1,5 @@
 import create from '../../utils/сreate';
-import { authenticationConstants, errorTypes } from '../../constants/constants';
+import { authenticationConstants, errorTypes, auth } from '../../constants/constants';
 import { checkPassword } from '../../utils/validators';
 
 const {
@@ -37,9 +37,9 @@ class Authentication {
     this.LOGO = create('div', 'logo', '', this.LOGO_CONT);
     this.Chicken = create('div', 'chicken', '', this.LOGO_CONT);
     this.DISCRIPTION_CONT = create('div', 'discription-container', '', this.MAIN_CONT);
-    this.DISCRIPTION = create('div', 'discription', '', this.DISCRIPTION_CONT);
+    this.DISCRIPTION = create('div', 'discription', auth.DESCRIPTION, this.DISCRIPTION_CONT);
     this.LOGO.after(this.DISCRIPTION_CONT);
-    create('p', '', 'Возможно ли изучать английский язык не в формате привычных скучных уроков?\nОднозначно - ДА!', this.DISCRIPTION);
+    create('p', '', '', this.DISCRIPTION);
     this.HTML = create('div', `${this.classNameType} authentication`, [titleHTML, formHTML]);
     return this.HTML;
   }

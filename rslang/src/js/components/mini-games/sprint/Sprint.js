@@ -37,7 +37,7 @@ export default class SprintGame {
     create('div', 'sprint-game__startScreen', this.startWindow.render(sprint.GAME_NAME, sprint.GAME_RULES, this.CheckVocabularyLength()), GameWindow);
     this.Timer = create('span', 'timer', '', this.SprintGameWrapper);
     this.TimerAudio = create('audio', 'timer-audio', '', this.SprintGameWrapper);
-    this.TimerAudio.src = 'src/assets/audio/timer.mp3';
+    this.TimerAudio.src = sprint.TIMER_AUDIO;
     this.GameContainer = create('div', 'game-container none', '', this.SprintGameWrapper);
     this.CloseBtn = create('button', 'exit-button', '', this.GameContainer);
     this.CloseBtn.innerHTML = 'X';
@@ -49,9 +49,9 @@ export default class SprintGame {
     this.Score = create('div', 'score', '0', this.GameContainer);
     this.GameAnswers = create('div', 'game_answers-container', '', this.GameContainer);
     this.Factor = create('p', 'factor', '+10 очков за слово', this.GameContainer);
-    this.Word = create('h1', 'word', 'СЛОВО', this.GameContainer);
+    this.Word = create('h1', 'word', sprint.WORD, this.GameContainer);
     this.AudioWord = create('audio', 'audio-word_game', '', this.GameContainer);
-    this.Translation = create('h1', 'Translation', 'ПЕРЕВОД', this.GameContainer);
+    this.Translation = create('h1', 'Translation', sprint.TRANSLATION, this.GameContainer);
     this.answerButtonsContainer = create('div', 'answers_buttons-container', '', this.GameContainer);
     this.NoButton = create('button', 'sprint-btn no-button', 'No', this.answerButtonsContainer);
     this.YesButton = create('button', 'sprint-btn yes-button', 'Yes', this.answerButtonsContainer);
@@ -200,7 +200,7 @@ export default class SprintGame {
   async GetWordData() {
     const vocLength = this.vocabulary.getVocabularyWordsLength(WORDS_TO_LEARN_TITLE);
     const vocWords = this.vocabulary.getWordsByVocabularyType(WORDS_TO_LEARN_TITLE);
-    if (this.WordSelected === 'LEARNED_WORDS' && vocLength > 9) {
+    if (this.WordSelected === 'LEARNED_WORDS' && vocLength > MIN_VOCABULARY_LENGTH) {
       this.WordGameRender(vocWords[this.Random(vocLength)].optional.allData,
       vocWords[this.Random(vocLength)].optional.allData);
     }
@@ -310,8 +310,8 @@ export default class SprintGame {
     this.incorrect_answers.innerHTML += errors.length;
     const rights = document.getElementsByClassName('correct');
     this.correct_answers.innerHTML += rights.length;
-    this.Translation.innerHTML = 'ПЕРЕВОД';
-    this.Word.innerHTML = 'СЛОВО';
+    this.Translation.innerHTML = sprint.TRANSLATION;
+    this.Word.innerHTML = sprint.WORD;
     this.GameAudio.pause();
     this.GameAudio.currentTime = 0;
     this.statistics.saveGameStatistics('sprint', errors.length, rights.length);
@@ -344,8 +344,8 @@ export default class SprintGame {
     StartGameWindow.classList.remove('none');
     this.GameContainer.classList.remove('flex');
     this.GameContainer.classList.add('none');
-    this.Translation.innerHTML = 'ПЕРЕВОД';
-    this.Word.innerHTML = 'СЛОВО';
+    this.Translation.innerHTML = sprint.TRANSLATION;
+    this.Word.innerHTML = sprint.WORD;
     this.countdown.innerHTML = '';
     clearInterval(window.myTimer);
     this.GameAudio.pause();

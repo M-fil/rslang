@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 .sprint-game-wrapper {
-	background: url(/assets/images/sprint_img.jpg) no-repeat;
+	background: $sprint-main-background no-repeat;
 	background-size: cover;
 	background-position: center;
 	display: flex;
@@ -95,6 +95,15 @@
 	color: white;
 	font-family: 'Press Start 2P', cursive;
 	padding: 2rem;
+}
+
+.exit-button:hover {
+	cursor: pointer;
+	transform: scale(1.1);
+}
+
+.exit-button:active {
+	transform: scale(1);
 }
 
 .sprint-btn:active {
@@ -260,7 +269,7 @@ svg circle {
 .audio-icon {
 	width: 3rem;
 	height: 3rem;
-	background: url(../assets/images/audio.png) no-repeat;
+	background: $sprint-audio-icon;
 	background-size: cover;
 	margin-right: 2rem;
 }
@@ -279,7 +288,7 @@ svg circle {
 .sound-icon {
 	width: 3rem;
 	height: 3rem;
-	background: url(../assets/images/sound_on.png) no-repeat;
+	background: $sprint-sound-on no-repeat;
 	background-size: cover;
 	position: absolute;
 	top: 10px;
@@ -296,14 +305,14 @@ svg circle {
 }
 
 .muted {
-	background: url(../assets/images/mute.png) no-repeat;
+	background: $sprint-sound-off no-repeat;
 	background-size: cover;
 }
 
 .game-audio_button {
 	width: 3rem;
 	height: 3rem;
-	background: url(../assets/images/game_audio.png) no-repeat;
+	background: $sprint-change-music-icon no-repeat;
 	background-size: cover;
 	position: absolute;
 	top: 10px;
