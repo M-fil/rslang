@@ -31,7 +31,9 @@
 
 .daily-statistics__title {
   @include font(3rem);
+
   margin-bottom: 30px;
+  text-align: center;
 }
 
 .daily-statistics__content {
@@ -40,9 +42,4 @@
   align-items: flex-start;
   justify-content: center;
   margin-bottom: 30px;
-}
-
-.main-game__exit-button {
-  width: 30px;
-  height: 30px;
 }

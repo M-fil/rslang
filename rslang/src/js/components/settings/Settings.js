@@ -3,11 +3,16 @@ import {
   settingsText,
 } from '../../constants/constants';
 import {
+  saveUserData,
   setUserSettings,
   getUserSettings,
 } from '../../service/service';
+import {
+  checkPassword,
+  checkEmail,
+} from '../../utils/validators';
 import ModalWindow from '../modal-window/modalwindow';
-import Preloader from '../preloader/Preloader';
+import Preloader from '../preloader/preloader';
 
 const SettingsConst = {
   differenceBetweenNewAndMax: 5,
@@ -45,33 +50,48 @@ export default class Settings {
   renderSettingsWindow() {
     const tabsList = Settings.renderTabList();
 
-    const submitButton = create('input', 'settings-form__submit', undefined, undefined, ['type', 'submit'], ['value', settingsText.form.submitButton]);
-    const form = create('form', 'settings-form', [
+    this.resultTextElement = create('span', 'settings-results');
+
+    const formProfile = Settings.createFormElement('settings-form', 'profile-form', [Settings.renderProfileEditTab()]);
+    formProfile.addEventListener('submit', (this.formProfileSubmitHandler).bind(this));
+
+    const formSettings = Settings.createFormElement('settings-form form-hidden', 'settings-form', [
       this.renderMainTab(),
       this.renderDictionaryTab(),
       this.renderFindAPairTab(),
-      submitButton,
-    ], undefined, ['id', 'settings-form']);
-
-    form.addEventListener('submit', (this.formSubmitHandler).bind(this));
+    ]);
+    formSettings.addEventListener('submit', (this.formSettingsSubmitHandler).bind(this));
 
     const div = create('div', 'settings', [
+      this.resultTextElement,
       tabsList,
-      form,
+      formProfile,
+      formSettings,
     ]);
 
     this.modalWindow.setContent(div);
   }
 
   static renderTabList() {
-    const tabMain = create('li', 'settings-tabs-list__item settings-tabs-list__item_active', settingsText.tabList.mainGame, undefined, ['tabId', 1], ['title', settingsText.tabList.mainGame]);
-    const tabDictionary = create('li', 'settings-tabs-list__item', settingsText.tabList.dictionary, undefined, ['tabId', 2], ['title', settingsText.tabList.dictionary]);
-    const tabFindAPair = create('li', 'settings-tabs-list__item', settingsText.tabList.findapair, undefined, ['tabId', 3], ['title', settingsText.tabList.findapair]);
-    const ul = create('ul', 'settings-tabs-list', [tabMain, tabDictionary, tabFindAPair]);
+    const tabProfile = create('li', 'settings-tabs-list__item settings-tabs-list__item_active', settingsText.tabList.profile, undefined, ['tabId', 1], ['title', settingsText.tabList.profile]);
+    const tabMain = create('li', 'settings-tabs-list__item', settingsText.tabList.mainGame, undefined, ['tabId', 2], ['title', settingsText.tabList.mainGame]);
+    const tabDictionary = create('li', 'settings-tabs-list__item', settingsText.tabList.dictionary, undefined, ['tabId', 3], ['title', settingsText.tabList.dictionary]);
+    const tabFindAPair = create('li', 'settings-tabs-list__item', settingsText.tabList.findapair, undefined, ['tabId', 4], ['title', settingsText.tabList.findapair]);
+    const ul = create('ul', 'settings-tabs-list', [tabProfile, tabMain, tabDictionary, tabFindAPair]);
 
     ul.addEventListener('click', Settings.openTabsHandler);
 
     return ul;
+  }
+
+  static renderProfileEditTab() {
+    const nameEl = Settings.createInputTabElement('text', 'userNewName', settingsText.tabs.profile.userName, '', false, undefined, ['autocomplete', 'off']);
+    const emailEL = Settings.createInputTabElement('email', 'userNewEmail', settingsText.tabs.profile.userEmail, '', false, undefined, ['autocomplete', 'off']);
+    const passwordEL = Settings.createInputTabElement('password', 'userNewPassword', settingsText.tabs.profile.userPassword, '', true, undefined, ['autocomplete', 'off']);
+
+    const div = create('div', 'settings-tabs__item settings-tabs__item_active', [nameEl, emailEL, passwordEL], undefined, ['tabId', 1]);
+
+    return div;
   }
 
   renderMainTab() {
@@ -115,7 +135,7 @@ export default class Settings {
     const intervalNormal = Settings.createNumberTabElement('mainIntervalNormal', settingsText.tabs.mainGame.mainIntervalNormal, this.options.main.intervalNormal, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', this.options.main.intervalDifficult + SettingsConst.minStepBetweenNormalAndDifficult]);
     const intervalDifficult = Settings.createNumberTabElement('mainIntervalDifficult', settingsText.tabs.mainGame.mainIntervalDifficult, this.options.main.intervalDifficult, !this.options.main.showButtons, Settings.intervalLimitsHandler);
 
-    const div = create('div', 'settings-tabs__item settings-tabs__item_active', [
+    const div = create('div', 'settings-tabs__item', [
       newCardsPerDay,
       maxCardsPerDay,
       TranslateWord,
@@ -130,7 +150,7 @@ export default class Settings {
       intervalEasy,
       intervalNormal,
       intervalDifficult,
-    ], undefined, ['tabId', 1]);
+    ], undefined, ['tabId', 2]);
 
     return div;
   }
@@ -143,7 +163,7 @@ export default class Settings {
     const Transcription = Settings.createCheckboxTabElement('isDictionaryShowTranscription', settingsText.tabs.dictionary.transcription, this.options.dictionary.showTranscription);
     const ImageAssociations = Settings.createCheckboxTabElement('isDictionaryShowImageAssociations', settingsText.tabs.dictionary.imageAssociations, this.options.dictionary.showImageAssociations);
 
-    const div = create('div', 'settings-tabs__item', [AudioExample, TranslateWord, WordMeaning, WordExample, Transcription, ImageAssociations], undefined, ['tabId', 2]);
+    const div = create('div', 'settings-tabs__item', [AudioExample, TranslateWord, WordMeaning, WordExample, Transcription, ImageAssociations], undefined, ['tabId', 3]);
 
     return div;
   }
@@ -156,7 +176,7 @@ export default class Settings {
     });
     const showingCardsTime = Settings.createNumberTabElement('showingCardsTime', settingsText.tabs.findapair.showingCardsTime, (this.options.findapair.showingCardsTime / SettingsConst.convertToMilliseconds), !this.options.findapair.showCardsTextOnStart, undefined, ['min', 1], ['max', 59]);
 
-    const div = create('div', 'settings-tabs__item', [delayBeforeClosing, cardTextOnStart, showingCardsTime], undefined, ['tabId', 3]);
+    const div = create('div', 'settings-tabs__item', [delayBeforeClosing, cardTextOnStart, showingCardsTime], undefined, ['tabId', 4]);
 
     return div;
   }
@@ -167,7 +187,8 @@ export default class Settings {
     if (clickHandler) {
       InputElement.addEventListener('click', clickHandler);
     }
-    const LabelElement = create('label', 'settings-form__label', [InputElement, ` ${label}`]);
+    const LabelText = create('span', 'settings-form__text', `${label}: `);
+    const LabelElement = create('label', 'settings-form__label', [LabelText, InputElement]);
 
     return LabelElement;
   }
@@ -178,18 +199,63 @@ export default class Settings {
     if (clickHandler) {
       InputElement.addEventListener('click', clickHandler);
     }
-    const LabelElement = create('label', 'settings-form__label', [`${label}: `, InputElement]);
+    const LabelText = create('span', 'settings-form__text', `${label}: `);
+    const LabelElement = create('label', 'settings-form__label', [LabelText, InputElement]);
 
     return LabelElement;
   }
 
+  static createInputTabElement(
+    type, name, label, value, required = false, clickHandler, ...attributes
+  ) {
+    const InputElement = create('input', 'settings-form__input', undefined, undefined, ['type', type], ['name', name], ...attributes);
+    InputElement.required = required;
+    if (clickHandler) {
+      InputElement.addEventListener('click', clickHandler);
+    }
+    const LabelText = create('span', 'settings-form__text', `${label}: `);
+    const LabelElement = create('label', 'settings-form__label', [LabelText, InputElement]);
+
+    return LabelElement;
+  }
+
+  static createFormElement(classes, id, innerElements) {
+    const submitButton = create('input', 'settings-form__submit', undefined, undefined, ['type', 'submit'], ['value', settingsText.form.submitButton]);
+
+    const form = create('form', classes, [
+      ...innerElements,
+      submitButton,
+    ], undefined, ['id', id]);
+
+    return form;
+  }
+
   openSettingsWindow() {
+    this.clearResultsElement();
     this.modalWindow.openModal();
   }
 
   closeSettingsWindow() {
     this.modalWindow.closeModal();
-    this.preloader.hide();
+    this.clearResultsElement();
+  }
+
+  clearResultsElement() {
+    this.resultTextElement.classList.remove('settings-results_correct');
+    this.resultTextElement.classList.remove('settings-results_wrong');
+    this.resultTextElement.innerHTML = '';
+  }
+
+  addCorrectResultText(text) {
+    this.clearResultsElement();
+    this.resultTextElement.classList.add('settings-results_correct');
+    this.resultTextElement.innerText = text;
+  }
+
+  addWrongResultText(text) {
+    this.clearResultsElement();
+    this.resultTextElement.classList.add('settings-results_wrong');
+    this.resultTextElement.innerText = text;
   }
 
   async saveSettings() {
@@ -198,7 +264,8 @@ export default class Settings {
       optional: this.options,
     };
 
-    await setUserSettings(this.user.userId, this.user.token, body);
+    const res = await setUserSettings(this.user.userId, this.user.token, body);
+    return res;
   }
 
   async loadSettings() {
@@ -214,8 +281,8 @@ export default class Settings {
   static defaultSettingsOptions() {
     const options = {
       main: {
-        newCardsPerDay: 7,
-        maxCardsPerDay: 10,
+        newCardsPerDay: 20,
+        maxCardsPerDay: 25,
         showTranslateWord: true,
         showWordMeaning: true,
         showWordExample: true,
@@ -316,15 +383,81 @@ export default class Settings {
     Settings.checkboxMainController();
   }
 
-  formSubmitHandler(event) {
+  formProfileSubmitHandler(event) {
     event.preventDefault();
-    const FORM = document.querySelector('#settings-form');
-    this.saveFormData(FORM);
+    this.clearResultsElement();
+    const FORM = document.querySelector('#profile-form');
+    this.saveProfileFormData(FORM);
     return false;
   }
 
-  async saveFormData(form) {
+  async saveProfileFormData(form) {
     this.preloader.show();
+    const newUserName = form.querySelector('.settings-form__input[name=userNewName]').value || '';
+    const newUserEmail = form.querySelector('.settings-form__input[name=userNewEmail]').value || '';
+    const newUserPassword = form.querySelector('.settings-form__input[name=userNewPassword]').value || '';
+
+    if (newUserName || newUserEmail || newUserPassword) {
+      const body = {};
+      let errors = false;
+
+      if (newUserName) {
+        body.name = newUserName;
+      }
+
+      if (newUserEmail) {
+        if (checkEmail(newUserEmail)) {
+          body.email = newUserEmail;
+        } else {
+          if (!errors) {
+            this.addWrongResultText(settingsText.results.wrongEmail);
+          }
+          this.preloader.hide();
+          errors = true;
+        }
+      }
+
+      if (newUserPassword) {
+        if (checkPassword(newUserPassword)) {
+          body.password = newUserPassword;
+        } else {
+          if (!errors) {
+            this.addWrongResultText(settingsText.results.wrongPassword);
+          }
+          this.preloader.hide();
+          errors = true;
+        }
+      }
+
+      if (body && !errors) {
+        const res = await saveUserData(this.user.userId, this.user.token, body);
+
+        if (res) {
+          this.addCorrectResultText(settingsText.results.dataSaved);
+          if (this.userChangesListenerFn) {
+            body.password = undefined;
+            this.userChangesListenerFn(body);
+          }
+        } else {
+          this.addWrongResultText(settingsText.results.dataNotSaved);
+        }
+      }
+    }
+
+    this.preloader.hide();
+  }
+
+  formSettingsSubmitHandler(event) {
+    event.preventDefault();
+    this.clearResultsElement();
+    const FORM = document.querySelector('#settings-form');
+    this.saveSettingsFormData(FORM);
+    return false;
+  }
+
+  async saveSettingsFormData(form) {
+    this.preloader.show();
+
     this.options = {
       main: {
         newCardsPerDay: Number(form.querySelector('.settings-form__input[name=newMainCardsPerDay]').value),
@@ -356,8 +489,15 @@ export default class Settings {
         showingCardsTime: Number(form.querySelector('.settings-form__input[name=showingCardsTime]').value) * SettingsConst.convertToMilliseconds,
       },
     };
-    await this.saveSettings();
-    this.closeSettingsWindow();
+    const res = await this.saveSettings();
+
+    if (res) {
+      this.addCorrectResultText(settingsText.results.dataSaved);
+    } else {
+      this.addWrongResultText(settingsText.results.dataNotSaved);
+    }
+
+    this.preloader.hide();
   }
 
   static openTabsHandler(event) {
@@ -370,12 +510,22 @@ export default class Settings {
       element.classList.add('settings-tabs-list__item_active');
 
       const tabs = document.querySelectorAll('.settings-tabs__item');
+      let parentElement;
       tabs.forEach((el) => {
         el.classList.remove('settings-tabs__item_active');
+        el.parentElement.classList.add('form-hidden');
         if (el.dataset.tabId === id) {
           el.classList.add('settings-tabs__item_active');
+          parentElement = el.parentElement;
         }
       });
+      parentElement.classList.remove('form-hidden');
+    }
+  }
+
+  setUserChangesListener(listenerFn) {
+    if (typeof listenerFn === 'function') {
+      this.userChangesListenerFn = listenerFn;
     }
   }
 }

@@ -3,10 +3,13 @@ import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
-import Preloader from '../preloader/Preloader';
+import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 import Sprint from '../mini-games/sprint/Sprint';
+import SavannahGame from '../mini-games/savannah/Savannah';
+
+import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 
@@ -32,6 +35,10 @@ const {
 
 class App {
   constructor() {
+    this.closeButton = new CloseButton();
+    this.shortTermStatistics = new ShortTermStatistics();
+    this.preloader = new Preloader();
+
     this.state = {
       user: {
         isAuthrorized: false,
@@ -61,30 +68,52 @@ class App {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('#button-go-to-main-page');
       if (target) {
-        this.container.innerHTML = '';
+        this.goToTheMainPageHanlder();
       }
     });
   }
 
+  goToTheMainPageHanlder() {
+    this.container.innerHTML = '';
+  }
+
   async run() {
-    this.container = create('main', 'main-content', '', document.body);
+    this.container = create('main', 'main-page__content', '', document.body);
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      App.removeModalElements();
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';
       this.renderAuthenticationBlock('authorization');
       this.renderToggleAuthentication();
       this.activateAuthenticationForm();
-      this.prelodaer.hide();
+      this.preloader.hide();
+    }
+  }
+
+  static removeModalElements() {
+    const startGameWindow = document.querySelector('.start-game-window');
+    const exitButton = document.querySelector('.exit-button');
+
+    if (startGameWindow) {
+      startGameWindow.remove();
+    }
+
+    if (exitButton) {
+      exitButton.remove();
     }
   }
 
   async initSettings() {
-    const settings = new Settings(this.state.user);
-    await settings.init();
-    this.state.settings = settings.getSettings();
+    this.settingsObj = new Settings(this.state.user);
+    await this.settingsObj.init();
+    this.state.settings = this.settingsObj.getSettings();
+  }
+
+  showSettingsWindow() {
+    this.settingsObj.openSettingsWindow();
   }
 
   async renderVocabulary(userState) {
@@ -94,18 +123,23 @@ class App {
     document.body.append(html);
   }
 
+  async renderSpeakItGame() {
+    this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
+    await this.speakIt.run();
+  }
+
   activateAuthenticationForm() {
     document.addEventListener('submit', async (event) => {
       event.preventDefault();
 
       if (event.target.classList.contains('authorization__form')) {
-        this.prelodaer.show();
+        this.preloader.show();
         await this.signInUser();
-        this.prelodaer.hide();
+        this.preloader.hide();
       }
       if (event.target.classList.contains('registration__form')) {
         try {
-          this.prelodaer.show();
+          this.preloader.show();
           const data = await Authentication.submitData(createUser);
           this.state = {
             ...this.state,
@@ -116,9 +150,9 @@ class App {
             },
           };
           await this.signInUser();
-          this.prelodaer.hide();
+          this.preloader.hide();
         } catch (error) {
-          this.prelodaer.hide();
+          this.preloader.hide();
           Authentication.createErrorBlock(error.message);
         }
       }
@@ -142,19 +176,26 @@ class App {
       document.querySelector('.authentication__buttons').remove();
       document.querySelector('.auth-wrapper').remove();
       await this.initSettings();
+
       this.sprint = new Sprint(this.createMiniGameParameterObject());
       this.sprint.SprintRender();
+
+      await this.renderMainGame();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
   }
 
+  async renderSavannahGame() {
+    this.savannahGame = new SavannahGame(this.createMiniGameParameterObject());
+    await this.savannahGame.render();
+  }
+
   async checkIsUserAuthorized() {
     const savedUserData = localStorage.getItem('user-data');
     try {
-      this.prelodaer = new Preloader();
-      this.prelodaer.render();
-      this.prelodaer.show();
+      this.preloader.render();
+      this.preloader.show();
 
       let data = null;
       switch (true) {
@@ -183,6 +224,8 @@ class App {
       };
       await this.initSettings();
       this.sprint.SprintRender();
+      await this.renderSpeakItGame();
+      this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
@@ -193,12 +236,14 @@ class App {
       };
       await this.initSettings();
       this.sprint.SprintRender();
+      await this.renderSpeakItGame();
+      this.preloader.hide();
     }
   }
 
   static async renderMainGame(userState) {
     const mainGame = new MainGame(userState);
-    await mainGame.render('.main-content');
+    await mainGame.render('.main-page__content');
   }
 
   renderToggleAuthentication() {
