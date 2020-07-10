@@ -16,6 +16,7 @@ export default class GameService {
     this.roundsAll = roundsAll;
     this.roundResults = roundResults;
     this.collectionLengthEnough = collectionLengthEnough;
+    this.closeButton = miniGameObj.closeButton;
   }
   startGame(collection, group){
     console.log(collection,group);
@@ -24,6 +25,8 @@ export default class GameService {
     document.querySelector('.audition-game__startScreen').classList.toggle('hide');
     this.collection = collection;
     this.group = group;
+    document.querySelector('.audition-game__wrapper').appendChild(this.closeButton.render());
+    this.closeButton.show();
     
   }
   async getVocabularyData(){

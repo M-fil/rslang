@@ -243,7 +243,7 @@ class App {
   }
   async auditiongame(userState){
     const audition = new AuditionGame(userState, this.container);
-    await audition.render(5,1);
+    await audition.render(5,5);
   }	 
 
   renderToggleAuthentication() {

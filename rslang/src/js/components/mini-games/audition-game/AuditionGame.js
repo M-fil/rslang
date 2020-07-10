@@ -30,8 +30,8 @@ export default class AuditionGame {
     this.closeButton.addCloseCallbackFn((this.restart).bind(this));
     this.ShortTermStatistics.addCallbackFnOnClose((this.restart).bind(this));
     //create('div', '', this.closeButton.render(), wrapper);
-    this.wrapper.appendChild(this.closeButton.render());
-    this.closeButton.show();
+    //this.wrapper.appendChild(this.closeButton.render());
+    //this.closeButton.show();
     create('div', 'progress', '', this.wrapper);
     create('div', 'audition-game__startScreen',this.StartWindow.render(auditionGameVariables.gameTitle,auditionGameVariables.gameDescription,this.showUserCollection),this.wrapper);
     /*gameStartButton.addEventListener('click', async () => {
