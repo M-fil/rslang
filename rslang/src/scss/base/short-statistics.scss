@@ -38,7 +38,8 @@
 }
 
 .modal_words {
-  max-height: 260px;
+  max-height: 200px;
+  height: fit-content;
   overflow-y: auto;
 }
 
