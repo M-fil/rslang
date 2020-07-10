@@ -46,15 +46,12 @@ export default class SprintGame {
   async SprintRender(elementQuery) {
     await this.vocabulary.init();
     await this.statistics.init();
-    const mainContainer = document.querySelector(elementQuery);
-    this.SprintGameWrapper = create('div', 'sprint-game-wrapper', '', mainContainer);
-
-    const container = create('div', 'container main-container', '', this.SprintGameWrapper);
-
+    this.mainContainer = document.querySelector(elementQuery);
+    create('div', 'container main-container', '', this.SprintGameWrapper);
     const startWindowHTML = this.startWindow.render(
       sprint.GAME_NAME, sprint.GAME_RULES, this.CheckVocabularyLength(),
     );
-    create('div', 'start-window-container', startWindowHTML, mainContainer);
+    create('div', 'start-window-container', startWindowHTML, this.mainContainer);
 
     this.activateKeyDownEvent();
     this.activateGameButtons();
@@ -64,8 +61,8 @@ export default class SprintGame {
     this.Score = create('div', 'score', '0', this.GameContainer);
     this.GameAnswers = create('div', 'game_answers-container', '', this.GameContainer);
     this.Factor = create('p', 'factor', '+10 очков за слово', this.GameContainer);
-    this.this.WordHTML = create('h1', 'word', 'СЛОВО', this.GameContainer);
-    this.this.AudioWord = create('audio', 'audio-word_game', '', this.GameContainer);
+    this.Word = create('h1', 'word', 'СЛОВО', this.GameContainer);
+    this.AudioWord = create('audio', 'audio-word_game', '', this.GameContainer);
     this.Translation = create('h1', 'Translation', 'ПЕРЕВОД', this.GameContainer);
     this.answerButtonsContainer = create('div', 'answers_buttons-container', '', this.GameContainer);
     this.noButtonElement = create('button', 'sprint-btn no-button', 'No', this.answerButtonsContainer);
@@ -89,7 +86,7 @@ export default class SprintGame {
     this.CorrectAnswer = document.querySelector('.correct-answer');
     this.SoundIcon = document.querySelector('.sound-icon');
     this.WordHTML = document.querySelector('.word');
-    this.AudioWord = document.querySelector('.audio-word_game');
+    this.AudioWordHTML = document.querySelector('.audio-word_game');
     this.GameAudioButton = document.querySelector('.game-audio_button');
   }
 
@@ -133,7 +130,6 @@ export default class SprintGame {
 
       switch (e.target) {
         case this.restartButtonHTML:
-        default:
           this.ClearGameData();
           break;
         case this.SoundIcon:
@@ -143,7 +139,7 @@ export default class SprintGame {
           this.GameAudio.muted = !this.GameAudio.muted;
           break;
         case this.WordHTML:
-          this.AudioWord.play();
+          this.AudioWordHTML.play();
           break;
         case this.GameAudioButton:
           if (this.counter !== 7) this.counter += 1;
@@ -157,6 +153,8 @@ export default class SprintGame {
         case (document.querySelector('.fas')):
           if (this.Close()) this.Home();
           break;
+        default:
+          return;
       }
 
       if (e.target.classList[0] === 'audio-icon') {
@@ -175,32 +173,41 @@ export default class SprintGame {
   }
 
   setGameAudio() {
-    this.this.GameAudio = create('audio', 'game-audio', '', this.GameContainer);
-    this.this.GameAudio.src = GAME_AUDIO_4;
-    this.this.GameAudio.loop = true;
-    this.this.GameAudio.volume = 0.5;
-    this.this.GameAudioButton = create('div', 'game-audio_button', '', this.GameContainer);
+    this.GameAudio = create('audio', 'game-audio', '', this.GameContainer);
+    this.GameAudio.src = GAME_AUDIO_4;
+    this.GameAudio.loop = true;
+    this.GameAudio.volume = 0.5;
+    this.GameAudioButton = create('div', 'game-audio_button', '', this.GameContainer);
 
     this.audio = create('audio', 'audio', '', this.SprintGameWrapper);
     this.AudioAnswers = create('div', 'audio-answers', '', this.SprintGameWrapper);
-    this.this.CorrectAnswer = create('audio', 'correct-answer', '', this.AudioAnswers);
+    this.CorrectAnswer = create('audio', 'correct-answer', '', this.AudioAnswers);
 
-    this.this.CorrectAnswer.src = CORRECT_AUDIO_PATH;
-    this.this.WrongAnswer = create('audio', 'wrong-answer', '', this.AudioAnswers);
-    this.this.WrongAnswer.src = ERROR_AUDIO_PATH;
-    this.this.SoundIcon = create('div', 'sound-icon', '', this.GameContainer);
+    this.CorrectAnswer.src = CORRECT_AUDIO_PATH;
+    this.WrongAnswer = create('audio', 'wrong-answer', '', this.AudioAnswers);
+    this.WrongAnswer.src = ERROR_AUDIO_PATH;
+    this.SoundIcon = create('div', 'sound-icon', '', this.GameContainer);
     this.EndSoundGame = create('audio', '', '', this.SprintGameWrapper);
     this.EndSoundGame.src = END_AUDIO_PATH;
   }
 
   GameBegin() {
-    const StartGameWindow = document.querySelector('.start-game-window');
-    this.WordSelected = document.querySelector('.gameWindow__learn-words-select').value;
-    this.LvlSelect = document.querySelector('#selectGroup').value;
-    StartGameWindow.classList.add('none');
+    console.log('GameBegin');
+    this.SprintGameWrapper = create('div', 'sprint-game-wrapper', '', this.mainContainer);
+    this.renderGameAfterStartButtonClick();
+    this.setGameAudio();
+    this.createGameElements();
+    this.setGameHTMLElements();
+
+    document.querySelector('.start-window-container').remove();
+    const { selectLevel, select } = this.startWindow.wordsToLearnSelect;
+    this.WordSelected = select.value;
+    this.LvlSelect = selectLevel.value;
+
     this.Timer.classList.add('block');
     this.StatContainer.classList.remove('flex');
     this.StatContainer.classList.add('none');
+
     setTimeout(() => {
       this.TimerAudio.play();
     }, 1000);
@@ -243,18 +250,20 @@ export default class SprintGame {
     const vocLength = this.vocabulary.getVocabularyWordsLength(WORDS_TO_LEARN_TITLE);
     const vocWords = this.vocabulary.getWordsByVocabularyType(WORDS_TO_LEARN_TITLE);
     if (this.WordSelected === 'LEARNED_WORDS' && vocLength > 9) {
-      this.WordGameRender(vocWords[SprintGame.Random(vocLength)].optional.allData,
-        vocWords[SprintGame.Random(vocLength)].optional.allData);
+      await this.WordGameRender(
+        vocWords[SprintGame.Random(vocLength)].optional.allData,
+        vocWords[SprintGame.Random(vocLength)].optional.allData,
+      );
     } else {
       const ARRAY_WORDS = await getWords(SprintGame.Random(30), this.LvlSelect);
       const RANDOM_WORD = await getWords(SprintGame.Random(30), this.LvlSelect);
-      this.WordGameRender(ARRAY_WORDS[SprintGame.Random(20)], RANDOM_WORD[SprintGame.Random(20)]);
+      await this.WordGameRender(ARRAY_WORDS[SprintGame.Random(20)], RANDOM_WORD[SprintGame.Random(20)]);
     }
   }
 
   async WordGameRender(word, randomWord) {
   	const arr = [randomWord.wordTranslate, word.wordTranslate];
-    this.this.WordHTML.innerHTML = word.word;
+    this.Word.innerHTML = word.word;
     this.Translation.innerHTML = arr[SprintGame.Random(2)];
     window.answer = this.Translation.innerHTML === arr[1];
     window.ScoreTranslate = word.wordTranslate;
@@ -263,7 +272,7 @@ export default class SprintGame {
 
   playAudio(source) {
     window.AUDIO_WORD_SRC = source;
-    this.this.AudioWord.src = window.AUDIO_WORD_SRC;
+    this.AudioWord.src = window.AUDIO_WORD_SRC;
   }
 
   Correct() {
@@ -274,7 +283,8 @@ export default class SprintGame {
   	if (window.correctAnswers >= sprint.CORRECT2) power = sprint.POWER3;
   	if (window.correctAnswers >= sprint.CORRECT3) power = sprint.POWER4;
   	if (window.correctAnswers % sprint.BONUS_ANSWERS === 0 && window.correctAnswers !== 0) window.countdown += sprint.BONUS_TIME;
-  	if ((window.correctAnswers) % 4 === 0) this.GameAnswers.innerHTML = '';
+    if ((window.correctAnswers) % 4 === 0) this.GameAnswers.innerHTML = '';
+
   	const prevScore = this.Score.innerHTML;
   	this.Factor.innerHTML = `+${power * 10} очков за слово`;
   	this.Score.innerHTML = +prevScore + 10 * power;
@@ -289,9 +299,9 @@ export default class SprintGame {
   	AUDIO_DIV.append(audio);
   	const p = document.createElement('p');
   	p.classList.toggle('correct');
-  	p.innerHTML = `${this.this.WordHTML.innerHTML} - ${window.ScoreTranslate}`;
+  	p.innerHTML = `${this.WordHTML.innerHTML} - ${window.ScoreTranslate}`;
   	ANSWER_CONT.append(p);
-  	this.this.CorrectAnswer.play();
+  	this.CorrectAnswer.play();
   }
 
   Incorrect() {
@@ -309,9 +319,9 @@ export default class SprintGame {
   	AUDIO_DIV.append(audio);
   	const p = document.createElement('p');
   	p.classList.toggle('incorrect');
-  	p.innerHTML = `${this.this.WordHTML.innerHTML} - ${window.ScoreTranslate}`;
+  	p.innerHTML = `${this.WordHTML.innerHTML} - ${window.ScoreTranslate}`;
   	ANSWER_CONT.append(p);
-  	this.this.WrongAnswer.play();
+  	this.WrongAnswer.play();
   }
 
   GameTimerLeft() {
@@ -320,7 +330,7 @@ export default class SprintGame {
 		<svg>
     	<circle r="18" cx="20" cy="20"></circle>
 		</svg>`;
-    this.this.GameAudio.play();
+    this.GameAudio.play();
     const countdownNumberEl = document.querySelector('.countdown-number');
     window.countdown = sprint.GAME_TIMER;
     countdownNumberEl.textContent = window.countdown;
@@ -330,8 +340,8 @@ export default class SprintGame {
       if (window.countdown === 0) {
         clearInterval(window.myTimer);
         window.countdown = '';
-        this.this.GameAudio.pause();
-        this.this.GameAudio.currentTime = 0;
+        this.GameAudio.pause();
+        this.GameAudio.currentTime = 0;
         self.EndGame();
       }
       countdownNumberEl.textContent = window.countdown;
@@ -352,9 +362,9 @@ export default class SprintGame {
     const rights = document.getElementsByClassName('correct');
     this.correct_answers.innerHTML += rights.length;
     this.Translation.innerHTML = 'ПЕРЕВОД';
-    this.this.WordHTML.innerHTML = 'СЛОВО';
-    this.this.GameAudio.pause();
-    this.this.GameAudio.currentTime = 0;
+    this.Word.innerHTML = 'СЛОВО';
+    this.GameAudio.pause();
+    this.GameAudio.currentTime = 0;
     this.statistics.saveGameStatistics('sprint', errors.length, rights.length);
   }
 
@@ -386,11 +396,11 @@ export default class SprintGame {
     this.GameContainer.classList.remove('flex');
     this.GameContainer.classList.add('none');
     this.Translation.innerHTML = 'ПЕРЕВОД';
-    this.this.WordHTML.innerHTML = 'СЛОВО';
+    this.WordHTML.innerHTML = 'СЛОВО';
     this.countdown.innerHTML = '';
     clearInterval(window.myTimer);
-    this.this.GameAudio.pause();
-    this.this.GameAudio.currentTime = 0;
+    this.GameAudio.pause();
+    this.GameAudio.currentTime = 0;
     this.GameAnswers.innerHTML = '';
   }
 }
