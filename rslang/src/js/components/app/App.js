@@ -106,14 +106,18 @@ class App {
 
   renderAuthorizationBlock() {
     App.removeModalElements();
-    localStorage.setItem('user-data', '');
-    localStorage.setItem('arrow-bottom-clicked', '');
-    localStorage.setItem('current-page', '');
+    App.clearLocalStorages();
     this.state.user.isAuthrorized = false;
     this.clearMainContainersBeforeRender();
     this.renderAuthenticationBlock('authorization');
     this.activateToggleAuthentication();
     this.activateAuthenticationForm();
+  }
+
+  static clearLocalStorages() {
+    localStorage.setItem('user-data', '');
+    localStorage.setItem('arrow-bottom-clicked', '');
+    localStorage.setItem('current-page', '');
   }
 
   createMiniGameParameterObject() {
@@ -354,6 +358,7 @@ class App {
 
       if (target) {
         this.renderAuthorizationBlock();
+        App.clearLocalStorages();
       }
     });
   }

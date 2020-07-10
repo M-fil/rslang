@@ -50,13 +50,15 @@ class Header {
     return create('div', 'main-page__logo', this.startPageLogoImage);
   }
 
-  renderUserBlock() {
+  renderUserBlock(isLogOutToRender = true) {
     const container = create('div', 'header__user-block');
     const userIcon = create('i', 'fas fa-user header__user-icon');
     this.userNameHTML = create('span', 'user-name__text', this.userName);
     create('div', 'header__user-name', [userIcon, this.userNameHTML], container);
-    this.logoutButton = create('button', 'header__logout-button', LOG_OUT_BUTTON_TEXT, container);
-    this.logoutButton.addEventListener('click', this.modalWindow.show.bind(this.modalWindow));
+    if (isLogOutToRender) {
+      this.logoutButton = create('button', 'header__logout-button', LOG_OUT_BUTTON_TEXT, container);
+      this.logoutButton.addEventListener('click', this.modalWindow.show.bind(this.modalWindow));
+    }
 
     return container;
   }

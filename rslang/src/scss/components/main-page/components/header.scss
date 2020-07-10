@@ -75,6 +75,10 @@
   @include media-tablet {
     padding-left: 50px;
   }
+
+  @include media-mobile {
+    padding: 0;
+  }
 }
 
 .header__user-icon {
@@ -84,6 +88,10 @@
 
 .header__user-name {
   margin-bottom: 10px;
+
+  @include media-mobile {
+    display: none;
+  }
 }
 
 .user-name__text {

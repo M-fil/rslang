@@ -32,7 +32,6 @@ export default class ShortTermStatistics extends ModalWindow {
   }
 
   render(wrongWords, rightWords, IdkWords) {
-    console.log(wrongWords,rightWords, IdkWords);
     ModalWindow.changeDisplay(this.modal, 'block');
     ModalWindow.changeDisplay(this.modalCancel, 'none');
     this.modalTitle.innerHTML = STAT_TITLE;
