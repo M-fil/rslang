@@ -5,9 +5,12 @@ import { auditionGameVariables,vocabularyConstants } from '../../../constants/co
 import Vocabulary from  '../../vocabulary/Vocabulary';
 import CloseButton from '../common/CloseButton';
 
+const {
+  Lives, Rounds,
+} = auditionGameVariables;
+
 export default class AuditionGame {
   constructor(miniGameObj, container) {
-    console.log('userOBJ',miniGameObj)
     this.miniGameObj = miniGameObj;
     this.user = miniGameObj.user;
     this.closeButton = miniGameObj.closeButton;
@@ -15,14 +18,14 @@ export default class AuditionGame {
     this.container = container;
   }
 
-  async render(lives, roundsAll) {
+  async render(lives = Lives, roundsAll = Rounds) {
     console.log(this.user)
     this.wrapper = create('div', 'audition-game__wrapper', '', this.container);
     const roundResults = [];
     this.vocabulary = new Vocabulary(this.user);
     await this.vocabulary.init();
     this.wordsLength = this.vocabulary.getVocabularyWordsLength(vocabularyConstants.LEARNED_WORDS_TITLE);
-    const collectionLengthEnough = true;//(this.wordsLength <= (auditionGameVariables.possibleWordsAmount * roundsAll));
+    const collectionLengthEnough = true;
     this.gameService = new GameService(this.miniGameObj,lives, roundsAll, roundResults, collectionLengthEnough);
     this.gameService.getVocabularyData();
     this.showUserCollection = true;

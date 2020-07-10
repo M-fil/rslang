@@ -271,8 +271,10 @@ class App {
   }
 
   renderAuditionGame() {
-    this.auditionGame = new AuditionGame(this.createMiniGameParameterObject());
-    this.auditionGame.render(5, 5, '.main-page__content');
+    this.auditionGame = new AuditionGame(
+      this.createMiniGameParameterObject(), this.container,
+    );
+    this.auditionGame.render();
   }
 
   async renderSavannah() {

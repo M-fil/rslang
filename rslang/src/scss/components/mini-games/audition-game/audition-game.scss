@@ -1,11 +1,16 @@
 @import "constants";
 .audition-game__wrapper{
- height: 100%;
- width: 100%;
- margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
   font-size: 4rem;
-    background: $audition-game__wrapperColor1;
-    background: linear-gradient(90deg, $audition-game__wrapperColor1 0%, $audition-game__wrapperColor2 58%, $audition-game__wrapperColor3 100%);
+  background: $audition-game__wrapperColor1;
+  background: linear-gradient(90deg, $audition-game__wrapperColor1 0%, $audition-game__wrapperColor2 58%, $audition-game__wrapperColor3 100%);
 }
 .audition-game__answers{
     display: flex;
@@ -69,10 +74,6 @@
     background: $startBtn;
     border-radius: 4px;
     transition: all .15s ease;
-}
-.audition-game__startScreen{
-    text-align: center;
-    margin: 14% auto;
 }
 .hide{
     display: none;
