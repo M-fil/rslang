@@ -37,18 +37,22 @@ class Authentication {
 
   render() {
     this.wrapper = create('div', 'authentication__wrapper');
+    const logoImageBlock = create('div', 'authentication__logo-image-block', '', this.wrapper);
+    this.logoImage = create('img', 'authentication__logo-image', '', logoImageBlock, ['src', LOGO_IMAGE_PATH]);
+
+    this.mainContent = create('div', 'authentication__main-content');
     const titleHTML = create('h3', `${this.classNameType}__title authentication__title`, this.title);
     const formHTML = this.renderForm();
     formHTML.prepend(titleHTML);
 
-    this.logoImage = create('img', 'authentication__logo-image', '', this.wrapper, ['src', LOGO_IMAGE_PATH]);
     this.HTML = create(
       'div', `${this.classNameType} authentication`,
-      [this.renderToggleButton(), formHTML],
+      [this.renderToggleButton(), formHTML], this.mainContent,
     );
-    this.wrapper.append(
+    this.mainContent.append(
       this.renderLogoContainer(), this.HTML,
     );
+    this.wrapper.append(this.mainContent);
 
     return this.wrapper;
   }
@@ -56,7 +60,7 @@ class Authentication {
   renderLogoContainer() {
     this.logoContainer = create('div', 'authentication__logo-container');
     create('div', 'authentication__app-description', APP_DESCRIPTION, this.logoContainer);
-    create('img', '', 'authentication__chiecken-image', this.logoContainer, ['src', CHICKEN_IMAGE_PATH]);
+    create('img', 'authentication__chiecken-image', '', this.logoContainer, ['src', CHICKEN_IMAGE_PATH]);
 
     return this.logoContainer;
   }
@@ -116,13 +120,13 @@ class Authentication {
   }
 
   static createErrorBlock(message) {
-    const errorBlockHTML = document.querySelector('.error-block');
+    const errorBlockHTML = document.querySelector('.authentication__error-block');
     if (errorBlockHTML) {
       errorBlockHTML.remove();
     }
 
     const authenticationForm = document.querySelector('.authentication__form');
-    const errorBlock = create('span', 'error-block', message);
+    const errorBlock = create('div', 'authentication__error-block', message);
     if (authenticationForm) {
       authenticationForm.append(errorBlock);
     }
