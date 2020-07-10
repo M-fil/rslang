@@ -69,9 +69,13 @@ export default class FindAPair {
       this.main = FindAPair.getRootElement(container);
     }
 
+    if (!this.wrapper) {
+      this.wrapper = create('div', 'find-a-pair__wrapper', undefined, this.main);
+    }
+
     this.container = document.querySelector('#find-a-pair');
     if (!this.container) {
-      this.container = create('div', 'find-a-pair', undefined, this.main, ['id', 'find-a-pair']);
+      this.container = create('div', 'find-a-pair__container', undefined, this.wrapper, ['id', 'find-a-pair']);
     }
 
     this.container.append(this.StartWindow.render('Find a pair', findAPairText.about, this.checkWordsCountInVocabulary()));
