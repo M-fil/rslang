@@ -9,6 +9,7 @@ const urls = {
   STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
   CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
+  ERROR_AUDIO_PATH: './src/assets/audio/error.mp3',
   SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
 };
 
@@ -335,6 +336,12 @@ const sprint = {
   KEYBOARD_BUTTON_CORRECT: 'ArrowRight',
 };
 
+const sprintAudios = {
+  GAME_AUDIO_4: 'src/assets/audio/game_audio/4.mp3',
+  END_AUDIO_PATH: 'src/assets/audio/end.mp3',
+  GAME_AUDIO_PATH: 'src/assets/audio/game_audio/',
+}
+
 export {
   urls,
   savannahConstants,
@@ -357,4 +364,5 @@ export {
   HTTPCodesConstants,
   sprint,
   progressLearningConstants,
+  sprintAudios,
 };

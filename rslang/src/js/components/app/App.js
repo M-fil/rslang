@@ -178,7 +178,7 @@ class App {
       };
       document.querySelector('.authentication__wrapper').remove();
       await this.initSettings();
-      this.renderSprintGame();
+      await this.renderSprintGame();
     } catch (error) {
       console.log(error);
       Authentication.createErrorBlock(error.message);
@@ -222,7 +222,7 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      this.renderSprintGame();
+      await this.renderSprintGame();
       this.preloader.hide();
     } catch (error) {
       console.log(error);
@@ -234,7 +234,7 @@ class App {
         ...data,
       };
       await this.initSettings();
-      this.renderSprintGame();
+      await this.renderSprintGame();
       this.preloader.hide();
     }
   }
@@ -244,10 +244,9 @@ class App {
     await this.mainGame.render('.main-page__content');
   }
 
-  renderSprintGame() {
+  async renderSprintGame() {
     this.sprint = new SprintGame(this.createMiniGameParameterObject());
-    const html = this.sprint.SprintRender();
-    this.container.append(html);
+    await this.sprint.SprintRender('.main-page__content');
   }
 
   activateToggleAuthentication() {
