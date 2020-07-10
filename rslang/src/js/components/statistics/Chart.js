@@ -25,6 +25,7 @@ export default class StatisticsChart {
       dateLabels.push(arr[i][0]);
       data.push(arr[i][1]);
     }
+    Chart.defaults.global.responsive = true;
     new Chart(ctx, {
       type: 'line',
       data: {
@@ -73,6 +74,7 @@ export default class StatisticsChart {
   summaryByAnswersChart(summaryByAnswers) {
     const div = create('div', 'pieChart', '', this.myDiv);
     const ctx = create('canvas', 'myChart', '', div);
+    Chart.defaults.global.legend.position = 'bottom';
     new Chart(ctx, {
       type: 'pie',
       data: {

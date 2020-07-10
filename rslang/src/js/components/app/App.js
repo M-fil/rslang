@@ -179,7 +179,7 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await this.renderMainGame();
+      await this.renderStatistics();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -222,7 +222,7 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderStatistics();
       this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
@@ -233,7 +233,7 @@ class App {
         ...data,
       };
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderStatistics();
       this.preloader.hide();
     }
   }
