@@ -1,5 +1,9 @@
-.main-content {
+.promo-page__wrapper {
   background-color: $about-team-background-color;
+  padding-top: 10px;
+}
+.promo-page__back-button {
+  @include arrow-back-button;
 }
 .promo-page-container {
   @include font(1rem, 1.2);
@@ -10,7 +14,6 @@
 .promo_title {
   font-size: 3rem;
   text-align: center;
-  margin: 10px 0;
 }
 .promo_block {
   padding-bottom: 25px;

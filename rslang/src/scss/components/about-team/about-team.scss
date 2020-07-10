@@ -4,22 +4,9 @@
 }
 
 .about-team__back-button {
-  cursor: pointer;
-  position: absolute;
-  top: 20px;
-  left: 30px;
-  font-size: 4rem;
-
-  i {
-    @extend %close-button-transition;
-  }
-
-  &:hover {
-    i {
-      color: $about-team-hover-back-button-color;
-    }
-  }
+  @include arrow-back-button;
 }
+
 .about-team-container {
   @include font(1rem, 1.2);
   width: 100%;

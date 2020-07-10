@@ -518,6 +518,7 @@ const aboutTeam = {
 };
 
 const promoPage = {
+  PROMO_TITLE: 'Промо',
   PROMO_VIDEO: 'https://www.youtube.com/embed/1XuOFg4p83o',
   IMG_CHICKEN1: './src/assets/images/promo/chick1.svg',
   IMG_CHICKEN2: './src/assets/images/promo/chick2.svg',

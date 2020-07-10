@@ -29,14 +29,16 @@ const {
   AUDIO_TEXT,
   FIND_PAIR,
   FIND_PAIR_TEXT,
+  PROMO_TITLE,
 } = promoPage;
 
 export default class PromoPage {
   constructor(elementQuery) {
     const mainContent = document.querySelector(elementQuery);
-    this.container = create('div', 'promo-page-container', '', mainContent);
-    this.backButton = create('button', '', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
-    this.ptomoTitle = create('h3', 'promo_title', 'Промо', this.container);
+    this.wrapper = create('div', 'promo-page__wrapper', '', mainContent);
+    this.container = create('div', 'promo-page-container', '', this.wrapper);
+    this.backButton = create('div', 'promo-page__back-button', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
+    this.ptomoTitle = create('h3', 'promo_title', PROMO_TITLE, this.container);
     this.promoBlock = create('div', 'promo_block', '', this.container);
   }
 

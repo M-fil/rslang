@@ -23,6 +23,24 @@
   color: $main-game-standard-text-color;
 }
 
+@mixin arrow-back-button {
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  font-size: 4rem;
+
+  i {
+    @extend %close-button-transition;
+  }
+
+  &:hover {
+    i {
+      color: $about-team-hover-back-button-color;
+    }
+  }
+}
+
 @mixin standard-checkbox(
   $background: $main-game-word-card-background, $borderColor: $main-game-standard-border-color,
 ) {
