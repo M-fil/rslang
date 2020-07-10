@@ -1,6 +1,70 @@
 .main-content {
-  background-color: #1695A3;
+  background-color: $about-team-background-color;
 }
 .promo-page-container {
+  @include font(1rem, 1.2);
   width: 80%;
+  margin-right: auto;
+  margin-left: auto
+}
+.promo_title {
+  font-size: 3rem;
+  text-align: center;
+  margin: 10px 0;
+}
+.promo_block {
+  padding-bottom: 25px;
+  text-align: justify;
+}
+.promo_title-blocks {
+  font-size: 2.2rem;
+  margin: 0;
+  color: $promo-blocks-title;
+  margin-top: 10px;
+}
+.promo-text {
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
+.promo_chicken-right,
+.promo_chicken-left {
+  height: 250px;
+  width: 200px;
+}
+.promo_chicken-left {
+  margin: 15px 32px 15px 0;
+  float: left;
+}
+.promo_chicken-right {
+  margin: 15px 0 15px 32px;
+  float: right;
+}
+.promo_games {
+  text-align: center;
+  font-size: 3rem;
+  color: $promo-game-title;
+  margin: 10px 0;
+}
+iframe {
+  width: 50%;
+  min-width: 255px;
+  height: 300px;
+  margin: 3% 0 0 25%;
+}
+
+.chicken {
+  @include media-tablet {
+    display: none;
+  }
+}
+.promo_block {
+  @include media-tablet {
+    text-align: left;
+  }
+}
+.promo_title-blocks {
+  @include media-tablet {
+    text-align: center;
+  }
 }
