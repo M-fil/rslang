@@ -146,6 +146,10 @@ svg circle {
   animation: countdown 60s linear infinite forwards;
 }
 
+.game-on-pause svg circle {
+  animation-play-state: paused;
+}
+
 @keyframes countdown {
   from {
     stroke-dashoffset: 0px;

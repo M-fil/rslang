@@ -41,6 +41,8 @@ export default class SprintGame {
 
     this.closeButton.exitButton.classList.add('sprint__exit-button');
     this.closeButton.addCloseCallbackFn((this.Home).bind(this));
+    this.closeButton.addExitButtonClickCallbackFn((this.pauseGame).bind(this));
+    this.closeButton.addCancelCallbackFn((this.pauseGame).bind(this));
 
     this.startWindow = new StartWindow((this.GameBegin).bind(this));
     this.vocabulary = new Vocabulary(this.user);
@@ -350,15 +352,17 @@ export default class SprintGame {
     countdownNumberEl.textContent = window.countdown;
     const self = this;
     window.myTimer = setInterval(() => {
-      window.countdown -= 1;
-      if (window.countdown === 0) {
-        clearInterval(window.myTimer);
-        window.countdown = '';
-        this.GameAudio.pause();
-        this.GameAudio.currentTime = 0;
-        self.EndGame();
+      if (!this.GameOnPause) {
+        window.countdown -= 1;
+        if (window.countdown === 0) {
+          clearInterval(window.myTimer);
+          window.countdown = '';
+          this.GameAudio.pause();
+          this.GameAudio.currentTime = 0;
+          self.EndGame();
+        }
+        countdownNumberEl.textContent = window.countdown;
       }
-      countdownNumberEl.textContent = window.countdown;
     }, 1000);
   }
 
@@ -406,8 +410,18 @@ export default class SprintGame {
     this.WordHTML.innerHTML = 'СЛОВО';
     this.countdown.innerHTML = '';
     clearInterval(window.myTimer);
+    this.GameOnPause = false;
     this.GameAudio.pause();
     this.GameAudio.currentTime = 0;
     this.GameAnswers.innerHTML = '';
+  }
+
+  pauseGame() {
+    this.GameOnPause = !this.GameOnPause;
+    if (this.GameOnPause) {
+      this.SprintGameWrapper.classList.add('game-on-pause');
+    } else {
+      this.SprintGameWrapper.classList.remove('game-on-pause');
+    }
   }
 }
