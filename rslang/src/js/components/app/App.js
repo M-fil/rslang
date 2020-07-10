@@ -88,7 +88,7 @@ class App {
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';
       this.renderAuthenticationBlock('authorization');
-      this.renderToggleAuthentication();
+      this.activateToggleAuthentication();
       this.activateAuthenticationForm();
       this.preloader.hide();
     }
@@ -235,17 +235,7 @@ class App {
     await mainGame.render('.main-page__content');
   }
 
-  renderToggleAuthentication() {
-    const buttonsContainer = create('div', 'authentication__buttons');
-    this.authenticationToggleButton = create(
-      'button',
-      'authentication__toggle-button',
-      REGISTRATION_TITLE,
-      buttonsContainer,
-      ['type', 'button'], ['authenticationType', 'authorization'],
-    );
-    document.querySelector('.authentication').prepend(buttonsContainer);
-
+  activateToggleAuthentication() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.authentication__toggle-button');
       if (target) {

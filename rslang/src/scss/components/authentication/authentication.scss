@@ -1,0 +1,107 @@
+.authentication__wrapper {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  min-height: 100vh;
+  background: $authentication-main-background-color;
+}
+
+.authentication {
+  background: $authentication-main-contain-background;
+  border-radius: 3px;
+  color: $authentication-text-color;
+
+  width: 340px;
+  height: fit-content;
+  padding: 20px 30px;
+}
+
+.authentication__title {
+  @include font(2.5rem, 3rem, 700);
+
+  text-align: center;
+}
+
+.authentication__buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.authentication__button, .authentication__toggle-button {
+  @extend %authentication-button-transition;
+  @include font(2rem, 2.5rem);
+
+  cursor: pointer;
+  background: $authentication-btn-color;
+  border: 0.5px solid $authentication-border-color;
+
+  &:hover {
+    border-color: $authentication-btn-color;
+    color: $authentication-btn-color;
+    background: $authentication-input-background-color;
+  }
+}
+
+.authentication__button {
+  width: 100%;
+  padding: 10px 0;
+  margin-top: 20px;
+
+  &:hover {
+    box-shadow: 0 0 0 3px $authentication-btn-color inset;
+  }
+}
+
+.authentication__toggle-button {
+  padding: 10px;
+}
+
+.authentication__field-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.authentication__label {
+  @include font(2rem, 2.5rem);
+
+  margin-bottom: 5px;
+}
+
+.authentication__field {
+  @include font(1.8rem, 2.5rem);
+
+  width: 100%;
+  background: $authentication-input-background-color;
+  padding: 3px;
+  border: 0.5px solid $authentication-border-color;
+}
+
+.authentication__logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.authentication__app-description {
+  @include font(2rem, 3rem, 500);
+
+  color: $authentication-description-text-color;
+  max-width: 450px;
+  margin-bottom: 10px;
+}
+
+.authentication__logo-image {
+  position: absolute;
+
+  top: 20px;
+  left: 150px;
+}
+
+.authentication__chiecken-image {
+  width: 90px;
+  height: 90px;
+}

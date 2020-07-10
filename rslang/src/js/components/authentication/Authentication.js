@@ -10,6 +10,13 @@ const {
   MAX_NAME_LENGTH,
   CHICKEN_IMAGE_PATH,
   APP_DESCRIPTION,
+  PASSWORD_PLACEHOLDER,
+  EMAIL_PLACEHOLDER,
+  NAME_PLACEHOLDER,
+  REGISTRATION_TITLE,
+  AUTHORIZATION_KEY,
+  AUTHORIZATION_TITLE,
+  LOGO_IMAGE_PATH,
 } = authenticationConstants;
 
 const {
@@ -32,17 +39,24 @@ class Authentication {
     this.wrapper = create('div', 'authentication__wrapper');
     const titleHTML = create('h3', `${this.classNameType}__title authentication__title`, this.title);
     const formHTML = this.renderForm();
+    formHTML.prepend(titleHTML);
 
-    this.HTML = create('div', `${this.classNameType} authentication`, [titleHTML, formHTML]);
-    this.wrapper.append(this.renderLogoContainer(), this.HTML);
+    this.logoImage = create('img', 'authentication__logo-image', '', this.wrapper, ['src', LOGO_IMAGE_PATH]);
+    this.HTML = create(
+      'div', `${this.classNameType} authentication`,
+      [this.renderToggleButton(), formHTML],
+    );
+    this.wrapper.append(
+      this.renderLogoContainer(), this.HTML,
+    );
 
     return this.wrapper;
   }
 
   renderLogoContainer() {
     this.logoContainer = create('div', 'authentication__logo-container');
-    create('img', '', 'authentication__logo-image', this.logoContainer, ['src', CHICKEN_IMAGE_PATH]);
     create('div', 'authentication__app-description', APP_DESCRIPTION, this.logoContainer);
+    create('img', '', 'authentication__chiecken-image', this.logoContainer, ['src', CHICKEN_IMAGE_PATH]);
 
     return this.logoContainer;
   }
@@ -50,10 +64,10 @@ class Authentication {
   renderForm() {
     let nameField = null;
     if (this.formKey === REGISTRATION_KEY) {
-      nameField = this.renderInputContainer(NAME_LABEL_TEXT, 'text', 'name');
+      nameField = this.renderInputContainer(NAME_LABEL_TEXT, 'text', 'name', NAME_PLACEHOLDER);
     }
-    const emailField = this.renderInputContainer(EMAIL_LABEL_TEXT, 'email', 'email');
-    const passwordField = this.renderInputContainer(PASSWORD_LABEL_TEXT, 'password', 'password');
+    const emailField = this.renderInputContainer(EMAIL_LABEL_TEXT, 'email', 'email', EMAIL_PLACEHOLDER);
+    const passwordField = this.renderInputContainer(PASSWORD_LABEL_TEXT, 'password', 'password', PASSWORD_PLACEHOLDER);
     const submitButton = create('button', `${this.classNameType}__submit-button authentication__button`, this.submitButtonText);
 
     const formHTML = create(
@@ -63,13 +77,15 @@ class Authentication {
     return formHTML;
   }
 
-  renderInputContainer(labelText, inputType, inputClassNameType) {
+  renderInputContainer(
+    labelText, inputType, inputClassNameType, inputPlacehodler,
+  ) {
     const inputId = `${inputClassNameType}-field`;
 
-    const container = create('div', `${this.classNameType}__field-container`);
+    const container = create('div', `${this.classNameType}__field-container authentication__field-container`);
     create(
       'label',
-      `${this.classNameType}__label authentication__title__label`,
+      `${this.classNameType}__label authentication__label`,
       labelText, container,
       ['for', inputId],
     );
@@ -78,10 +94,25 @@ class Authentication {
       'input',
       `${this.classNameType}__email-field authentication__field`,
       '', container,
-      ['id', inputId], ['type', inputType], ['name', inputClassNameType],
+      ['id', inputId], ['type', inputType],
+      ['name', inputClassNameType], ['placeholder', inputPlacehodler],
     );
 
     return container;
+  }
+
+  renderToggleButton() {
+    const buttonsContainer = create('div', 'authentication__buttons');
+    const title = this.formKey === AUTHORIZATION_KEY ? REGISTRATION_TITLE : AUTHORIZATION_TITLE;
+    this.authenticationToggleButton = create(
+      'button',
+      'authentication__toggle-button',
+      title,
+      buttonsContainer,
+      ['type', 'button'], ['authenticationType', this.formKey],
+    );
+
+    return buttonsContainer;
   }
 
   static createErrorBlock(message) {
