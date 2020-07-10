@@ -401,8 +401,7 @@ class App {
           email: userData.email,
         },
       };
-      document.querySelector('.authentication').remove();
-      document.querySelector('.authentication__buttons').remove();
+      document.querySelector('.authentication__wrapper').remove();
       await this.initAuxilaryComponents();
       this.activateMainPageHandlers();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
@@ -468,17 +467,7 @@ class App {
     }
   }
 
-  renderToggleAuthentication() {
-    const buttonsContainer = create('div', 'authentication__buttons');
-    this.authenticationToggleButton = create(
-      'button',
-      'authentication__toggle-button',
-      REGISTRATION_TITLE,
-      buttonsContainer,
-      ['type', 'button'], ['authenticationType', 'authorization'],
-    );
-    this.container.prepend(buttonsContainer);
-
+  activateToggleAuthentication() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.authentication__toggle-button');
       if (target) {
@@ -494,7 +483,7 @@ class App {
   }
 
   renderAuthenticationBlock(type) {
-    const authenticationHTML = document.querySelector('.authentication');
+    const authenticationHTML = document.querySelector('.authentication__wrapper');
     if (authenticationHTML) {
       authenticationHTML.remove();
     }

@@ -9,14 +9,11 @@ const urls = {
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
-<<<<<<< HEAD
-=======
   mainAudioPath: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/',
   correctSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/correct.mp3',
   errorSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3',
   WORDS_DATA_URL_ADDITIONAL:'https://wordsapiv1.p.rapidapi.com/words/',
   audioPNG: './src/assets/images/audio.png',
->>>>>>> 469fae6c201b4f70be5d4f4a364cb7da727d8cdd
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
   CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
   SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
@@ -54,15 +51,20 @@ const savannahConstants = {
 const authenticationConstants = {
   AUTHORIZATION_TITLE: 'Авторизация',
   REGISTRATION_TITLE: 'Регистрация',
-  PASSWORD_LABEL_TEXT: 'пароль',
-  EMAIL_LABEL_TEXT: 'email',
+  PASSWORD_LABEL_TEXT: 'Пароль',
+  PASSWORD_PLACEHOLDER: 'Введите Ваш пароль',
+  EMAIL_LABEL_TEXT: 'Email',
+  EMAIL_PLACEHOLDER: 'Введите Ваш email',
   NAME_LABEL_TEXT: 'Имя',
+  NAME_PLACEHOLDER: 'Введите Ваше имя',
   LOGIN_BUTTON_TEXT: 'Войти',
   REGISTER_BUTTON_TEXT: 'Создать',
   AUTHORIZATION_KEY: 'authorization',
   REGISTRATION_KEY: 'registration',
   MAX_NAME_LENGTH: 30,
-
+  CHICKEN_IMAGE_PATH: './src/assets/images/authentication/chicken-image.png',
+  LOGO_IMAGE_PATH: './src/assets/images/authentication/logo.png',
+  APP_DESCRIPTION: 'Возможно ли изучать английский язык не в формате привычных скучных уроков?<br /> Однозначно - ДА!',
 };
 
 const wordsToLearnSelectConstants = {
