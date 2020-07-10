@@ -4,9 +4,10 @@ import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
-import Preloader from '../preloader/Preloader';
+import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import Statistics from '../statistics/Statistics';
 import SavannahGame from '../mini-games/savannah/Savannah';
 
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
@@ -111,6 +112,12 @@ class App {
     const settings = new Settings(this.state.user);
     await settings.init();
     this.state.settings = settings.getSettings();
+  }
+
+  async renderStatistics() {
+    const statistics = new Statistics(this.state.user);
+    await statistics.init();
+    statistics.render('.main-container');
   }
 
   async renderVocabulary(userState) {
