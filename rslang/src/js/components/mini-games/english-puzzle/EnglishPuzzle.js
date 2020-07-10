@@ -34,12 +34,13 @@ const {
 } = wordsToLearnSelectConstants;
 
 export default class EnglishPuzzle {
-  constructor(userState) {
+  constructor(obj) {
+    this.backData = obj;
     this.gameForm = null;
     this.startMenu = null;
     this.resultForm = createResultBlock();
-    this.vocabulary = new Vocabulary(userState);
-    this.statistics = new Statistics(userState);
+    this.vocabulary = new Vocabulary(this.backData.user);
+    this.statistics = new Statistics(this.backData.user);
     this.preloader = new Preloader();
 
     this.sinth = window.speechSynthesis;
@@ -63,6 +64,8 @@ export default class EnglishPuzzle {
     const gameZone = new MainBlock();
     const startWindow = new StartWindow((this.startMenuButtonAction).bind(this));
     this.gameForm = gameZone.createMainForm();
+    this.backData.closeButton.show();
+    this.gameForm.appendChild(this.backData.closeButton.render());
 
     this.words = this.vocabulary.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE);
     const isShowLearnedWordsOption = this.words.length >= GAME_BLOCK.gameZoneRows;
@@ -72,9 +75,11 @@ export default class EnglishPuzzle {
 
     this.preloader.render();
 
+    const container = document.querySelector(elementQuery)
     this.wrapper = create('div', 'english-puzzle-wrapper', [this.startMenu, this.gameForm, this.resultForm]);
-    document.querySelector(elementQuery).appendChild(this.wrapper);
+    container.appendChild(this.wrapper);
 
+    this.backData.closeButton.addCloseCallbackFn((this.actionOnCloseButton).bind(this));
     this.actionsOnSupportButtons();
     this.controlButtonsAction();
   }
@@ -147,6 +152,11 @@ export default class EnglishPuzzle {
         viewElement([], [document.querySelector('.bonus-button')]);
       }
     } else if (this.activeSentenseCounter + 1 === GAME_BLOCK.gameZoneRows) {
+      this.statistics.saveGameStatistics(
+        StatisticsGameCodes.ENGLISH_PUZZLE_GAME_CODE,
+        this.rightAnswers.length,
+        this.falseAnswers.length,
+      );
       if (this.rightAnswers.length === GAME_BLOCK.gameZoneRows) {
         await this.getCardsAndStartGame();
         viewElement([
@@ -377,11 +387,6 @@ export default class EnglishPuzzle {
 
   async actionOnCloseButton() {
     viewElement([this.gameForm], [this.startMenu]);
-    this.statistics.saveGameStatistics(
-      StatisticsGameCodes.ENGLISH_PUZZLE_GAME_CODE,
-      this.rightAnswers.length,
-      this.falseAnswers.length,
-    );
   }
 
   dragAndDropActions() {
@@ -420,11 +425,7 @@ export default class EnglishPuzzle {
         this.cardClickAction(event.target);
       }
     });
-
-    const swappable = new Swappable(this.activeRow, {
-      draggable: '.active-card',
-    });
-
+    
     document.querySelector('.game-block_field--description').addEventListener('drop', (event) => {
       event.preventDefault();
       document.querySelector('.game-block_field--description').appendChild(this.dropped);
@@ -444,7 +445,7 @@ export default class EnglishPuzzle {
     document.querySelector('.control-buttons_container').addEventListener('click', (event) => {
       if (event.target.classList.contains('help-button')) {
         event.target.classList.toggle('active-button');
-      } else if (event.target.classList.contains('fas')) {
+      } else if (event.target.classList.contains('fas') && event.target.parentNode.classList.contains('help-button')) {
         event.target.parentNode.classList.toggle('active-button');
       }
     });

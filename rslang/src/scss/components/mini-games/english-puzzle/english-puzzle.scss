@@ -1,7 +1,3 @@
-* {
-    user-select: block;
-}
-
 .english-puzzle-wrapper {
     width: 100vw;
     height: 100vh;
@@ -9,34 +5,77 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.form-container, .start-window, .result-container {
+.english-puzzle-wrapper .fas {
+    font-size: 1.8rem;
+}
+
+.form-container, .start-window, .result-container, .game-container {
     width: 100%;
     height: 100%;
+    background: $english-puzzle-background;
+    background-blend-mode: normal,color-burn;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 }
 
-.submit-button, .information-button, .game-button{
-    width: 150px;
-    height: 40px;
-    font-size: 1.2rem;
-    border-radius: 10px;
-    outline: none;
-    background-color: $english-puzzle-field-and-buttons-back;
-    border: none;
-    transition: all 0.5s;
-    margin-top: 10px;
+.start-window .start-game-window {
+    border: 1px solid $game-background-or-hover-for-buttons;
 }
 
-.submit-button:hover, .information-button:hover, .game-button:hover{
-    background: $english-puzzle-button-hover-background;
+.form-container {
+    position: relative;
+}
+
+.submit-button, .information-button, .game-button {
+    position: relative;
+    width: 150px;
+    height: 40px;
+    font-size: 2rem;
+    outline: none;
+    background: inherit;
+    margin-top: 10px;
+    border: 2px solid $english-puzzle-border-black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.submit-button:after,
+.information-button:after,
+.game-button:after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: $game-background-or-hover-for-buttons;
+    transition: all 0.3s ease;
+}
+
+.submit-button:hover,
+.information-button:hover,
+.game-button:hover {
     color: $english-puzzle-text-color;
-    box-shadow: inset 0 0 0 1px $english-puzzle-button-hover-shadow;
-    -webkit-transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    transform: scale(1.1);
+}
+
+.submit-button:hover:after,
+.information-button:hover:after,
+.game-button:hover:after {
+    top: auto;
+    bottom: 0;
+    height: 100%;
+}
+
+.submit-button:active,
+.information-button:active,
+.game-button:active {
+    top: 2px;
 }
 
 .hidden-element {
@@ -44,8 +83,7 @@
 }
 
 .game-container {
-    width: 100%;
-    height: 100%;
+    flex-direction: column;
 }
 
 .game-block {
@@ -62,42 +100,12 @@
     flex-wrap: wrap;
 }
 
-.game-mode-selects, .control-buttons_container {
-    width: 35%;
+.control-buttons_container {
+    width: 45%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-}
-
-.select-block-container {
-    width: 33%;
-}
-
-.select-block {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-
-.select-block p::after {
-    content: ':';
-    margin-right: 2px;
-}
-
-.select-block_mode {
-    width: 60%;
-    max-width: 60px;
-    min-width: 45px;
-    height: 40%;
-    background-color: $english-puzzle-help-zone;
-    border: 2px solid $english-puzzle-field-and-buttons-back;
-    outline: none;
-    cursor: pointer;
-    border-radius: 5px;
 }
 
 .new-lvl-button_container {
@@ -113,8 +121,8 @@
     height: 45px;
     outline: none;
     cursor: pointer;
-    background-color: $english-puzzle-help-zone;
-    border: 2px solid $english-puzzle-field-and-buttons-back;
+    background-color: inherit;
+    border: 2px solid $english-puzzle-border-black;
     border-radius: 5px;
     transition: all 0.5s;
     font-size: 1.5em;
@@ -124,34 +132,34 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
+    width: 22px;
+    height: 22px;
     cursor: pointer;
+    transition: all 0.5s ease;
+    margin-top: 5px;
 }
 
 .sound-button_active {
-    background-color: $english-puzzle-button-hover-background;
+    border: 1px solid $game-background-or-hover-for-buttons;
     border-radius: 50%;
 }
 
 .translate-sentense {
     text-align: center;
+    font-size: 1.5rem;
     width: 70%;
     height: 80%;
 }
 
-.control-buttons_container button:hover {
-    border-radius: 50%;
-}
-
+.control-buttons_container .help-button:hover,
 .new_lvl-button:hover {
     border-radius: 50%;
-    background-color: $english-puzzle-button-hover-background;
+    background-color: $english-puzzle-row-hover;
 }
 
 .control-buttons_container .active-button {
-    background-color: $english-puzzle-button-hover-background;
-    border-color: $english-puzzle-border-black;
+    background-color: $english-puzzle-row-hover;
+    color: $english-puzzle-text-color;
 }
 
 .game-block_field {
@@ -171,7 +179,8 @@
 }
 
 .game-block_field--tooltips {
-    background-color: $english-puzzle-help-zone;
+    border: 2px solid $english-puzzle-border-black;
+    background: inherit;
     position: relative;
     height: 9%;
     flex-direction: column;
@@ -184,6 +193,9 @@
     margin-bottom: 5px;
     width: 850px;
     height: 460px;
+    border: 2px solid $english-puzzle-border-black;
+    border-top: 0;
+    border-bottom: 0;
 }
 
 .game-block_field--puzzle {
@@ -191,7 +203,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: $english-puzzle-help-zone;
 }
 
 .game-block_field--background {
@@ -217,7 +228,9 @@
 }
 
 .game-block_field--description {
-    background-color: $english-puzzle-field-and-buttons-back;
+    border: 2px solid $english-puzzle-border-black;
+    background: inherit;
+    min-width: 70%;
     height: 52px;
     border-radius: 10px;
     justify-content: center;
@@ -246,10 +259,19 @@
 
 .active-card {
     height: 45px;
+    user-select: none;
+}
+
+.puzzle-row .draggable-mirror {
+    height: 45px;
+}
+
+.puzzle-row .active-card {
+    height: 96.5%;
 }
 
 .row-hover {
-    background-color: $english-puzzle-button-hover-shadow;
+    background-color: $english-puzzle-row-hover;
 }
 
 .correct-card {
@@ -271,7 +293,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: $english-puzzle-button-hover-shadow;
+    background-color: $english-puzzle-text-color;
+    border: 2px solid $english-puzzle-border-black;
     border-radius: 10px;
 }
 
@@ -286,16 +309,20 @@
 
 .result-block_statistic--title {
     margin: 0;
+    font-size: 1.6rem;
     width: 80px;
 }
 
 .result-block_statistic--counter {
+    font-size: 1.6rem;
     margin: 0;
     width: 30px;
     height: 20px;
     border-radius: 5px;
-    color: white;
-    text-align: center;
+    color: $english-puzzle-text-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .result-block--correct {
@@ -326,13 +353,15 @@
 }
 
 .active-sound {
-    background-color: $english-puzzle-button-hover-background;
+    border: 1px solid $game-background-or-hover-for-buttons;
     border-radius: 50%;
+    transform: rotateX(180deg);
 }
 
 .result-block_painting {
     width: 90%;
     height: 30%;
+    font-size: 1.6rem;
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
@@ -346,10 +375,15 @@
     transition: all 1s;
 }
 
+.result-block_painting--image .game-block_field--background {
+    width: 100%;
+    height: 100%;
+}
+
 .result-block_painting--image:hover {
-    -webkit-transform: scale(1.4);
-    -ms-transform: scale(1.4);
-    transform: scale(1.4);
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
 }
 
 .result-block_painting--description {
@@ -378,6 +412,8 @@
     height: 15%;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .result-row_sound {
@@ -390,6 +426,7 @@
 
 .result-row_text {
     width: 85%;
+    font-size: 1.5rem;
     text-align: left;
     text-align: justify;
 }
@@ -398,11 +435,34 @@
     text-align: center;
 }
 
+.painting-description {
+    font-size: 1.6rem;
+}
+
+@media (max-width: 1270px) {
+    .game-block_field--description {
+        width: 90%;
+    }
+}
+
 @media (max-width: 1060px) {
-    .game-block_field--description,
     .game-block_field--tooltips,
     .game-block_field--buttons {
         width: 90%;
+    }
+}
+
+@media (max-height: 650px) {
+    .game-block_field--puzzle-container {
+        width: 600px;
+        height: 340px;
+    }
+}
+
+@media (max-height: 560px) {
+    .game-block_field--puzzle-container {
+        width: 380px;
+        height: 220px;
     }
 }
 

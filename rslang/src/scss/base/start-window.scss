@@ -10,7 +10,6 @@
 }
 
 .start-game-window {
-  width: 50%;
   height: 55%;
   background-color: $modal-window-main-background;
   padding: 10px 15px;
@@ -67,7 +66,7 @@
 }
 
 .game-rules {
-  @include font(2.2rem);
+  font-size: 2rem;
 }
 
 .gameWindow__container {
