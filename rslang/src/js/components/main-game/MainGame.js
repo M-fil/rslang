@@ -149,7 +149,8 @@ class MainGame {
       this.state.userWords = this.parseUserWordsData();
 
       const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
-      const { learnedWords } = this.statistics.getGameStatistics(MAIN_GAME_CODE);
+      let { learnedWords } = this.statistics.getGameStatistics(MAIN_GAME_CODE);
+      learnedWords = learnedWords || 0;
 
       if (learnedWords < maxCardsPerDay) {
         this.state.currentWordIndex = 0;
@@ -189,6 +190,7 @@ class MainGame {
         this.activateReviseAgainButton();
         this.toggleVocabularyButtons(false);
       } else if (learnedWords === maxCardsPerDay) {
+        console.log('learnedWords', learnedWords);
         const mainGameMainContainer = create('div', 'main-game__main-container');
         const mainGameControls = this.renderMainGameControls();
         this.progressBar = new ProgressBar(learnedWords, maxCardsPerDay);
@@ -212,6 +214,7 @@ class MainGame {
       }
       this.preloader.hide();
     } catch (error) {
+      console.log(error);
       this.preloader.hide();
       Authentication.createErrorBlock(error.message);
     }
