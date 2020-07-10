@@ -9,6 +9,20 @@
 	overflow-x: hidden;
 	min-width: 100vw;
 	min-height: 100vh;
+
+	& .word {
+		text-align: center;
+	}
+
+	& .sprint__score {
+		color: white;
+		font-size: 4rem;
+	}
+}
+
+.sprint__exit-button {
+	top: 9px;
+	right: 30px;
 }
 
 .game-choice {
@@ -141,13 +155,6 @@ svg circle {
   }
 }
 
-.score {
-	color: white;
-	font-size: 4rem;
-	position: absolute;
-	top: 5%;
-}
-
 .factor {
 	font-size: 2rem;
 	font-weight: bold;
@@ -217,7 +224,7 @@ svg circle {
 	background-size: cover;
 	position: absolute;
 	top: 10px;
-	right: 60px;
+	right: 100px;
 }
 
 .sound-icon:hover {
@@ -241,7 +248,7 @@ svg circle {
 	background-size: cover;
 	position: absolute;
 	top: 10px;
-	right: 100px;
+	right: 140px;
 }
 
 .game-audio_button:hover {
@@ -303,10 +310,6 @@ svg circle {
 
   .word {
   	font-size: 2rem;
-  }
-
-  .score {
-  	top: 15%;
   }
 
   .stat-container {

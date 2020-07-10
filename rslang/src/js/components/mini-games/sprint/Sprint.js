@@ -35,6 +35,9 @@ export default class SprintGame {
     this.closeButton = miniGameParameters.closeButton;
     this.shortTermStatistics = miniGameParameters.shortTermStatistics;
 
+    this.closeButton.exitButton.classList.add('sprint__exit-button');
+    this.closeButton.addCloseCallbackFn((this.Home).bind(this));
+
     this.startWindow = new StartWindow((this.GameBegin).bind(this));
     this.vocabulary = new Vocabulary(this.user);
     this.statistics = new Statistics(this.user);
@@ -48,17 +51,21 @@ export default class SprintGame {
     await this.statistics.init();
     this.mainContainer = document.querySelector(elementQuery);
     create('div', 'container main-container', '', this.SprintGameWrapper);
-    const startWindowHTML = this.startWindow.render(
-      sprint.GAME_NAME, sprint.GAME_RULES, this.CheckVocabularyLength(),
-    );
-    create('div', 'start-window-container', startWindowHTML, this.mainContainer);
+    this.renderStartWindow();
 
     this.activateKeyDownEvent();
     this.activateGameButtons();
   }
 
+  renderStartWindow() {
+    const startWindowHTML = this.startWindow.render(
+      sprint.GAME_NAME, sprint.GAME_RULES, this.CheckVocabularyLength(),
+    );
+    create('div', 'start-window-container', startWindowHTML, this.mainContainer);
+  }
+
   createGameElements() {
-    this.Score = create('div', 'score', '0', this.GameContainer);
+    this.Score = create('div', 'sprint__score', '0', this.GameContainer);
     this.GameAnswers = create('div', 'game_answers-container', '', this.GameContainer);
     this.Factor = create('p', 'factor', '+10 очков за слово', this.GameContainer);
     this.Word = create('h1', 'word', 'СЛОВО', this.GameContainer);
@@ -192,7 +199,6 @@ export default class SprintGame {
   }
 
   GameBegin() {
-    console.log('GameBegin');
     this.SprintGameWrapper = create('div', 'sprint-game-wrapper', '', this.mainContainer);
     this.renderGameAfterStartButtonClick();
     this.setGameAudio();
@@ -377,11 +383,16 @@ export default class SprintGame {
     window.correctAnswers = 0;
     window.incorrectAnswers = 0;
     while (this.IncorrectStatContainer.childNodes.length > 1) {
-    	this.IncorrectStatContainer.removeChild(this.IncorrectStatContainer.lastChild);
-  	}
+      this.IncorrectStatContainer.removeChild(
+        this.IncorrectStatContainer.lastChild,
+      );
+    }
  		while (this.CorrectStatContainer.childNodes.length > 1) {
-    	this.CorrectStatContainer.removeChild(this.CorrectStatContainer.lastChild);
-  	}
+    	this.CorrectStatContainer.removeChild(
+        this.CorrectStatContainer.lastChild,
+      );
+    }
+
     this.GameBegin();
   }
 
@@ -391,8 +402,8 @@ export default class SprintGame {
   }
 
   Home() {
-    const StartGameWindow = document.querySelector('.start-game-window');
-    StartGameWindow.classList.remove('none');
+    this.renderStartWindow();
+    this.SprintGameWrapper.remove();
     this.GameContainer.classList.remove('flex');
     this.GameContainer.classList.add('none');
     this.Translation.innerHTML = 'ПЕРЕВОД';
