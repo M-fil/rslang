@@ -8,7 +8,6 @@ import Preloader from '../preloader/Preloader';
 import PromoPage from '../promo-page/PromoPage';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
-import AboutTeam from '../about-team/AboutTeam';
 
 import {
   createUser,
