@@ -7,7 +7,7 @@ import {
   sprintAudios,
   wordsToLearnSelectConstants,
 } from '../../../constants/constants';
-import Preloader from '../../preloader/preloader';
+import Preloader from '../../preloader/Preloader';
 import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
 import Statistics from '../../statistics/Statistics';
@@ -42,6 +42,7 @@ export default class SprintGame {
     this.closeButton.addCloseCallbackFn((this.Home).bind(this));
 
     this.startWindow = new StartWindow((this.GameBegin).bind(this));
+    this.startWindow.gameWindow.classList.add('sprint__start-game-window');
     this.vocabulary = new Vocabulary(this.user);
     this.statistics = new Statistics(this.user);
     this.preloader = new Preloader();

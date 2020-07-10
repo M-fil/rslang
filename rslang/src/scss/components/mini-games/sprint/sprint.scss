@@ -20,6 +20,10 @@
 	}
 }
 
+.sprint__start-game-window {
+	width: 55%;
+}
+
 .sprint__exit-button {
 	top: 9px;
 	right: 30px;
@@ -77,6 +81,7 @@
 	width: 50vw;
 	margin: 10%;
 	border: 5px solid white;
+	background: transparent;
 }
 
 .answers_buttons-container button {

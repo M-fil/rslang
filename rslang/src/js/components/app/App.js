@@ -35,7 +35,6 @@ import {
   mainPageHeaderButtonConstants,
   gamesInfo,
 } from '../../constants/constants';
-import SprintGame from '../mini-games/sprint/Sprint';
 
 const {
   USER_IS_NOT_AUTHORIZED,
@@ -283,8 +282,7 @@ class App {
 
   renderSprintGame() {
     this.sprintGame = new SprintGame(this.createMiniGameParameterObject());
-    const html = this.sprintGame.SprintRender();
-    this.container.append(html);
+    this.sprintGame.SprintRender('.main-page__content');
   }
 
   async renderFindAPair() {
