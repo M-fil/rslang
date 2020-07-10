@@ -2,8 +2,6 @@ import create from '../../../utils/сreate';
 import { getWords } from '../../../service/service';
 import { urls, sprint, vocabularyConstants } from '../../../constants/constants';
 import Preloader from '../../preloader/preloader';
-import CloseButton from '../common/CloseButton';
-import ModalWindow from '../common/ModalWindow';
 import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
 import Statistics from '../../statistics/Statistics';
@@ -19,12 +17,16 @@ const {
 } = vocabularyConstants;
 
 export default class SprintGame {
-  constructor(userState) {
+  constructor(miniGameParameters) {
     this.HTML = null;
-    this.user = userState.user;
+    this.user = miniGameParameters.user;
+    this.closeButton = miniGameParameters.closeButton;
+    this.shortTermStatistics = miniGameParameters.shortTermStatistics;
+
     this.startWindow = new StartWindow((this.GameBegin).bind(this));
     this.vocabulary = new Vocabulary(this.user);
     this.statistics = new Statistics(this.user);
+    this.preloader = new Preloader();
   }
 
   async SprintRender() {
@@ -108,6 +110,7 @@ export default class SprintGame {
         }
         switch (e.target) {
           case restartButton:
+            default:
             this.ClearGameData();
             break;
           case SoundIcon:
