@@ -189,9 +189,12 @@ export default class Statistics {
       this.renderLongTerm(),
     ]);
 
+    const exitButton = create('span', 'exit-button statistics__exit-button', undefined, undefined, ['id', 'button-go-to-main-page']);
+
     const mainStatistics = create('div', 'statistics', [
       Statistics.renderNavigation(),
       statContainer,
+      exitButton,
     ]);
 
     create('div', 'statistics__wrapper', mainStatistics, appContainer);
