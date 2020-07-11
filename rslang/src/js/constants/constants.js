@@ -12,17 +12,48 @@ const urls = {
   SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
 };
 
+const savannahConstants = {
+  SAVANNAH_SECONDS_COUNT: 3,
+  GAME_NAME: 'Саванна',
+  RULES: 'Тренировка Саванна развивает словарный запас. За каждые изученные 5 слов, ты повышаешь количество жизней в игре.',
+  START_BUTTON: 'Начать',
+  LAST_NUMBER: 1,
+  MAX_PAGE: 29,
+  MAX_WORDS_LINE: 4,
+  RANDOM_WORDS: 3,
+  LIVES: 5,
+  MIN_VOCABULARY_WORDS: 20,
+  END_ANIMATION: 6000,
+  FRAME: 24,
+  DIVIDER: 20,
+  ADD_LIVES: 5,
+  PLUS_LIVE: '+1 &#9829',
+  AUDIO_TICKING: './src/assets/audio/clock_ticking_loop.mp3',
+  AUDIO_CORRECT: './src/assets/audio/correct.mp3',
+  AUDIO_ERROR: './src/assets/audio/error.mp3',
+  AUDIO_BONUS: './src/assets/audio/bonus.mp3',
+  LIVES_IMAGE_BLACK: './src/assets/images/heart_black.png',
+  LIVES_IMAGE_INHERIT: './src/assets/images/heart_inherit.png',
+  MAX_WORDS: 20,
+};
+
 const authenticationConstants = {
   AUTHORIZATION_TITLE: 'Авторизация',
   REGISTRATION_TITLE: 'Регистрация',
-  PASSWORD_LABEL_TEXT: 'пароль',
-  EMAIL_LABEL_TEXT: 'email',
+  PASSWORD_LABEL_TEXT: 'Пароль',
+  PASSWORD_PLACEHOLDER: 'Введите Ваш пароль',
+  EMAIL_LABEL_TEXT: 'Email',
+  EMAIL_PLACEHOLDER: 'Введите Ваш email',
   NAME_LABEL_TEXT: 'Имя',
+  NAME_PLACEHOLDER: 'Введите Ваше имя',
   LOGIN_BUTTON_TEXT: 'Войти',
   REGISTER_BUTTON_TEXT: 'Создать',
   AUTHORIZATION_KEY: 'authorization',
   REGISTRATION_KEY: 'registration',
   MAX_NAME_LENGTH: 30,
+  CHICKEN_IMAGE_PATH: './src/assets/images/authentication/chicken-image.png',
+  LOGO_IMAGE_PATH: './src/assets/images/authentication/logo.png',
+  APP_DESCRIPTION: 'Возможно ли изучать английский язык не в формате привычных скучных уроков?<br /> Однозначно - ДА!',
 };
 
 const wordsToLearnSelectConstants = {
@@ -83,8 +114,11 @@ const dailyStatisticsConstants = {
   COMPLETED_CARDS_TEXT: 'Карточек завершено',
   CORRECT_ANSWERS_PERCENTAGE_TEXT: 'Процент правильных ответов',
   NEW_WORDS_TEXT: 'Новые слова',
-  LONGEST_SERIES_OF_ANSWERS_TEXT: 'Саммая длинная серия правильных ответов',
+  LONGEST_SERIES_OF_ANSWERS_TEXT: 'Самая длинная серия правильных ответов',
   GO_TO_THE_MAIN_PAGE: 'Перейти на главную',
+  DIFFICULT_WORDS_TITLE_TEXT: 'Поздравляем! Вы повторили все сложные слова!',
+  DIFFICULT_WORDS_COUNT_TEXT: (count) => `Всего сложных слов: ${count}.`,
+  REVISE_DIFFICULT_WORDS_AGAIN: 'Повторить еще раз',
 };
 
 const wordsToLearnOptions = {
@@ -163,14 +197,20 @@ const vocabularyConstants = {
 const settingsText = {
   title: 'Настройки',
   tabList: {
-    mainGame: 'Main Game',
-    dictionary: 'Dictionary',
-    findapair: 'Find a pair Game',
+    profile: 'Профиль',
+    mainGame: 'Основная игра',
+    dictionary: 'Словарь',
+    findapair: '"Найди пару"',
   },
   form: {
     submitButton: 'Сохранить',
   },
   tabs: {
+    profile: {
+      userName: 'Имя',
+      userEmail: 'E-Mail',
+      userPassword: 'Пароль',
+    },
     mainGame: {
       maxCardsPerDay: 'Количество карточек в день',
       newCardsPerDay: 'Количество новых карточек в день',
@@ -204,6 +244,12 @@ const settingsText = {
       showCardsTextOnStart: 'Показывать текст карточек при старте игры',
       showingCardsTime: 'Время показа карточек (с)',
     },
+  },
+  results: {
+    dataSaved: 'Данные сохранены',
+    dataNotSaved: 'Упс... Возникла ошибка, попробуйте сохранить еще раз',
+    wrongEmail: 'Введите корректный E-Mail',
+    wrongPassword: 'Пароль должен содержать не менее 8 символов и должен включать как минимум одну прописную букву, одну заглавную букву, одну цифру и один спецсимвол',
   },
 };
 
@@ -259,7 +305,6 @@ const shortTermStatisticsConstants = {
   CORRECT_STAT: 'Знаю',
   STAT_TITLE: 'Статистика',
   STAT_CLOSE: 'Закрыть',
-  STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
 };
 
 const startWindow = {
@@ -267,8 +312,78 @@ const startWindow = {
   GO_TO_MAIN_PAGE_BUTTON: 'На главную',
 };
 
+const aboutTeam = {
+  TEAM: 'Наша команда',
+  BACK_BUTTON: '<i class="fas fa-long-arrow-alt-left"></i>',
+  GITHUB: '<i class="fab fa-github"></i>',
+  VK: '<i class="fab fa-vk"></i>',
+  LINKEDIN: '<i class="fab fa-linkedin"></i>',
+  NAME_FILANOVICH: 'Максим Филанович',
+  NAME_LATUSHKINA: 'Екатерина Латушкина',
+  NAME_ANTONOV: 'Максим Антонов',
+  NAME_ZHDANOV: 'Кирилл Жданов',
+  NAME_ANDREEV: 'Антон Андреев',
+  NAME_SHNIRKEVICH: 'Евгений Шныркевич',
+  GIT_FILANOVICH: 'https://github.com/M-fil',
+  VK_FILANOVICH: 'https://vk.com/m__fil',
+  LINKEDIN_FILANOVICH: 'https://www.linkedin.com/in/maxim-filanovich-a890111a2/',
+  GIT_LATUSHKINA: 'https://github.com/kate-latushkina',
+  VK_LATUSHKINA: 'https://vk.com/katya_latushkina',
+  LINKEDIN_LATUSHKINA: 'https://www.linkedin.com/in/ekaterina-latushkina-7009b719b/',
+  GIT_ANTONOV: 'https://github.com/BoL4oNoK',
+  VK_ANTONOV: 'https://vk.com/bol4onok',
+  LINKEDIN_ANTONOV: 'https://www.linkedin.com/in/maxim-antonov-a6127a68/',
+  GIT_ZHDANOV: 'https://github.com/KirillZhdanov',
+  VK_ZHDANOV: 'https://vk.com/zh_kiri',
+  LINKEDIN_ZHDANOV: 'https://www.linkedin.com/in/кирилл-жданов-a79865152/',
+  GIT_ANDREEV: 'https://github.com/toxAndreev',
+  VK_ANDREEV: 'https://vk.com/toxandreev80',
+  LINKEDIN_ANDREEV: 'https://www.linkedin.com/in/%D0%B0%D0%BD%D1%82%D0%BE%D0%BD-%D0%B0%D0%BD%D0%B4%D1%80%D0%B5%D0%B5%D0%B2-1635701b2/',
+  GIT_SHNIRKEVICH: 'https://github.com/Shnyrkevich',
+  VK_SHNIRKEVICH: 'https://vk.com/zendos1',
+  LINKEDIN_SHNIRKEVICH: 'https://www.linkedin.com/in/zheny-shnyrkevich-0466b6174/',
+  PHOTO_FILANOVICH: './src/assets/images/about-team/filanovich.jpg',
+  PHOTO_LATUSHKINA: './src/assets/images/about-team/latushkina.jpg',
+  PHOTO_ANTONOV: './src/assets/images/about-team/antonov.jpg',
+  PHOTO_ZHDANOV: './src/assets/images/about-team/zhdanov.png',
+  PHOTO_ANDREEV: './src/assets/images/about-team/andreev.png',
+  PHOTO_SHNIRKEVICH: './src/assets/images/about-team/shnirkevich.png',
+  WORK_FILANOVICH: `${'<i class="fas fa-user-edit"></i>'}  Авторизация/Регистрация${'<br>'}
+  ${'<i class="fas fa-home"></i>'}  Главная страница приложения${'<br>'}
+  ${'<i class="fas fa-gamepad"></i>'}  Основная игра${'<br>'}
+  ${'<i class="fas fa-info"></i>'}  Методика интервального повторения${'<br>'}
+  ${'<i class="fas fa-microphone-alt"></i>'}  Мини-игра SpeakIt${'<br>'}
+  ${'<i class="fas fa-book"></i>'}  Словарь${'<br>'}
+  ${'<i class="far fa-address-card"></i>'}  Описание для страницы «Промо»${'<br>'}
+  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для страниц: мини-игра SpeakIt, Главная страница приложения, Основная игра`,
+  WORK_LATUSHKINA: `${'<i class="fas fa-paw"></i>'}  Мини-игра «Саванна»${'<br>'}
+  ${'<i class="fas fa-network-wired"></i>'}  Общие элементы для мини-игр: модальные окна, краткосрочная статистика, стартовая страница${'<br>'}
+  ${'<i class="fas fa-angle-double-down"></i>'}  Прелоудер для всего приложения${'<br>'}
+  ${'<i class="far fa-address-card"></i>'}  Описание для страницы «Промо»${'<br>'}
+  ${'<i class="fas fa-film"></i>'}  Видео для страницы «Промо»${'<br>'}
+  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для страниц: «Промо», «О Команде», мини-игра «Саванна»${'<br>'}
+  ${'<i class="fas fa-user-friends"></i>'}  Страница «О Команде»`,
+  WORK_ANTONOV: `${'<i class="fas fa-crosshairs"></i>'}  Мини-игра «Найди пару» («Своя игра»)${'<br>'}
+  ${'<i class="fas fa-cog"></i>'}  Настройки${'<br>'}
+  ${'<i class="far fa-chart-bar"></i>'}  Логика для страницы «Статистика»${'<br>'}
+  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для страниц: Настройки, Статистика, мини-игра «Найди пару».
+  `,
+  WORK_ZHDANOV: `${'<i class="fas fa-headset"></i>'}  Мини-игра «Аудиовызов»${'<br>'}
+  ${'<i class="fas fa-chart-line"></i>'}  Графики для страницы «Статистика»${'<br>'}
+  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для страниц: Статистика, мини-игра «Аудиовызов»
+  `,
+  WORK_ANDREEV: `${'<i class="fas fa-stopwatch-20"></i>'}  Мини-игра «Спринт»${'<br>'}
+  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для мини-игры «Спринт» и Авторизации/Регистрации
+  `,
+  WORK_SHNIRKEVICH: `${'<i class="fas fa-puzzle-piece"></i>'}  Мини-игра «English Puzzle»${'<br>'}
+  ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для мини-игры «English Puzzle» и страницы «Словарь»${'<br>'}
+  ${'<i class="fas fa-palette"></i>'}  Стили и адптив для общих элементов мини-игр
+  `,
+};
+
 export {
   urls,
+  savannahConstants,
   findAPairText,
   authenticationConstants,
   errorTypes,
@@ -286,5 +401,6 @@ export {
   shortTermStatisticsConstants,
   startWindow,
   HTTPCodesConstants,
+  aboutTeam,
   progressLearningConstants,
 };

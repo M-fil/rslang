@@ -13,8 +13,7 @@
 @import "./base/learning-progress.scss";
 
 @import "./components/about-team/about-team.scss";
-@import "./components/authentication/authorization.scss";
-@import "./components/authentication/registration.scss";
+@import "./components/authentication/authentication.scss";
 @import "./components/main-game/main-game.scss";
 @import "./components/mini-games/audition-game/audition-game.scss";
 @import "./components/mini-games/english-puzzle/english-puzzle.scss";
@@ -22,6 +21,7 @@
 @import "./components/mini-games/find-a-pair/find-a-pair-cards.scss";
 @import "./components/mini-games/find-a-pair/finds-a-pair-controlbar.scss";
 @import "./components/mini-games/savannah/savannah.scss";
+@import "./components/mini-games/savannah/savannah_mobile.scss";
 @import "./components/mini-games/speak-it/speak-it.scss";
 @import "./components/mini-games/sprint/sprint.scss";
 @import "./components/modal-form/modalform.scss";

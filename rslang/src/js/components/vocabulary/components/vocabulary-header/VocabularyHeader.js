@@ -25,8 +25,8 @@ class VocabularyHeader {
 
   renderExitButton() {
     this.exitButton = create(
-      'button', 'vocabulary__exit-button',
-      '<i class="fas fa-times"></i>', null,
+      'span', 'vocabulary__exit-button',
+      null, null,
       ['id', 'button-go-to-main-page'],
     );
     return this.exitButton;

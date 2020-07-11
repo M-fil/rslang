@@ -37,13 +37,15 @@ class VocabularyItem {
       showImageAssociations,
     } = this.settings;
 
+    this.additionalContent = create('div', 'word-item__additional-data');
+    const mainHTML = this.renderMainContent();
+
     this.HTML = create(
-      'div', 'vocabulary__word-item', '', null,
+      'div', 'vocabulary__word-item', [mainHTML, this.additionalContent], null,
       ['vocabularyWordId', this.id], ['vocabularyType', this.vocabularyType],
     );
 
-    const mainHTML = this.renderMainContent();
-    const sentencesBlock = create('div', 'word-item__sentences', '', this.HTML);
+    const sentencesBlock = create('div', 'word-item__sentences');
     if (showWordMeaning) {
       create('div', 'word-item__sentence', this.textMeaning, sentencesBlock);
     }
@@ -53,12 +55,13 @@ class VocabularyItem {
     if (this.vocabularyType === WORDS_TO_LEARN_TITLE) {
       this.learningProgress = new LearningProgress(this.nextTimeOfReivise);
     }
+
     create('div', 'word-item__main-container',
-      [mainHTML, sentencesBlock, this.learningProgress && this.learningProgress.render()],
-      this.HTML);
+      [sentencesBlock, this.learningProgress && this.learningProgress.render()],
+      this.additionalContent);
 
     if (showImageAssociations) {
-      const imageBlock = create('div', 'word-item__image-block', '', this.HTML);
+      const imageBlock = create('div', 'word-item__image-block', '', this.additionalContent);
       const imageSrc = `${WORDS_IMAGES_URL}${this.image}`;
       const img = new Image();
       img.src = imageSrc;
@@ -78,7 +81,7 @@ class VocabularyItem {
     } = settings;
     if (showAudioExample) {
       const volumeIcon = create('i', 'fas fa-volume-up word-item__icon');
-      create('div', 'word-item__audio', volumeIcon, this.HTML);
+      create('div', 'word-item__audio', volumeIcon, this.additionalContent);
     }
 
     const translationText = showTranslateWord ? `- ${this.wordTranslate}` : '';
