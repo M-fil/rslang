@@ -176,7 +176,7 @@ class App {
       };
       document.querySelector('.authentication__wrapper').remove();
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
