@@ -4,9 +4,10 @@ import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
-import Preloader from '../preloader/Preloader';
+import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import AboutTeam from '../about-team/AboutTeam';
 import SavannahGame from '../mini-games/savannah/Savannah';
 
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
@@ -108,9 +109,13 @@ class App {
   }
 
   async initSettings() {
-    const settings = new Settings(this.state.user);
-    await settings.init();
-    this.state.settings = settings.getSettings();
+    this.settingsObj = new Settings(this.state.user);
+    await this.settingsObj.init();
+    this.state.settings = this.settingsObj.getSettings();
+  }
+
+  showSettingsWindow() {
+    this.settingsObj.openSettingsWindow();
   }
 
   async renderVocabulary(userState) {
