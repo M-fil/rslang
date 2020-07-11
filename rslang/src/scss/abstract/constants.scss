@@ -78,6 +78,14 @@ $find-a-pair-card-text-color: #000000;
 $find-a-pair-card-text-background-color: #ffffff;
 $find-a-pair-card-background-image: url(/src/assets/images/find-a-pair-card-image.png);
 
+$statistics-wrapper-gradient: linear-gradient(to bottom, #acf0f2 0%, #f3ffe2 100%);
+$statistics-border-color: #ec8000;
+$statistics-select-background-hover-color: #ec8000;
+$statistics-tab-item-background-or-hover-for-buttons: #ec8000;
+$statistics-tab-item-color: #aaaaaa;
+$statistics-tab-item-on-hover-color: #ffffff;
+
+$about-team-background-color: #1695A3;
 $about-team-background-color: #acf0f2;
 $about-team-border-title: #EC8000;
 $about-team-title: #000000;
@@ -90,10 +98,16 @@ $about-team-links-icons-hover: #fff;
 $about-team-links-icons-bg-vk: rgb(59,89,152);
 $about-team-links-icons-bg-linkedin: rgb(29,202,255);
 $about-team-links-icons-bg-github: rgb(138,58,185);
+
 $settings-result-text-correct: #008000;
 $settings-result-text-wrong: #ff0000;
 $settings-tabs-background: #ACF0F2;
 $settings-background-or-hover-for-buttons: #ec8000;
+
+$game-background-color: #1d5278;
+$game-background-or-hover-for-buttons: #ec8000;
+$game-background-light-yellow: #f3ffe2;
+$game-background-light-blue: #acf0f2;
 
 $game-background-color: #1d5278;
 $game-background-or-hover-for-buttons: #ec8000;
