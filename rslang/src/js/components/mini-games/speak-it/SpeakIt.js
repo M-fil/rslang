@@ -5,7 +5,6 @@ import create, {
   speakItConstants,
   getRandomInteger,
   vocabularyConstants,
-  playAudio,
   StatisticsGameCodes,
 } from './pathes';
 
@@ -97,7 +96,6 @@ export default class SpeakIt {
     this.activateMicroButton();
     this.activateNavigation();
     this.activateStatisticsBlock();
-    this.activateSoundForStatisticsWords();
     this.activateSkipButtons();
     this.activateStatisticsButtons();
   }
@@ -158,7 +156,8 @@ export default class SpeakIt {
 
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
     if (isPrepand) {
-      mainContainerWrapper.prepend(navigationHTML);
+      navigationContainer.append(navigationHTML);
+      mainContainerWrapper.prepend(navigationContainer);
     } else {
       navigationContainer.append(navigationHTML);
       mainContainerWrapper.append(navigationContainer);
@@ -245,6 +244,11 @@ export default class SpeakIt {
     }
   }
 
+  playWordAudio(source) {
+    this.audio = new Audio(source);
+    this.audio.play();
+  }
+
   wordCardClickEvent() {
     document.querySelector('.speak-it__main').addEventListener('click', (event) => {
       const target = event.target.closest('.word-card');
@@ -256,9 +260,7 @@ export default class SpeakIt {
           .find((word) => (word.id || word._id) === target.dataset.wordId);
 
         const translation = clickedWord.wordTranslate;
-        console.log(this.audio);
-        console.log(`${WORDS_AUDIOS_URL}${clickedWord.audio}`);
-        playAudio(`${WORDS_AUDIOS_URL}${clickedWord.audio}`, this.audio);
+        this.playWordAudio(`${WORDS_AUDIOS_URL}${clickedWord.audio}`);
 
         let currentImage = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
         currentImage = `${WORDS_IMAGES_URL}${clickedWord.image}`;
@@ -427,7 +429,7 @@ export default class SpeakIt {
         && !currentWordHTML.classList.contains('word-card_skipped')
       ) {
         currentWordHTML.classList.add('word-card_guessed');
-        playAudio(CORRECT_AUDIO_PATH, this.audio);
+        this.playWordAudio(CORRECT_AUDIO_PATH);
         wordInfoHTML.remove();
         const currentImage = `${WORDS_IMAGES_URL}${guessedWordObject.image}`;
         const imageBlock = new ImageBlock(currentImage, guessedWord, '', false);
@@ -447,7 +449,7 @@ export default class SpeakIt {
   }
 
   activateContinueButton() {
-    document.querySelector('.speak-it__main').addEventListener('click', (event) => {
+    document.querySelector('.speak-it-statistics__buttons').addEventListener('click', (event) => {
       const target = event.target.closest('.continue-button');
 
       if (target && this.shortTermStatistics) {
@@ -461,7 +463,7 @@ export default class SpeakIt {
 
     if (this.state.correct === numberOfCorrectWords) {
       setTimeout(() => {
-        playAudio(SUCCESS_AUDIO_PATH, this.audio);
+        this.playWordAudio(SUCCESS_AUDIO_PATH);
         this.shortTermStatistics.update(this.skippedWords, this.guessedWords);
         this.shortTermStatistics.show();
         this.shortTermStatistics.modalClose.removeAttribute('disabled');
@@ -599,7 +601,7 @@ export default class SpeakIt {
   }
 
   activateStatisticsButtons() {
-    document.querySelector('.speak-it__main').addEventListener('click', async (event) => {
+    document.querySelector('.speak-it-statistics__buttons').addEventListener('click', async (event) => {
       const target = event.target.closest('.new-game-button');
 
       if (target && this.state.currentWordsType === SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE) {
@@ -618,19 +620,6 @@ export default class SpeakIt {
           await this.renderNewGameWithLearnedWords();
         }
         this.renderNavigation(true);
-      }
-    });
-  }
-
-  activateSoundForStatisticsWords() {
-    console.log(document.querySelector('.speak-it__main'));
-    document.querySelector('.speak-it__main').addEventListener('click', (event) => {
-      console.log('activateSoundForStatisticsWords');
-      const target = event.target.closest('.statistics__word');
-      if (target) {
-        const wordObject = this.currentArrayOfWords
-          .find((word) => word.word === target.dataset.scoreWord);
-        playAudio(`${WORDS_AUDIOS_URL}${wordObject.audio}`, this.audio);
       }
     });
   }
