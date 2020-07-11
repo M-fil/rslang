@@ -152,6 +152,8 @@ export default class SprintGame {
           break;
         case this.SoundIcon:
           this.SoundIcon.classList.toggle('muted');
+          this.SoundIcon.classList.toggle('fa-volume-up');
+          this.SoundIcon.classList.toggle('fa-volume-mute');
           this.WrongAnswer.muted = !this.WrongAnswer.muted;
           this.CorrectAnswer.muted = !this.CorrectAnswer.muted;
           this.GameAudio.muted = !this.GameAudio.muted;
@@ -189,7 +191,7 @@ export default class SprintGame {
     this.GameAudio.src = GAME_AUDIO_4;
     this.GameAudio.loop = true;
     this.GameAudio.volume = 0.5;
-    this.GameAudioButton = create('div', 'game-audio_button', '', this.GameContainer);
+    this.GameAudioButton = create('div', 'game-audio_button fas fa-music', '', this.GameContainer);
 
     this.audio = create('audio', 'audio', '', this.SprintGameWrapper);
     this.AudioAnswers = create('div', 'audio-answers', '', this.SprintGameWrapper);
@@ -198,7 +200,7 @@ export default class SprintGame {
     this.CorrectAnswer.src = CORRECT_AUDIO_PATH;
     this.WrongAnswer = create('audio', 'wrong-answer', '', this.AudioAnswers);
     this.WrongAnswer.src = ERROR_AUDIO_PATH;
-    this.SoundIcon = create('div', 'sound-icon', '', this.GameContainer);
+    this.SoundIcon = create('div', 'sound-icon fas fa-volume-up', '', this.GameContainer);
     this.EndSoundGame = create('audio', '', '', this.SprintGameWrapper);
     this.EndSoundGame.src = END_AUDIO_PATH;
   }
@@ -268,7 +270,10 @@ export default class SprintGame {
     } else {
       const ARRAY_WORDS = await getWords(SprintGame.Random(30), this.LvlSelect);
       const RANDOM_WORD = await getWords(SprintGame.Random(30), this.LvlSelect);
-      await this.WordGameRender(ARRAY_WORDS[SprintGame.Random(20)], RANDOM_WORD[SprintGame.Random(20)]);
+      await this.WordGameRender(
+        ARRAY_WORDS[SprintGame.Random(20)],
+        RANDOM_WORD[SprintGame.Random(20)],
+      );
     }
   }
 
