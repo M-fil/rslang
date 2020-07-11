@@ -35,7 +35,6 @@ export default class MainBlock {
   createControlButtons() {
     const buttonsContainer = create('div', 'control-buttons_container');
     const buttonStutMas = Object.values(this.buttonStat);
-    console.log(buttonStutMas);
     for (let i = 0; i < GAME_BLOCK.controlButtons; i += 1) {
       let button = null;
       switch (i) {

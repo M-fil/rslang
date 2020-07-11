@@ -2,7 +2,10 @@
     width: 100vw;
     height: 100vh;
     min-width: 320px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    * {
+        margin: 0 auto;
+    }
 }
 
 .english-puzzle-wrapper .fas {
