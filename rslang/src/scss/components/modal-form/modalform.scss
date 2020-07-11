@@ -16,7 +16,7 @@
   background: $modal-window-main-background;
   margin: 5px auto 0;
   padding: 5px;
-  width: max-content;
+  width: 300px;
 }
 
 .modal-block__navbar {
@@ -27,7 +27,13 @@
 }
 
 .modal-block__title {
-  @include font(1.5rem, $style: italic);
+  width: 100%;
+  text-align: center;
+  @include font(1.5rem);
+  text-transform: uppercase;
+  text-decoration: blink;
+  text-decoration-color: $game-background-or-hover-for-buttons;
+  text-decoration-line: underline;
 }
 
 .modal-block__close-button {

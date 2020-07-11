@@ -1,0 +1,126 @@
+.main-content {
+  background-color: $about-team-background-color;
+}
+.about-team-container {
+  @include font(1rem, 1.2);
+  width: 80%;
+  height: 100%;
+  margin-right: auto;
+  margin-left: auto
+}
+.team_title {
+  font-size: 3rem;
+  text-align: center;
+  margin-top: 25px;
+}
+.team_block {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding-bottom: 25px;
+}
+.team_card {
+  min-width: 28%;
+  max-width: 28rem;
+  margin-top: 20px;
+  border-radius: 10px;
+  background-color: $about-team-card-color;
+  box-shadow: 10px 10px 5px $about-team-card-shadow;
+  overflow: hidden;
+}
+.person-work i {
+  color: $about-team-work-icons;
+}
+.person-photo-block {
+  justify-content: center;
+  display: flex;
+}
+
+.person-photo {
+  min-width: 180px;
+  max-width: 225px;
+  max-height: 200px;
+  min-height: 210px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+.person-name {
+  font-size: 2.3rem;
+  text-align: center;
+  margin: 10px 0;
+}
+.person-work {
+  font-size: 1.7rem;
+  margin: 10px;
+  padding: 0;
+}
+
+ul.submenu{
+  background-color: $about-team-ul-icons-block;
+  border-radius: 5px;
+  display: block;
+  width: 125px;
+  padding: 0;
+  margin: 0 auto;
+  overflow: hidden;
+  li{
+    display: inline-block;
+    a{
+      i.fab{
+        padding: 5px;
+        font-size: 2rem;
+        display: inline-block;
+        color: $about-team-links-icons;
+        height: 30px;
+        width: 30px;
+        text-align: center;
+        line-height: 30px;
+        position: relative;
+        z-index: 2;
+        &::after {
+          content: "";
+          height: 0%;
+          width: 0%;
+          position: absolute;
+          top: -500%;
+          bottom: -500%;
+          left: -500%;
+          right: -500%;
+          margin: auto;
+          border-radius: 200px;
+          opacity: 0;
+          z-index:-1;
+          transition:all ease 0.5s;
+        }
+      }
+      &:hover {
+        i.fab::before {
+          color: $about-team-links-icons-hover;
+        }
+        i.fa-vk::after {
+          height: 130%;
+          width: 130%;
+          background-color: $about-team-links-icons-bg-vk;
+          border-radius: 0px;
+          opacity: 1;
+        }
+        
+        i.fa-linkedin::after {
+          height: 130%;
+          width: 130%;
+          background-color: $about-team-links-icons-bg-linkedin;
+          border-radius: 0px;
+          opacity: 1;
+        }
+        i.fa-github::after {
+          height: 130%;
+          width: 130%;
+          background-color: $about-team-links-icons-bg-github;
+          border-radius: 0px;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
