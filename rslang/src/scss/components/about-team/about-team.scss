@@ -6,6 +6,8 @@
 .about-team__back-button {
   @include arrow-back-button;
 
+  left: 30px;
+
   @include media-mobile {
     left: 2px;
   }

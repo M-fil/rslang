@@ -13,6 +13,7 @@ import {
 } from '../../../service/service';
 import getRandomInteger from '../../../utils/random';
 import { playAudio } from '../../../utils/audio';
+import { shuffle } from '../../../utils/shuffle';
 
 export {
   speakItConstants,
@@ -24,6 +25,7 @@ export {
   playAudio,
   shortTermStatisticsConstants,
   StatisticsGameCodes,
+  shuffle,
 };
 export { getWords };
 export default create;

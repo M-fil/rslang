@@ -71,16 +71,17 @@ export default class ShortTermStatistics extends ModalWindow {
   }
 
   clickStatisticaAudio() {
-    document.addEventListener('click', (event) => {
+    document.removeEventListener('click', this.playAudioEventHandler);
+
+    this.playAudioEventHandler = (event) => {
       const target = event.target.closest('.audio-pictures');
 
-      if (target) {
-        if (this.audio.ended || this.audio.paused) {
-          this.audio.src = `${WORDS_AUDIOS_URL}${event.target.nextSibling.dataset.audiosrc}`;
-          this.audio.play();
-        }
+      if (target && (this.audio.ended || this.audio.paused)) {
+        this.audio.src = `${WORDS_AUDIOS_URL}${event.target.nextSibling.dataset.audiosrc}`;
+        this.audio.play();
       }
-    });
+    }
+    document.addEventListener('click', this.playAudioEventHandler);
   }
 
   static clearstatisticaWords() {

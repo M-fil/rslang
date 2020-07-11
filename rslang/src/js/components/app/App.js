@@ -90,6 +90,8 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
+      localStorage.clear();
+      console.log(error);
       this.renderAuthorizationBlock();
       this.preloader.hide();
     }
@@ -104,18 +106,11 @@ class App {
 
   renderAuthorizationBlock() {
     App.removeModalElements();
-    App.clearLocalStorages();
     this.state.user.isAuthrorized = false;
     this.clearMainContainersBeforeRender();
     this.renderAuthenticationBlock('authorization');
     this.activateToggleAuthentication();
     this.activateAuthenticationForm();
-  }
-
-  static clearLocalStorages() {
-    localStorage.setItem('user-data', '');
-    localStorage.setItem('arrow-bottom-clicked', '');
-    localStorage.setItem('current-page', '');
   }
 
   createMiniGameParameterObject() {
@@ -357,7 +352,7 @@ class App {
 
       if (target) {
         this.renderAuthorizationBlock();
-        App.clearLocalStorages();
+        localStorage.clear();
       }
     });
   }
@@ -386,6 +381,7 @@ class App {
           await this.signInUser();
           this.preloader.hide();
         } catch (error) {
+          console.log(error);
           this.preloader.hide();
           Authentication.createErrorBlock(error.message);
         }
@@ -413,6 +409,7 @@ class App {
       await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.activateMainPageHandlers();
     } catch (error) {
+      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -454,6 +451,7 @@ class App {
       this.activateMainPageHandlers();
       this.preloader.hide();
     } catch (error) {
+      console.log(error);
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
       const data = await getRefreshToken(userId, refreshToken);
