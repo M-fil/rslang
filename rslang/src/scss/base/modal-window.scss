@@ -2,7 +2,7 @@
   display: none;
   position: fixed;
   align-items: center;
-  z-index: 5;
+  z-index: 500;
   left: 0;
   top: 0;
   width: 100%;
@@ -12,7 +12,7 @@
 
 .modal_text {
   background-color: $modal-window-main-background;
-  margin-top: 13%;
+  margin-top: 15vh;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
@@ -21,7 +21,6 @@
   width: 35%;
   height: fit-content;
   overflow: auto;
-  max-height: 450px;
   text-align: center;
   line-height: normal;
 }

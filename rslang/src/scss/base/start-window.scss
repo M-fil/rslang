@@ -19,6 +19,9 @@
 }
 
 .start-button {
+  @include start-page-button-before-element;
+  @extend %start-window-start-button-transition;
+
   position: relative;
   padding: 10px;
   min-width: 120px;
@@ -28,37 +31,8 @@
   cursor: pointer;
   border: 1.5px solid $start-game-window-border-color;
   text-transform: uppercase;
-  @extend %start-window-start-button-transition;
   box-shadow: 0px 4px 10px 2px rgba($start-game-window-border-color, 0.2);
   z-index: 1;
-
-  &:before{
-    position: absolute;
-    content: '';
-    width: 0%;
-    height: 100%;
-    background: $game-background-or-hover-for-buttons;
-    top: 0;
-    left: 50%;
-    z-index: -1;
-    @extend %start-window-start-button-before-transition;
-  }
-  
-  &:hover{
-    color: $start-game-window-text-hover-color; 
-    box-shadow:none;
-    &:before{
-      position: absolute;
-      content: '';
-      width: 100%;
-      height: 100%;
-      background: $game-background-or-hover-for-buttons;
-      top: 0;
-      left: 0%;
-      z-index: -1;
-      @extend %start-window-start-button-before-hover-transition;
-    }
-  }
 }
 
 .game-name {

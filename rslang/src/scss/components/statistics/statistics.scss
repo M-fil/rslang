@@ -1,8 +1,9 @@
 .statistics__wrapper {
   max-width: 100vw;
   height: fit-content;
-  min-height: 100vh;
+  min-height: calc(100vh - 20px);
   background: $statistics-wrapper-gradient;
+  padding-top: 20px;
 }
 
 .statistics {

@@ -7,8 +7,7 @@
   @include arrow-back-button;
 
   @include media-mobile {
-    top: 5px;
-    left: 10px;
+    left: 2px;
   }
 }
 
@@ -27,7 +26,7 @@
   text-transform: uppercase;
   letter-spacing: 3px;
   border-bottom: 2px solid $about-team-border-title;
-  width: 150px;
+  width: fit-content;
 }
 .team_block {
   display: flex;
