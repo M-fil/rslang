@@ -37,8 +37,9 @@ const {
 export default class PromoPage {
   constructor() {
     const mainContent = document.querySelector('.main-content');
-    this.container = create('div', 'promo-page-container', '', mainContent);
-    this.backButton = create('button', '', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
+    const wrapper = create('div', '.wrapper', '', mainContent);
+    this.container = create('div', 'promo-page-container', '', wrapper);
+    this.backButton = create('div', '', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
     this.ptomoTitle = create('h3', 'promo_title', PROMO, this.container);
     this.promoBlock = create('div', 'promo_block', '', this.container);
   }

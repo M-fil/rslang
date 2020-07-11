@@ -1,4 +1,4 @@
-.main-content {
+.wrapper {
   background-color: $about-team-background-color;
 }
 .promo-page-container {
@@ -7,10 +7,26 @@
   margin-right: auto;
   margin-left: auto
 }
+#button-go-to-main-page {
+  position: absolute;
+  font-size: 3.4rem;
+  color: $promo-blocks-title;
+  opacity: 0.5;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+#button-go-to-main-page:hover {
+  color: $promo-black;
+}
 .promo_title {
   font-size: 3rem;
   text-align: center;
-  margin: 10px 0;
+  margin: 10px auto;
+  color: $promo-black;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  border-bottom: 2px solid $promo-blocks-title;
+  width: 150px;
 }
 .promo_block {
   padding-bottom: 25px;
@@ -19,8 +35,11 @@
 .promo_title-blocks {
   font-size: 2.2rem;
   margin: 0;
-  color: $promo-blocks-title;
   margin-top: 10px;
+  color: $promo-blocks-title;
+}
+u {
+  color: $promo-blocks-title;
 }
 .promo-text {
   font-size: 2rem;
