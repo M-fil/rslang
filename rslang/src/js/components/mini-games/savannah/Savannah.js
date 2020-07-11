@@ -210,6 +210,7 @@ export default class SavannahGame {
   }
 
   checkWord(event, target) {
+    console.log('checkWord');
     clearInterval(this.timer);
     clearTimeout(this.errorTimer);
     const englishWord = document.querySelector('.word_english');
@@ -259,12 +260,14 @@ export default class SavannahGame {
   }
 
   keyboardClick() {
-    document.querySelector('.savannah__container').addEventListener('keydown', (keydown) => {
+    this.keyBoardEvent = (keydown) => {
       const target = this.rusBut[keydown.key - 1];
       if (!this.rusBut[0].disabled && target) {
         this.checkWord(keydown, target);
       }
-    });
+    };
+
+    document.addEventListener('keydown', this.keyBoardEvent);
   }
 
   static statisticaWords(arrayWords, container) {
@@ -386,6 +389,7 @@ export default class SavannahGame {
   }
 
   goToTheStartPageHandler() {
+    document.removeEventListener('keydown', this.keyBoardEvent);
     this.container.classList.remove('savannah__container_in-game');
     this.container.innerHTML = '';
     this.startWindow.gameWindow.remove();
