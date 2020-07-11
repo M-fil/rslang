@@ -149,3 +149,11 @@
     width: 100%;
   }
 }
+@media only screen and (max-width: 475px) {
+  .exit-button{
+  top:40px;
+  }
+  .statistics__container {
+    margin-top: 30px;
+  }
+}
