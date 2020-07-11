@@ -19,7 +19,7 @@
   border: 1.5px solid $modal-window-border-color;
   border-radius: 10px;
   width: 35%;
-  height: 60%;
+  height: fit-content;
   overflow: auto;
   max-height: 450px;
   text-align: center;
@@ -110,5 +110,11 @@
   #closebutton .modal_text {
     height: 40%;
     margin-top: 35%;
+  }
+
+  .modal_text {
+    width: auto;
+    margin-left: 5px;
+    margin-right: 5px;
   }
 }
