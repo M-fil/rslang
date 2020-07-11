@@ -14,6 +14,7 @@ import SavannahGame from '../mini-games/savannah/Savannah';
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
+import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
 import FindAPair from '../mini-games/find-a-pair/find-a-pair';
 
 import {
@@ -131,6 +132,11 @@ class App {
     await this.vocabulary.init();
     const html = await this.vocabulary.render();
     document.body.append(html);
+  }
+
+  async renderEnglishPuzzle() {
+    this.englishPuzzle = new EnglishPuzzle(this.createMiniGameParameterObject());
+    await this.englishPuzzle.start();
   }
 
   async renderSpeakItGame() {
