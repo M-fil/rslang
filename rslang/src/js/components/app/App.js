@@ -14,6 +14,7 @@ import SavannahGame from '../mini-games/savannah/Savannah';
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
+import FindAPair from '../mini-games/find-a-pair/find-a-pair';
 
 import {
   createUser,
@@ -135,6 +136,12 @@ class App {
   async renderSpeakItGame() {
     this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
     await this.speakIt.run();
+  }
+
+  async renderFindAPair() {
+    const findAPair = new FindAPair(this.createMiniGameParameterObject());
+    await findAPair.init();
+    findAPair.renderStartPage('.main-page__content');
   }
 
   activateAuthenticationForm() {
