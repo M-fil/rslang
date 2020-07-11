@@ -451,7 +451,7 @@ class MainGame {
   }
 
   activateDailyStatisticsButton() {
-    document.addEventListener('click', (event) => {
+    document.querySelector('.main-game').addEventListener('click', (event) => {
       if (event.target.closest('.daily-statistics__button')) {
         if (this.dailyStatistics) {
           this.dailyStatistics.removeFromDOM();
@@ -461,7 +461,7 @@ class MainGame {
   }
 
   activateReviseAgainButton() {
-    document.addEventListener('click', async (event) => {
+    document.querySelector('.main-game').addEventListener('click', async (event) => {
       const target = event.target.closest('.daily-statistics__revise-button');
 
       if (target) {
@@ -697,7 +697,7 @@ class MainGame {
   }
 
   activateContinueButton() {
-    document.addEventListener('click', async (event) => {
+    document.querySelector('.main-game').addEventListener('click', async (event) => {
       const target = event.target.closest('.main-game__continue-button');
 
       if (target) {
@@ -809,7 +809,7 @@ class MainGame {
   }
 
   activateEstimateButtons() {
-    document.addEventListener('click', async (event) => {
+    document.querySelector('.main-game').addEventListener('click', async (event) => {
       if (event.target.classList.contains('main-game__estimate-button')) {
         this.preloader.show();
 
@@ -911,7 +911,7 @@ class MainGame {
   }
 
   activateNextButton() {
-    document.addEventListener('submit', async (event) => {
+    document.querySelector('.main-game').addEventListener('submit', async (event) => {
       if (event.target.classList.contains('main-game__form')) {
         event.preventDefault();
         this.switchToTheNextWordCard();
@@ -923,7 +923,7 @@ class MainGame {
     const { showButtonShowAnswer } = this.settings.getSettingsByGroup('main');
     if (!showButtonShowAnswer) return;
 
-    document.addEventListener('click', async (event) => {
+    document.querySelector('.main-game').addEventListener('click', async (event) => {
       const target = event.target.closest('.main-game__show-answer-button');
 
       if (target) {
@@ -956,7 +956,7 @@ class MainGame {
   }
 
   activateVocabularyButtons() {
-    document.addEventListener('click', async (event) => {
+    document.querySelector('.main-game').addEventListener('click', async (event) => {
       const { showButtonDelete, showButtonHard } = this.settings.getSettingsByGroup('main');
       const removeWordTarget = event.target.closest('.main-game__remove-word');
       const addToDifficultTarget = event.target.closest('.main-game__add-to-difficult');
@@ -1063,7 +1063,7 @@ class MainGame {
   }
 
   static activateInputWordsHandler() {
-    document.addEventListener('click', (event) => {
+    document.querySelector('.main-game').addEventListener('click', (event) => {
       const inputHTML = document.querySelector('.word-card__input');
       const target = event.target.closest('.word-card__user-answer');
       if (target && inputHTML) {
@@ -1071,7 +1071,7 @@ class MainGame {
       }
     });
 
-    document.addEventListener('input', (event) => {
+    document.querySelector('.main-game').addEventListener('input', (event) => {
       const userAnswerHTML = document.querySelector('.word-card__user-answer');
       const target = event.target.closest('.word-card__input');
       if (target && userAnswerHTML && userAnswerHTML.childElementCount > 0) {
