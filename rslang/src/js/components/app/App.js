@@ -89,7 +89,7 @@ class App {
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';
       this.renderAuthenticationBlock('authorization');
-      this.renderToggleAuthentication();
+      this.activateToggleAuthentication();
       this.activateAuthenticationForm();
       this.preloader.hide();
     }
@@ -174,10 +174,9 @@ class App {
           name: data.name,
         },
       };
-      document.querySelector('.authentication').remove();
-      document.querySelector('.authentication__buttons').remove();
+      document.querySelector('.authentication__wrapper').remove();
       await this.initSettings();
-      await this.renderMainGame();
+      await this.renderSpeakItGame();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -236,22 +235,12 @@ class App {
     }
   }
 
-  static async renderMainGame(userState) {
-    const mainGame = new MainGame(userState);
-    await mainGame.render('.main-page__content');
+  async renderMainGame(userState) {
+    this.mainGame = new MainGame(userState);
+    await this.mainGame.render('.main-page__content');
   }
 
-  renderToggleAuthentication() {
-    const buttonsContainer = create('div', 'authentication__buttons');
-    this.authenticationToggleButton = create(
-      'button',
-      'authentication__toggle-button',
-      REGISTRATION_TITLE,
-      buttonsContainer,
-      ['type', 'button'], ['authenticationType', 'authorization'],
-    );
-    this.container.prepend(buttonsContainer);
-
+  activateToggleAuthentication() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.authentication__toggle-button');
       if (target) {
@@ -267,7 +256,7 @@ class App {
   }
 
   renderAuthenticationBlock(type) {
-    const authenticationHTML = document.querySelector('.authentication');
+    const authenticationHTML = document.querySelector('.authentication__wrapper');
     if (authenticationHTML) {
       authenticationHTML.remove();
     }
