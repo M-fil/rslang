@@ -22,7 +22,7 @@ import {
 } from '../../../constants/constatntsForEP';
 import createCanvasElements from './components/game-field';
 import findPainting from './components/select-painting';
-import Preloader from '../../preloader/preloader';
+import Preloader from '../../preloader/Preloader';
 import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
 import Statistics from '../../statistics/Statistics';
@@ -420,11 +420,10 @@ export default class EnglishPuzzle {
     this.activeRow.addEventListener('dragenter', dragEnter);
     this.activeRow.addEventListener('dragleave', dragLeave);
     this.activeRow.addEventListener('click', (event) => {
-      if(event.target.classList.contains('active-card')) {
+      if (event.target.classList.contains('active-card')) {
         this.cardClickAction(event.target);
       }
     });
-    
     document.querySelector('.game-block_field--description').addEventListener('drop', (event) => {
       event.preventDefault();
       document.querySelector('.game-block_field--description').appendChild(this.dropped);
@@ -434,7 +433,7 @@ export default class EnglishPuzzle {
     document.querySelector('.game-block_field--description').addEventListener('dragenter', dragEnter);
     document.querySelector('.game-block_field--description').addEventListener('dragleave', dragLeave);
     document.querySelector('.game-block_field--description').addEventListener('click', (event) => {
-      if(event.target.classList.contains('active-card')) {
+      if (event.target.classList.contains('active-card')) {
         this.cardClickAction(event.target);
       }
     });
