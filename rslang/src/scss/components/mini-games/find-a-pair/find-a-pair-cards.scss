@@ -53,6 +53,9 @@
   color: $find-a-pair-card-text-color;
   height: auto;
   @include font(1.7rem);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .find-a-pair-card__container.is-flipped,
