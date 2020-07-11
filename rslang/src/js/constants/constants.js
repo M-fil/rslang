@@ -108,8 +108,11 @@ const dailyStatisticsConstants = {
   COMPLETED_CARDS_TEXT: 'Карточек завершено',
   CORRECT_ANSWERS_PERCENTAGE_TEXT: 'Процент правильных ответов',
   NEW_WORDS_TEXT: 'Новые слова',
-  LONGEST_SERIES_OF_ANSWERS_TEXT: 'Саммая длинная серия правильных ответов',
+  LONGEST_SERIES_OF_ANSWERS_TEXT: 'Самая длинная серия правильных ответов',
   GO_TO_THE_MAIN_PAGE: 'Перейти на главную',
+  DIFFICULT_WORDS_TITLE_TEXT: 'Поздравляем! Вы повторили все сложные слова!',
+  DIFFICULT_WORDS_COUNT_TEXT: (count) => `Всего сложных слов: ${count}.`,
+  REVISE_DIFFICULT_WORDS_AGAIN: 'Повторить еще раз',
 };
 
 const wordsToLearnOptions = {
@@ -188,14 +191,20 @@ const vocabularyConstants = {
 const settingsText = {
   title: 'Настройки',
   tabList: {
-    mainGame: 'Main Game',
-    dictionary: 'Dictionary',
-    findapair: 'Find a pair Game',
+    profile: 'Профиль',
+    mainGame: 'Основная игра',
+    dictionary: 'Словарь',
+    findapair: '"Найди пару"',
   },
   form: {
     submitButton: 'Сохранить',
   },
   tabs: {
+    profile: {
+      userName: 'Имя',
+      userEmail: 'E-Mail',
+      userPassword: 'Пароль',
+    },
     mainGame: {
       maxCardsPerDay: 'Количество карточек в день',
       newCardsPerDay: 'Количество новых карточек в день',
@@ -229,6 +238,12 @@ const settingsText = {
       showCardsTextOnStart: 'Показывать текст карточек при старте игры',
       showingCardsTime: 'Время показа карточек (с)',
     },
+  },
+  results: {
+    dataSaved: 'Данные сохранены',
+    dataNotSaved: 'Упс... Возникла ошибка, попробуйте сохранить еще раз',
+    wrongEmail: 'Введите корректный E-Mail',
+    wrongPassword: 'Пароль должен содержать не менее 8 символов и должен включать как минимум одну прописную букву, одну заглавную букву, одну цифру и один спецсимвол',
   },
 };
 

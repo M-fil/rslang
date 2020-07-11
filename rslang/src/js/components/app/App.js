@@ -4,7 +4,7 @@ import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
-import Preloader from '../preloader/Preloader';
+import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 import AboutTeam from '../about-team/AboutTeam';
@@ -70,9 +70,13 @@ class App {
       const target = event.target.closest('#button-go-to-main-page');
 
       if (target) {
-        this.container.innerHTML = '';
+        this.goToTheMainPageHanlder();
       }
     });
+  }
+
+  goToTheMainPageHanlder() {
+    this.container.innerHTML = '';
   }
 
   async run() {
@@ -105,9 +109,13 @@ class App {
   }
 
   async initSettings() {
-    const settings = new Settings(this.state.user);
-    await settings.init();
-    this.state.settings = settings.getSettings();
+    this.settingsObj = new Settings(this.state.user);
+    await this.settingsObj.init();
+    this.state.settings = this.settingsObj.getSettings();
+  }
+
+  showSettingsWindow() {
+    this.settingsObj.openSettingsWindow();
   }
 
   async renderVocabulary(userState) {
@@ -169,7 +177,7 @@ class App {
       document.querySelector('.authentication').remove();
       document.querySelector('.authentication__buttons').remove();
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderMainGame();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
