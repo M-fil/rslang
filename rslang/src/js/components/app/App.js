@@ -7,6 +7,7 @@ import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import Statistics from '../statistics/Statistics';
 import AboutTeam from '../about-team/AboutTeam';
 import SavannahGame from '../mini-games/savannah/Savannah';
 
@@ -119,6 +120,12 @@ class App {
     this.settingsObj.openSettingsWindow();
   }
 
+  async renderStatistics() {
+    const statistics = new Statistics(this.state.user);
+    await statistics.init();
+    statistics.render('.main-container');
+  }
+
   async renderVocabulary(userState) {
     this.vocabulary = new Vocabulary(userState);
     await this.vocabulary.init();
@@ -183,7 +190,9 @@ class App {
       };
       document.querySelector('.authentication__wrapper').remove();
       await this.initSettings();
+      await this.renderStatistics();
       await this.renderSpeakItGame();
+      await this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -226,7 +235,8 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderStatistics();
+      await this.renderMainGame();
       this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
@@ -237,13 +247,14 @@ class App {
         ...data,
       };
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderStatistics();
       this.preloader.hide();
+      await this.renderMainGame();
     }
   }
 
-  async renderMainGame(userState) {
-    this.mainGame = new MainGame(userState);
+  async renderMainGame() {
+    this.mainGame = new MainGame(this.createMiniGameParameterObject());
     await this.mainGame.render('.main-page__content');
   }
 
