@@ -1,9 +1,11 @@
 const MAIN_URL = 'https://afternoon-falls-25894.herokuapp.com/';
+
 const urls = {
   WORDS_DATA_URL: `${MAIN_URL}words?`,
   CREATE_USER_URL: `${MAIN_URL}users`,
   LOGIN_USER_URL: `${MAIN_URL}signin`,
   GET_USER_URL: `${MAIN_URL}users/`,
+  GET_PAINTING: (way) => `https://raw.githubusercontent.com/Shnyrkevich/rslang_data_paintings/master/${way}`,
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',

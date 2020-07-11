@@ -1,4 +1,4 @@
-import Chart from 'chart.js';
+
 import create from '../../utils/сreate';
 import {
   statisticsText,
