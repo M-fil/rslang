@@ -241,7 +241,6 @@ export default class SpeakIt {
 
     this.currentArrayOfWords = this.learnedWords.map((word) => word.optional.allData);
     this.currentArrayOfWords = shuffle(this.currentArrayOfWords, WORDS_LIMIT_NUMBER);
-    console.log('currentArrayOfWords', this.currentArrayOfWords);
     this.iDontKnowWords = this.currentArrayOfWords;
     this.renderWords();
     this.shortTermStatistics.render(this.iDontKnowWords, []);
@@ -424,14 +423,10 @@ export default class SpeakIt {
       if (resultHTML) {
         resultHTML.textContent = transcript;
       }
-      console.log('listOfWords', listOfWords);
       const pronouncedWords = transcript.trim().toLowerCase().split(' ');
-      console.log('pronouncedWords', pronouncedWords)
       const guessedWord = listOfWords.find((word) => pronouncedWords.includes(word));
-      console.log('guessedWord', guessedWord);
       const guessedWordObject = this.currentArrayOfWords
         .find((word) => word.word.toLowerCase() === guessedWord);
-      console.log('guessedWordObject', guessedWordObject);
       const currentWordHTML = document
         .querySelector(`[data-word="${(guessedWordObject && guessedWordObject.word) || ''}"]`);
 
@@ -585,7 +580,6 @@ export default class SpeakIt {
   }
 
   async renderNewGameWithCollectionWords() {
-    console.log('renderNewGameWithCollectionWords');
     this.shortTermStatistics.hide();
     this.guessedWords = [];
     this.skippedWords = [];
@@ -597,8 +591,6 @@ export default class SpeakIt {
   }
 
   async renderNewGameWithLearnedWords() {
-    console.log('renderNewGameWithLearnedWords');
-    // await this.addSkippedWordsToTheWordsToLearn();
     this.guessedWords = [];
     this.skippedWords = [];
     this.switchOnTrainingMode();
@@ -618,8 +610,7 @@ export default class SpeakIt {
   activateStatisticsButtons() {
     document.querySelector('.speak-it-statistics__buttons').addEventListener('click', async (event) => {
       const target = event.target.closest('.new-game-button');
-    
-      console.log('this.state.currentWordsType', this.state.currentWordsType);
+
       if (target && this.state.currentWordsType === SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE) {
         await this.renderNewGameWithCollectionWords();
         SpeakIt.removeNavigationHTML();

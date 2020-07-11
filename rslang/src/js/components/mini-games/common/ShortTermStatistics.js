@@ -80,7 +80,7 @@ export default class ShortTermStatistics extends ModalWindow {
         this.audio.src = `${WORDS_AUDIOS_URL}${event.target.nextSibling.dataset.audiosrc}`;
         this.audio.play();
       }
-    }
+    };
     document.addEventListener('click', this.playAudioEventHandler);
   }
 
