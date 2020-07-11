@@ -1,4 +1,4 @@
-.main-content {
+.team-wrapper {
   background-color: $about-team-background-color;
 }
 .about-team-container {
@@ -11,7 +11,12 @@
 .team_title {
   font-size: 3rem;
   text-align: center;
-  margin-top: 25px;
+  margin: 10px auto;
+  color: $about-team-title;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  border-bottom: 2px solid $about-team-border-title;
+  width: 150px;
 }
 .team_block {
   display: flex;

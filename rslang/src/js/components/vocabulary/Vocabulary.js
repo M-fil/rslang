@@ -63,7 +63,7 @@ class Vocabulary {
   }
 
   async render() {
-    this.container = create('div', 'vocabulary');
+    this.container = create('div', 'vocabulary-container');
     const vocabularyHeader = new VocabularyHeader();
     this.container.append(vocabularyHeader.render());
     this.mainContentHTML = create('div', 'vocabulary__main-content', '', this.container);
@@ -72,6 +72,7 @@ class Vocabulary {
     this.activateVocabularyHeaderButtons();
     this.activateAudioButtons();
     this.activateRestoreButtons();
+    Vocabulary.actionsOnListComponent();
 
     return this.container;
   }
@@ -333,6 +334,20 @@ class Vocabulary {
     const targetWordObject = this.state.allUserWords.find((word) => word.wordId === targetWordId);
 
     return { targetWordObject, targetWordHTML: wordCardHTML || extraWordCardHTML };
+  }
+
+  static actionsOnListComponent() {
+    document.addEventListener('click', (event) => {
+      if (event.target.classList.contains('word-item__main')) {
+        const parent = event.target.parentNode;
+        event.target.classList.toggle('active-vocword-button');
+        parent.childNodes[1].classList.toggle('active-vocword');
+      } else if (event.target.parentNode.classList.contains('word-item__main-info')) {
+        const parent = event.target.parentNode.parentNode.parentNode;
+        event.target.parentNode.parentNode.classList.toggle('active-vocword-button');
+        parent.childNodes[1].classList.toggle('active-vocword');
+      }
+    });
   }
 }
 

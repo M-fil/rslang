@@ -1,6 +1,11 @@
-$game-baсkground-color: #1d5278;
-$game-background-or-hover-for-buttons: #ec8000;
-$standard-border-color: black;
+$labtop-l-width: 1440px;
+$content-width: 1024px;
+$tablet-width: 768px;
+$mobile-big-width: 425px;
+$mobile-small-width: 320px;
+
+$checkbox-tick-path: '../../src/assets/images/main-game/checkbox-tick.svg';
+$standard-border-color: #000000;
 
 $speak-it-overlay-background: rgba(241, 243, 245, 0.5);
 $speak-it-microphone-background: #ffffff;
@@ -23,23 +28,27 @@ $speak-it-start-button-background: #CBFFFD;
 $speak-it-correct-color: #ff0000;
 $speak-it-incorrect-color: #7fff00;
 
+$main-game-background-color: #ACF0F2;
+$main-game-word-card-background: #F3FFE2;
+$main-game-standard-border-color: #000000;
+$main-game-standard-text-color: #000000;
+$main-game-input-background: #EB7F00;
+$main-game-word-card-input-background: #ffffff;
+$main-game-button-hover-text: #ffffff;
 $main-game-correct-letter-color: #28C38A;
 $main-game-not-main-game-many-mistakes-letter-color: #FF934D;
 $main-game-many-mistakes-letter-color:#FF0000;
-$main-game-standard-border-color: #131313;
-$main-game-standard-progress-bar-background: rgba(49, 158, 201, 0.5);
-$main-game-standard-progress-bar-line-color: #1974C1;
+$main-game-remove-button-background-hover:#FF0000;
+$main-game-standard-progress-bar-background: rgba(22, 149, 163, 0.3);
+$main-game-standard-progress-bar-line-color: #1695A3;
 $main-game-completed-progress-bar-line-color: #16C60C;
+$main-game-header-box-shadow-color: rgba(0, 0, 0, 0.25);
+$main-game-disabled-button-background: rgba(128, 128, 128, 0.5);
+$main-game-chicken-image-path: '../../src/assets/images/main-game/main-game-chicken.png';
 
 $daily-statistics-overlay-background: rgba(19, 19, 19, 0.3);
 $daily-statistics-text-color: #ffffff;
-$daily-statistics-background: #303B44;
-
-$labtop-l-width: 1440px;
-$content-width: 1024px;
-$tablet-width: 768px;
-$mobile-big-width: 425px;
-$mobile-small-width: 320px;
+$daily-statistics-background: #1695A3;
 
 $savannah-tablet-width: 600px;
 $savannah-background: linear-gradient(to top, #df89b5 0%, #bfd9fe 100%);
@@ -60,6 +69,7 @@ $modal-window-border-color: #000000;
 $modal-window-main-background: #ffffff;
 
 $start-game-window-border-color: #000000;
+$start-game-window-text-hover-color: white;
 
 $find-a-pair-border-color: #000000;
 $find-a-pair-shadow-color: rgba(0,0,0,0.5);
@@ -76,6 +86,9 @@ $statistics-tab-item-color: #aaaaaa;
 $statistics-tab-item-on-hover-color: #ffffff;
 
 $about-team-background-color: #1695A3;
+$about-team-background-color: #acf0f2;
+$about-team-border-title: #EC8000;
+$about-team-title: #000000;
 $about-team-card-shadow: #add8e6;
 $about-team-card-color: #ffffff;
 $about-team-work-icons: #6495ed;
@@ -100,6 +113,14 @@ $game-background-color: #1d5278;
 $game-background-or-hover-for-buttons: #ec8000;
 $game-background-light-yellow: #f3ffe2;
 $game-background-light-blue: #acf0f2;
+
+$short-statistics-right-counter-border: #008000;
+$short-statistics-wrong-counter-border: #FF0000;
+
+$vocabluary-background: linear-gradient(to bottom, $game-background-light-blue 0%, $game-background-light-yellow 100%);
+$vocabluary-additional-data-background: linear-gradient(to bottom, $game-background-color 0%, $game-background-light-blue 100%);
+$vocabluary-text-hover-color: #ffffff;
+$vocabluary-text-color: #000000;
 
 $authentication-main-background-color: #225378;
 $authentication-input-background-color: #ffffff;

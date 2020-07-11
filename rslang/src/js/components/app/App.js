@@ -185,6 +185,7 @@ class App {
       await this.initSettings();
       await this.renderStatistics();
       await this.renderSpeakItGame();
+      await this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -228,6 +229,7 @@ class App {
       };
       await this.initSettings();
       await this.renderStatistics();
+      await this.renderMainGame();
       this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
@@ -240,11 +242,12 @@ class App {
       await this.initSettings();
       await this.renderStatistics();
       this.preloader.hide();
+      await this.renderMainGame();
     }
   }
 
-  async renderMainGame(userState) {
-    this.mainGame = new MainGame(userState);
+  async renderMainGame() {
+    this.mainGame = new MainGame(this.createMiniGameParameterObject());
     await this.mainGame.render('.main-page__content');
   }
 
