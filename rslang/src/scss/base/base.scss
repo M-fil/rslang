@@ -1,6 +1,10 @@
 body {
-  display: flex;
-  flex-direction: column;
+  font-family: 'IBM Plex Mono', monospace;
+  margin: 0;
+}
+
+input, button, select {
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 p {

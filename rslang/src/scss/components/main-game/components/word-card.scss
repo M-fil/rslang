@@ -1,0 +1,156 @@
+.main-game__word-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.word-card-letter {
+  @include font(2rem);
+
+  &_correct {
+    color: $main-game-correct-letter-color;
+  }
+
+  &_not-many-mistakes {
+    color: $main-game-not-main-game-many-mistakes-letter-color;
+  }
+
+  &_many-mistakes {
+    color: $main-game-many-mistakes-letter-color;
+  }
+}
+
+.word-card__fake-word-container {
+  display: inline-block;
+  height: 0;
+}
+
+.word-card__word-info {
+  @include font(1.5rem, 2rem, 300);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+
+  @include media-mobile {
+    @include font(2rem, 2.5rem, 300);
+  }
+}
+
+.word-card__fake-word {
+  @include font(2.1rem);
+
+  display: inline;
+  opacity: 0;
+}
+
+
+.word-card__input-container {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  margin-bottom: 10px;
+
+  @include media-tablet {
+    margin-bottom: 30px;
+  }
+}
+
+.word-card__vocabulary-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.word-card__input {
+  @include main-game-input;
+  @include font(2.1rem);
+
+  background: $main-game-word-card-input-background;
+  border-width: 1px;
+  padding: 0 2px;
+  height: 3.1rem;
+}
+
+.word-card__input-container {
+  position: relative;
+}
+
+.word-card__input-wrapper {
+  position: relative;
+}
+
+.word-card__user-answer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  z-index: -1;
+
+  &_visible {
+    z-index: 1;
+  }
+
+  &_translucent {
+    z-index: 1;
+    opacity: 0.5;
+  } 
+}
+
+.word-card__sentences {
+  @include font(2rem, 2.5rem, 300);
+
+  text-align: center;
+  margin-bottom: 10px;
+  color: $main-game-standard-text-color;
+
+  & > *:not(:last-child) {
+    margin-bottom: 5px;
+  }
+}
+
+.word-card__sentence-word-container {
+  border-bottom: 3px dashed $main-game-standard-border-color;
+  padding-bottom: 1px;
+}
+
+.word-card__sentence-word {
+  opacity: 0;
+
+  &_visible {
+    opacity: 1;
+  }
+}
+
+.word-card__translation {
+  opacity: 1;
+
+  &_hidden {
+    opacity: 0;
+  }
+}
+
+.word-card__translation {
+  text-align: center;
+}
+
+.word-card__transcription {
+  text-align: center;
+}
+
+.word-card__image-block img {
+  @include media-mobile {
+    width: 250px;
+  }
+}

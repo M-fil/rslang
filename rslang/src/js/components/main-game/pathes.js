@@ -6,6 +6,7 @@ import {
   wordsToLearnOptions,
   vocabularyConstants,
   urls,
+  StatisticsGameCodes,
 } from '../../constants/constants';
 import {
   calculatePercentage,
@@ -24,4 +25,5 @@ export {
   wordsToLearnOptions,
   vocabularyConstants,
   urls,
+  StatisticsGameCodes,
 };

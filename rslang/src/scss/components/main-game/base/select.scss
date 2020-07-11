@@ -1,0 +1,20 @@
+.main-game__select-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-game__select-title {
+  @include font(1.5rem, 2rem, 300);
+
+  color: $main-game-standard-text-color;
+  margin-bottom: 10px;
+}
+
+.main-game__words-type-select {
+  @include font(1.5rem, 2rem, 300);
+
+  background: $main-game-word-card-background;
+  border: 0.5px solid $main-game-standard-border-color;
+  border-radius: 3px;
+}

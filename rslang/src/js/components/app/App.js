@@ -219,7 +219,7 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      await this.renderSpeakItGame();
+      await this.renderMainGame();
       this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
@@ -230,13 +230,12 @@ class App {
         ...data,
       };
       await this.initSettings();
-      await this.renderSpeakItGame();
-      this.preloader.hide();
+      await this.renderMainGame();
     }
   }
 
-  async renderMainGame(userState) {
-    this.mainGame = new MainGame(userState);
+  async renderMainGame() {
+    this.mainGame = new MainGame(this.createMiniGameParameterObject());
     await this.mainGame.render('.main-page__content');
   }
 
