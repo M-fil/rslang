@@ -68,16 +68,6 @@
   margin-left: 15px;
 }
 
-.word-card__word {
-  @include font(2.2rem, 3rem);
-}
-
-.word-card__transcription {
-  @include font(2rem, initial);
-
-  color: $speak-it-transcription-color;
-}
-
 .word-card__skip-word-button {
   @include font(1.5rem, 2rem);
 

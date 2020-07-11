@@ -7,6 +7,9 @@ import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
 
+import AboutTeam from '../about-team/AboutTeam';
+import SavannahGame from '../mini-games/savannah/Savannah';
+
 import Sprint from '../mini-games/sprint/Sprint';
 import SavannahGame from '../mini-games/savannah/Savannah';
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
@@ -84,7 +87,6 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
-      console.log(error);
       App.removeModalElements();
       localStorage.setItem('user-data', '');
       this.state.user.isAuthrorized = false;
@@ -155,7 +157,6 @@ class App {
           await this.signInUser();
           this.preloader.hide();
         } catch (error) {
-          console.log(error);
           this.preloader.hide();
           Authentication.createErrorBlock(error.message);
         }
@@ -178,9 +179,9 @@ class App {
       };
       document.querySelector('.authentication__wrapper').remove();
       await this.initSettings();
-      await this.renderSprintGame();
+      await this.renderSprintGame();\
+      await this.renderVocabulary(this.state.user);
     } catch (error) {
-      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -223,9 +224,9 @@ class App {
       };
       await this.initSettings();
       await this.renderSprintGame();
+      await this.renderMainGame();
       this.preloader.hide();
     } catch (error) {
-      console.log(error);
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
       const data = await getRefreshToken(userId, refreshToken);
@@ -236,11 +237,12 @@ class App {
       await this.initSettings();
       await this.renderSprintGame();
       this.preloader.hide();
+      await this.renderMainGame();
     }
   }
 
-  async renderMainGame(userState) {
-    this.mainGame = new MainGame(userState);
+  async renderMainGame() {
+    this.mainGame = new MainGame(this.createMiniGameParameterObject());
     await this.mainGame.render('.main-page__content');
   }
 
