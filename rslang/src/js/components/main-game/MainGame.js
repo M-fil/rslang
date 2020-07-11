@@ -212,7 +212,6 @@ class MainGame {
       }
       this.preloader.hide();
     } catch (error) {
-      console.log(error);
       this.preloader.hide();
       Authentication.createErrorBlock(error.message);
     }

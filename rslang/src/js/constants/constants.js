@@ -12,7 +12,7 @@ const urls = {
   mainAudioPath: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/',
   correctSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/correct.mp3',
   errorSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3',
-  WORDS_DATA_URL_ADDITIONAL:'https://wordsapiv1.p.rapidapi.com/words/',
+  WORDS_DATA_URL_ADDITIONAL: 'https://wordsapiv1.p.rapidapi.com/words/',
   audioPNG: './src/assets/images/audio.png',
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
   CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
@@ -632,7 +632,7 @@ const sprintAudios = {
   GAME_AUDIO_4: 'src/assets/audio/game_audio/4.mp3',
   END_AUDIO_PATH: 'src/assets/audio/end.mp3',
   GAME_AUDIO_PATH: 'src/assets/audio/game_audio/',
-}
+};
 
 export {
   urls,

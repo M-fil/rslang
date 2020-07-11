@@ -211,7 +211,6 @@ export default class SavannahGame {
   }
 
   checkWord(event, target) {
-    console.log('checkWord');
     clearInterval(this.timer);
     clearTimeout(this.errorTimer);
     const englishWord = document.querySelector('.word_english');
@@ -253,7 +252,6 @@ export default class SavannahGame {
 
   wordClick() {
     this.wordClickEvent = (event) => {
-      console.log('wordClick');
       const target = event.target.closest('.word_russian');
       if (target) {
         this.checkWord(event, target);
@@ -265,7 +263,6 @@ export default class SavannahGame {
 
   keyboardClick() {
     this.keyBoardEvent = (keydown) => {
-      console.log('keyboardClick');
       const target = this.rusBut && this.rusBut[keydown.key - 1];
       if (target && !this.rusBut[0].disabled) {
         this.checkWord(keydown, target);

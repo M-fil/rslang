@@ -172,7 +172,7 @@ export default class SprintGame {
       if (e.target.classList[0] === 'audio-icon') {
         e.target.childNodes[0].play();
       }
-    }
+    };
 
     document.addEventListener('click', this.gameButtonsEvent);
   }

@@ -5,11 +5,10 @@ import create from '../../../utils/сreate';
 import { shuffle } from '../../../utils/shuffle';
 import { urls, auditionGameVariables, vocabularyConstants } from '../../../constants/constants';
 import Preloader from '../../preloader/Preloader';
-import Vocabulary from  '../../vocabulary/Vocabulary';
-
+import Vocabulary from '../../vocabulary/Vocabulary';
 
 export default class GameService {
-  constructor(miniGameObj, lives,roundsAll,roundResults, collectionLengthEnough) {
+  constructor(miniGameObj, lives, roundsAll, roundResults, collectionLengthEnough) {
     this.user = miniGameObj.user;
     this.ShortTermStatistics = miniGameObj.shortTermStatistics;
     this.lives = lives;
@@ -18,16 +17,15 @@ export default class GameService {
     this.collectionLengthEnough = collectionLengthEnough;
     this.closeButton = miniGameObj.closeButton;
   }
-  startGame(collection, group){
-    console.log(collection,group);
+
+  startGame(collection, group) {
     this.preloaderInit();
-    this.initRound( this.lives, this.roundsAll, 1, this.roundResults);
+    this.initRound(this.lives, this.roundsAll, 1, this.roundResults);
     document.querySelector('.audition-game__startScreen').classList.toggle('hide');
     this.collection = collection;
     this.group = group;
     document.querySelector('.audition-game__wrapper').appendChild(this.closeButton.render());
     this.closeButton.show();
-    
   }
 
   async getVocabularyData() {
@@ -47,7 +45,7 @@ export default class GameService {
   async initRound(lives, roundsAll, currentRound, roundResults) {
     this.preloader.show();
     this.genGame();
-    const gameDataService = new GameDataService(this.vocabulary, this.collection,this.group, this.collectionLengthEnough);
+    const gameDataService = new GameDataService(this.vocabulary, this.collection, this.group, this.collectionLengthEnough);
     const data = await gameDataService.mapping(currentRound, this.isMuted);
     const answers = document.querySelector('.audition-game__answers');
     const arr = data.array;
@@ -79,8 +77,8 @@ export default class GameService {
     create('div', 'audition-game__hint__button', '', hintCont);
     // create('div', 'close', '', this.container);
     const game = create('div', 'audition-game__game', '', this.container);
-   const audioPulse = create('div', 'audition-game__audio__pulse', '', game);
-   audioPulse.style.backgroundImage = `url(${urls.audioPNG})`;
+    const audioPulse = create('div', 'audition-game__audio__pulse', '', game);
+    audioPulse.style.backgroundImage = `url(${urls.audioPNG})`;
     create('p', 'audition-game__correctanswer', '', game);
     create('div', 'audition-game__answers', '', game);
     create('button', 'audition-game__button__next Enter', `${auditionGameVariables.idkBtn}`, game);
@@ -92,23 +90,25 @@ export default class GameService {
       curr += 1;
       this.initRound(lives, roundsAll, curr, roundResults);
     } else {
-      //const gameStats = new GameStatistic();
-      //gameStats.statistics(roundResults);
+      // const gameStats = new GameStatistic();
+      // gameStats.statistics(roundResults);
       document.querySelector('.progress').style.width = auditionGameVariables.zeroPercent;
       document.querySelector('.audition-game__wrapper').className = 'audition-game__wrapper';
       const correctArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.correct));
       const failArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.fail));
       const idkArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.IDK));
-      this.ShortTermStatistics.render(failArray, correctArray,idkArray);
+      this.ShortTermStatistics.render(failArray, correctArray, idkArray);
     }
   }
-  normalize(arrayToNormalize){
+
+  normalize(arrayToNormalize) {
     const res = [];
-      for(let i = 0; i< arrayToNormalize.length; i++){
-        res.push(arrayToNormalize[i].word);
-      }
-      return res;
+    for (let i = 0; i < arrayToNormalize.length; i++) {
+      res.push(arrayToNormalize[i].word);
+    }
+    return res;
   }
+
   createPossibleWords(arrayOfWords, answersBlock) {
     for (let i = 0; i < auditionGameVariables.possibleWordsAmount; i += 1) {
       create('div', `audition-game__element Digit${i + 1}`, `${i + 1}.${arrayOfWords[i]?.wordTranslate}`, answersBlock);
@@ -216,7 +216,7 @@ export default class GameService {
     });
   }
 
- /* closeBtnHandler() {
+  /* closeBtnHandler() {
     document.querySelector('.close').addEventListener('click', () => {
       this.modalDialog();
     });

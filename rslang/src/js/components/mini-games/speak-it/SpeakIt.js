@@ -116,7 +116,7 @@ export default class SpeakIt {
   }
 
   async goToTheStartPageHandler() {
-    document.querySelector('.speak-it__main').classList.remove('in-game')
+    document.querySelector('.speak-it__main').classList.remove('in-game');
     this.closeButton.exitButton.classList.remove('speak-it__exit-button');
     this.shortTermStatistics.buttonsBlock.remove();
     this.startWindow.gameWindow.remove();
@@ -250,7 +250,7 @@ export default class SpeakIt {
       const target = event.target.closest('.word-card');
 
       if (target && !this.state.gameStarted) {
-        console.log('HERE')
+        console.log('HERE');
         SpeakIt.selectSingleElementFromList(target, 'word-card_selected');
         const clickedWord = this.currentArrayOfWords
           .find((word) => (word.id || word._id) === target.dataset.wordId);
@@ -623,7 +623,7 @@ export default class SpeakIt {
   }
 
   activateSoundForStatisticsWords() {
-    console.log(document.querySelector('.speak-it__main'))
+    console.log(document.querySelector('.speak-it__main'));
     document.querySelector('.speak-it__main').addEventListener('click', (event) => {
       console.log('activateSoundForStatisticsWords');
       const target = event.target.closest('.statistics__word');

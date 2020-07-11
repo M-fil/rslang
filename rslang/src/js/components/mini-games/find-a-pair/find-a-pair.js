@@ -269,7 +269,6 @@ export default class FindAPair {
   }
 
   pauseGameHandler() {
-    console.log('pauseGameHandler')
     this.gameOnPause = !this.gameOnPause;
     const pauseButton = document.querySelector('#find-a-pair-pause-button');
     if (this.gameOnPause) {
