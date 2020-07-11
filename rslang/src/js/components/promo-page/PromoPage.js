@@ -30,6 +30,8 @@ const {
   AUDIO_TEXT,
   FIND_PAIR,
   FIND_PAIR_TEXT,
+  SPRINT,
+  SPRINT_TEXT,
 } = promoPage;
 
 export default class PromoPage {
@@ -77,6 +79,9 @@ export default class PromoPage {
     this.createChicken('promo_chicken-right', IMG_CHICKEN4);
     this.audioGame = create('div', 'promo_block-block', '', this.promoBlock);
     PromoPage.createBlocks(this.audioGame, AUDIO, AUDIO_TEXT);
+
+    this.sprintGame = create('div', 'promo_block-block', '', this.promoBlock);
+    PromoPage.createBlocks(this.sprintGame, SPRINT, SPRINT_TEXT);
 
     this.findPairGame = create('div', 'promo_block-block', '', this.promoBlock);
     PromoPage.createBlocks(this.findPairGame, FIND_PAIR, FIND_PAIR_TEXT);
