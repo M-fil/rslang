@@ -7,6 +7,7 @@ import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import AboutTeam from '../about-team/AboutTeam';
 import SavannahGame from '../mini-games/savannah/Savannah';
 
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
