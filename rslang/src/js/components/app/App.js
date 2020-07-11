@@ -240,7 +240,6 @@ class App {
     this.preloader.hide();
   }
 
-<<<<<<< HEAD
   clearMainContainersBeforeRender(targetPage = '') {
     if (targetPage === SETTINGS_CODE) return;
 
@@ -252,21 +251,6 @@ class App {
     }
     if (dailyStatistics) {
       dailyStatistics.remove();
-=======
-  async run() {
-    this.container = create('main', 'main-page__content', '', document.body);
-    try {
-      await this.checkIsUserAuthorized();
-    } catch (error) {
-      App.removeModalElements();
-      localStorage.setItem('user-data', '');
-      this.state.user.isAuthrorized = false;
-      this.container.innerHTML = '';
-      this.renderAuthenticationBlock('authorization');
-      this.activateToggleAuthentication();
-      this.activateAuthenticationForm();
-      this.preloader.hide();
->>>>>>> develop
     }
   }
 
@@ -426,14 +410,9 @@ class App {
         },
       };
       document.querySelector('.authentication__wrapper').remove();
-<<<<<<< HEAD
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.activateMainPageHandlers();
-=======
-      await this.initSettings();
-      await this.renderVocabulary(this.state.user);
->>>>>>> develop
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -471,14 +450,9 @@ class App {
         refreshToken: JSON.parse(savedUserData).refreshToken,
         name: data.name,
       };
-<<<<<<< HEAD
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.activateMainPageHandlers();
-=======
-      await this.initSettings();
-      await this.renderMainGame();
->>>>>>> develop
       this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
@@ -488,7 +462,6 @@ class App {
         ...this.state.user,
         ...data,
       };
-<<<<<<< HEAD
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.activateMainPageHandlers();
@@ -496,18 +469,6 @@ class App {
     }
   }
 
-=======
-      await this.initSettings();
-      await this.renderMainGame();
-    }
-  }
-
-  async renderMainGame() {
-    this.mainGame = new MainGame(this.createMiniGameParameterObject());
-    await this.mainGame.render('.main-page__content');
-  }
-
->>>>>>> develop
   activateToggleAuthentication() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.authentication__toggle-button');

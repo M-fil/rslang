@@ -51,12 +51,6 @@ $daily-statistics-overlay-background: rgba(19, 19, 19, 0.3);
 $daily-statistics-text-color: #ffffff;
 $daily-statistics-background: #1695A3;
 
-$labtop-l-width: 1440px;
-$content-width: 1024px;
-$tablet-width: 768px;
-$mobile-big-width: 425px;
-$mobile-small-width: 320px;
-
 $english-puzzle-field-and-buttons-back: rgb(255, 177, 153);
 $english-puzzle-button-hover-background: rgb(255, 88, 88);
 $english-puzzle-text-color: white;
@@ -123,9 +117,11 @@ $about-team-links-icons-bg-linkedin: rgb(29,202,255);
 $about-team-links-icons-bg-github: rgb(138,58,185);
 $about-team-hover-back-button-color:#000000;
 
+$promo-page-background: #ACF0F2;
 $promo-game-title: #3d3a3a;
 $promo-blocks-title: #ec8000;
 $promo-black: #000000;
+$promo-game-title: #000000;
 
 $settings-result-text-correct: #008000;
 $settings-result-text-wrong: #ff0000;
@@ -150,9 +146,6 @@ $authentication-text-color: #000000;
 $authentication-border-color: #000000;
 $authentication-description-text-color: #ffffff;
 $authentication-error-color: #FF0000;
-
-$promo-game-title: rgb(247, 244, 99);
-$promo-blocks-title: rgb(224, 218, 218);
 
 $statistics-wrapper-gradient: linear-gradient(to bottom, #acf0f2 0%, #f3ffe2 100%);
 $statistics-border-color: #ec8000;

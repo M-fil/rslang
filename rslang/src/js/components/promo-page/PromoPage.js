@@ -2,7 +2,7 @@ import create from '../../utils/сreate';
 import { promoPage } from '../../constants/constants';
 
 const {
-  PROMO,
+  PROMO_TITLE,
   PROMO_VIDEO,
   IMG_CHICKEN1,
   IMG_CHICKEN2,
@@ -30,7 +30,8 @@ const {
   AUDIO_TEXT,
   FIND_PAIR,
   FIND_PAIR_TEXT,
-  PROMO_TITLE,
+  SPRINT,
+  SPRINT_TEXT,
 } = promoPage;
 
 export default class PromoPage {
