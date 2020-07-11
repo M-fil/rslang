@@ -5,7 +5,6 @@ $mobile-big-width: 425px;
 $mobile-small-width: 320px;
 
 $checkbox-tick-path: '../../src/assets/images/main-game/checkbox-tick.svg';
-
 $standard-border-color: #000000;
 
 $speak-it-overlay-background: rgba(241, 243, 245, 0.5);
@@ -110,6 +109,20 @@ $main-page-english-goals-background: #F3FFE2;
 $main-page-logour-hover-color: #ffffff;
 $main-page--burger-menu-overlay: rgba(0, 0, 0, 0.4);
 
+$about-team-background-color: #acf0f2;
+$about-team-border-title: #EC8000;
+$about-team-title: #000000;
+$about-team-card-shadow: #add8e6;
+$about-team-card-color: #ffffff;
+$about-team-work-icons: #6495ed;
+$about-team-ul-icons-block: #3d3a3a;
+$about-team-links-icons: #cccccc;
+$about-team-links-icons-hover: #ffffff;
+$about-team-links-icons-bg-vk: rgb(59,89,152);
+$about-team-links-icons-bg-linkedin: rgb(29,202,255);
+$about-team-links-icons-bg-github: rgb(138,58,185);
+$about-team-hover-back-button-color:#000000;
+
 $settings-result-text-correct: #008000;
 $settings-result-text-wrong: #ff0000;
 $settings-tabs-background: #ACF0F2;
@@ -124,17 +137,6 @@ $vocabluary-background: linear-gradient(to bottom, $game-background-light-blue 0
 $vocabluary-additional-data-background: linear-gradient(to bottom, $game-background-color 0%, $game-background-light-blue 100%);
 $vocabluary-text-hover-color: #ffffff;
 $vocabluary-text-color: #000000;
-$about-team-background-color: #1695A3;
-$about-team-card-shadow: #add8e6;
-$about-team-card-color: #ffffff;
-$about-team-work-icons: #6495ed;
-$about-team-ul-icons-block: #3d3a3a;
-$about-team-links-icons: #ccc;
-$about-team-links-icons-hover: #fff;
-$about-team-links-icons-bg-vk: rgb(59,89,152);
-$about-team-links-icons-bg-linkedin: rgb(29,202,255);
-$about-team-links-icons-bg-github: rgb(138,58,185);
-$about-team-hover-back-button-color: #ffffff;
 
 $authentication-main-background-color: #225378;
 $authentication-input-background-color: #ffffff;
