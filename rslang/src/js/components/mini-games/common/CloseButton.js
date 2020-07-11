@@ -4,7 +4,7 @@ import ModalWindow from './ModalWindow';
 export default class CloseButton {
   constructor() {
     this.modalWindow = new ModalWindow('closebutton');
-    this.exitButton = create('span', 'exit-button',);
+    this.exitButton = create('span', 'exit-button');
     this.exitButton.addEventListener('click', (this.exitClickHandler).bind(this));
   }
 

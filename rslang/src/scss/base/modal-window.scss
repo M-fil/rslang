@@ -18,14 +18,17 @@
   padding: 20px;
   border: 1.5px solid $modal-window-border-color;
   border-radius: 10px;
-  min-width: 260px;
-  min-height: 300px;
   width: 35%;
-  height: 30%;
+  height: 60%;
   overflow: auto;
   max-height: 450px;
   text-align: center;
   line-height: normal;
+}
+
+#closebutton .modal_text {
+  min-width: 260px;
+  max-height: 310px;
 }
 
 .modal_title {
@@ -82,7 +85,7 @@
 }
 
 @media (max-width: 1024px) {
-  .modal_text {
+  #closebutton .modal_text {
     margin-top: 20%;
     height: 35%;
     width: 40%
@@ -90,13 +93,13 @@
 }
 
 @media (max-width: 860px) {
-  .modal_text {
+  #closebutton .modal_text {
     width: 50%
   }
 }
 
 @media (max-width: 690px) {
-  .modal_text {
+  #closebutton .modal_text {
     margin-top: 25%;
     width: 60%;
     height: 40%;
@@ -104,7 +107,7 @@
 }
 
 @media (max-width: 480px) {
-  .modal_text {
+  #closebutton .modal_text {
     height: 40%;
     margin-top: 35%;
   }

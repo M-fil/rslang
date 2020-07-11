@@ -1,9 +1,12 @@
 body {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
 }
-  
+
+p {
+  margin: 0;
+}
+
 html {
-    font-size: 10px;
+   font-size: 10px;
 }
