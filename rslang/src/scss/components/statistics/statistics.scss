@@ -1,21 +1,36 @@
+.statistics__wrapper {
+  max-width: 100vw;
+  height: fit-content;
+  min-height: 100vh;
+  background: $statistics-wrapper-gradient;
+}
+
 .statistics {
-  width: $content-width;
+  max-width: $content-width;
   margin: 0 auto;
   text-align: center;
 }
-.statisticsCharts{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  max-width: 1080px;
-  margin: 0 auto;
+
+.statistics__exit-button {
+  display: block;
 }
-.mainChart{
-  width: 100%;
+
+.statistics__container {
+  padding: 5px 0;
 }
-.pieChart{
-  width: 50%;
+
+.statistics-selects__label {
+  padding: 5px;
+  @include font(1.9rem);
+
+  @include media-mobile {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin: 0 auto;
+  }
 }
+
 .statictics-tab-list {
   list-style: none;
   display: flex;
@@ -26,17 +41,35 @@
 
 .statictics-tab-list__item {
   display: block;
-  width: 150px;
+  position: relative;
+  color: $statistics-tab-item-color;
+  border: none;
+  text-transform: uppercase;
+  width: 185px;
   @include font(1.5rem);
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  border: 1px solid black;
+  padding: 10px 0;
+  background: none;
   cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  @extend %statistics-tab-item-button-transition;
+
+  &:not(:first-child) {
+    margin-left: 10px;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: $statistics-tab-item-on-hover-color;
+      background: $statistics-tab-item-background-or-hover-for-buttons;
+    }
+  }
 }
 
 .statictics-tab-list_active {
   font-weight: bold;
+  color: $statistics-tab-item-on-hover-color;
+  background: $statistics-tab-item-background-or-hover-for-buttons;
 }
 
 .statistics-tab__item {
@@ -45,4 +78,82 @@
 
 .statistics-tab_active {
   display: block;
+}
+
+.statistics__game-statistic,
+.statistics__charts {
+  margin: 20px auto 0;
+  position: relative;
+  border-left: 1.5px solid $statistics-border-color;
+  border-right: 1.5px solid $statistics-border-color;
+  &::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    border-bottom: 1.5px solid $statistics-border-color;
+    top: 0;
+    left: 0;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    border-bottom: 1.5px solid $statistics-border-color;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.statistics-selects__select {
+  border: 1px solid $statistics-select-background-hover-color;
+  width: 130px;
+  border-radius: 15px;
+  padding: 0 5px;
+  @include font(1.5rem);
+  @media (hover: hover) {
+    &:hover {
+      border: 1px dashed $statistics-select-background-hover-color;
+    }
+  }
+}
+
+.statistics-short-term__param {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  padding: 5px;
+  @include font(2rem);
+}
+
+.statistics__charts{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+.statistics__game-statistic{
+  width: fit-content;
+}
+.mainChart{
+  width: 100%;
+  min-height: 250px;
+}
+
+.pieChart{
+  width: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+  .pieChart{
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 475px) {
+  .exit-button{
+  top:40px;
+  }
+  .statistics__container {
+    margin-top: 30px;
+  }
 }

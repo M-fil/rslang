@@ -10,11 +10,9 @@ import {
 import create from '../../../utils/сreate';
 import shuffle from '../../../utils/shuffle';
 import wordsFilter from '../../../utils/wordsfilter';
-import Preloader from '../../preloader/Preloader';
+import Preloader from '../../preloader/preloader';
 import Settings from '../../settings/Settings';
 import Statistics from '../../statistics/Statistics';
-import ShortTermStatisctics from '../common/ShortTermStatistics';
-import CloseButton from '../common/CloseButton';
 import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
 
@@ -41,8 +39,10 @@ const {
 } = StatisticsGameCodes;
 
 export default class FindAPair {
-  constructor(user) {
-    this.user = user;
+  constructor(miniGameObj) {
+    this.user = miniGameObj.user;
+    this.CloseButton = miniGameObj.closeButton;
+    this.ShortTermStatistics = miniGameObj.shortTermStatistics;
   }
 
   async init() {
@@ -54,9 +54,7 @@ export default class FindAPair {
     this.audioObj = new Audio();
     this.preloader = new Preloader();
     this.preloader.render();
-    this.ShortTermStatistics = new ShortTermStatisctics();
     this.StartWindow = new StartWindow((this.startGame).bind(this));
-    this.CloseButton = new CloseButton();
     this.Vocabulary = new Vocabulary(this.user);
     await this.Vocabulary.init();
     const settings = new Settings(this.user);
@@ -68,14 +66,22 @@ export default class FindAPair {
 
   renderStartPage(container) {
     if (!this.main) {
-      this.main = document.querySelector(container) || document.body;
+      this.main = FindAPair.getRootElement(container);
     }
+
+    if (!this.wrapper) {
+      this.wrapper = create('div', 'find-a-pair__wrapper', undefined, this.main);
+    }
+
     this.container = document.querySelector('#find-a-pair');
     if (!this.container) {
-      this.container = create('div', 'find-a-pair', undefined, this.main, ['id', 'find-a-pair']);
+      this.container = create('div', 'find-a-pair__container', undefined, this.wrapper, ['id', 'find-a-pair']);
     }
+
     this.container.append(this.StartWindow.render('Find a pair', findAPairText.about, this.checkWordsCountInVocabulary()));
     this.container.classList.add('find-a-pair__start-page');
+    this.container.classList.remove('find-a-pair_short-term-statistics');
+    this.container.classList.remove('find-a-pair_on-pause');
   }
 
   async startGame(collection, group) {
@@ -86,6 +92,7 @@ export default class FindAPair {
     this.findPairs = 0;
     this.clearTimer();
     this.gameOnPause = false;
+    this.closeButtonShowing = false;
     this.renderGame();
   }
 
@@ -94,14 +101,17 @@ export default class FindAPair {
     this.container.classList.remove('find-a-pair__start-page');
 
     const timerEl = create('i', 'find-a-pair-timer__seconds', `${findAPairConst.gameTimerSec}`, undefined, ['id', 'remain_seconds']);
-    const timerSpan = create('span', 'find-a-pair-timer__text', `${findAPairText.remainSec}: ${timerEl.outerHTML}`);
-    const timerContainer = create('div', 'find-a-pair-timer', timerSpan);
+    const timerContainer = create('div', 'find-a-pair-timer', timerEl);
+    timerContainer.innerHTML += `
+    <svg class="find-a-pair-timer__svg">
+      <circle r="13" cx="15" cy="15"></circle>
+    </svg>`;
 
-    const findCardsEl = create('i', 'find-a-pair-findcards__count', '0', undefined, ['id', 'findcards_count']);
-    const findCardsSpan = create('span', 'find-a-pair-findcards__text', `${findAPairText.findCards}: ${findCardsEl.outerHTML}`);
-    const findCardsContainer = create('div', 'find-a-pair-findcards', findCardsSpan);
+    const findCardsEl = create('i', 'find-a-pair-findcards__count', `0 / ${findAPairConst.cardsCount}`, undefined, ['id', 'findcards_count']);
+    const findCardsSpan = create('i', 'find-a-pair-findcards__text fas fa-search');
+    const findCardsContainer = create('div', 'find-a-pair-findcards', [findCardsSpan, findCardsEl]);
 
-    const pauseButton = create('button', 'find-a-pair__pause-button', findAPairText.pauseButton, undefined, ['id', 'find-a-pair-pause-button']);
+    const pauseButton = create('button', 'find-a-pair__pause-button', '<i class="fas fa-pause"></i>', undefined, ['id', 'find-a-pair-pause-button'], ['title', findAPairText.pauseButton]);
     const controlbar = create('div', 'find-a-pair__controlbar', [timerContainer, findCardsContainer, pauseButton]);
     const playingField = create('div', 'find-a-pair__playing-field');
 
@@ -112,9 +122,9 @@ export default class FindAPair {
     pauseButton.addEventListener('click', (this.pauseGameHandler).bind(this));
 
     this.CloseButton.show();
-    this.CloseButton.addExitButtonClickCallbackFn((this.pauseGameHandler).bind(this));
+    this.CloseButton.addExitButtonClickCallbackFn((this.closeButtonHandler).bind(this));
     this.CloseButton.addCloseCallbackFn((this.newGameHandler).bind(this));
-    this.CloseButton.addCancelCallbackFn((this.pauseGameHandler).bind(this));
+    this.CloseButton.addCancelCallbackFn((this.closeButtonHandler).bind(this));
 
     this.container.appendChild(controlbar);
     this.container.appendChild(playingField);
@@ -161,6 +171,7 @@ export default class FindAPair {
   createCard(cardData) {
     const face = create('div', 'find-a-pair-card__side find-a-pair-card__face', undefined, undefined, ['wordPair', cardData.pair]);
     const word = create('p', 'find-a-pair-card__word', cardData.word);
+    word.setAttribute('lang', (/^([a-z ]+)$/i.test(cardData.word)) ? 'en' : 'ru');
     const back = create('div', 'find-a-pair-card__side find-a-pair-card__back', word, undefined, ['wordPair', cardData.pair]);
     const cardContainer = create('div', 'find-a-pair-card__container', [face, back], undefined, ['wordPair', cardData.pair]);
 
@@ -202,7 +213,7 @@ export default class FindAPair {
   }
 
   updateFindPairs() {
-    document.querySelector('#findcards_count').innerText = this.findPairs;
+    document.querySelector('#findcards_count').innerText = `${this.findPairs} / ${findAPairConst.cardsCount}`;
   }
 
   resultsPage() {
@@ -215,6 +226,8 @@ export default class FindAPair {
 
     this.ShortTermStatistics.render(resWords.wrong, resWords.correct);
     this.ShortTermStatistics.addCallbackFnOnClose((this.newGameHandler).bind(this));
+
+    this.container.classList.add('find-a-pair_short-term-statistics');
     this.preloader.hide();
   }
 
@@ -242,9 +255,32 @@ export default class FindAPair {
     this.startGame();
   }
 
+  closeButtonHandler() {
+    if (!this.closeButtonShowing) {
+      if (!this.gameOnPause) {
+        this.pauseGameHandler();
+      }
+      this.closeButtonShowing = true;
+    } else {
+      if (this.gameOnPause) {
+        this.pauseGameHandler();
+      }
+      this.closeButtonShowing = false;
+    }
+  }
+
   pauseGameHandler() {
     this.gameOnPause = !this.gameOnPause;
-    document.querySelector('#find-a-pair-pause-button').innerText = (this.gameOnPause) ? findAPairText.onPauseButton : findAPairText.pauseButton;
+    const pauseButton = document.querySelector('#find-a-pair-pause-button');
+    if (this.gameOnPause) {
+      this.container.classList.add('find-a-pair_on-pause');
+      pauseButton.innerHTML = '<i class="fas fa-play"></i>';
+      pauseButton.setAttribute('title', findAPairText.onPauseButton);
+    } else {
+      this.container.classList.remove('find-a-pair_on-pause');
+      pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+      pauseButton.setAttribute('title', findAPairText.pauseButton);
+    }
   }
 
   mouseEnterHandler() {
@@ -280,6 +316,7 @@ export default class FindAPair {
   }
 
   newGameHandler() {
+    this.clearTimer();
     this.clearPage();
     this.ShortTermStatistics.hide();
     this.renderStartPage();
@@ -319,6 +356,30 @@ export default class FindAPair {
   }
 
   checkWordsCountInVocabulary() {
-    return (this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= findAPairConst.cardsCount);
+    const vocabuleryLength = this.Vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE);
+    return (vocabuleryLength >= findAPairConst.cardsCount);
+  }
+
+  static getRootElement(container) {
+    const htmlElementNode = 1;
+    const typeOBJECT = 'object';
+    const typeSTRING = 'string';
+    let rootContainer;
+
+    switch (typeof container) {
+      case typeOBJECT:
+        if (container.nodeType === htmlElementNode) {
+          rootContainer = container;
+        }
+        break;
+      case typeSTRING:
+        rootContainer = document.querySelector(container);
+        break;
+      default:
+        rootContainer = document.body;
+        break;
+    }
+
+    return rootContainer;
   }
 }
