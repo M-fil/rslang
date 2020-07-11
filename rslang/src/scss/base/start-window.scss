@@ -10,7 +10,7 @@
 }
 
 .start-game-window {
-  height: 55%;
+  height: fit-content;
   background-color: $modal-window-main-background;
   padding: 10px 15px;
   border-radius: 10px;
@@ -103,13 +103,7 @@
 
 @media(max-width: 1150px) {
   .start-game-window {
-    width: 55%;
-  }
-}
-
-@media(max-width: 1024px) {
-  .start-game-window {
-    height: 60%;
+    width: 55% !important;
   }
 }
 
@@ -121,21 +115,19 @@
 
 @media(max-width: 600px) {
   .start-game-window {
-    height: 70%;
-    width: 65%;
+    width: 65% !important;
   }
 }
 
 @media(max-width: 500px) {
   .start-game-window {
-    height: 75%;
-    width: 80%;
+    width: 80% !important;
   }
 }
 
 @media(max-width: 400px) {
   .start-game-window {
-    width: 85%;
+    width: 85% !important;
   }
 
   .gameWindow__container {

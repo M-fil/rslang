@@ -113,6 +113,8 @@ export default class SpeakIt {
 
   async goToTheStartPageHandler() {
     document.querySelector('.speak-it__main').remove();
+    this.closeButton.exitButton.classList.remove('speak-it__exit-button');
+    this.shortTermStatistics.buttonsBlock.remove();
     this.startWindow.gameWindow.remove();
     await this.renderStartGamePage();
   }

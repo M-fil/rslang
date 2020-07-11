@@ -250,7 +250,7 @@ export default class SavannahGame {
   }
 
   wordClick() {
-    document.addEventListener('click', (event) => {
+    document.querySelector('.savannah__container').addEventListener('click', (event) => {
       const target = event.target.closest('.word_russian');
       if (target) {
         this.checkWord(event, target);
@@ -259,7 +259,7 @@ export default class SavannahGame {
   }
 
   keyboardClick() {
-    document.addEventListener('keydown', (keydown) => {
+    document.querySelector('.savannah__container').addEventListener('keydown', (keydown) => {
       const target = this.rusBut[keydown.key - 1];
       if (!this.rusBut[0].disabled && target) {
         this.checkWord(keydown, target);
@@ -354,7 +354,9 @@ export default class SavannahGame {
       }
       this.disabledButtons();
     });
-    this.allLives[this.liveIndex].src = LIVES_IMAGE_INHERIT;
+    if (this.allLives[this.liveIndex]) {
+      this.allLives[this.liveIndex].src = LIVES_IMAGE_INHERIT;
+    }
     this.liveIndex += 1;
     this.wrongWords.push(this.arrayBeforeClickWords);
     clearInterval(this.timer);

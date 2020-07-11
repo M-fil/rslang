@@ -87,7 +87,6 @@
 @media (max-width: 1024px) {
   #closebutton .modal_text {
     margin-top: 20%;
-    height: 35%;
     width: 40%
   }
 }
@@ -102,19 +101,15 @@
   #closebutton .modal_text {
     margin-top: 25%;
     width: 60%;
-    height: 40%;
   }
 }
 
 @media (max-width: 480px) {
   #closebutton .modal_text {
-    height: 40%;
     margin-top: 35%;
   }
 
   .modal_text {
     width: auto;
-    margin-left: 5px;
-    margin-right: 5px;
   }
 }

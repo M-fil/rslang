@@ -104,7 +104,7 @@
 }
 
 .vocabulary__word-item {
-  @include font(2rem);
+  @include font(2rem, 2.5rem);
   position: relative; 
   display: flex;
   flex-direction: column;
@@ -368,7 +368,7 @@
 }
 
 .vocbulary__message {
-  @include font(2rem);
+  @include font(2rem, 2.5rem);
 }
 
 @media (max-width: 480px) {
@@ -380,4 +380,8 @@
   .word-item__main {
     height: 55px;
   }
+}
+
+.word-item__word {
+  text-align: center;
 }

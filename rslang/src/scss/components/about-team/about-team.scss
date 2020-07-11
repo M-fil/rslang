@@ -5,6 +5,11 @@
 
 .about-team__back-button {
   @include arrow-back-button;
+
+  @include media-mobile {
+    top: 5px;
+    left: 10px;
+  }
 }
 
 .about-team-container {

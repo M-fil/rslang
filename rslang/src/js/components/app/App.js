@@ -183,8 +183,8 @@ class App {
 
       if (target) {
         const { pageCode } = target.dataset;
-        await this.selectPageRenderingByPageCode(pageCode, false);
         BurgerMenu.closeBurgerMenu();
+        await this.selectPageRenderingByPageCode(pageCode, false);
       }
     });
   }
