@@ -85,7 +85,11 @@ export default class SpeakIt {
   async run() {
     await this.vocabulary.init();
     await this.renderStartGamePage(this.elementQuery);
+    this.createMainContainerWrapper();
+    this.activateAllHanlders();
+  }
 
+  activateAllHanlders() {
     this.startGame();
     this.wordCardClickEvent();
     this.activateContinueButton();
@@ -112,7 +116,7 @@ export default class SpeakIt {
   }
 
   async goToTheStartPageHandler() {
-    document.querySelector('.speak-it__main').remove();
+    document.querySelector('.speak-it__main').classList.remove('in-game')
     this.closeButton.exitButton.classList.remove('speak-it__exit-button');
     this.shortTermStatistics.buttonsBlock.remove();
     this.startWindow.gameWindow.remove();
@@ -242,7 +246,7 @@ export default class SpeakIt {
   }
 
   wordCardClickEvent() {
-    document.addEventListener('click', (event) => {
+    document.querySelector('.speak-it__main').addEventListener('click', (event) => {
       const target = event.target.closest('.word-card');
 
       if (target && !this.state.gameStarted) {
@@ -324,7 +328,7 @@ export default class SpeakIt {
   }
 
   activateSkipButtons() {
-    document.addEventListener('click', async (event) => {
+    document.querySelector('.speak-it__main').addEventListener('click', async (event) => {
       const target = event.target.closest('.word-card__skip-word-button');
 
       if (target) {
@@ -347,7 +351,7 @@ export default class SpeakIt {
   }
 
   startGame() {
-    document.addEventListener('click', (event) => {
+    document.querySelector('.speak-it__main').addEventListener('click', (event) => {
       const target = event.target.closest('.speak-it__start-game-button');
       if (!this.state.gameStarted && target) {
         const wordCardsHTML = document.querySelectorAll('.word-card');
@@ -441,7 +445,7 @@ export default class SpeakIt {
   }
 
   activateContinueButton() {
-    document.addEventListener('click', (event) => {
+    document.querySelector('.speak-it__main').addEventListener('click', (event) => {
       const target = event.target.closest('.continue-button');
 
       if (target && this.shortTermStatistics) {
@@ -491,7 +495,7 @@ export default class SpeakIt {
   }
 
   activateNavigation() {
-    document.addEventListener('change', async (event) => {
+    document.querySelector('.speak-it__main').addEventListener('change', async (event) => {
       const target = event.target.closest('.navigation__group-select');
 
       if (target) {
@@ -556,7 +560,7 @@ export default class SpeakIt {
   }
 
   activateStatisticsBlock() {
-    document.addEventListener('click', (event) => {
+    document.querySelector('.speak-it__main').addEventListener('click', (event) => {
       const target = event.target.closest('.speak-it__result-button');
 
       if (target) {
@@ -593,7 +597,7 @@ export default class SpeakIt {
   }
 
   activateStatisticsButtons() {
-    document.addEventListener('click', async (event) => {
+    document.querySelector('.speak-it__main').addEventListener('click', async (event) => {
       const target = event.target.closest('.new-game-button');
 
       if (target && this.state.currentWordsType === SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE) {
@@ -617,7 +621,9 @@ export default class SpeakIt {
   }
 
   activateSoundForStatisticsWords() {
-    document.addEventListener('click', (event) => {
+    console.log(document.querySelector('.speak-it__main'))
+    document.querySelector('.speak-it__main').addEventListener('click', (event) => {
+      console.log('activateSoundForStatisticsWords');
       const target = event.target.closest('.statistics__word');
       if (target) {
         const wordObject = this.currentArrayOfWords
@@ -628,7 +634,7 @@ export default class SpeakIt {
   }
 
   activateRestartButton() {
-    document.addEventListener('click', (event) => {
+    document.querySelector('.speak-it__main').addEventListener('click', (event) => {
       const target = event.target.closest('.speak-it__restart-button');
 
       if (target) {
@@ -638,7 +644,7 @@ export default class SpeakIt {
   }
 
   activateMicroButton() {
-    document.addEventListener('click', (event) => {
+    document.querySelector('.speak-it__main').addEventListener('click', (event) => {
       const target = event.target.closest('.microphone-button');
       if (target) {
         this.state.isMicroDisabled = !this.state.isMicroDisabled;

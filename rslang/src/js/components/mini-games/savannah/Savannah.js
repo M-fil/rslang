@@ -82,8 +82,6 @@ export default class SavannahGame {
     this.gameWindow = document.querySelector('.start-game-window');
     this.startButton = document.querySelector('.start-button');
     await this.vocabulary.init();
-    this.wordClick();
-    this.keyboardClick();
   }
 
   learnedWords() {
@@ -95,6 +93,9 @@ export default class SavannahGame {
   }
 
   reverseReport(collection, group) {
+    this.wordClick();
+    this.keyboardClick();
+
     playAudio(AUDIO_TICKING, this.audio);
     this.container.classList.add('savannah__container_in-game');
     this.numberReverse = create('span', 'number-reverse', '', this.container);
@@ -251,18 +252,22 @@ export default class SavannahGame {
   }
 
   wordClick() {
-    document.querySelector('.savannah__container').addEventListener('click', (event) => {
+    this.wordClickEvent = (event) => {
+      console.log('wordClick');
       const target = event.target.closest('.word_russian');
       if (target) {
         this.checkWord(event, target);
       }
-    });
+    };
+
+    document.querySelector('.savannah__container').addEventListener('click', this.wordClickEvent);
   }
 
   keyboardClick() {
     this.keyBoardEvent = (keydown) => {
-      const target = this.rusBut[keydown.key - 1];
-      if (!this.rusBut[0].disabled && target) {
+      console.log('keyboardClick');
+      const target = this.rusBut && this.rusBut[keydown.key - 1];
+      if (target && !this.rusBut[0].disabled) {
         this.checkWord(keydown, target);
       }
     };
@@ -389,6 +394,7 @@ export default class SavannahGame {
   }
 
   goToTheStartPageHandler() {
+    document.querySelector('.savannah__container').removeEventListener('click', this.wordClickEvent);
     document.removeEventListener('keydown', this.keyBoardEvent);
     this.container.classList.remove('savannah__container_in-game');
     this.container.innerHTML = '';

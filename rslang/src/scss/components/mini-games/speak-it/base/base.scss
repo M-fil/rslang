@@ -1,8 +1,5 @@
 main {
-  &.in-game {
-    align-items: flex-start;
-    height: auto;
-  }
+
 }
 
 .hidden {
@@ -21,7 +18,7 @@ main {
 }
 
 .speak-it__main {
-  display: flex;
+  display: none;
 
   min-height: 100vh;
   margin: 0;
@@ -29,6 +26,10 @@ main {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+
+  &.in-game {
+    display: flex;
+  }
 }
 
 .main-container__wrapper {

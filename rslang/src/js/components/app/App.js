@@ -411,8 +411,8 @@ class App {
       };
       document.querySelector('.authentication__wrapper').remove();
       await this.initAuxilaryComponents();
-      this.activateMainPageHandlers();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
+      this.activateMainPageHandlers();
     } catch (error) {
       console.log(error);
       Authentication.createErrorBlock(error.message);
@@ -452,8 +452,8 @@ class App {
         name: data.name,
       };
       await this.initAuxilaryComponents();
-      this.activateMainPageHandlers();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
+      this.activateMainPageHandlers();
       this.preloader.hide();
     } catch (error) {
       console.log(error);
@@ -465,8 +465,8 @@ class App {
         ...data,
       };
       await this.initAuxilaryComponents();
-      this.activateMainPageHandlers();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
+      this.activateMainPageHandlers();
       this.preloader.hide();
     }
   }

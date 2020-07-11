@@ -10,7 +10,7 @@ import {
 import create from '../../../utils/сreate';
 import { shuffle } from '../../../utils/shuffle';
 import wordsFilter from '../../../utils/wordsfilter';
-import Preloader from '../../preloader/preloader';
+import Preloader from '../../preloader/Preloader';
 import Settings from '../../settings/Settings';
 import Statistics from '../../statistics/Statistics';
 import StartWindow from '../common/StartWindow';
@@ -269,6 +269,7 @@ export default class FindAPair {
   }
 
   pauseGameHandler() {
+    console.log('pauseGameHandler')
     this.gameOnPause = !this.gameOnPause;
     const pauseButton = document.querySelector('#find-a-pair-pause-button');
     if (this.gameOnPause) {

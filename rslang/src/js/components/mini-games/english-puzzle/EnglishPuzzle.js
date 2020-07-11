@@ -422,11 +422,12 @@ export default class EnglishPuzzle {
     this.activeRow.addEventListener('dragenter', dragEnter);
     this.activeRow.addEventListener('dragleave', dragLeave);
     this.activeRow.addEventListener('click', (event) => {
+      console.log('CLICK')
       if (event.target.classList.contains('active-card')) {
         this.cardClickAction(event.target);
       }
     });
-    
+
     document.querySelector('.game-block_field--description').addEventListener('drop', (event) => {
       event.preventDefault();
       document.querySelector('.game-block_field--description').appendChild(this.dropped);

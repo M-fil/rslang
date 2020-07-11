@@ -61,9 +61,6 @@ export default class SprintGame {
     this.mainContainer = document.querySelector(elementQuery);
     create('div', 'container main-container', '', this.SprintGameWrapper);
     this.renderStartWindow();
-
-    this.activateKeyDownEvent();
-    this.activateGameButtons();
   }
 
   renderStartWindow() {
@@ -115,7 +112,8 @@ export default class SprintGame {
   }
 
   activateKeyDownEvent() {
-    document.addEventListener('keydown', (e) => {
+    this.keyDownEvent = (e) => {
+      console.log('keyDownEvent');
       if (e.key === sprint.KEYBOARD_BUTTON_CORRECT) {
         if (window.answer) this.Correct();
         else this.Incorrect();
@@ -126,11 +124,15 @@ export default class SprintGame {
         else this.Incorrect();
         this.GetWordData();
       }
-    });
+    };
+
+    document.addEventListener('keydown', this.keyDownEvent);
   }
 
   activateGameButtons() {
-    document.addEventListener('click', (e) => {
+    this.gameButtonsEvent = (e) => {
+      console.log('gameButtonsEvent');
+
       if (e.target === this.yesButton) {
         if (window.answer) this.Correct();
         else this.Incorrect();
@@ -170,7 +172,9 @@ export default class SprintGame {
       if (e.target.classList[0] === 'audio-icon') {
         e.target.childNodes[0].play();
       }
-    });
+    }
+
+    document.addEventListener('click', this.gameButtonsEvent);
   }
 
   renderGameAfterStartButtonClick() {
@@ -202,6 +206,9 @@ export default class SprintGame {
   }
 
   GameBegin(collection, group) {
+    this.activateKeyDownEvent();
+    this.activateGameButtons();
+
     this.SprintGameWrapper = create('div', 'sprint-game-wrapper', '', this.mainContainer);
     this.renderGameAfterStartButtonClick();
     this.setGameAudio();
@@ -397,6 +404,9 @@ export default class SprintGame {
   }
 
   Home() {
+    document.removeEventListener('click', this.gameButtonsEvent);
+    document.removeEventListener('keydown', this.keyDownEvent);
+
     this.renderStartWindow();
     this.SprintGameWrapper.remove();
     this.GameContainer.classList.remove('flex');
