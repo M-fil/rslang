@@ -16,33 +16,33 @@ export default class GameStatistic {
       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZmNlZGJmMjM3ODBlMDAxNzQ4N2MyYSIsImlhdCI6MTU5MzcxMTAxMSwiZXhwIjoxNTkzNzI1NDExfQ.ffkTcQtdTj6BvZnHiG9wbZ1cxgr_kK0IcjJ76bdnuSM',
       userId: '5efcedbf23780e0017487c2a',
     };
-    const stat = new Statistics(user);
-    stat.init();
+    this.stat = new Statistics(user);
+    this.stat.init();
     setTimeout(() => {
-      stat.saveGameStatistics('auditiongame', correctArray.length, failArray.length);
+      this.stat.saveGameStatistics('auditiongame', correctArray.length, failArray.length);
     }, 5000);
     const wrapper = document.querySelector('.audition-game__wrapper');
     const modal = create('div', 'modalAudition', '', wrapper);
     const modalContent = create('div', 'modal-content', '', modal);
     create('h2', 'alarmMessage', auditionGameVariables.statist, modalContent);
     create('p', 'alarmDesc', auditionGameVariables.know, modalContent);
-    for (let i = 0; i < correctArray.length; i++) {
+    for (let i = 0; i < correctArray.length; i += 1) {
       create('div', 'statistic', `&#9834; ${correctArray[i].word.word}-${correctArray[i].word.translate}`, modalContent, ['audio', correctArray[i].word.audio]);
     }
     create('p', 'alarmDesc', auditionGameVariables.errors, modalContent);
-    for (let i = 0; i < failArray.length; i++) {
+    for (let i = 0; i < failArray.length; i += 1) {
       create('div', 'statistic', `&#9834; ${failArray[i].word.word}-${failArray[i].word.translate}`, modalContent, ['audio', failArray[i].word.audio]);
     }
     create('p', 'alarmDesc', auditionGameVariables.idkBtn, modalContent);
-    for (let i = 0; i < idkArray.length; i++) {
+    for (let i = 0; i < idkArray.length; i += 1) {
       create('div', 'statistic', `&#9834; ${idkArray[i].word.word}-${idkArray[i].word.translate}`, modalContent, ['audio', idkArray[i].word.audio]);
     }
     create('button', 'cancelToClose', auditionGameVariables.cancel, modalContent);
-    this.closeEventHandler();
-    this.eventHandler();
+    GameStatistic.closeEventHandler();
+    GameStatistic.eventHandler();
   }
 
-  closeEventHandler() {
+  static closeEventHandler() {
     document.querySelector('.cancelToClose').addEventListener('click', () => {
       document.querySelector('.audition-game__wrapper').remove();
       document.querySelector('.main-content').innerHTML = '';
@@ -51,7 +51,7 @@ export default class GameStatistic {
     });
   }
 
-  eventHandler() {
+  static eventHandler() {
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('statistic')) {
         const audio = new Audio(`${urls.mainAudioPath}${event.target.getAttribute('data-audio')}`);

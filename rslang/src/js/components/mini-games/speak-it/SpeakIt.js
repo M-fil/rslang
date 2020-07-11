@@ -279,7 +279,8 @@ export default class SpeakIt {
 
     if (this.learnedWords.length < WORDS_LIMIT_NUMBER) {
       this.state.currentWordsType = SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE;
-      this.startWindow.wordsToLearnSelect.selectIndexByValue(SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE);
+      this.startWindow.wordsToLearnSelect
+        .selectIndexByValue(SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE);
       await this.selectCollectionWords();
     } else {
       this.state.currentWordsType = SELECT_OPTION_LEARNED_WORDS_VALUE;

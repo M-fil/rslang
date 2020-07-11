@@ -1,9 +1,8 @@
 import GameService from './GameService';
 import create from '../../../utils/сreate';
 import StartWindow from '../common/StartWindow';
-import { auditionGameVariables,vocabularyConstants } from '../../../constants/constants';
-import Vocabulary from  '../../vocabulary/Vocabulary';
-
+import { auditionGameVariables, vocabularyConstants } from '../../../constants/constants';
+import Vocabulary from '../../vocabulary/Vocabulary';
 
 const {
   Lives, Rounds,
@@ -18,7 +17,7 @@ export default class AuditionGame {
     this.container = container;
   }
 
-  async render(lives, roundsAll) {
+  async render(lives = Lives, roundsAll = Rounds) {
     this.wrapper = create('div', 'audition-game__wrapper', '', this.container);
     const roundResults = [];
     this.vocabulary = new Vocabulary(this.user);
@@ -37,7 +36,7 @@ export default class AuditionGame {
     this.closeButton.addCloseCallbackFn((this.restart).bind(this));
     this.ShortTermStatistics.addCallbackFnOnClose((this.restart).bind(this));
     create('div', 'progress', '', this.wrapper);
-    create('div', 'audition-game__startScreen',this.StartWindow.render(auditionGameVariables.gameTitle,auditionGameVariables.gameDescription,this.showUserCollection),this.wrapper);
+    create('div', 'audition-game__startScreen', this.StartWindow.render(auditionGameVariables.gameTitle, auditionGameVariables.gameDescription, this.showUserCollection), this.wrapper);
   }
 
   restart() {

@@ -1,4 +1,3 @@
-import { Swappable } from '@shopify/draggable';
 import MainBlock from './components/main-block';
 import createResultBlock from './components/result-block';
 import create from '../../../utils/сreate';
@@ -104,7 +103,8 @@ export default class EnglishPuzzle {
     const lvl = getRandomInteger(0, GAME_BLOCK.gameLevels) + 1;
     switch (this.gameStatus) {
       case SELECT_OPTION_LEARNED_WORDS_VALUE:
-        this.words = this.vocabulary.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE);
+        this.words = this.vocabulary
+          .getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE);
         this.words = this.words.map((el) => el.optional.allData);
         this.painting = findPainting(lvl, this.page);
         viewElement([document.querySelector('.new-lvl-button_container')], []);

@@ -1,6 +1,5 @@
 import create, {
   speakItConstants,
-  shortTermStatisticsConstants,
 } from '../../pathes';
 import ShortTermStatistics from '../../../common/ShortTermStatistics';
 

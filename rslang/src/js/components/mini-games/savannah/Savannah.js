@@ -135,7 +135,9 @@ export default class SavannahGame {
   }
 
   crateCardsData(collection) {
-    if (this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS && collection === SELECT_OPTION_LEARNED_WORDS_VALUE) {
+    if (this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS
+      && collection === SELECT_OPTION_LEARNED_WORDS_VALUE
+    ) {
       this.engRandomWords = this.vocabulary.getWordsByVocabularyType(LEARNED_WORDS_TITLE, true);
     } else {
       this.engRandomWords = this.data;
@@ -160,7 +162,9 @@ export default class SavannahGame {
       if (this.engBut.dataset.translate === this.engRandomWords[i].wordTranslate) {
         this.wordsTranslate.push(this.engBut.dataset.translate);
       }
-      if (this.engBut.dataset.translate !== this.engRandomWords[i].wordTranslate && this.wordsTranslate.length < MAX_WORDS_LINE) {
+      if (this.engBut.dataset.translate !== this.engRandomWords[i].wordTranslate
+        && this.wordsTranslate.length < MAX_WORDS_LINE
+      ) {
         this.wordsTranslate.push(this.engRandomWords[i].wordTranslate);
       }
     }
@@ -191,7 +195,8 @@ export default class SavannahGame {
     this.arrayBeforeClickWords = this.engRandomWords[this.num];
 
     const randomData = this.engRandomWords;
-    const correctWord = randomData.find((word) => this.engBut.dataset.translate === word.wordTranslate);
+    const correctWord = randomData
+      .find((word) => this.engBut.dataset.translate === word.wordTranslate);
 
     let randomTranslations = randomData
       .filter((word) => this.engBut.dataset.translate !== word.wordTranslate)
@@ -199,7 +204,9 @@ export default class SavannahGame {
 
     randomTranslations = shuffle(randomTranslations, RANDOM_WORDS);
     const int = Math.round(Math.random());
-    this.wordsTranslate = (!int) ? [...randomTranslations, correctWord.wordTranslate] : [correctWord.wordTranslate, ...randomTranslations];
+    this.wordsTranslate = (!int)
+      ? [...randomTranslations, correctWord.wordTranslate]
+      : [correctWord.wordTranslate, ...randomTranslations];
     this.wordTranslate = shuffle(this.wordsTranslate);
     let keyboardNumber = 0;
     for (let i = 0; i < this.rusBut.length; i += 1) {
@@ -368,7 +375,9 @@ export default class SavannahGame {
     this.errorTimer = setTimeout(async () => {
       await this.changeCard();
     }, 2000);
-    if (this.error === (LIVES + this.countLives) || (this.rightWords.length + this.wrongWords.length) === MAX_WORDS) {
+    if (this.error === (LIVES + this.countLives)
+      || (this.rightWords.length + this.wrongWords.length) === MAX_WORDS
+    ) {
       this.createStatistics();
     }
   }
@@ -396,7 +405,8 @@ export default class SavannahGame {
     this.container.classList.remove('savannah__container_in-game');
     this.container.innerHTML = '';
     this.startWindow.gameWindow.remove();
-    const isShowLearnedWordsOption = this.vocabulary.getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS;
+    const isShowLearnedWordsOption = this.vocabulary
+      .getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS;
     const startWindowHTML = this.startWindow.render(
       GAME_NAME, RULES, isShowLearnedWordsOption,
     );
