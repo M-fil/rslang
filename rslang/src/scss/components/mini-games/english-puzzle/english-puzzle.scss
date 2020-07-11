@@ -2,10 +2,6 @@
     width: 100vw;
     height: 100vh;
     min-width: 320px;
-
-    * {
-        margin: 0 auto;
-    }
 }
 
 .english-puzzle-wrapper .fas {
@@ -87,6 +83,10 @@
 
 .game-container {
     flex-direction: column;
+
+    & * {
+        margin: 0 auto;
+    }
 }
 
 .game-block {
@@ -148,8 +148,13 @@
 }
 
 .translate-sentense {
+    @include font(1.5rem, 2rem);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     text-align: center;
-    font-size: 1.5rem;
     width: 70%;
     height: 80%;
 }
