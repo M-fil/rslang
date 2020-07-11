@@ -322,7 +322,7 @@ class App {
   }
 
   async initStatistics() {
-    this.statistics = new Statistics();
+    this.statistics = new Statistics(this.state.user);
     await this.statistics.init();
   }
 

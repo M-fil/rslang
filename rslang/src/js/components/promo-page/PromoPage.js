@@ -2,6 +2,7 @@ import create from '../../utils/сreate';
 import { promoPage } from '../../constants/constants';
 
 const {
+  PROMO,
   PROMO_VIDEO,
   IMG_CHICKEN1,
   IMG_CHICKEN2,
@@ -43,6 +44,9 @@ export default class PromoPage {
   }
 
   render() {
+    this.promoVideo = create('iframe', '', '', this.promoBlock);
+    this.promoVideo.src = PROMO_VIDEO;
+
     this.advantagesBlock = create('div', 'promo_block-block', '', this.promoBlock);
     PromoPage.createBlocks(this.advantagesBlock, ADVANTAGES, ADVANTAGES_TEXT);
 
@@ -78,9 +82,6 @@ export default class PromoPage {
 
     this.findPairGame = create('div', 'promo_block-block', '', this.promoBlock);
     PromoPage.createBlocks(this.findPairGame, FIND_PAIR, FIND_PAIR_TEXT);
-
-    this.promoVideo = create('iframe', '', '', this.promoBlock);
-    this.promoVideo.src = PROMO_VIDEO;
   }
 
   static createBlocks(parentBlock, blockTitle, blockText) {

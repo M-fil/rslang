@@ -71,3 +71,10 @@ iframe {
     text-align: center;
   }
 }
+iframe {
+  @include media-mobile {
+    width: 100%;
+    margin: 3% 0 0 0;
+    height: 200px;
+  }
+}
