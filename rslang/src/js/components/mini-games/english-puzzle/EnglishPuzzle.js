@@ -426,7 +426,6 @@ export default class EnglishPuzzle {
         this.cardClickAction(event.target);
       }
     });
-
     document.querySelector('.game-block_field--description').addEventListener('drop', (event) => {
       event.preventDefault();
       document.querySelector('.game-block_field--description').appendChild(this.dropped);

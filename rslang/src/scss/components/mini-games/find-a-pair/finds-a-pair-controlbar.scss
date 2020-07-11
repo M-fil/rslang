@@ -77,4 +77,14 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  background-color: $find-a-pair-buttom-background;
+  cursor: pointer;
+  outline: none;
+  @media (hover: hover) {
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }

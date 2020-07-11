@@ -34,6 +34,7 @@
   height: 100%;
   backface-visibility: hidden;
   border-radius: 15px;
+  background-color: $find-a-pair-card-text-background-color;
 }
 
 .find-a-pair-card__face {
@@ -53,6 +54,9 @@
   color: $find-a-pair-card-text-color;
   height: auto;
   @include font(1.7rem);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .find-a-pair-card__container.is-flipped,

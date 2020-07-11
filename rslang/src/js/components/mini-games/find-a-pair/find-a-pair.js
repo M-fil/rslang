@@ -171,6 +171,7 @@ export default class FindAPair {
   createCard(cardData) {
     const face = create('div', 'find-a-pair-card__side find-a-pair-card__face', undefined, undefined, ['wordPair', cardData.pair]);
     const word = create('p', 'find-a-pair-card__word', cardData.word);
+    word.setAttribute('lang', (/^([a-z ]+)$/i.test(cardData.word)) ? 'en' : 'ru');
     const back = create('div', 'find-a-pair-card__side find-a-pair-card__back', word, undefined, ['wordPair', cardData.pair]);
     const cardContainer = create('div', 'find-a-pair-card__container', [face, back], undefined, ['wordPair', cardData.pair]);
 

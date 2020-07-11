@@ -288,7 +288,7 @@ const statisticsText = {
   texts: {
     learnedWords: 'Изучено новых слов',
     playingCount: 'Сыграно игр',
-    correctAnswers: 'Правильных ответов',
+    correctAnswers: 'Правильно',
     wrongAnswers: 'Ошибок',
   },
 };
@@ -447,6 +447,13 @@ const mainPageGoalsImages = {
   WATCH_AND_READ_IMAGE: './src/assets/images/main-page-goals/watch-and-read.png',
   PROGRESS_IMAGE: './src/assets/images/main-page-goals/progress.png',
   GO_TO_THE_NEW_COUNTRY_IMAGE: './src/assets/images/main-page-goals/go-to-the-new-country.png',
+};
+
+const sprintAudios = {
+  GAME_AUDIO_4: 'src/assets/audio/game_audio/4.mp3',
+  END_AUDIO_PATH: 'src/assets/audio/end.mp3',
+  GAME_AUDIO_PATH: 'src/assets/audio/game_audio/',
+  TIMER_AUDIO: 'src/assets/audio/timer.mp3',
 };
 
 const aboutTeam = {
@@ -633,13 +640,6 @@ const sprint = {
   BUTTON_NO: 'No',
   BUTTON_YES: 'Yes',
   NEW_GAME: 'Новая игра',
-};
-
-const sprintAudios = {
-  GAME_AUDIO_4: 'src/assets/audio/game_audio/4.mp3',
-  END_AUDIO_PATH: 'src/assets/audio/end.mp3',
-  GAME_AUDIO_PATH: 'src/assets/audio/game_audio/',
-  TIMER_AUDIO: 'src/assets/audio/timer.mp3',
 };
 
 export {
