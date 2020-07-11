@@ -1,5 +1,4 @@
 import create from '../../utils/сreate';
-
 import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
@@ -7,11 +6,16 @@ import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+
 import Statistics from '../statistics/Statistics';
+
 import AboutTeam from '../about-team/AboutTeam';
 import SavannahGame from '../mini-games/savannah/Savannah';
 
+import Sprint from '../mini-games/sprint/Sprint';
+import SavannahGame from '../mini-games/savannah/Savannah';
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
+
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
@@ -27,6 +31,7 @@ import {
   errorTypes,
   authenticationConstants,
 } from '../../constants/constants';
+import SprintGame from '../mini-games/sprint/Sprint';
 
 const {
   USER_IS_NOT_AUTHORIZED,
@@ -71,7 +76,6 @@ class App {
   activateGoToTheMainPageButton() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('#button-go-to-main-page');
-
       if (target) {
         this.goToTheMainPageHanlder();
       }
@@ -196,6 +200,7 @@ class App {
       };
       document.querySelector('.authentication__wrapper').remove();
       await this.initSettings();
+      await this.renderSprintGame();
       await this.renderStatistics();
       await this.renderSpeakItGame();
       await this.renderVocabulary(this.state.user);
@@ -241,6 +246,7 @@ class App {
         name: data.name,
       };
       await this.initSettings();
+      await this.renderSprintGame();
       await this.renderStatistics();
       await this.renderMainGame();
       this.preloader.hide();
@@ -253,6 +259,7 @@ class App {
         ...data,
       };
       await this.initSettings();
+      await this.renderSprintGame();
       await this.renderStatistics();
       this.preloader.hide();
       await this.renderMainGame();
@@ -262,6 +269,11 @@ class App {
   async renderMainGame() {
     this.mainGame = new MainGame(this.createMiniGameParameterObject());
     await this.mainGame.render('.main-page__content');
+  }
+
+  async renderSprintGame() {
+    this.sprint = new SprintGame(this.createMiniGameParameterObject());
+    await this.sprint.SprintRender('.main-page__content');
   }
 
   activateToggleAuthentication() {
@@ -291,3 +303,4 @@ class App {
 }
 
 export default App;
+

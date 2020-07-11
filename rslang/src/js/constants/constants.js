@@ -11,6 +11,7 @@ const urls = {
   STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
   CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
+  ERROR_AUDIO_PATH: './src/assets/audio/error.mp3',
   SUCCESS_AUDIO_PATH: './src/assets/audio/success.mp3',
 };
 
@@ -315,6 +316,43 @@ const startWindow = {
   GO_TO_MAIN_PAGE_BUTTON: 'На главную',
 };
 
+const sprint = {
+  START_TIMER: 5,
+  GAME_NAME: 'Спринт',
+  GAME_RULES: 'Спринт – скоростная тренировка. За 60 секунд необходимо определить, правильный ли перевод предложен к английскому слову.<br>Доп. функционал: за 12 подряд правильно угаданных слов даётся +5 секунд к таймеру игры.',
+  POWER1: 1,
+  POWER2: 2,
+  POWER3: 4,
+  POWER4: 8,
+  CORRECT1: 4,
+  CORRECT2: 8,
+  CORRECT3: 12,
+  BONUS_ANSWERS: 12,
+  BONUS_TIME: 5,
+  RIGHT_ANSWER: '✓',
+  GAME_TIMER: 60,
+  SCORE: 'Ваш счёт: ',
+  CORRECT_ANSWERS: 'Знаю',
+  INCORRECT_ANSWERS: 'Ошибок',
+  EXIT_ANSWER: 'Игра не закончена! \nВы, действительно, хотите вернуться в меню игры?',
+  KEYBOARD_BUTTON_WRONG: 'ArrowLeft',
+  KEYBOARD_BUTTON_CORRECT: 'ArrowRight',
+  PLUS_10_POINTS_PER_WORD: '+10 очков за слово',
+  PLUS_POINTS_PER_WORD: 'очков за слово',
+  WORD: 'СЛОВО',
+  TRANSLATE: 'ПЕРЕВОД',
+  BUTTON_NO: 'No',
+  BUTTON_YES: 'Yes',
+  NEW_GAME: 'Новая игра',
+};
+
+const sprintAudios = {
+  GAME_AUDIO_4: 'src/assets/audio/game_audio/4.mp3',
+  END_AUDIO_PATH: 'src/assets/audio/end.mp3',
+  GAME_AUDIO_PATH: 'src/assets/audio/game_audio/',
+  TIMER_AUDIO: 'src/assets/audio/timer.mp3',
+};
+
 const aboutTeam = {
   TEAM: 'Наша команда',
   BACK_BUTTON: '<i class="fas fa-long-arrow-alt-left"></i>',
@@ -404,6 +442,8 @@ export {
   shortTermStatisticsConstants,
   startWindow,
   HTTPCodesConstants,
+  sprint,
   aboutTeam,
   progressLearningConstants,
+  sprintAudios,
 };
