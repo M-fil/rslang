@@ -116,7 +116,6 @@ export default class SprintGame {
 
   activateKeyDownEvent() {
     this.keyDownEvent = (e) => {
-      console.log('keyDownEvent');
       if (e.key === sprint.KEYBOARD_BUTTON_CORRECT) {
         if (window.answer) this.Correct();
         else this.Incorrect();
@@ -134,8 +133,6 @@ export default class SprintGame {
 
   activateGameButtons() {
     this.gameButtonsEvent = (e) => {
-      console.log('gameButtonsEvent');
-
       if (e.target === this.yesButton) {
         if (window.answer) this.Correct();
         else this.Incorrect();

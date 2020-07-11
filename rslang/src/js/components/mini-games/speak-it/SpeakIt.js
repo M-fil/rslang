@@ -254,7 +254,6 @@ export default class SpeakIt {
       const target = event.target.closest('.word-card');
 
       if (target && !this.state.gameStarted) {
-        console.log('HERE');
         SpeakIt.selectSingleElementFromList(target, 'word-card_selected');
         const clickedWord = this.currentArrayOfWords
           .find((word) => (word.id || word._id) === target.dataset.wordId);

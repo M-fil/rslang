@@ -90,7 +90,6 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
-      console.log(error);
       this.renderAuthorizationBlock();
       this.preloader.hide();
     }

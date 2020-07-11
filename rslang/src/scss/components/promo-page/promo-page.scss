@@ -1,6 +1,19 @@
 .promo-page__wrapper {
   background-color: $promo-page-background;
   padding-top: 10px;
+
+  & #button-go-to-main-page {
+    @extend %promo-back-button-transition;
+    position: absolute;
+    font-size: 3.4rem;
+    color: $promo-blocks-title;
+    opacity: 0.5;
+    cursor: pointer;
+
+    &:hover {
+      color: $promo-black;
+    }
+  }
 }
 .promo-page__back-button {
   @include arrow-back-button;
@@ -10,17 +23,6 @@
   width: 80%;
   margin-right: auto;
   margin-left: auto
-}
-#button-go-to-main-page {
-  position: absolute;
-  font-size: 3.4rem;
-  color: $promo-blocks-title;
-  opacity: 0.5;
-  transition: all 0.5s;
-  cursor: pointer;
-}
-#button-go-to-main-page:hover {
-  color: $promo-black;
 }
 .promo_title {
   font-size: 3rem;

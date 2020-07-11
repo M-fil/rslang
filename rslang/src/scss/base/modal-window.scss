@@ -42,6 +42,9 @@
 }
 
 .modal_button {
+  @include disabled-button-styles;
+  @extend %modal-window-button-hover;
+
   width: 53%;
   margin-bottom: 10px;
   position: relative;
@@ -51,7 +54,6 @@
   cursor: pointer;
   border: 1.5px solid $modal-window-border-color;
   text-transform: uppercase;
-  @extend %modal-window-button-hover;
   box-shadow: 0px 4px 10px 2px rgba($modal-window-border-color, 0.2);
   z-index: 1;
 

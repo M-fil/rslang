@@ -115,7 +115,6 @@ const saveUserData = async (id, token, body) => {
     },
     body: JSON.stringify(body),
   });
-  console.log('response', response);
 
   if (response.status === HTTP_STATUS_200) content = await response.json();
   return content;

@@ -238,9 +238,7 @@ class Vocabulary {
   }
 
   activateVocabularyHeaderButtons() {
-    console.log('this.container');
     this.container.addEventListener('click', async (event) => {
-      console.log('addEventListener');
       const target = event.target.closest('.vocabulary__header-item');
       const targetVocabularyType = target && target.dataset.vocabularyType;
       if (target && targetVocabularyType !== this.state.currentVocabulary) {
