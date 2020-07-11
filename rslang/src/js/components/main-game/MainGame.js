@@ -195,6 +195,7 @@ class MainGame {
         const message = MainGame.showMessage(DAILY_NORM_IS_COMPLETED);
         mainGameMainContainer.append(message);
         mainGameHTML.append(
+          this.renderMainGameHeader(),
           mainGameControls,
           mainGameMainContainer,
           this.progressBar.render(),
