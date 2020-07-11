@@ -164,11 +164,11 @@ export default class Statistics {
   controlGroupInStatistics(group, requestedDate) {
     const date = requestedDate || this.currentdate;
     if (!Object.prototype.hasOwnProperty.call(this.statistics.optional, date)) {
-      this.statistics.optional[this.currentdate] = {};
+      this.statistics.optional[date] = {};
     }
 
     if (!Object.prototype.hasOwnProperty.call(this.statistics.optional[date], group)) {
-      this.statistics.optional[this.currentdate][group] = Statistics.getDefaultStatisticObject();
+      this.statistics.optional[date][group] = Statistics.getDefaultStatisticObject();
     }
   }
 
@@ -183,16 +183,21 @@ export default class Statistics {
   }
 
   render(mainContainer) {
-    const container = document.querySelector(mainContainer) || document.body;
-    this.container = create('div', 'statistics__container', [
+    const appContainer = document.querySelector(mainContainer) || document.body;
+    const statContainer = create('div', 'statistics__container', [
       this.renderShortTerm(),
       this.renderLongTerm(),
     ]);
 
-    create('div', 'statistics', [
+    const exitButton = create('span', 'exit-button statistics__exit-button', undefined, undefined, ['id', 'button-go-to-main-page']);
+
+    const mainStatistics = create('div', 'statistics', [
       Statistics.renderNavigation(),
-      this.container,
-    ], container);
+      statContainer,
+      exitButton,
+    ]);
+
+    create('div', 'statistics__wrapper', mainStatistics, appContainer);
   }
 
   static renderNavigation() {
@@ -212,7 +217,8 @@ export default class Statistics {
     const gamesSelect = Statistics.createSelect('game_select', 'game_select', ...gamesOptions);
     gamesSelect.addEventListener('change', (this.selectOptionsHandler).bind(this));
     const games = create('label', 'statistics-selects__label', [`${statisticsText.select.game}: `, gamesSelect]);
-    const datesOptions = Statistics.getOptionsArrayForDates(this.statistics.optional);
+
+    const datesOptions = this.getOptionsArrayForDates(this.statistics.optional);
     const dateSelect = Statistics.createSelect('data_select', 'data_select', ...datesOptions);
     dateSelect.addEventListener('change', (this.selectOptionsHandler).bind(this));
     const dates = create('label', 'statistics-selects__label', [`${statisticsText.select.date}: `, dateSelect]);
@@ -228,11 +234,9 @@ export default class Statistics {
     const learnedWordsData = this.getLearnedWordsByDate();
     const summaryByAnswers = this.getSummaryByAnswers();
     const summaryByGames = this.getSummaryByGames();
-
     this.chrt.summaryByAnswersChart(summaryByAnswers);
     this.chrt.summaryByGamesChart(summaryByGames);
     this.chrt.learnedWordsChart(this.statistics.learnedWords, learnedWordsData);
-
     return create('div', 'statistics-tab__item statistics__long-term', this.chrt.renderStatisticsCharts(), undefined, ['tabId', 'longterm']);
   }
 
@@ -248,13 +252,17 @@ export default class Statistics {
     return select;
   }
 
-  static getOptionsArrayForDates(obj) {
+  getOptionsArrayForDates(obj) {
     const keysArr = Object.keys(obj);
     const options = [];
     keysArr.forEach((key) => {
       const keysOps = [key, key];
       options.push(keysOps);
     });
+
+    if (!keysArr.length) {
+      options.push([this.currentdate, this.currentdate]);
+    }
 
     return options.reverse();
   }
@@ -298,12 +306,12 @@ export default class Statistics {
     const correctPercents = Math.round((correctAnswers / answers) * 100);
     const wrongPercents = Math.round((wrongAnswers / answers) * 100);
 
-    const pPlayingCount = create('p', '', `${statisticsText.texts.playingCount}: ${playingCount}`);
-    const pCorrect = create('p', '', `${statisticsText.texts.correctAnswers}: ${correctAnswers} (${correctPercents || 0}%)`);
-    const pWrong = create('p', '', `${statisticsText.texts.wrongAnswers}: ${wrongAnswers} (${wrongPercents || 0}%)`);
+    const pPlayingCount = create('p', 'statistics-short-term__param', `${statisticsText.texts.playingCount}: <i>${playingCount}</i>`);
+    const pCorrect = create('p', 'statistics-short-term__param', `${statisticsText.texts.correctAnswers}: <i>${correctAnswers} (${correctPercents || 0}%)</i>`);
+    const pWrong = create('p', 'statistics-short-term__param', `${statisticsText.texts.wrongAnswers}: <i>${wrongAnswers} (${wrongPercents || 0}%)</i>`);
     let pLearnedWords;
     if (learnedWords) {
-      pLearnedWords = create('p', '', `${statisticsText.texts.learnedWords}: ${learnedWords}`);
+      pLearnedWords = create('p', 'statistics-short-term__param', `${statisticsText.texts.learnedWords}: <i>${learnedWords}</i>`);
     }
 
     const gamestatistics = document.querySelector('#gamestatistics');

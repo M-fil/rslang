@@ -7,6 +7,7 @@ import MainGame from '../main-game/MainGame';
 import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import Statistics from '../statistics/Statistics';
 import AboutTeam from '../about-team/AboutTeam';
 import SavannahGame from '../mini-games/savannah/Savannah';
 
@@ -14,6 +15,8 @@ import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
 import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
+import FindAPair from '../mini-games/find-a-pair/find-a-pair';
+
 import {
   createUser,
   loginUser,
@@ -118,6 +121,12 @@ class App {
     this.settingsObj.openSettingsWindow();
   }
 
+  async renderStatistics() {
+    const statistics = new Statistics(this.state.user);
+    await statistics.init();
+    statistics.render('.main-container');
+  }
+
   async renderVocabulary(userState) {
     this.vocabulary = new Vocabulary(userState);
     await this.vocabulary.init();
@@ -133,6 +142,12 @@ class App {
   async renderSpeakItGame() {
     this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
     await this.speakIt.run();
+  }
+
+  async renderFindAPair() {
+    const findAPair = new FindAPair(this.createMiniGameParameterObject());
+    await findAPair.init();
+    findAPair.renderStartPage('.main-page__content');
   }
 
   activateAuthenticationForm() {
@@ -181,7 +196,9 @@ class App {
       };
       document.querySelector('.authentication__wrapper').remove();
       await this.initSettings();
-      await this.renderEnglishPuzzle();
+      await this.renderStatistics();
+      await this.renderSpeakItGame();
+      await this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -224,7 +241,9 @@ class App {
         name: data.name,
       };
       await this.initSettings();
-      this.prelodaer.hide();
+      await this.renderStatistics();
+      await this.renderMainGame();
+      this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
@@ -234,13 +253,14 @@ class App {
         ...data,
       };
       await this.initSettings();
-      await this.renderEnglishPuzzle();
+      await this.renderStatistics();
       this.preloader.hide();
+      await this.renderMainGame();
     }
   }
 
-  async renderMainGame(userState) {
-    this.mainGame = new MainGame(userState);
+  async renderMainGame() {
+    this.mainGame = new MainGame(this.createMiniGameParameterObject());
     await this.mainGame.render('.main-page__content');
   }
 

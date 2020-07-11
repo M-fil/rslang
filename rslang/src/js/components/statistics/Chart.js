@@ -1,9 +1,14 @@
 
 import create from '../../utils/сreate';
+import {
+  statisticsText,
+} from '../../constants/constants';
+
+const GameTitles = statisticsText.gametitles;
 
 export default class StatisticsChart {
   constructor() {
-    this.myDiv = create('div', 'statisticsCharts');
+    this.myDiv = create('div', 'statistics__charts');
   }
 
   renderStatisticsCharts() {
@@ -20,12 +25,13 @@ export default class StatisticsChart {
       dateLabels.push(arr[i][0]);
       data.push(arr[i][1]);
     }
+    Chart.defaults.global.responsive = true;
     new Chart(ctx, {
       type: 'line',
       data: {
         labels: dateLabels,
         datasets: [{
-          label: 'learned words',
+          label: statisticsText.texts.learnedWords,
           data,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
@@ -68,10 +74,11 @@ export default class StatisticsChart {
   summaryByAnswersChart(summaryByAnswers) {
     const div = create('div', 'pieChart', '', this.myDiv);
     const ctx = create('canvas', 'myChart', '', div);
+    Chart.defaults.global.legend.position = 'bottom';
     new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['Правильно', 'Неправильно'],
+        labels: [statisticsText.texts.correctAnswers, statisticsText.texts.wrongAnswers],
         datasets: [
           {
             fill: true,
@@ -92,7 +99,7 @@ export default class StatisticsChart {
     const gameLabels = [];
     const data = [];
     for (let i = 0; i < arr.length; i += 1) {
-      gameLabels.push(arr[i][0]);
+      gameLabels.push(GameTitles[arr[i][0]]);
       data.push(arr[i][1]);
     }
     new Chart(ctx, {
