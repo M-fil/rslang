@@ -1,4 +1,7 @@
 @import "constants";
+.start-game-window{
+  font-size: 2vw;
+}
 html,body{
   height: 100%;
   width: 100%;
@@ -528,7 +531,9 @@ line-height: 1;
 }
 }
 @media screen and (max-width: 600px) {
-
+  .start-game-window{
+    font-size: 3.7vw;
+  }
   .audition-game__answers {
     display: flex;
     justify-content: space-evenly;
