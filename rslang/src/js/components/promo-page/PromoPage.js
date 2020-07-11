@@ -80,6 +80,9 @@ export default class PromoPage {
     this.audioGame = create('div', 'promo_block-block', '', this.promoBlock);
     PromoPage.createBlocks(this.audioGame, AUDIO, AUDIO_TEXT);
 
+    this.sprintGame = create('div', 'promo_block-block', '', this.promoBlock);
+    PromoPage.createBlocks(this.sprintGame, SPRINT, SPRINT_TEXT);
+
     this.findPairGame = create('div', 'promo_block-block', '', this.promoBlock);
     PromoPage.createBlocks(this.findPairGame, FIND_PAIR, FIND_PAIR_TEXT);
   }
