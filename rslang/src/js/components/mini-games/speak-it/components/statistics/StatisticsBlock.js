@@ -27,12 +27,12 @@ export default class StatisticsBlock extends ShortTermStatistics {
   }
 
   renderButtons() {
-    const buttons = create('div', 'statistics__buttons');
+    const buttons = create('div', 'speak-it-statistics__buttons');
     this.continueButton = create(
-      'button', 'continue-button statistics__button', CONTINUE_BUTTON, buttons,
+      'button', 'continue-button speak-it-statistics__button', CONTINUE_BUTTON, buttons,
     );
     this.newGameButton = create(
-      'button', 'new-game-button statistics__button', NEW_GAME_BUTTON, buttons,
+      'button', 'new-game-button speak-it-statistics__button', NEW_GAME_BUTTON, buttons,
     );
 
     return buttons;
