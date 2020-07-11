@@ -1,11 +1,11 @@
-/* eslint-disable class-methods-use-this */
 import GameDataService from './GameDataService';
-import GameStatistic from './GameStatistic';
 import create from '../../../utils/сreate';
 import { shuffle } from '../../../utils/shuffle';
 import { urls, auditionGameVariables, vocabularyConstants } from '../../../constants/constants';
 import Preloader from '../../preloader/Preloader';
-import Vocabulary from '../../vocabulary/Vocabulary';
+import Vocabulary from  '../../vocabulary/Vocabulary';
+import Statistics from '../../statistics/Statistics';
+
 
 export default class GameService {
   constructor(miniGameObj, lives, roundsAll, roundResults, collectionLengthEnough) {
@@ -17,13 +17,12 @@ export default class GameService {
     this.collectionLengthEnough = collectionLengthEnough;
     this.closeButton = miniGameObj.closeButton;
   }
-
-  startGame(collection, group) {
+  startGame(collection, group){
+    this.collection = collection;
+    this.group = group;
     this.preloaderInit();
     this.initRound(this.lives, this.roundsAll, 1, this.roundResults);
     document.querySelector('.audition-game__startScreen').classList.toggle('hide');
-    this.collection = collection;
-    this.group = group;
     document.querySelector('.audition-game__wrapper').appendChild(this.closeButton.render());
     this.closeButton.show();
   }
@@ -45,8 +44,8 @@ export default class GameService {
   async initRound(lives, roundsAll, currentRound, roundResults) {
     this.preloader.show();
     this.genGame();
-    const gameDataService = new GameDataService(this.vocabulary, this.collection, this.group, this.collectionLengthEnough);
-    const data = await gameDataService.mapping(currentRound, this.isMuted);
+    const gameDataService = new GameDataService(this.vocabulary, this.collection,this.group, this.collectionLengthEnough);
+    const data = await gameDataService.mapping();
     const answers = document.querySelector('.audition-game__answers');
     const arr = data.array;
     const mainWord = data.mainWordToAsk;
@@ -75,7 +74,6 @@ export default class GameService {
     else create('div', 'audition-game__sound__button audition-game__sound__buttonMuted', '', soundCont);
     document.querySelector('.audition-game__sound__button');
     create('div', 'audition-game__hint__button', '', hintCont);
-    // create('div', 'close', '', this.container);
     const game = create('div', 'audition-game__game', '', this.container);
     const audioPulse = create('div', 'audition-game__audio__pulse', '', game);
     audioPulse.style.backgroundImage = `url(${urls.audioPNG})`;
@@ -90,14 +88,16 @@ export default class GameService {
       curr += 1;
       this.initRound(lives, roundsAll, curr, roundResults);
     } else {
-      // const gameStats = new GameStatistic();
-      // gameStats.statistics(roundResults);
       document.querySelector('.progress').style.width = auditionGameVariables.zeroPercent;
       document.querySelector('.audition-game__wrapper').className = 'audition-game__wrapper';
       const correctArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.correct));
       const failArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.fail));
       const idkArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.IDK));
-      this.ShortTermStatistics.render(failArray, correctArray, idkArray);
+      this.ShortTermStatistics.render(failArray, correctArray,idkArray);
+      const stat = new Statistics(this.user);
+      stat.init();
+      setTimeout(()=>{
+      stat.saveGameStatistics('auditiongame',correctArray.length,failArray.length);},5000);
     }
   }
 
@@ -131,7 +131,6 @@ export default class GameService {
         this.designUncheckedPossibleWords(elements);
         document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.wordTranslate}`;
         document.querySelector('.audition-game__audio__pulse').style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
-        // this.vocabulary.addWordToTheVocabulary(mainWord, vocabularyConstants.LEARNED_WORDS_TITLE);
         if (event.target.innerText.includes(mainWord.wordTranslate)) {
           event.target.innerHTML = `${auditionGameVariables.checkMark}${event.target.innerText}`;
           const audioRoundResult = new Audio(urls.correctSound);
@@ -216,12 +215,6 @@ export default class GameService {
     });
   }
 
-  /* closeBtnHandler() {
-    document.querySelector('.close').addEventListener('click', () => {
-      this.modalDialog();
-    });
-  }
-*/
   progressBarHandler(roundsAll, currentRound) {
     document.querySelector('.progress').style.width = `${100 * (currentRound / roundsAll)}%`;
   }

@@ -517,7 +517,9 @@ line-height: 1;
 }
 }
 @media screen and (max-width: 600px) {
-
+  .start-game-window{
+    font-size: 3.7vw;
+  }
   .audition-game__answers {
     display: flex;
     justify-content: space-evenly;
