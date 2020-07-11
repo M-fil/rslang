@@ -159,11 +159,13 @@ export default class GameService {
       document.querySelector('.audition-game__container').remove();
       this.nextRound(lives, roundsAll, currentRound, roundResults);
     }, { once: true });
-    document.addEventListener('keydown', (event) => {
+
+    this.keyEnterDownEvent = (event) => {
       if (event.code === auditionGameVariables.Enter && document.querySelector('.audition-game__button__next')?.innerText !== auditionGameVariables.idkBtn) {
         nextBtn.click();
       }
-    }, { once: true });
+    };
+    document.addEventListener('keydown', this.keyEnterDownEvent);
   }
 
   idkBtnHandler(lives, mainWord, roundsAll, currentRound, roundResults) {
@@ -257,12 +259,14 @@ export default class GameService {
   }
 
   keyboardEventsHandler() {
-    document.addEventListener('keydown', (event) => {
+    this.digitDonwEvent = (event) => {
       const choose = document.querySelector(`.${event.code}`);
       if (auditionGameVariables.digits.includes(event.code)) {
         choose.click();
       }
-    });
+    };
+
+    document.addEventListener('keydown', this.digitDonwEvent);
   }
 
   soundHandler() {

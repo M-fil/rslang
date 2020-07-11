@@ -189,7 +189,6 @@ class MainGame {
         this.activateReviseAgainButton();
         this.toggleVocabularyButtons(false);
       } else if (learnedWords === maxCardsPerDay) {
-        console.log('learnedWords', learnedWords);
         const mainGameMainContainer = create('div', 'main-game__main-container');
         const mainGameControls = this.renderMainGameControls();
         this.progressBar = new ProgressBar(learnedWords, maxCardsPerDay);

@@ -131,6 +131,7 @@ class App {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('#button-go-to-main-page');
       if (target) {
+        this.closeButton.exitButton.classList.remove('main-game__exit-button');
         this.clearMainContainersBeforeRender();
         this.saveCurrentPage();
         this.renderMainPage();

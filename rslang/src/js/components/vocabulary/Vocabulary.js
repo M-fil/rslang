@@ -72,7 +72,7 @@ class Vocabulary {
     this.activateVocabularyHeaderButtons();
     this.activateAudioButtons();
     this.activateRestoreButtons();
-    Vocabulary.actionsOnListComponent();
+    this.actionsOnListComponent();
 
     return this.container;
   }
@@ -238,7 +238,9 @@ class Vocabulary {
   }
 
   activateVocabularyHeaderButtons() {
-    document.addEventListener('click', async (event) => {
+    console.log('this.container')
+    this.container.addEventListener('click', async (event) => {
+      console.log('addEventListener')
       const target = event.target.closest('.vocabulary__header-item');
       const targetVocabularyType = target && target.dataset.vocabularyType;
       if (target && targetVocabularyType !== this.state.currentVocabulary) {
@@ -282,7 +284,7 @@ class Vocabulary {
   }
 
   activateRestoreButtons() {
-    document.addEventListener('click', async (event) => {
+    this.container.addEventListener('click', async (event) => {
       const target = event.target.closest('.word-item__restore-button');
 
       if (target) {
@@ -327,7 +329,7 @@ class Vocabulary {
   }
 
   activateAudioButtons() {
-    document.addEventListener('click', (event) => {
+    this.container.addEventListener('click', (event) => {
       const target = event.target.closest('.word-item__audio');
       const { showAudioExample } = this.settings.getSettingsByGroup('dictionary');
 
@@ -351,8 +353,8 @@ class Vocabulary {
     return { targetWordObject, targetWordHTML: wordCardHTML || extraWordCardHTML };
   }
 
-  static actionsOnListComponent() {
-    document.addEventListener('click', (event) => {
+  actionsOnListComponent() {
+    this.container.addEventListener('click', (event) => {
       if (event.target.classList.contains('word-item__main')) {
         const parent = event.target.parentNode;
         event.target.classList.toggle('active-vocword-button');

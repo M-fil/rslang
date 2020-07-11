@@ -256,6 +256,8 @@ export default class SpeakIt {
           .find((word) => (word.id || word._id) === target.dataset.wordId);
 
         const translation = clickedWord.wordTranslate;
+        console.log(this.audio);
+        console.log(`${WORDS_AUDIOS_URL}${clickedWord.audio}`);
         playAudio(`${WORDS_AUDIOS_URL}${clickedWord.audio}`, this.audio);
 
         let currentImage = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
