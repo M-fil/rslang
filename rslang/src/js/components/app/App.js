@@ -4,9 +4,10 @@ import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
 import MainGame from '../main-game/MainGame';
-import Preloader from '../preloader/Preloader';
+import Preloader from '../preloader/preloader';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
+import AboutTeam from '../about-team/AboutTeam';
 import SavannahGame from '../mini-games/savannah/Savannah';
 
 import SpeakIt from '../mini-games/speak-it/SpeakIt';
@@ -88,7 +89,7 @@ class App {
       this.state.user.isAuthrorized = false;
       this.container.innerHTML = '';
       this.renderAuthenticationBlock('authorization');
-      this.renderToggleAuthentication();
+      this.activateToggleAuthentication();
       this.activateAuthenticationForm();
       this.preloader.hide();
     }
@@ -108,9 +109,13 @@ class App {
   }
 
   async initSettings() {
-    const settings = new Settings(this.state.user);
-    await settings.init();
-    this.state.settings = settings.getSettings();
+    this.settingsObj = new Settings(this.state.user);
+    await this.settingsObj.init();
+    this.state.settings = this.settingsObj.getSettings();
+  }
+
+  showSettingsWindow() {
+    this.settingsObj.openSettingsWindow();
   }
 
   async renderVocabulary(userState) {
@@ -169,10 +174,9 @@ class App {
           name: data.name,
         },
       };
-      document.querySelector('.authentication').remove();
-      document.querySelector('.authentication__buttons').remove();
+      document.querySelector('.authentication__wrapper').remove();
       await this.initSettings();
-      await this.renderMainGame();
+      await this.renderVocabulary(this.state.user);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -231,22 +235,12 @@ class App {
     }
   }
 
-  static async renderMainGame(userState) {
-    const mainGame = new MainGame(userState);
-    await mainGame.render('.main-page__content');
+  async renderMainGame(userState) {
+    this.mainGame = new MainGame(userState);
+    await this.mainGame.render('.main-page__content');
   }
 
-  renderToggleAuthentication() {
-    const buttonsContainer = create('div', 'authentication__buttons');
-    this.authenticationToggleButton = create(
-      'button',
-      'authentication__toggle-button',
-      REGISTRATION_TITLE,
-      buttonsContainer,
-      ['type', 'button'], ['authenticationType', 'authorization'],
-    );
-    this.container.prepend(buttonsContainer);
-
+  activateToggleAuthentication() {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('.authentication__toggle-button');
       if (target) {
@@ -262,7 +256,7 @@ class App {
   }
 
   renderAuthenticationBlock(type) {
-    const authenticationHTML = document.querySelector('.authentication');
+    const authenticationHTML = document.querySelector('.authentication__wrapper');
     if (authenticationHTML) {
       authenticationHTML.remove();
     }

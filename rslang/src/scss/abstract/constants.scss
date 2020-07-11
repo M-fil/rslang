@@ -1,3 +1,7 @@
+$game-baсkground-color: #1d5278;
+$game-background-or-hover-for-buttons: #ec8000;
+$standard-border-color: black;
+
 $speak-it-overlay-background: rgba(241, 243, 245, 0.5);
 $speak-it-microphone-background: #ffffff;
 $speak-it-microphone-enabled-color: rgb(130, 201, 30);
@@ -56,6 +60,7 @@ $modal-window-border-color: #000000;
 $modal-window-main-background: #ffffff;
 
 $start-game-window-border-color: #000000;
+$start-game-window-text-hover-color: white;
 
 $find-a-pair-border-color: #000000;
 $find-a-pair-shadow-color: rgba(0,0,0,0.5);
@@ -64,6 +69,21 @@ $find-a-pair-card-text-color: #000000;
 $find-a-pair-card-text-background-color: #ffffff;
 $find-a-pair-card-background-image: url(/src/assets/images/find-a-pair-card-image.png);
 
+$about-team-background-color: #1695A3;
+$about-team-card-shadow: #add8e6;
+$about-team-card-color: #ffffff;
+$about-team-work-icons: #6495ed;
+$about-team-ul-icons-block: #3d3a3a;
+$about-team-links-icons: #ccc;
+$about-team-links-icons-hover: #fff;
+$about-team-links-icons-bg-vk: rgb(59,89,152);
+$about-team-links-icons-bg-linkedin: rgb(29,202,255);
+$about-team-links-icons-bg-github: rgb(138,58,185);
+$settings-result-text-correct: #008000;
+$settings-result-text-wrong: #ff0000;
+$settings-tabs-background: #ACF0F2;
+$settings-background-or-hover-for-buttons: #ec8000;
+
 $game-background-color: #1d5278;
 $game-background-or-hover-for-buttons: #ec8000;
 $game-background-light-yellow: #f3ffe2;
@@ -71,3 +91,17 @@ $game-background-light-blue: #acf0f2;
 
 $short-statistics-right-counter-border: #008000;
 $short-statistics-wrong-counter-border: #FF0000;
+
+$vocabluary-background: linear-gradient(to bottom, $game-background-light-blue 0%, $game-background-light-yellow 100%);
+$vocabluary-additional-data-background: linear-gradient(to bottom, $game-background-color 0%, $game-background-light-blue 100%);
+$vocabluary-text-hover-color: #ffffff;
+$vocabluary-text-color: #000000;
+
+$authentication-main-background-color: #225378;
+$authentication-input-background-color: #ffffff;
+$authentication-btn-color: #EB7F00;
+$authentication-main-contain-background: #ffffff;
+$authentication-text-color: #000000;
+$authentication-border-color: #000000;
+$authentication-description-text-color: #ffffff;
+$authentication-error-color: #FF0000;
