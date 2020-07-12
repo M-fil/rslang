@@ -31,7 +31,7 @@ export default class AuditionGame {
       this.miniGameObj, lives, roundsAll, roundResults, collectionLengthEnough,
     );
     this.gameService.getVocabularyData();
-    this.showUserCollection = true;
+    this.showUserCollection = collectionLengthEnough;
     this.StartWindow = new StartWindow((this.gameService.startGame).bind(this.gameService));
     this.closeButton.addCloseCallbackFn((this.restart).bind(this));
     this.ShortTermStatistics.addCallbackFnOnClose((this.restart).bind(this));

@@ -315,7 +315,6 @@ class MainGame {
     const learned = wordsWithMistakes.length + correctWords.length;
 
     const { learnedWordsToday } = this.state.stats;
-    const { learnedWords } = this.statistics.getGameStatistics(MAIN_GAME_CODE);
     const isIncrementPlayingCount = learnedWordsToday === 1;
 
     if (isIncrementValues) {

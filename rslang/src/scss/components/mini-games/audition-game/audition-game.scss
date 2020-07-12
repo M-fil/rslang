@@ -5,12 +5,15 @@
   align-items: center;
 
   height: 100%;
-  min-height: 100vh;
-  width: 100%;
+  min-height: calc(100vh - 10px);
   margin: 0;
   font-size: 4rem;
   background: $audition-game__wrapperColor1;
   background: linear-gradient(90deg, $audition-game__wrapperColor1 0%, $audition-game__wrapperColor2 58%, $audition-game__wrapperColor3 100%);
+  padding-bottom: 10px;
+}
+.unavailable{
+  filter: invert(.5) !important;
 }
 .audition-game__answers{
     display: flex;
@@ -331,6 +334,7 @@
   padding: 1.1vw;
   transition: all .15s ease;
   border-radius: 5%;
+  margin-bottom: 10px;
   cursor: pointer;
 }
 .audition-game__answers {
@@ -359,7 +363,6 @@
 }
 .audition-game__correctanswer {
   position: relative;
-  top: -20px;
   left: 0;
   margin-bottom: 0;
   color: #ffffff;
@@ -433,7 +436,6 @@
 }
 .audition-game__correctanswer {
   position: relative;
-  top: -20px;
   left: 0;
   margin-bottom: 0;
   color: #ffffff;
@@ -482,6 +484,7 @@ line-height: 1;
     border-radius: 5%;
     cursor: pointer;
     margin: 1vh 0;
+    margin-right: 10px;
 }
 .audition-game__answers {
   display: flex;
@@ -508,7 +511,6 @@ white-space: nowrap;
 }
 .audition-game__correctanswer {
 position: relative;
-top: -20px;
 left: 0;
 margin-bottom: 0;
 color: #ffffff;
@@ -536,10 +538,10 @@ line-height: 1;
   transition: all .15s ease;
   border-radius: 5%;
   cursor: pointer;
+  margin-right: 10px;
 }
 .audition-game__correctanswer {
   position: relative;
-  top: -20px;
   left: 0;
   margin-bottom: 0;
   color: #ffffff;

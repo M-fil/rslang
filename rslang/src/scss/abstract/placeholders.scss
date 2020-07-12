@@ -116,11 +116,11 @@
   transition: all 300ms ease;
 }
 
-%modal-window-button-hover {
-  transition: all 300ms ease;
+%close-button-transition {
+  transition: all 300ms;
 }
 
-%start-window-start-button-before-transition {
+%modal-window-button-before {
   transition: all 0ms ease;
 }
 
