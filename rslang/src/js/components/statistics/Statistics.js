@@ -233,6 +233,8 @@ export default class Statistics {
     const learnedWordsData = this.getLearnedWordsByDate();
     const summaryByAnswers = this.getSummaryByAnswers();
     const summaryByGames = this.getSummaryByGames();
+
+    this.chrt.clearRenderedCharts();
     this.chrt.summaryByAnswersChart(summaryByAnswers);
     this.chrt.summaryByGamesChart(summaryByGames);
     this.chrt.learnedWordsChart(this.statistics.learnedWords, learnedWordsData);
