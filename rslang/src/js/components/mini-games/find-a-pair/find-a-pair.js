@@ -100,7 +100,7 @@ export default class FindAPair {
     this.container.innerHTML = '';
     this.container.classList.remove('find-a-pair__start-page');
 
-    const timerEl = create('i', 'find-a-pair-timer__seconds', `${findAPairConst.gameTimerSec}`, undefined, ['id', 'remain_seconds']);
+    const timerEl = create('span', 'find-a-pair-timer__seconds', `${findAPairConst.gameTimerSec}`, undefined, ['id', 'remain_seconds']);
     const timerContainer = create('div', 'find-a-pair-timer', timerEl);
     timerContainer.innerHTML += `
     <svg class="find-a-pair-timer__svg">
