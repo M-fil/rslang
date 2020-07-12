@@ -25,6 +25,7 @@
   justify-content: space-evenly;
   align-items: center;
   flex-wrap: wrap;
+  padding-top: 10px;
 }
 
 .vocabulary__header-item {
@@ -89,24 +90,22 @@
 }
 
 .vocabulary__title {
+  max-width: 305px;
   @include font(3.5rem, 4rem);
-
-  max-width: fit-content;
   border-bottom: 1.5px solid $game-background-or-hover-for-buttons;
   margin-bottom: 1%;
 }
 
 .vocabulary__words-count {
   @include font(1.6rem, 2rem);
-
   padding: 5px;
-  width: fit-content;
+  width: 140px;
   background-color: $game-background-or-hover-for-buttons;
   color: $vocabluary-text-hover-color;
 }
 
 .vocabulary__word-item {
-  @include font(2rem, 2.5rem);
+  @include font(2rem);
   position: relative; 
   display: flex;
   flex-direction: column;
@@ -181,7 +180,7 @@
   }
   
   &::-webkit-scrollbar-thumb:hover {
-    background: $game-background-or-hover-for-buttons;
+    background: $game-background-or-hover-for-buttons; 
   }
 }
 
@@ -351,6 +350,7 @@
   opacity: 1;
 }
 
+
 .vocabulary__exit-button:before, 
 .vocabulary__exit-button:after {
   position: absolute;
@@ -370,7 +370,7 @@
 }
 
 .vocbulary__message {
-  @include font(2rem, 2.5rem);
+  @include font(2rem);
 }
 
 @media (max-width: 480px) {
@@ -382,8 +382,4 @@
   .word-item__main {
     height: 55px;
   }
-}
-
-.word-item__word {
-  text-align: center;
 }

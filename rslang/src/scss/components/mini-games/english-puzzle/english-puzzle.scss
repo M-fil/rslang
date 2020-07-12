@@ -46,7 +46,36 @@
 .submit-button:after,
 .information-button:after,
 .game-button:after {
-    @include start-page-button;
+    content: "";
+
+    position: absolute;
+    width: 100%;
+    height: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: $game-background-or-hover-for-buttons;
+    transition: all 0.3s ease;
+}
+
+.submit-button:hover,
+.information-button:hover,
+.game-button:hover {
+    color: $english-puzzle-text-color;
+}
+
+.submit-button:hover:after,
+.information-button:hover:after,
+.game-button:hover:after {
+    top: auto;
+    bottom: 0;
+    height: 100%;
+}
+
+.submit-button:active,
+.information-button:active,
+.game-button:active {
+    top: 2px;
 }
 
 .hidden-element {

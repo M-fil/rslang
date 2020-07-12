@@ -45,7 +45,7 @@ class Vocabulary {
     Vocabulary.instance = this;
     this.state = {
       allUserWords: [],
-      currentVocabulary: WORDS_TO_LEARN_TITLE,
+      currentVocabulary: LEARNED_WORDS_TITLE,
       vocabularies: {
         wordsToLearn: [],
         learnedWords: [],
@@ -74,6 +74,7 @@ class Vocabulary {
     this.activateRestoreButtons();
     this.actionsOnListComponent();
 
+    console.log('getAllVocabulariesData', this.getAllVocabulariesData());
     return this.container;
   }
 
@@ -180,8 +181,8 @@ class Vocabulary {
 
   renderInitialVocabulary() {
     const dictionary = this.settings.getSettingsByGroup('dictionary');
-    const { wordsToLearn } = this.state.vocabularies;
-    const vocabulary = new WordsToLearnVocabulary(wordsToLearn, dictionary);
+    const { learnedWords } = this.state.vocabularies;
+    const vocabulary = new LearnedWordsVocabulary(learnedWords, dictionary);
     this.renderVocabulary(vocabulary);
   }
 
