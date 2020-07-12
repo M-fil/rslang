@@ -90,10 +90,16 @@ class App {
     try {
       await this.checkIsUserAuthorized();
     } catch (error) {
-      localStorage.clear();
+      this.clearAppLocalData();
       this.renderAuthorizationBlock();
       this.preloader.hide();
     }
+  }
+
+  clearAppLocalData() {
+    localStorage.clear();
+    this.state.currentPage = '';
+    this.isArrowBottomButtonClicked = false;
   }
 
   activateMainPageHandlers() {
@@ -351,7 +357,7 @@ class App {
 
       if (target) {
         this.renderAuthorizationBlock();
-        localStorage.clear();
+        this.clearAppLocalData();
       }
     });
   }
