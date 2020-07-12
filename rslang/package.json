@@ -8,8 +8,7 @@
     "dev": "webpack --mode development",
     "prod": "webpack --mode production",
     "start": "webpack-dev-server",
-    "lint": "eslint ./src/js/components/mini-games/audition-game",
-    "fix": "eslint ./src/js/components/mini-games/audition-game --fix"
+    "build": "webpack -p"
   },
   "author": "",
   "license": "ISC",
@@ -38,6 +37,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.9.6",
     "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.9.6",
+    "@shopify/draggable": "^1.0.0-beta.8",
     "babel-core": "^6.26.3",
     "babel-jest": "^25.5.1",
     "babel-loader": "^8.1.0",
@@ -57,6 +57,6 @@
     "url-loader": "^4.1.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   }
 }

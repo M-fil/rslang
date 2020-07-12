@@ -35,36 +35,38 @@ export default class ShortTermStatistics extends ModalWindow {
     console.log(wrongWords,rightWords, IdkWords);
     ModalWindow.changeDisplay(this.modal, 'block');
     ModalWindow.changeDisplay(this.modalCancel, 'none');
+    this.modalText.classList.add('modal_text-statistics');
     this.modalTitle.innerHTML = STAT_TITLE;
+    this.modalTitle.classList.add('short-statistics__title');
     this.modalWarning.innerHTML = null;
     this.modalClose.innerHTML = STAT_CLOSE;
     this.audio = new Audio();
 
     ShortTermStatistics.clearstatisticaWords();
 
-    this.statisticaWrongWordsText = create('p', 'modal_title', `${ERROR_STAT} ${wrongWords.length}`, this.modalText, ['id', 'short_term_wrong_words']);
-    this.statisticaWrongWords = create('p', 'modal_words', '', this.statisticaWrongWordsText);
-    this.statisticaRightWordsText = create('p', 'modal_title', `${CORRECT_STAT} ${rightWords.length}`, this.modalText, ['id', 'short_term_right_words']);
-    this.statisticaRightWords = create('p', 'modal_words', '', this.statisticaRightWordsText);
-  
+
+    this.statisticaWrongWordsText = create('div', 'modal-words-block', `<p class = "modal-title__word-counter wrong-words">${ERROR_STAT} ${wrongWords.length}</p>`, this.modalText, ['id', 'short_term_wrong_words']);
+    this.statisticaWrongWords = create('div', 'modal_words', '', this.statisticaWrongWordsText);
+    this.statisticaRightWordsText = create('div', 'modal-words-block', `<p class = "modal-title__word-counter right-words">${CORRECT_STAT} ${rightWords.length}</p>`, this.modalText, ['id', 'short_term_right_words']);
+    this.statisticaRightWords = create('div', 'modal_words', '', this.statisticaRightWordsText);
 
     ShortTermStatistics.statisticaWords(wrongWords, this.statisticaWrongWords);
     ShortTermStatistics.statisticaWords(rightWords, this.statisticaRightWords);
     if(IdkWords){
-    this.statisticaIdkWordsText = create('p', 'modal_title', `${IDK_STAT} ${IdkWords.length}`, this.modalText, ['id', 'short_term_idk_words']);
-    this.statisticaIdkWords = create('p', 'modal_words', '', this.statisticaIdkWordsText);
+    this.statisticaIdkWordsText = create('div', 'modal-words-block', `<p class = "modal-title__word-counter wrong-words">${IDK_STAT} ${IdkWords.length}</p>`, this.modalText, ['id', 'short_term_idk_words']);
+    this.statisticaIdkWords = create('div', 'modal_words', '', this.statisticaIdkWordsText);
     ShortTermStatistics.statisticaWords(IdkWords, this.statisticaIdkWords);}
     this.clickStatisticaAudio();
   }
 
   static statisticaWords(arrayWords, container) {
     arrayWords.forEach((word) => {
-      const everyString = create('p', '', '', container);
-      const picture = create('img', 'audio-pictures', '', everyString);
+      const picture = create('img', 'audio-pictures', '');
       picture.src = STAT_IMAGE_AUDIO;
-      this.audioPic = create('audio', '', '', everyString);
+      this.audioPic = create('audio', '', '');
       this.audioPic.setAttribute('data-audiosrc', word.audio);
-      everyString.innerHTML += `<b>${word.word}</b> - ${word.wordTranslate}<br>`;
+      const wordText = create('p', 'modal_words-word', `${word.word} - ${word.wordTranslate}`);
+      create('div', 'modal_words-word-container', [picture, this.audioPic, wordText], container);
     });
   }
 

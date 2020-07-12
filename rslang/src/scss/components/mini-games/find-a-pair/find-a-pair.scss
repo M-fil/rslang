@@ -1,14 +1,29 @@
-.find-a-pair {
+.find-a-pair__wrapper {
+  width: 100%;
+  height: fit-content;
+  min-height: 100vh;
+  background: $find-a-pair-wrapper-gradient;
+}
+
+.find-a-pair__container {
   border: 1px solid $find-a-pair-border-color;
   border-radius: 15px;
   padding: 15px;
   text-align: center;
   margin: 0 auto;
-  width: $content-width;
+  width: auto;
+  max-width: $content-width;
+  @include media-tablet {
+    min-width: 285px;
+  }
 }
 
 .find-a-pair__start-page {
-  width: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  @include font(1.6rem, normal);
 }
 
 .find-a-pair__about,

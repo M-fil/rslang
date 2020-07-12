@@ -1,0 +1,33 @@
+.main-game__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 30px 0;
+  box-shadow: 0px 4px 4px $main-game-header-box-shadow-color;
+  margin-bottom: 20px;
+  background: $main-game-background-color;
+
+  @include media-laptop {
+    justify-content: space-around;
+  }
+}
+
+.main-game__logo-image {
+  margin-left: 150px;
+
+  @include media-laptop {
+    margin: auto;
+  }
+}
+
+.main-game__exit-button {
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-right: 50px;
+
+  @include media-laptop {
+    margin: auto;
+  }
+}

@@ -1,0 +1,187 @@
+.authentication__wrapper {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+  min-width: 100vw;
+  background: $authentication-main-background-color;
+}
+
+.authentication__main-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+
+  margin-top: 20px;
+
+  @include media-laptop {
+    flex-direction: column;
+    align-items: center;
+
+    padding-bottom: 30px;
+    margin: 0;
+  }
+
+  @include media-mobile {
+    padding: 0 5px;
+  }
+}
+
+.authentication__logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @include media-laptop {
+    flex-direction: row;
+    justify-content: space-around;
+
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  @include media-tablet {
+    margin-bottom: 40px;
+  }
+}
+
+
+.authentication__logo-image-block {
+  display: flex;
+
+  margin: 20px 0;
+
+  @include media-laptop {
+    margin: 10px 0;
+  }
+
+  @include media-tablet {
+    justify-content: center;
+  
+    margin-bottom: 20px;
+  }
+}
+
+.authentication {
+  background: $authentication-main-contain-background;
+  border-radius: 3px;
+  color: $authentication-text-color;
+
+  width: 340px;
+  height: fit-content;
+  padding: 20px 30px;
+
+  @include media-mobile {
+    width: 250px;
+  }
+}
+
+.authentication__title {
+  @include font(2.5rem, 3rem, 700);
+
+  text-align: center;
+}
+
+.authentication__buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.authentication__button, .authentication__toggle-button {
+  @extend %authentication-button-transition;
+  @include font(2rem, 2.5rem);
+
+  cursor: pointer;
+  background: $authentication-btn-color;
+  border: 0.5px solid $authentication-border-color;
+
+  &:hover {
+    border-color: $authentication-btn-color;
+    color: $authentication-btn-color;
+    background: $authentication-input-background-color;
+  }
+}
+
+.authentication__button {
+  width: 100%;
+  padding: 10px 0;
+  margin-top: 20px;
+
+  &:hover {
+    box-shadow: 0 0 0 3px $authentication-btn-color inset;
+  }
+}
+
+.authentication__toggle-button {
+  padding: 10px;
+}
+
+.authentication__field-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.authentication__label {
+  @include font(2rem, 2.5rem);
+
+  margin-bottom: 5px;
+}
+
+.authentication__field {
+  @include font(1.8rem, 2.5rem);
+
+  width: 100%;
+  background: $authentication-input-background-color;
+  padding: 3px;
+  border: 0.5px solid $authentication-border-color;
+}
+
+.authentication__app-description {
+  @include font(2rem, 3rem, 500);
+
+  color: $authentication-description-text-color;
+  max-width: 450px;
+  margin-bottom: 10px;
+
+  @include media-tablet {
+    max-width: inherit;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  @include media-mobile {
+    padding: 0;
+  }
+}
+
+.authentication__logo-image {
+  margin-left: 150px;
+
+  @include media-tablet {
+    margin: 0;
+  }
+}
+
+.authentication__chiecken-image {
+  width: 250px;
+  height: 300px;
+
+  @include media-laptop {
+    width: 150px;
+    height: 180px;
+  }
+
+  @include media-tablet {
+    display: none;
+  }
+}
+
+.authentication__error-block {
+  @include font(1.7rem, 2rem);
+
+  margin: 10px 0;
+  color: $authentication-error-color;
+}

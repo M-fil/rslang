@@ -19,7 +19,7 @@ class ShortenVocabularyItem extends VocabularyItem {
       ['vocabularyWordId', this.id], ['vocabularyType', this.vocabularyType],
     );
     const mainHTML = this.renderMainContent(this.settings);
-    const restoreButtonHTML = create('button', 'word-item__restore-button', RESTORE_BUTTON_TEXT);
+    const restoreButtonHTML = create('div', 'word-item__restore-button', RESTORE_BUTTON_TEXT);
     this.HTML.append(mainHTML, restoreButtonHTML);
 
     return this.HTML;

@@ -1,0 +1,26 @@
+.main-game__progress-bar {
+  height: 10px;
+
+  @include media-mobile {
+    width: 80%;
+  }
+}
+
+.main-game__progress-background {
+  background-color: $main-game-standard-progress-bar-background;
+  height: 10px;
+  max-width: 30rem;
+  margin: 0 10px;
+}
+
+.main-game__progress-bar-line {
+  background-color: $main-game-standard-progress-bar-line-color;
+
+  &_completed {
+    background-color: $main-game-completed-progress-bar-line-color;
+  }
+}
+
+.progress-bar__number {
+  @include font(1.5rem, 2rem, 300);
+}
