@@ -14,7 +14,7 @@ export default class AuditionGame {
     this.container = container;
   }
 
-  async render(lives, roundsAll) {
+  async render(lives = auditionGameVariables.Lives, roundsAll = auditionGameVariables.Rounds) {
     this.wrapper = create('div', 'audition-game__wrapper', '', this.container);
     const roundResults = [];
     this.vocabulary = new Vocabulary(this.user);
