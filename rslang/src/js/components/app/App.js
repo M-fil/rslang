@@ -194,7 +194,6 @@ class App {
   async selectPageRenderingByPageCode(pageCode, isRenderAfterReload = true) {
     this.saveCurrentPage(pageCode);
 
-    console.log('USER', this.state.user)
     this.clearMainContainersBeforeRender(pageCode);
     document.body.scrollIntoView();
     this.preloader.show();
