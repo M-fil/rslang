@@ -106,7 +106,7 @@ const HTTPCodesConstants = {
 const mainGameConstants = {
   REMOVE_WORD_BUTTON: 'Удалить',
   ADD_TO_DIFFICULT_WORDS: 'Добавить в сложные',
-  ADD_TO_DIFFICULT_WORDS_CLICKED: 'Добавлено',
+  ADD_TO_DIFFICULT_WORDS_CLICKED: 'Добавлено в сложные',
   REMOVE_WORD_BUTTON_CLICKED: 'Удалено',
   NEXT_BUTTON: 'Дальше',
   CONTINUE_BUTTON: 'Продолжить',
@@ -124,7 +124,7 @@ const mainGameConstants = {
 };
 
 const dailyStatisticsConstants = {
-  TITLE: 'Серия завершена',
+  TITLE: 'Серия завершена!',
   COMPLETED_CARDS_TEXT: 'Карточек завершено',
   CORRECT_ANSWERS_PERCENTAGE_TEXT: 'Процент правильных ответов',
   NEW_WORDS_TEXT: 'Новые слова',
