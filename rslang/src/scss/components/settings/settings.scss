@@ -63,7 +63,7 @@
   justify-content: space-between;
   align-items: center;
   margin-left: 5px;
-  @include font(1.5rem);
+  @include font(1.5rem, normal);
 }
 
 .settings-form__text {
