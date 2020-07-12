@@ -63,20 +63,22 @@ const {
   SETTINGS_CODE,
 } = mainPageHeaderButtonConstants;
 
+const deafaultUserState = {
+  isAuthrorized: false,
+  userId: '',
+  refreshToken: '',
+  token: '',
+  email: '',
+  name: '',
+};
+
 class App {
   constructor() {
     this.closeButton = new CloseButton();
     this.shortTermStatistics = new ShortTermStatistics();
 
     this.state = {
-      user: {
-        isAuthrorized: false,
-        userId: '',
-        refreshToken: '',
-        token: '',
-        email: '',
-        name: '',
-      },
+      user: deafaultUserState,
       currentPage: localStorage.getItem('current-page'),
     };
 
@@ -88,12 +90,12 @@ class App {
   async run() {
     this.container = create('main', 'main-page__content', '', document.body);
     try {
-      await this.checkIsUserAuthorized();
       this.activateMainPageHandlers();
+      await this.checkIsUserAuthorized();
     } catch (error) {
+      this.state.user = deafaultUserState;
       this.clearAppLocalData();
       this.renderAuthorizationBlock();
-      this.activateMainPageHandlers();
       this.preloader.hide();
     }
   }
@@ -108,6 +110,8 @@ class App {
     this.activateLogOutButton();
     this.activateGoToTheMainPageButton();
     this.activatePagesRenders();
+    this.activateToggleAuthentication();
+    this.activateAuthenticationForm();
     BurgerMenu.activateBurgerMenuHandler();
   }
 
@@ -116,8 +120,6 @@ class App {
     this.state.user.isAuthrorized = false;
     this.clearMainContainersBeforeRender();
     this.renderAuthenticationBlock('authorization');
-    this.activateToggleAuthentication();
-    this.activateAuthenticationForm();
   }
 
   createMiniGameParameterObject() {
@@ -321,25 +323,19 @@ class App {
   }
 
   async initSettings() {
-    if (!this.settings) {
-      this.settings = new Settings(this.state.user);
-      await this.settings.init();
-      this.settings.setUserChangesListener(this.updateUserState.bind(this));
-    }
+    this.settings = new Settings(this.state.user);
+    await this.settings.init();
+    this.settings.setUserChangesListener(this.updateUserState.bind(this));
   }
 
   async initStatistics() {
-    if (!this.statistics) {
-      this.statistics = new Statistics(this.state.user);
-      await this.statistics.init();
-    }
+    this.statistics = new Statistics(this.state.user);
+    await this.statistics.init();
   }
 
   async initVocabulary() {
-    if (!this.vocabulary) {
-      this.vocabulary = new Vocabulary(this.state.user);
-      await this.vocabulary.init();
-    }
+    this.vocabulary = new Vocabulary(this.state.user);
+    await this.vocabulary.init();
   }
 
   async initAuxilaryComponents() {
@@ -485,8 +481,8 @@ class App {
         this.renderAuthenticationBlock(typeToInit);
         target.dataset.authenticationType = typeToInit;
         target.textContent = authenticationType === 'registration'
-          ? REGISTRATION_TITLE
-          : AUTHORIZATION_TITLE;
+          ? AUTHORIZATION_TITLE
+          : REGISTRATION_TITLE;
       }
     });
   }

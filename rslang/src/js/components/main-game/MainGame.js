@@ -142,7 +142,7 @@ class MainGame {
       await this.initStatistics();
 
       await this.getStatisticsData();
-      await this.setStatisticsData(null, false);
+      await this.setStatisticsData(false);
       this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.parseUserWordsData();
 
@@ -277,7 +277,7 @@ class MainGame {
     const learnedWords = statisticsData.learnedWords || 0;
 
     if (!statisticsData.additional) {
-      await this.setStatisticsData(null, false);
+      await this.setStatisticsData(false);
     } else {
       const {
         longestSeriesOfAnswers,
@@ -304,7 +304,7 @@ class MainGame {
     }
   }
 
-  async setStatisticsData(incrementPlayingCount = null, isIncrementValues = true) {
+  async setStatisticsData(isIncrementValues = true) {
     if (this.state.currentWordsType === ONLY_DIFFICULT_WORDS) return;
 
     const mainGameAdditional = JSON.stringify(this.state.stats.additional);
@@ -314,9 +314,13 @@ class MainGame {
     const correct = correctWords.length;
     const learned = wordsWithMistakes.length + correctWords.length;
 
+    const { learnedWordsToday } = this.state.stats;
+    const { learnedWords } = this.statistics.getGameStatistics(MAIN_GAME_CODE);
+    const isIncrementPlayingCount = learnedWordsToday === 1;
+
     if (isIncrementValues) {
       await this.statistics.saveMainGameStatistics(
-        incrementPlayingCount,
+        isIncrementPlayingCount,
         correct,
         wrong,
         learned,
@@ -325,7 +329,7 @@ class MainGame {
       );
     } else {
       await this.statistics.saveMainGameStatistics(
-        incrementPlayingCount, 0, 0, 0, mainGameAdditional, true,
+        isIncrementPlayingCount, 0, 0, 0, mainGameAdditional, true,
       );
     }
   }
@@ -405,11 +409,10 @@ class MainGame {
       this.dailyStatistics = new DailyStatistics(
         maxCardsPerDay, percentOfCorrectAnswers, newCardsPerDay, longestSeriesOfAnswers,
       );
-      await this.setStatisticsData();
     }
 
     this.activateDailyStatisticsButton();
-    await this.setStatisticsData(true, false);
+    await this.setStatisticsData(false);
     document.querySelector('.main-game').append(this.dailyStatistics.render());
   }
 
@@ -1022,8 +1025,9 @@ class MainGame {
     vocabularyType = WORDS_TO_LEARN_TITLE, estimation = GOOD.text, wordToAdd,
   ) {
     const currentWord = wordToAdd || this.state.currentWordsArray[this.state.currentWordIndex];
+    const wordForVocabulary = ('optinal' in currentWord) ? currentWord.optional.allData : currentWord;
 
-    await this.vocabulary.addWordToTheVocabulary(currentWord, vocabularyType, estimation);
+    await this.vocabulary.addWordToTheVocabulary(wordForVocabulary, vocabularyType, estimation);
     this.state.userWords = await this.getAllUserWordsFromBackend();
     this.state.stats.additional.mistakesInCurrentWord = 0;
   }

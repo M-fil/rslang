@@ -74,7 +74,6 @@ class Vocabulary {
     this.activateRestoreButtons();
     this.actionsOnListComponent();
 
-    console.log('getAllVocabulariesData', this.getAllVocabulariesData());
     return this.container;
   }
 
