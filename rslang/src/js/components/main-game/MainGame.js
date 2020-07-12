@@ -82,7 +82,7 @@ class MainGame {
     this.statistics = null;
     this.preloader = new Preloader();
     this.exitButton = parameters.closeButton;
-    document.body.classList.add('main-game_opened');
+    // document.body.classList.add('main-game_opened');
 
     this.state = {
       stats: {

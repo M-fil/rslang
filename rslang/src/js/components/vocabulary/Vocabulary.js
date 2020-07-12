@@ -133,20 +133,20 @@ class Vocabulary {
   }
 
   async addWordToTheVocabulary(
-    word, vocabularyType = WORDS_TO_LEARN_TITLE, estimation = GOOD.text,
+    wordObject, vocabularyType = WORDS_TO_LEARN_TITLE, estimation = GOOD.text,
   ) {
     const { userId, token } = this.state.userState;
-    try {
-      const data = await this.createWordDataForBackend(word, estimation, vocabularyType);
-      const { wordId } = data.optional;
-      await updateUserWord(userId, wordId, data, token);
-      await this.sortWordsInVocabularies();
-    } catch (error) {
-      const data = await this.createWordDataForBackend(word, estimation, vocabularyType);
-      const { wordId } = data.optional;
-      await createUserWord(userId, wordId, data, token);
-      await this.sortWordsInVocabularies();
+    const { allUserWords } = this.state;
+    const wordIdToAdd = wordObject.id || wordObject._id;
+    const wordIdInBackendData = allUserWords.find((item) => item.wordId === wordIdToAdd);
+
+    const data = await this.createWordDataForBackend(wordObject, estimation, vocabularyType);
+    if (wordIdInBackendData) {
+      await updateUserWord(userId, wordIdToAdd, data, token);
+    } else {
+      await createUserWord(userId, wordIdToAdd, data, token);
     }
+    await this.sortWordsInVocabularies();
   }
 
   updateWords(words) {
