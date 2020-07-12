@@ -17,6 +17,10 @@
     justify-content: flex-end;
   }
 
+  @include media-mobile {
+    align-items: flex-start;
+  }
+
   & .main-page__logo {
     @include media-tablet {
       display: none;
