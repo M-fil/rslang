@@ -49,6 +49,7 @@ class BurgerMenu extends Header {
     const burgetMenuIcon = document.querySelector('.burger-menu-icon');
     const burgerMenu = document.querySelector('.burger-menu');
     const burgerMenuOverlay = document.querySelector('.burger-menu-overlay');
+    document.body.classList.remove('body_overflow-hidden');
 
     if (burgetMenuIcon && burgerMenu && burgerMenuOverlay) {
       burgetMenuIcon.classList.remove('burger-icon__closed');
@@ -79,12 +80,14 @@ class BurgerMenu extends Header {
         target.classList.toggle('burger-icon__closed');
         burgerMenu.classList.toggle('burger-menu_opened');
         burgerMenuOverlay.classList.toggle('burger-menu-overlay_visible');
+        document.body.classList.toggle('body_overflow-hidden');
       }
 
       if (overlayTarget) {
         burgetMenuIcon.classList.remove('burger-icon__closed');
         burgerMenu.classList.remove('burger-menu_opened');
         burgerMenuOverlay.classList.remove('burger-menu-overlay_visible');
+        document.body.classList.remove('body_overflow-hidden');
       }
     });
   }
