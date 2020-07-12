@@ -387,6 +387,8 @@ export default class EnglishPuzzle {
   }
 
   async actionOnCloseButton() {
+    this.backData.shortTermStatistics.removeEvents();
+    this.backData.closeButton.modalWindow.removeEvents();
     viewElement([this.gameForm], [this.startMenu]);
   }
 

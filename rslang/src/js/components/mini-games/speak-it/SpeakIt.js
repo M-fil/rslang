@@ -115,6 +115,8 @@ export default class SpeakIt {
   }
 
   async goToTheStartPageHandler() {
+    this.shortTermStatistics.removeEvents();
+    this.closeButton.modalWindow.removeEvents();
     const speakItMainHTML = document.querySelector('.speak-it__main');
 
     if (speakItMainHTML) {

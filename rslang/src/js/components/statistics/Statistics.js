@@ -183,6 +183,7 @@ export default class Statistics {
   }
 
   render(mainContainer) {
+    this.chrt.myDiv.innerHTML = '';
     const appContainer = document.querySelector(mainContainer) || document.body;
     const statContainer = create('div', 'statistics__container', [
       this.renderShortTerm(),
@@ -222,9 +223,7 @@ export default class Statistics {
     const dateSelect = Statistics.createSelect('data_select', 'data_select', ...datesOptions);
     dateSelect.addEventListener('change', (this.selectOptionsHandler).bind(this));
     const dates = create('label', 'statistics-selects__label', [`${statisticsText.select.date}: `, dateSelect]);
-
     const selects = create('div', 'statistics-selects', [games, dates], document.body);
-
     const gamestat = create('div', 'statistics__game-statistic', this.selectOptionsController(gamesSelect, dateSelect), undefined, ['id', 'gamestatistics']);
 
     return create('div', 'statistics-tab__item statistics__short-term statistics-tab_active', [selects, gamestat], undefined, ['tabId', 'shortterm']);
@@ -237,7 +236,11 @@ export default class Statistics {
     this.chrt.summaryByAnswersChart(summaryByAnswers);
     this.chrt.summaryByGamesChart(summaryByGames);
     this.chrt.learnedWordsChart(this.statistics.learnedWords, learnedWordsData);
-    return create('div', 'statistics-tab__item statistics__long-term', this.chrt.renderStatisticsCharts(), undefined, ['tabId', 'longterm']);
+    return create(
+      'div', 'statistics-tab__item statistics__long-term',
+      this.chrt.renderStatisticsCharts(), undefined,
+      ['tabId', 'longterm'],
+    );
   }
 
   static createSelect(name, id, ...options) {

@@ -29,6 +29,7 @@ export default class ShortTermStatistics extends ModalWindow {
     shortTermStatisticsConstants.instance = this;
     this.audio = new Audio();
     this.initilized = false;
+    this.clickStatisticaAudio();
   }
 
   render(wrongWords, rightWords, IdkWords) {
@@ -56,7 +57,6 @@ export default class ShortTermStatistics extends ModalWindow {
       this.statisticaIdkWords = create('p', 'modal_words', '', this.statisticaIdkWordsText);
       ShortTermStatistics.statisticaWords(IdkWords, this.statisticaIdkWords);
     }
-    this.clickStatisticaAudio();
   }
 
   static statisticaWords(arrayWords, container) {
@@ -71,8 +71,6 @@ export default class ShortTermStatistics extends ModalWindow {
   }
 
   clickStatisticaAudio() {
-    document.removeEventListener('click', this.playAudioEventHandler);
-
     this.playAudioEventHandler = (event) => {
       const target = event.target.closest('.audio-pictures');
 

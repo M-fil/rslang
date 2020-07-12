@@ -40,7 +40,16 @@ export default class AuditionGame {
   }
 
   restart() {
-    this.container.innerHTML = '';
-    this.render(auditionGameVariables.Lives, auditionGameVariables.Rounds);
+    this.ShortTermStatistics.removeEvents();
+    this.closeButton.modalWindow.removeEvents();
+
+    if (this.wrapper) {
+      const { keyEnterDownEvent } = this.gameService;
+      if (keyEnterDownEvent) {
+        document.removeEventListener('keydown', this.keyEnterDownEvent);
+      }
+      this.wrapper.remove();
+      this.render(auditionGameVariables.Lives, auditionGameVariables.Rounds);
+    }
   }
 }

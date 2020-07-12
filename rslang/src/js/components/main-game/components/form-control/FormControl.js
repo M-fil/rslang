@@ -46,7 +46,7 @@ class FormControll {
 
   renderFakeWord() {
     this.fakeWord = create('div', 'word-card__fake-word', this.word);
-    create('div', 'word-card__fake-word-container', this.fakeWord, document.body);
+    create('div', 'word-card__fake-word-container', this.fakeWord, document.querySelector('.main-game'));
   }
 
   getInputCSSWidth() {

@@ -89,9 +89,11 @@ class App {
     this.container = create('main', 'main-page__content', '', document.body);
     try {
       await this.checkIsUserAuthorized();
+      this.activateMainPageHandlers();
     } catch (error) {
       this.clearAppLocalData();
       this.renderAuthorizationBlock();
+      this.activateMainPageHandlers();
       this.preloader.hide();
     }
   }
@@ -131,11 +133,11 @@ class App {
       const target = event.target.closest('#button-go-to-main-page');
       if (target) {
         this.closeButton.exitButton.classList.remove('main-game__exit-button');
+        this.closeButton.modalWindow.modalClose.removeAttribute('id');
         this.clearMainContainersBeforeRender();
         this.saveCurrentPage();
         this.renderMainPage();
         BurgerMenu.makeBurgerMenuIconVisible();
-        // document.body.classList.add('main-game_opened');
       }
     });
   }
@@ -194,7 +196,6 @@ class App {
 
     this.clearMainContainersBeforeRender(pageCode);
     document.body.scrollIntoView();
-    // document.body.classList.remove('main-game_opened');
     this.preloader.show();
     switch (pageCode) {
       case mainGame.code:
@@ -269,14 +270,18 @@ class App {
   }
 
   renderAuditionGame() {
-    this.auditionGame = new AuditionGame(
-      this.createMiniGameParameterObject(), this.container,
-    );
+    if (!this.auditionGame) {
+      this.auditionGame = new AuditionGame(
+        this.createMiniGameParameterObject(), this.container,
+      );
+    }
     this.auditionGame.render();
   }
 
   async renderSavannah() {
-    this.savannah = new SavannahGame(this.createMiniGameParameterObject());
+    if (!this.savannah) {
+      this.savannah = new SavannahGame(this.createMiniGameParameterObject());
+    }
     await this.savannah.render('.main-page__content');
   }
 
@@ -316,19 +321,25 @@ class App {
   }
 
   async initSettings() {
-    this.settings = new Settings(this.state.user);
-    await this.settings.init();
-    this.settings.setUserChangesListener(this.updateUserState.bind(this));
+    if (!this.settings) {
+      this.settings = new Settings(this.state.user);
+      await this.settings.init();
+      this.settings.setUserChangesListener(this.updateUserState.bind(this));
+    }
   }
 
   async initStatistics() {
-    this.statistics = new Statistics(this.state.user);
-    await this.statistics.init();
+    if (!this.statistics) {
+      this.statistics = new Statistics(this.state.user);
+      await this.statistics.init();
+    }
   }
 
   async initVocabulary() {
-    this.vocabulary = new Vocabulary(this.state.user);
-    await this.vocabulary.init();
+    if (!this.vocabulary) {
+      this.vocabulary = new Vocabulary(this.state.user);
+      await this.vocabulary.init();
+    }
   }
 
   async initAuxilaryComponents() {
@@ -411,7 +422,6 @@ class App {
       document.querySelector('.authentication__wrapper').remove();
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
-      this.activateMainPageHandlers();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
@@ -451,7 +461,6 @@ class App {
       };
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
-      this.activateMainPageHandlers();
       this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
@@ -463,7 +472,6 @@ class App {
       };
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
-      this.activateMainPageHandlers();
       this.preloader.hide();
     }
   }

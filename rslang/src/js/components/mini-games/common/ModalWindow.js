@@ -71,6 +71,11 @@ export default class ModalWindow {
     }
   }
 
+  removeEvents() {
+    this.CallbackFnOnClose = null;
+    this.CallbackFnOnCancel = null;
+  }
+
   static changeDisplay(element, event) {
     const el = element;
     if (event === 'none') {

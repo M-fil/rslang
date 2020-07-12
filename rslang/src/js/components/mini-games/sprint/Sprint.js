@@ -414,6 +414,9 @@ export default class SprintGame {
     document.removeEventListener('click', this.gameButtonsEvent);
     document.removeEventListener('keydown', this.keyDownEvent);
 
+    this.shortTermStatistics.removeEvents();
+    this.closeButton.modalWindow.removeEvents();
+
     this.renderStartWindow();
     this.SprintGameWrapper.remove();
     this.GameContainer.classList.remove('flex');

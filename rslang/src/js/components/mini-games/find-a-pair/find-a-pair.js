@@ -270,16 +270,18 @@ export default class FindAPair {
   }
 
   pauseGameHandler() {
-    this.gameOnPause = !this.gameOnPause;
     const pauseButton = document.querySelector('#find-a-pair-pause-button');
-    if (this.gameOnPause) {
-      this.container.classList.add('find-a-pair_on-pause');
-      pauseButton.innerHTML = '<i class="fas fa-play"></i>';
-      pauseButton.setAttribute('title', findAPairText.onPauseButton);
-    } else {
-      this.container.classList.remove('find-a-pair_on-pause');
-      pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-      pauseButton.setAttribute('title', findAPairText.pauseButton);
+    if (pauseButton) {
+      this.gameOnPause = !this.gameOnPause;
+      if (this.gameOnPause) {
+        this.container.classList.add('find-a-pair_on-pause');
+        pauseButton.innerHTML = '<i class="fas fa-play"></i>';
+        pauseButton.setAttribute('title', findAPairText.onPauseButton);
+      } else {
+        this.container.classList.remove('find-a-pair_on-pause');
+        pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        pauseButton.setAttribute('title', findAPairText.pauseButton);
+      }
     }
   }
 
@@ -316,6 +318,9 @@ export default class FindAPair {
   }
 
   newGameHandler() {
+    this.CloseButton.modalWindow.removeEvents();
+    this.ShortTermStatistics.removeEvents();
+
     this.clearTimer();
     this.clearPage();
     this.ShortTermStatistics.hide();

@@ -400,21 +400,27 @@ export default class SavannahGame {
   }
 
   goToTheStartPageHandler() {
-    document.querySelector('.savannah__container').removeEventListener('click', this.wordClickEvent);
-    document.removeEventListener('keydown', this.keyBoardEvent);
-    this.container.classList.remove('savannah__container_in-game');
-    this.container.innerHTML = '';
-    this.startWindow.gameWindow.remove();
-    const isShowLearnedWordsOption = this.vocabulary
-      .getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS;
-    const startWindowHTML = this.startWindow.render(
-      GAME_NAME, RULES, isShowLearnedWordsOption,
-    );
-    this.container.append(startWindowHTML);
-    SavannahGame.changeDisplay(this.gameWindow, 'block');
-    this.container.append(this.closeButton.render());
-    this.closeButton.hide();
-    this.error = 0;
-    this.closeButton.disabled(false);
+    const savannahContainer = document.querySelector('.savannah__container');
+    this.shortTermStatistics.removeEvents();
+    this.closeButton.modalWindow.removeEvents();
+
+    if (savannahContainer) {
+      savannahContainer.removeEventListener('click', this.wordClickEvent);
+      document.removeEventListener('keydown', this.keyBoardEvent);
+      this.container.classList.remove('savannah__container_in-game');
+      this.container.innerHTML = '';
+      this.startWindow.gameWindow.remove();
+      const isShowLearnedWordsOption = this.vocabulary
+        .getVocabularyWordsLength(LEARNED_WORDS_TITLE) >= MIN_VOCABULARY_WORDS;
+      const startWindowHTML = this.startWindow.render(
+        GAME_NAME, RULES, isShowLearnedWordsOption,
+      );
+      this.container.append(startWindowHTML);
+      SavannahGame.changeDisplay(this.gameWindow, 'block');
+      this.container.append(this.closeButton.render());
+      this.closeButton.hide();
+      this.error = 0;
+      this.closeButton.disabled(false);
+    }
   }
 }
