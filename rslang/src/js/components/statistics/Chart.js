@@ -15,6 +15,12 @@ export default class StatisticsChart {
     return this.myDiv;
   }
 
+  clearRenderedCharts() {
+    if (this.myDiv) {
+      this.myDiv.innerHTML = '';
+    }
+  }
+
   learnedWordsChart(learnedWords, learnedWordsObj) {
     const div = create('div', 'mainChart', '', this.myDiv);
     const ctx = create('canvas', 'myChart', '', div);
