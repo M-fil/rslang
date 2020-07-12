@@ -1,7 +1,7 @@
 const MAIN_URL = 'https://afternoon-falls-25894.herokuapp.com/';
 
 const urls = {
-  WORDS_DATA_URL: `${MAIN_URL}words?`,
+   WORDS_DATA_URL: `${MAIN_URL}words?`,
   CREATE_USER_URL: `${MAIN_URL}users`,
   LOGIN_USER_URL: `${MAIN_URL}signin`,
   GET_USER_URL: `${MAIN_URL}users/`,
@@ -9,6 +9,11 @@ const urls = {
   WORDS_IMAGES_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   WORDS_AUDIOS_URL: 'https://raw.githubusercontent.com/M-fil/rslang-data/master/',
   STAT_IMAGE_AUDIO: './src/assets/images/statistica_sound.png',
+  mainAudioPath: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/',
+  correctSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/correct.mp3',
+  errorSound: 'https://raw.githubusercontent.com/KirillZhdanov/rslang-data/master/files/error.mp3',
+  WORDS_DATA_URL_ADDITIONAL:'https://wordsapiv1.p.rapidapi.com/words/',
+  audioPNG: './src/assets/images/audio.png',
   DEAFAULT_SPEAKIT_WORD_IMAGE_URL: './src/assets/images/speak-it-base-word-image.jpg',
   CORRECT_AUDIO_PATH: './src/assets/audio/correct.mp3',
   ERROR_AUDIO_PATH: './src/assets/audio/error.mp3',
@@ -74,6 +79,7 @@ const wordsToLearnSelectConstants = {
     'Группа 5',
     'Группа 6',
   ],
+
 };
 
 const errorTypes = {
@@ -307,8 +313,38 @@ const progressLearningConstants = {
 const shortTermStatisticsConstants = {
   ERROR_STAT: 'Ошибок',
   CORRECT_STAT: 'Знаю',
+  IDK_STAT: 'Не знаю',
   STAT_TITLE: 'Статистика',
   STAT_CLOSE: 'Закрыть',
+};
+
+const auditionGameVariables = {
+  maxPages:29,
+  maxGroups:5,
+  possibleWordsAmount:5,
+  Lives: 5,
+  Rounds: 5,
+  gameTitle: 'Аудиовызов',
+  gameDescription: 'Тренировка улучшает восприятие английской речи на слух.',
+  gameStartBtn: 'Начать',
+  idkBtn: 'Не знаю',
+  modalAlarm: 'Тренировка не закончена!',
+  modalDesc: 'Если вы вернётесь к списку, ваши результаты не будут сохранены',
+  close: 'Закрыть',
+  cancel: 'Отмена',
+  arrowSymbol: '&rarr;',
+  checkMark: '<span>&#10004;</span>',
+  noun: 'noun',
+  correct: 'correct',
+  fail: 'fail',
+  statist: 'Статистика',
+  know: 'Знаю',
+  errors: 'Ошибок',
+  IDK: 'IDK',
+  zeroPercent: '0%',
+  Enter: 'Enter',
+  bg: ['bg1', 'bg2', 'bg3', 'bg4'],
+  digits: ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5'],
 };
 
 const startWindow = {
@@ -424,6 +460,7 @@ const aboutTeam = {
 
 export {
   urls,
+  auditionGameVariables,
   savannahConstants,
   findAPairText,
   authenticationConstants,

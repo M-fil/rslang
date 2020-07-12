@@ -270,6 +270,10 @@ class App {
     this.mainGame = new MainGame(this.createMiniGameParameterObject());
     await this.mainGame.render('.main-page__content');
   }
+  async auditiongame(userState){
+    const audition = new AuditionGame(userState, this.container);
+    await audition.render(5,5);
+  }	 
 
   async renderSprintGame() {
     this.sprint = new SprintGame(this.createMiniGameParameterObject());

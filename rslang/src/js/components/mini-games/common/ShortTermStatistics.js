@@ -8,6 +8,7 @@ import {
 const {
   ERROR_STAT,
   CORRECT_STAT,
+  IDK_STAT,
   STAT_TITLE,
   STAT_CLOSE,
 } = shortTermStatisticsConstants;
@@ -30,7 +31,8 @@ export default class ShortTermStatistics extends ModalWindow {
     this.initilized = false;
   }
 
-  render(wrongWords, rightWords) {
+  render(wrongWords, rightWords, IdkWords) {
+    console.log(wrongWords,rightWords, IdkWords);
     ModalWindow.changeDisplay(this.modal, 'block');
     ModalWindow.changeDisplay(this.modalCancel, 'none');
     this.modalText.classList.add('modal_text-statistics');
@@ -42,6 +44,7 @@ export default class ShortTermStatistics extends ModalWindow {
 
     ShortTermStatistics.clearstatisticaWords();
 
+
     this.statisticaWrongWordsText = create('div', 'modal-words-block', `<p class = "modal-title__word-counter wrong-words">${ERROR_STAT} ${wrongWords.length}</p>`, this.modalText, ['id', 'short_term_wrong_words']);
     this.statisticaWrongWords = create('div', 'modal_words', '', this.statisticaWrongWordsText);
     this.statisticaRightWordsText = create('div', 'modal-words-block', `<p class = "modal-title__word-counter right-words">${CORRECT_STAT} ${rightWords.length}</p>`, this.modalText, ['id', 'short_term_right_words']);
@@ -49,6 +52,10 @@ export default class ShortTermStatistics extends ModalWindow {
 
     ShortTermStatistics.statisticaWords(wrongWords, this.statisticaWrongWords);
     ShortTermStatistics.statisticaWords(rightWords, this.statisticaRightWords);
+    if(IdkWords){
+    this.statisticaIdkWordsText = create('div', 'modal-words-block', `<p class = "modal-title__word-counter wrong-words">${IDK_STAT} ${IdkWords.length}</p>`, this.modalText, ['id', 'short_term_idk_words']);
+    this.statisticaIdkWords = create('div', 'modal_words', '', this.statisticaIdkWordsText);
+    ShortTermStatistics.statisticaWords(IdkWords, this.statisticaIdkWords);}
     this.clickStatisticaAudio();
   }
 
@@ -68,8 +75,9 @@ export default class ShortTermStatistics extends ModalWindow {
       const target = event.target.closest('.audio-pictures');
 
       if (target) {
+        if(this.audio.ended || this.audio.paused){
         this.audio.src = `${WORDS_AUDIOS_URL}${event.target.nextSibling.dataset.audiosrc}`;
-        this.audio.play();
+        this.audio.play();}
       }
     });
   }
@@ -82,6 +90,10 @@ export default class ShortTermStatistics extends ModalWindow {
     const rightWords = document.querySelector('#short_term_right_words');
     if (rightWords) {
       rightWords.remove();
+    }
+    const IdkWords = document.querySelector('#short_term_idk_words');
+    if (IdkWords) {
+      IdkWords.remove();
     }
   }
 }
