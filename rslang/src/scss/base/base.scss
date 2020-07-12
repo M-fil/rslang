@@ -3,6 +3,10 @@ body {
   margin: 0;
 }
 
+.body_overflow-hidden {
+  overflow: hidden;
+}
+
 input, button, select {
   font-family: 'IBM Plex Mono', monospace;
 }
