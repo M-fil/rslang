@@ -23,7 +23,7 @@ export default class AuditionGame {
     const collectionLengthEnough = (this.wordsLength >= (auditionGameVariables.possibleWordsAmount * roundsAll));
     this.gameService = new GameService(this.miniGameObj,lives, roundsAll, roundResults, collectionLengthEnough);
     this.gameService.getVocabularyData();
-    this.showUserCollection = true;
+    this.showUserCollection = collectionLengthEnough;
     this.StartWindow = new StartWindow((this.gameService.startGame).bind(this.gameService));
     this.closeButton.addCloseCallbackFn((this.restart).bind(this));
     this.ShortTermStatistics.addCallbackFnOnClose((this.restart).bind(this));

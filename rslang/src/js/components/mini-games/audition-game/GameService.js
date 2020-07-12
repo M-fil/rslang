@@ -39,22 +39,28 @@ export default class GameService {
     this.isMuted = false;
     this.isHintAvailable = true;
     this.correctAnswersCounter = 0;
+    this.closed = false;
   }
-
+  clstest(){
+    this.closeButton.modalWindow.modalClose.addEventListener('click',()=>{this.preloader.hide();
+    this.closed = true;});
+  }
   async initRound(lives, roundsAll, currentRound, roundResults) {
+    this.notSelected = true;
     this.preloader.show();
+    this.clstest();
     this.genGame();
     const gameDataService = new GameDataService(this.vocabulary, this.collection,this.group, this.collectionLengthEnough);
     const data = await gameDataService.mapping();
-    const answers = document.querySelector('.audition-game__answers');
+    const answers = this.auditionGameAnswers;
     const arr = data.array;
     const mainWord = data.mainWordToAsk;
     this.createPossibleWords(arr, answers);
     const audio = new Audio(`${urls.mainAudioPath}${mainWord.audio}`);
-    audio.play();
+    if(!this.closed){audio.play();
     this.preloader.hide();
-    this.sound = document.querySelector('.audition-game__sound__button');
-    document.querySelector('.audition-game__container').classList.remove('hide');
+    this.sound = this.auditionGameSoundBtn;
+   this.container.classList.remove('hide');
     this.mainEventHandler(lives, mainWord, roundsAll, currentRound, roundResults);
     this.idkBtnHandler(lives, mainWord, roundsAll, currentRound, roundResults);
     this.repeatAudioHandler(audio);
@@ -62,23 +68,24 @@ export default class GameService {
     this.bgRandomize();
     this.keyboardEventsHandler();
     this.soundHandler();
-    this.hintHandler(mainWord);
+    this.hintHandler(mainWord);}
   }
   genGame(){
     const wrapper = document.querySelector('.audition-game__wrapper');
     this.container = create('div', 'audition-game__container hide', '', wrapper);
     const soundCont = create('div', 'audition-game__sound__container', '', this.container);
     const hintCont = create('div', 'audition-game__hint__container', '', this.container);
-    if (!this.isMuted) create('div', 'audition-game__sound__button', '', soundCont);
-    else create('div', 'audition-game__sound__button audition-game__sound__buttonMuted', '', soundCont);
-    document.querySelector('.audition-game__sound__button')
-    create('div', 'audition-game__hint__button', '', hintCont);
+    if (!this.isMuted) this.auditionGameSoundBtn = create('div', 'audition-game__sound__button', '', soundCont);
+    else this.auditionGameSoundBtn = create('div', 'audition-game__sound__button audition-game__sound__buttonMuted', '', soundCont);
+    if(this.isHintAvailable)
+    this.auditionGameHintBtn = create('div', 'audition-game__hint__button', '', hintCont);
+    else this.auditionGameHintBtn = create('div', 'audition-game__hint__button unavailable', '', hintCont);
     const game = create('div', 'audition-game__game', '', this.container);
-    const audioPulse = create('div', 'audition-game__audio__pulse', '', game);
-    audioPulse.style.backgroundImage = `url(${urls.audioPNG})`;
+    this.audioPulse = create('div', 'audition-game__audio__pulse', '', game);
+    this.audioPulse.style.backgroundImage = `url(${urls.audioPNG})`;
     create('p', 'audition-game__correctanswer', '', game);
-    create('div', 'audition-game__answers', '', game);
-    create('button', 'audition-game__button__next Enter', `${auditionGameVariables.idkBtn}`, game);
+    this.auditionGameAnswers = create('div', 'audition-game__answers', '', game);
+    this.auditionGameNextBtn = create('button', 'audition-game__button__next Enter', `${auditionGameVariables.idkBtn}`, game);
   }
   nextRound(lives, roundsAll, currentRound, roundResults) {
     if (lives > 0 && currentRound !== roundsAll) {
@@ -118,15 +125,16 @@ export default class GameService {
   }
 
   mainEventHandler(lives, mainWord, roundsAll, currentRound, roundResults) {
-    document.querySelector('.audition-game__answers').addEventListener('click', (event) => {
+    this.auditionGameAnswers.addEventListener('click', (event) => {
       if (event.target.classList.contains('audition-game__element') && !event.target.classList.contains('unchecked') && !event.target.classList.contains('checked')) {
-        const nextBtn = document.querySelector('.audition-game__button__next');
+        this.notSelected = false;
+        const nextBtn = this.auditionGameNextBtn;
         nextBtn.innerHTML = auditionGameVariables.arrowSymbol;
         event.target.classList.toggle('checked');
         const elements = document.querySelectorAll('.audition-game__element');
         this.designUncheckedPossibleWords(elements);
         document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.wordTranslate}`;
-        document.querySelector('.audition-game__audio__pulse').style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
+        this.audioPulse.style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
         if (event.target.innerText.includes(mainWord.wordTranslate)) {
           event.target.innerHTML = `${auditionGameVariables.checkMark}${event.target.innerText}`;
           const audioRoundResult = new Audio(urls.correctSound);
@@ -162,14 +170,14 @@ export default class GameService {
   }
 
   idkBtnHandler(lives, mainWord, roundsAll, currentRound, roundResults) {
-    const idkButton = document.querySelector('.audition-game__button__next');
+    const idkButton = this.auditionGameNextBtn;
     idkButton.addEventListener('click', (event) => {
       if (event.target.innerText === auditionGameVariables.idkBtn) {
         this.correctAnswersCounter = 0;
-        const nextBtn = document.querySelector('.audition-game__button__next');
+        const nextBtn = this.auditionGameNextBtn;
         nextBtn.innerHTML = auditionGameVariables.arrowSymbol;
         document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.wordTranslate}`;
-        document.querySelector('.audition-game__audio__pulse').style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
+        this.audioPulse.style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
         const elements = document.querySelectorAll('.audition-game__element');
         this.designUncheckedPossibleWords(elements);
         setTimeout(() => {
@@ -182,8 +190,9 @@ export default class GameService {
   }
 
   hintHandler(mainWord) {
-    document.querySelector('.audition-game__hint__button').addEventListener('click', () => {
-      if (this.isHintAvailable) {
+    this.auditionGameHintBtn.addEventListener('click', () => {
+      if (this.isHintAvailable && this.notSelected) {
+        this.auditionGameHintBtn.classList.add('unavailable');
         this.correctAnswersCounter = 0;
         const elements = Array.from(document.querySelectorAll('.audition-game__element'));
         let cnt = 0;
@@ -204,7 +213,7 @@ export default class GameService {
   }
 
   repeatAudioHandler(audio) {
-    document.querySelector('.audition-game__audio__pulse').addEventListener('click', () => {
+    this.audioPulse.addEventListener('click', () => {
       if (!this.sound.classList.contains('audition-game__sound__buttonMuted')) audio.play();
     });
   }
@@ -254,7 +263,7 @@ export default class GameService {
   }
 
   soundHandler() {
-    document.querySelector('.audition-game__sound__button').addEventListener('click', (event) => {
+    this.auditionGameSoundBtn.addEventListener('click', (event) => {
       event.target.classList.toggle('audition-game__sound__buttonMuted');
       this.isMuted = !this.isMuted;
     });

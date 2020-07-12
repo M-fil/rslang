@@ -2,6 +2,9 @@
 .start-game-window{
   font-size: 2vw;
 }
+.unavailable{
+  filter: invert(.5) !important;
+}
 html,body{
   height: 100%;
   width: 100%;
@@ -37,6 +40,7 @@ html,body{
     border-radius: 5%;
     cursor: pointer;
     margin: 0 20px;
+    margin-top: 10px;
 }
 .audition-game__game{
     margin: 0 auto;
@@ -370,7 +374,6 @@ span{
 }
 .audition-game__correctanswer {
   position: relative;
-  top: -20px;
   left: 0;
   margin-bottom: 0;
   color: #ffffff;
@@ -446,7 +449,6 @@ span{
 }
 .audition-game__correctanswer {
   position: relative;
-  top: -20px;
   left: 0;
   margin-bottom: 0;
   color: #ffffff;
@@ -523,7 +525,6 @@ white-space: nowrap;
 }
 .audition-game__correctanswer {
 position: relative;
-top: -20px;
 left: 0;
 margin-bottom: 0;
 color: #ffffff;
@@ -557,7 +558,6 @@ line-height: 1;
 }
 .audition-game__correctanswer {
   position: relative;
-  top: -20px;
   left: 0;
   margin-bottom: 0;
   color: #ffffff;
