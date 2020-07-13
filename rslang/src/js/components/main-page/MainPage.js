@@ -37,15 +37,16 @@ const {
 } = mainPageUrls;
 
 class MainPage {
-  constructor(userName) {
+  constructor(userName, userEmail) {
     this.HTML = null;
     this.userName = userName;
+    this.userEmail = userEmail;
   }
 
   render() {
     this.HTML = create('div', 'main-page');
-    this.burgerMenu = new BurgerMenu(this.userName);
-    this.header = new Header(this.userName);
+    this.burgerMenu = new BurgerMenu();
+    this.header = new Header(this.userName, this.userEmail);
     this.mainBlock = new MainBlock();
 
     document.body.append(this.burgerMenu.render());

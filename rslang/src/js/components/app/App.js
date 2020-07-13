@@ -354,7 +354,7 @@ class App {
 
   renderMainPage() {
     const { name, email } = this.state.user;
-    this.mainPage = new MainPage(name || email);
+    this.mainPage = new MainPage(name, email);
     const html = this.mainPage.render();
     this.container.append(html);
     BurgerMenu.makeBurgerMenuIconVisible();
