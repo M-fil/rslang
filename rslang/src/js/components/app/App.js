@@ -338,6 +338,14 @@ class App {
     await this.vocabulary.init();
   }
 
+  updateAuxilaryComponentsUserState() {
+    const { user } = this.state;
+
+    this.settings.user = user;
+    this.statistics.user = user;
+    this.vocabulary.state.userState = user;
+  }
+
   async initAuxilaryComponents() {
     await this.initSettings();
     await this.initStatistics();
@@ -418,6 +426,7 @@ class App {
       document.querySelector('.authentication__wrapper').remove();
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
+      this.updateAuxilaryComponentsUserState();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
