@@ -338,12 +338,13 @@ class App {
     await this.vocabulary.init();
   }
 
-  updateAuxilaryComponentsUserState() {
-    const { user } = this.state;
-
-    this.settings.user = user;
-    this.statistics.user = user;
-    this.vocabulary.state.userState = user;
+  updateAuxilaryComponentsUserState(userState) {
+    // document.querySelector('#settings_modal').remove();
+    this.settings.user = userState;
+    this.settings.initialized = false;
+    this.statistics.user = userState;
+    this.statistics.initialized = false;
+    this.vocabulary.state.userState = userState;
   }
 
   async initAuxilaryComponents() {
@@ -412,21 +413,22 @@ class App {
     try {
       const data = await Authentication.submitData(loginUser);
       const userData = await getUserById(data.userId, data.token);
+      const userState = {
+        ...this.state.user,
+        userId: data.userId,
+        token: data.token,
+        refreshToken: data.refreshToken,
+        name: userData.name,
+        email: userData.email,
+      };
       this.state = {
         ...this.state,
-        user: {
-          ...this.state.user,
-          userId: data.userId,
-          token: data.token,
-          refreshToken: data.refreshToken,
-          name: userData.name,
-          email: userData.email,
-        },
+        user: userState,
       };
       document.querySelector('.authentication__wrapper').remove();
+      this.updateAuxilaryComponentsUserState(userState);
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
-      this.updateAuxilaryComponentsUserState();
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
