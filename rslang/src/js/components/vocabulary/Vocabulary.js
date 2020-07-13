@@ -41,6 +41,7 @@ class Vocabulary {
     this.container = null;
     this.audio = new Audio();
     this.settings = new Settings(userState);
+    this.vocabularyObject = null;
 
     Vocabulary.instance = this;
     this.state = {
@@ -149,11 +150,6 @@ class Vocabulary {
     await this.sortWordsInVocabularies();
   }
 
-  updateWords(words) {
-    this.state.allUserWords = words;
-    this.sortWordsInVocabularies();
-  }
-
   async sortWordsInVocabularies() {
     const { userId, token } = this.state.userState;
     const allWords = await getAllUserWords(userId, token);
@@ -181,8 +177,9 @@ class Vocabulary {
   renderInitialVocabulary() {
     const dictionary = this.settings.getSettingsByGroup('dictionary');
     const { learnedWords } = this.state.vocabularies;
-    const vocabulary = new LearnedWordsVocabulary(learnedWords, dictionary);
-    this.renderVocabulary(vocabulary);
+    this.state.currentVocabulary = LEARNED_WORDS_TITLE;
+    this.vocabularyObject = new LearnedWordsVocabulary(learnedWords, dictionary);
+    this.renderVocabulary(this.vocabularyObject);
   }
 
   getWordsByVocabularyType(vocabularyType, getNormalObject = false) {
@@ -240,26 +237,23 @@ class Vocabulary {
         switch (targetVocabularyType) {
           case WORDS_TO_LEARN_TITLE:
           default: {
-            const vocabulary = new WordsToLearnVocabulary(wordsToLearn, dictionary);
-            this.renderVocabulary(vocabulary);
+            this.vocabularyObject = new WordsToLearnVocabulary(wordsToLearn, dictionary);
             break;
           }
           case LEARNED_WORDS_TITLE: {
-            const vocabulary = new LearnedWordsVocabulary(learnedWords, dictionary);
-            this.renderVocabulary(vocabulary);
+            this.vocabularyObject = new LearnedWordsVocabulary(learnedWords, dictionary);
             break;
           }
           case REMOVED_WORDS_TITLE: {
-            const vocabulary = new RemovedWords(removedWords, dictionary);
-            this.renderVocabulary(vocabulary);
+            this.vocabularyObject = new RemovedWords(removedWords, dictionary);
             break;
           }
           case DIFFUCULT_WORDS_TITLE: {
-            const vocabulary = new DifficultWordsVocabulary(difficultWords, dictionary);
-            this.renderVocabulary(vocabulary);
+            this.vocabularyObject = new DifficultWordsVocabulary(difficultWords, dictionary);
             break;
           }
         }
+        this.renderVocabulary(this.vocabularyObject);
         this.state.currentVocabulary = targetVocabularyType;
         this.preloader.hide();
       }
@@ -279,13 +273,13 @@ class Vocabulary {
             targetWordObject,
             targetWordHTML,
           } = this.getWordObjectByTargetElement(target);
-          const { valuationDate } = targetWordObject.optional;
+          const { difficulty } = targetWordObject;
 
-          const { userId, token } = this.state.userState;
-          await this.addWordToTheVocabulary(targetWordObject, WORDS_TO_LEARN_TITLE, valuationDate);
-          this.state.allUserWords = await getAllUserWords(userId, token);
-
-          this.updateVocabularyAfterRestoreButtonClick(targetWordObject);
+          await this.addWordToTheVocabulary(
+            targetWordObject.optional.allData, WORDS_TO_LEARN_TITLE, difficulty,
+          );
+          const newLength = this.getVocabularyWordsLength(this.state.currentVocabulary);
+          this.vocabularyObject.updateVocabularyTextLength(newLength);
           targetWordHTML.remove();
           this.preloader.hide();
         } catch (error) {
