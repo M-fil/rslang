@@ -14,6 +14,10 @@
   }
 
   @include media-laptop {
+    width: 200px;
+  }
+
+  @include media-tablet {
     width: 100%;
   }
 }
@@ -71,6 +75,10 @@
   width: 350px;
 
   @include media-laptop {
+    width: 200px;
+  }
+
+  @include media-tablet {
     width: 100%;
     order: 0;
   }

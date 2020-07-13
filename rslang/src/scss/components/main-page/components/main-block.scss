@@ -24,13 +24,10 @@
   display: flex;
   justify-content: space-between;
 
-  @include media-laptop {
+  @include media-tablet {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-
-  @include media-laptop {
     width: 80% !important;
   }
 }
@@ -42,7 +39,7 @@
     width: 95%;
   }
 
-  @include media-laptop {
+  @include media-tablet {
     & > *:first-child {
       order: 1;
     }

@@ -93,6 +93,7 @@ class App {
       this.activateMainPageHandlers();
       await this.checkIsUserAuthorized();
     } catch (error) {
+      console.log(error);
       this.state.user = deafaultUserState;
       this.clearAppLocalData();
       this.renderAuthorizationBlock();
@@ -314,7 +315,7 @@ class App {
   updateUserState(newUserData) {
     const { name, email } = newUserData;
 
-    this.mainPage.updateUserName(name || email);
+    this.mainPage.updateUserData(name, email);
     this.state.user = {
       ...this.state.user,
       name,
@@ -338,6 +339,14 @@ class App {
     await this.vocabulary.init();
   }
 
+  updateAuxilaryComponentsUserState() {
+    const { user } = this.state;
+
+    this.settings.user = user;
+    this.statistics.user = user;
+    this.vocabulary.state.userState = user;
+  }
+
   async initAuxilaryComponents() {
     await this.initSettings();
     await this.initStatistics();
@@ -346,7 +355,7 @@ class App {
 
   renderMainPage() {
     const { name, email } = this.state.user;
-    this.mainPage = new MainPage(name || email);
+    this.mainPage = new MainPage(name, email);
     const html = this.mainPage.render();
     this.container.append(html);
     BurgerMenu.makeBurgerMenuIconVisible();
@@ -393,6 +402,7 @@ class App {
           await this.signInUser();
           this.preloader.hide();
         } catch (error) {
+          console.log(error);
           this.preloader.hide();
           Authentication.createErrorBlock(error.message);
         }
@@ -418,7 +428,9 @@ class App {
       document.querySelector('.authentication__wrapper').remove();
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
+      this.updateAuxilaryComponentsUserState();
     } catch (error) {
+      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -459,6 +471,7 @@ class App {
       await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.preloader.hide();
     } catch (error) {
+      console.log(error);
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
       const data = await getRefreshToken(userId, refreshToken);
