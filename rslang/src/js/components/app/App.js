@@ -93,6 +93,7 @@ class App {
       this.activateMainPageHandlers();
       await this.checkIsUserAuthorized();
     } catch (error) {
+      console.log(error);
       this.state.user = deafaultUserState;
       this.clearAppLocalData();
       this.renderAuthorizationBlock();
@@ -393,6 +394,7 @@ class App {
           await this.signInUser();
           this.preloader.hide();
         } catch (error) {
+          console.log(error);
           this.preloader.hide();
           Authentication.createErrorBlock(error.message);
         }
@@ -419,6 +421,7 @@ class App {
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
     } catch (error) {
+      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -459,6 +462,7 @@ class App {
       await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.preloader.hide();
     } catch (error) {
+      console.log(error);
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
       const data = await getRefreshToken(userId, refreshToken);
