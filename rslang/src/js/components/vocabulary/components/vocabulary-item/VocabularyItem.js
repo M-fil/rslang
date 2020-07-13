@@ -88,6 +88,7 @@ class VocabularyItem {
     const mainHTML = create('div', 'word-item__main');
     const mainInfoHTML = create('div', 'word-item__main-info', '', mainHTML);
     create('div', 'word-item__word', `${this.word} ${translationText}`, mainInfoHTML);
+    console.log('showTranscription', showTranscription);
     if (showTranscription) {
       create('div', 'word-item__transcription', this.transcription, mainInfoHTML);
     }

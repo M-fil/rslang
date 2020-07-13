@@ -331,6 +331,17 @@ class Vocabulary {
   }
 
   actionsOnListComponent() {
+    const {
+      showWordMeaning,
+      showWordExample,
+      showImageAssociations,
+      showAudioExample,
+    } = this.settings.getSettingsByGroup('dictionary');
+
+    if (!showWordMeaning && !showWordExample && !showImageAssociations && !showAudioExample) {
+      return;
+    }
+
     this.container.addEventListener('click', (event) => {
       if (event.target.classList.contains('word-item__main')) {
         const parent = event.target.parentNode;

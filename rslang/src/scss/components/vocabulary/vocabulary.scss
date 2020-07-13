@@ -108,6 +108,7 @@
   @include font(2rem);
   position: relative; 
   display: flex;
+  z-index: 1;
   flex-direction: column;
   width: 100%;
   @extend %vocabulary-word-item-transition;  
