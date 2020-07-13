@@ -73,6 +73,10 @@ const defaultStatisticsAdditional = {
   mistakesInCurrentWord: 0,
   wordsWithMistakes: [],
   correctWords: [],
+  newWordsForToday: [],
+  wordsToReviseForToday: [],
+  newWordsLengthForToday: 0,
+  wordsToReviseLenghtForToday: 0,
 };
 
 class MainGame {
@@ -97,7 +101,7 @@ class MainGame {
       userWords: [],
       wordsToLearn: [],
       currentWordsArray: [],
-      newWords: [],
+      // newWords: [],
       audio: new Audio(),
       audios: [],
       isAudioEnded: true,
@@ -112,19 +116,19 @@ class MainGame {
     };
   }
 
-  addWordToTheMistaken(wordText) {
+  addWordToTheMistaken(wordId) {
     const { wordsWithMistakes } = this.state.stats.additional;
-    const findedWord = wordsWithMistakes.find((word) => word === wordText);
+    const findedWord = wordsWithMistakes.find((id) => id === wordId);
     if (!findedWord) {
-      this.state.stats.additional.wordsWithMistakes.push(wordText);
+      this.state.stats.additional.wordsWithMistakes.push(wordId);
     }
   }
 
-  addWordToTheCorrect(wordText) {
+  addWordToTheCorrect(wordId) {
     const { wordsWithMistakes } = this.state.stats.additional;
-    const findedWord = wordsWithMistakes.find((word) => word === wordText);
+    const findedWord = wordsWithMistakes.find((id) => id === wordId);
     if (!findedWord) {
-      this.state.stats.additional.correctWords.push(wordText);
+      this.state.stats.additional.correctWords.push(wordId);
     }
   }
 
@@ -147,14 +151,22 @@ class MainGame {
       this.state.userWords = this.parseUserWordsData();
 
       const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
-      let { learnedWords } = this.statistics.getGameStatistics(MAIN_GAME_CODE);
+      const gameStatistics = this.statistics.getGameStatistics(MAIN_GAME_CODE);
+      let { learnedWords } = gameStatistics;
+      const { newWordsForToday } = gameStatistics.additional;
       learnedWords = learnedWords || 0;
 
+      console.log('FFFFFs', this.state.stats.additional)
       if (learnedWords < maxCardsPerDay) {
         this.state.currentWordIndex = 0;
-        await this.setNewWords();
-        this.state.wordsToLearn = await this.selectWordsToLearn();
-        await this.addWordsToLearnToTheVocabulary();
+        if (learnedWords === 0 && !newWordsForToday && !newWordsForToday?.length) {
+          await this.getWordsToRevise();
+          await this.setNewWords();
+          this.state.wordsToLearn = this.selectWordsToLearn();
+          await this.addWordsToLearnToTheVocabulary();
+          await this.setStatisticsData(false);
+        }
+        this.state.wordsToLearn = this.selectWordsToLearn();
         this.state.currentWordsArray = this.state.wordsToLearn;
         this.setAudiosForWords(this.state.currentWordsArray[currentWordIndex]);
 
@@ -212,6 +224,7 @@ class MainGame {
       }
       this.preloader.hide();
     } catch (error) {
+      console.log(error);
       this.preloader.hide();
       Authentication.createErrorBlock(error.message);
     }
@@ -233,17 +246,9 @@ class MainGame {
   }
 
   async addWordsToLearnToTheVocabulary() {
-    const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
-    const { learnedWordsToday } = this.state.stats;
-    const filteredUserWords = this.state.userWords
-      .filter((word) => word.optional.vocabulary === WORDS_TO_LEARN_TITLE);
-    const wordsToLearnLength = filteredUserWords.length + learnedWordsToday;
-
-    if (wordsToLearnLength < maxCardsPerDay) {
-      const arrayOfPromises = this.state.wordsToLearn
-        .map((word) => this.addWordToTheVocabulary(WORDS_TO_LEARN_TITLE, GOOD.text, word));
-      await Promise.all(arrayOfPromises);
-    }
+    const arrayOfPromises = this.state.wordsToLearn
+      .map((word) => this.addWordToTheVocabulary(WORDS_TO_LEARN_TITLE, GOOD.text, word));
+    await Promise.all(arrayOfPromises);
   }
 
   parseUserWordsData() {
@@ -258,9 +263,11 @@ class MainGame {
     }));
   }
 
-  getWordsToRevise() {
+  async getWordsToRevise() {
     const currentTime = new Date();
     const { userWords } = this.state;
+    const { maxCardsPerDay, newCardsPerDay } = this.settings.getSettingsByGroup('main');
+
     const wordsToRevise = userWords.filter((word) => {
       const { valuationDate, daysInterval } = word.optional;
       const elapsedTime = addDaysToTheDate(daysInterval);
@@ -268,17 +275,35 @@ class MainGame {
       return isNeedToRevise && valuationDate && daysInterval;
     });
 
-    return wordsToRevise;
+    const differenceOfCardsPerDay = maxCardsPerDay - newCardsPerDay;
+    const wordsToReviseLength = wordsToRevise.length >= differenceOfCardsPerDay
+      ? differenceOfCardsPerDay
+      : wordsToRevise.length;
+
+    console.log('wordsToRevise', wordsToRevise);
+    console.log('differenceOfCardsPerDay', differenceOfCardsPerDay);
+
+    this.state.stats.additional.wordsToReviseLenghtForToday = wordsToReviseLength;
+    this.state.stats.additional = {
+      ...this.state.stats.additional,
+      wordsToReviseForToday: wordsToRevise.slice(0, wordsToReviseLength),
+    };
+    await this.statistics.saveMainGameStatistics(
+      false, 0, 0, 0, this.state.stats.additional, true,
+    );
   }
 
   async getStatisticsData() {
     const statisticsData = this.statistics.getGameStatistics(MAIN_GAME_CODE);
     const { correctAnswers, wrongAnswers } = statisticsData;
+    console.log('statisticsData', statisticsData)
     const learnedWords = statisticsData.learnedWords || 0;
 
+    const additionData = statisticsData.additional;
     if (!statisticsData.additional) {
       await this.setStatisticsData(false);
     } else {
+      console.log('HERE');
       const {
         longestSeriesOfAnswers,
         longestSeriesIndicator,
@@ -286,19 +311,29 @@ class MainGame {
         wordsWithMistakes,
         correctWords,
         currentLongestSeriesOfAnswers,
-      } = JSON.parse(statisticsData.additional);
+        wordsToReviseForToday,
+        newWordsForToday,
+        newWordsLengthForToday,
+        wordsToReviseLenghtForToday,
+      } = additionData;
 
       this.state.stats = {
+        ...this.state.stats,
         learnedWordsToday: parseInt(learnedWords, 10) || 0,
         correctAnswersNumber: parseInt(correctAnswers, 10) || 0,
         commonMistakesNumber: parseInt(wrongAnswers, 10) || 0,
         additional: {
+          ...this.state.stats.additional,
           longestSeriesOfAnswers: parseInt(longestSeriesOfAnswers, 10) || 0,
           currentLongestSeriesOfAnswers: parseInt(currentLongestSeriesOfAnswers, 10) || 0,
           longestSeriesIndicator: parseInt(longestSeriesIndicator, 10) || 0,
           mistakesInCurrentWord: parseInt(mistakesInCurrentWord, 10) || 0,
           wordsWithMistakes: wordsWithMistakes || [],
           correctWords: correctWords || [],
+          wordsToReviseForToday: wordsToReviseForToday || [],
+          newWordsForToday: newWordsForToday || [],
+          newWordsLengthForToday: parseInt(newWordsLengthForToday, 10) || 0,
+          wordsToReviseLenghtForToday: parseInt(wordsToReviseLenghtForToday, 10) || 0, 
         },
       };
     }
@@ -334,33 +369,47 @@ class MainGame {
   }
 
   async setNewWords() {
-    const wordsToRevise = this.getWordsToRevise();
+    const { wordsToReviseForToday: wordsToRevise } = this.state.stats.additional;
     const { maxCardsPerDay, newCardsPerDay } = this.settings.getSettingsByGroup('main');
-    const { learnedWordsToday } = this.state.stats;
+    const differenceOfCardsPerDay = maxCardsPerDay - newCardsPerDay;
 
-    const wordsToGet = wordsToRevise.length ? newCardsPerDay : maxCardsPerDay;
-    const newWordLength = wordsToRevise.length
-      ? newCardsPerDay - learnedWordsToday
-      : wordsToGet - learnedWordsToday;
-
-    let newWords = this.vocabulary.getWordsByVocabularyType(WORDS_TO_LEARN_TITLE);
-
-    if (!newWords.length) {
-      const { userId, token } = this.state.userState;
-      const words = await getAggregatedWordsByFilter(userId, token, wordsToGet);
-      newWords = words[0].paginatedResults;
-    } else {
-      newWords = newWords.map((word) => word.optional.allData);
+    let newWordsLength = 0;
+    switch (true) {
+      case !wordsToRevise.length:
+        newWordsLength = maxCardsPerDay;
+        break;
+      case wordsToRevise.length && wordsToRevise.length < differenceOfCardsPerDay:
+        newWordsLength = maxCardsPerDay - wordsToRevise.length;
+        break;
+      case wordsToRevise.length === differenceOfCardsPerDay:
+      default:
+        newWordsLength = newCardsPerDay;
     }
-    this.state.newWords = newWords.slice(0, newWordLength);
+
+    this.state.stats.additional.newWordsLengthForToday = newWordsLength;
+    const { userId, token } = this.state.userState;
+    const words = await getAggregatedWordsByFilter(userId, token, newWordsLength);
+    const newWords = words[0].paginatedResults;
+    console.log('newWords', newWords)
+
+    this.state.stats.additional = {
+      ...this.state.stats.additional,
+      newWordsForToday: newWords.slice(0, newWordsLength),
+    };
+    const { additional: mainGameAdditional } = this.state.stats;
+    await this.statistics.saveMainGameStatistics(
+      false, 0, 0, 0, mainGameAdditional, true,
+    );
   }
 
-  async selectWordsToLearn() {
-    const wordsToRevise = this.getWordsToRevise();
-    const { maxCardsPerDay, newCardsPerDay } = this.settings.getSettingsByGroup('main');
-    const wordsToReviseLength = maxCardsPerDay - newCardsPerDay;
+  selectWordsToLearn() {
+    const {
+      wordsToReviseForToday: wordsToRevise,
+      newWordsForToday,
+    } = this.state.stats.additional;
+    const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
 
-    const wordsToLearn = [...this.state.newWords, ...wordsToRevise.slice(0, wordsToReviseLength)];
+    const wordsToLearn = [...wordsToRevise, ...newWordsForToday].slice(0, maxCardsPerDay);
     return wordsToLearn;
   }
 
@@ -487,40 +536,46 @@ class MainGame {
   }
 
   async renderMixedWords() {
-    const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
+    /*const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
     let { learnedWords } = this.statistics.getGameStatistics(MAIN_GAME_CODE);
     learnedWords = learnedWords || 0;
 
     if (learnedWords < maxCardsPerDay) {
       this.state.userWords = await this.getAllUserWordsFromBackend();
       await this.setNewWords();
-      const result = await this.selectWordsToLearn();
+      const result = this.selectWordsToLearn();
       return result;
-    }
+    }*/
+    const { wordsToReviseForToday, newWordsForToday } = this.state.stats.additional;
+    return [...wordsToReviseForToday, ...newWordsForToday];
   }
 
   async renderNewWords() {
-    const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
+    /*const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
     let { learnedWords } = this.statistics.getGameStatistics(MAIN_GAME_CODE);
     learnedWords = learnedWords || 0;
 
     if (learnedWords < maxCardsPerDay) {
       this.state.userWords = await this.getAllUserWordsFromBackend();
       await this.setNewWords();
-      return this.state.newWords;
-    }
+      return this.state.stats.additional.newWordsForToday;
+    }*/
+    const { newWordsForToday } = this.state.stats.additional;
+    return newWordsForToday;
   }
 
   async renderWordsToRepeat() {
-    const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
+    /*const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
     let { learnedWords } = this.statistics.getGameStatistics(MAIN_GAME_CODE);
     learnedWords = learnedWords || 0;
 
     if (learnedWords < maxCardsPerDay) {
       this.state.userWords = await this.getAllUserWordsFromBackend();
-      const wordsToRevise = this.getWordsToRevise();
-      return wordsToRevise;
-    }
+      // const wordsToRevise = this.getWordsToRevise();
+      return this.state.stats.additional.wordsToReviseForToday;
+    }*/
+    const { wordsToReviseForToday } = this.state.stats.additional;
+    return wordsToReviseForToday;
   }
 
   activateWordsToLearnSelect() {
@@ -648,6 +703,8 @@ class MainGame {
     const { isAudioPlaybackEnabled, isTranslationsEnabled } = this.state.gameSetting;
     userAnswerHTML.classList.remove('word-card__user-answer_visible');
     const currentWordText = currentWordsArray[currentWordIndex].word;
+    const currentWordId = currentWordsArray[currentWordIndex].id
+      || currentWordsArray[currentWordIndex]._id;
 
     if (currentWordIndex !== currentWordsArray.length) {
       const { mistakesInCurrentWord } = this.state.stats.additional;
@@ -676,7 +733,8 @@ class MainGame {
           this.state.stats.additional.longestSeriesIndicator += 1;
         } else {
           this.increaseLongestSeriesValues();
-          this.addWordToTheCorrect(currentWordText);
+          this.addWordToTheCorrect(currentWordId);
+          this.removeWordFromTheAppropriateList(currentWordId)
           this.state.stats.additional.longestSeriesIndicator = 0;
           this.state.stats.learnedWordsToday += 1;
           this.state.difficultWordsState.learnedWordsNumber += 1;
@@ -695,12 +753,32 @@ class MainGame {
         if (mistakesInCurrentWord === 1) {
           this.state.stats.commonMistakesNumber += 1;
         }
-        this.addWordToTheMistaken(currentWordText);
+        this.addWordToTheMistaken(currentWordId);
         inputHTML.value = '';
         setTimeout(() => {
           userAnswerHTML.classList.add('word-card__user-answer_translucent');
         }, 1000);
       }
+    }
+  }
+
+  removeWordFromTheAppropriateList(wordId) {
+    const { wordsToReviseForToday, newWordsForToday } = this.state.stats.additional;
+    const wordFromRevised = wordsToReviseForToday
+      .find((word) => (word.id || word._id) === wordId);
+    const wrodFromNew = newWordsForToday
+      .find((word) => (word.id || word._id) === wordId);
+
+    this.state.currentWordsArray.filter((word) => (word.id || word._id) !== wordId);
+    console.log('wordFromRevised', wordFromRevised);
+    console.log('wrodFromNew', wrodFromNew);
+    if (wordFromRevised) {
+      this.state.stats.additional.wordsToReviseForToday
+        .filter((word) => (word.id || word._id) !== wordId);
+    }
+    if (wrodFromNew) {
+      this.state.stats.additional.newWordsForToday
+        .filter((word) => (word.id || word._id) !== wordId);
     }
   }
 
@@ -856,6 +934,8 @@ class MainGame {
           }
 
           await this.setStatisticsData();
+          await this.getStatisticsData();
+
           await this.checkIfDailyNormCompleted();
           this.preloader.hide();
           this.wordsSelectList.enable();
