@@ -1,6 +1,14 @@
 .buttons-container {
   display: flex;
   justify-content: center;
+
+  @include media-mobile {
+    flex-direction: column;
+
+    & > *:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
 }
 
 .buttons-container__button {
@@ -11,9 +19,17 @@
   transition: 0.3s ease all;
   padding: 5px 10px;
   box-shadow: 0 0 5px $speak-it-standard-button-text-color;
+
+  @include media-tablet {
+    @include font(2rem);
+  }
   
   &:not(:last-child) {
     margin-right: 40px;
+
+    @include media-mobile {
+      margin-right: 0;
+    }
   }
 
   &:hover {

@@ -1,9 +1,21 @@
-.team-wrapper {
+.about-team__wrapper {
   background-color: $about-team-background-color;
+  padding-top: 10px;
 }
+
+.about-team__back-button {
+  @include arrow-back-button;
+
+  left: 30px;
+
+  @include media-mobile {
+    left: 2px;
+  }
+}
+
 .about-team-container {
   @include font(1rem, 1.2);
-  width: 80%;
+  width: 100%;
   height: 100%;
   margin-right: auto;
   margin-left: auto
@@ -16,7 +28,7 @@
   text-transform: uppercase;
   letter-spacing: 3px;
   border-bottom: 2px solid $about-team-border-title;
-  width: 150px;
+  width: fit-content;
 }
 .team_block {
   display: flex;

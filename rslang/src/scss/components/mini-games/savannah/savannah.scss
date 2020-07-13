@@ -1,15 +1,27 @@
-.main-content {
-  height: 100vh;
-  background: $savannah-background;
-}
-
 .number-reverse {
   display: none;
   position: absolute;
-  top: calc(50% - 35px);
+  top: calc(50% - 30px);
   left: calc(50% - 15px);
   color: $savannah-number-reverse;
   font-size: 5rem;
+}
+
+.savannah__start-game-window {
+  width: 55%;
+}
+
+.savannah__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh;
+  background: $savannah-background;
+
+  &_in-game {
+    display: block;
+  }
 }
 
 .word {
@@ -18,8 +30,11 @@
   background-color: transparent;
 }
 .word_english {
+  font-size: 3rem !important;
+
+  z-index: 100;
   border: none;
-  color: $savannah-english-word;
+  color: $savannah-falling-word-color !important;
   font-size: 4rem; 
   text-align: center;
 }
@@ -34,6 +49,14 @@
   border: 1px solid $savannah-russian-word-border;
   word-break: break-word;
   padding: 5px 20px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  @include media-tablet {
+    @include font(1.8rem, 2rem);
+  }
 }
 .word_number {
   position: absolute;
@@ -61,6 +84,15 @@
   justify-content: space-evenly;
   flex-wrap: wrap;
   margin-top: 8%;
+
+  @include media-tablet {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    & > * {
+      width: 70%;
+    }
+  }
 }
 
 .lives {
@@ -114,7 +146,9 @@
 }
 
 .line-info {
-  margin-top: 20px;
   display: flex;
   justify-content: space-between;
+  width: 80%;
+  margin: auto;
+  padding-top: 10px;
 }

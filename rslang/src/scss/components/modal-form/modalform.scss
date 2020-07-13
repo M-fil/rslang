@@ -4,6 +4,12 @@
   width: 100%;
   height: 100%;
   background-color: $modal-window-background;
+
+  &_top-layer {
+    top: 0;
+    left: 0;
+    z-index: 2000;
+  }
 }
 
 .modal-block_hidden {

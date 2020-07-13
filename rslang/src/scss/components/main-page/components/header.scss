@@ -1,0 +1,103 @@
+.main-page__header {
+  position: fixed;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 15px;
+  width: calc(100% - 30px);
+  height: 90px;
+  z-index: 1000;
+  
+  background: $main-gage-header-background;
+  border-bottom: 3px solid $main-page-border-color;
+
+  @include media-tablet {
+    justify-content: flex-end;
+  }
+
+  @include media-mobile {
+    align-items: flex-start;
+  }
+
+  & .main-page__logo {
+    @include media-tablet {
+      display: none;
+    }
+  }
+
+  & .header__buttons-list {
+    @include media-tablet {
+      display: none;
+    }
+  }
+}
+
+.header__buttons-list {
+  display: flex;
+  justify-content: space-around;
+  flex-grow: 1;
+}
+
+.header__button {
+  @include font(2rem);
+  @extend %standard-button-transition;
+
+  &:hover {
+    color: $main-page-logour-hover-color;
+  }
+}
+
+.header__logout-button {
+  @include font(2rem, 2.5rem, 500);
+  @extend %standard-button-transition;
+
+  cursor: pointer;
+  background: $main-page-logout-button-background;
+  min-width: 100px;
+  padding: 15px 0;
+  text-align: center;
+  border: none;
+  outline: none;
+
+  &:hover {
+    box-shadow: 0 0 0 3px $main-page-logour-hover-color;
+    color: $main-page-logour-hover-color;
+  }
+}
+
+.logout__icon {
+  margin-left: 5px;
+}
+
+.header__user-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  @include media-tablet {
+    padding-left: 50px;
+  }
+
+  @include media-mobile {
+    padding: 0;
+  }
+}
+
+.header__user-icon {
+  font-size: 2rem;
+  margin-right: 5px;
+}
+
+.header__user-name {
+  margin-bottom: 10px;
+
+  @include media-mobile {
+    display: none;
+  }
+}
+
+.user-name__text {
+  @include font(2rem);
+}

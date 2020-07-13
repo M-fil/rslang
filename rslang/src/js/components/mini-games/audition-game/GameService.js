@@ -1,15 +1,13 @@
-/* eslint-disable class-methods-use-this */
 import GameDataService from './GameDataService';
 import create from '../../../utils/сreate';
 import { shuffle } from '../../../utils/shuffle';
 import { urls, auditionGameVariables, vocabularyConstants } from '../../../constants/constants';
 import Preloader from '../../preloader/Preloader';
-import Vocabulary from  '../../vocabulary/Vocabulary';
+import Vocabulary from '../../vocabulary/Vocabulary';
 import Statistics from '../../statistics/Statistics';
 
-
 export default class GameService {
-  constructor(miniGameObj, lives,roundsAll,roundResults, collectionLengthEnough) {
+  constructor(miniGameObj, lives, roundsAll, roundResults, collectionLengthEnough) {
     this.user = miniGameObj.user;
     this.ShortTermStatistics = miniGameObj.shortTermStatistics;
     this.lives = lives;
@@ -18,22 +16,25 @@ export default class GameService {
     this.collectionLengthEnough = collectionLengthEnough;
     this.closeButton = miniGameObj.closeButton;
   }
-  startGame(collection, group){
+
+  startGame(collection, group) {
     this.collection = collection;
     this.group = group;
     this.preloaderInit();
-    this.initRound( this.lives, this.roundsAll, 1, this.roundResults);
+    this.initRound(this.lives, this.roundsAll, 1, this.roundResults);
     document.querySelector('.audition-game__startScreen').classList.toggle('hide');
     document.querySelector('.audition-game__wrapper').appendChild(this.closeButton.render());
     this.closeButton.show();
-    
   }
-  async getVocabularyData(){
+
+  async getVocabularyData() {
     this.voc = new Vocabulary(this.user);
     await this.voc.init();
-    this.vocabulary  =  await this.voc.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE,  true);  
+    this.vocabulary = await this.voc
+      .getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE, true);
   }
-   preloaderInit() {
+
+  preloaderInit() {
     this.preloader = new Preloader();
     this.preloader.render();
     this.isMuted = false;
@@ -41,44 +42,52 @@ export default class GameService {
     this.correctAnswersCounter = 0;
     this.closed = false;
   }
-  clstest(){
-    this.closeButton.modalWindow.modalClose.addEventListener('click',()=>{this.preloader.hide();
-    this.closed = true;});
+
+  clstest() {
+    this.closeButton.modalWindow.modalClose.addEventListener('click', () => {
+      this.preloader.hide();
+      this.closed = true;
+    });
   }
+
   async initRound(lives, roundsAll, currentRound, roundResults) {
     this.notSelected = true;
     this.preloader.show();
     this.clstest();
     this.genGame();
-    const gameDataService = new GameDataService(this.vocabulary, this.collection,this.group, this.collectionLengthEnough);
+    const gameDataService = new GameDataService(
+      this.vocabulary, this.collection, this.group, this.collectionLengthEnough,
+    );
     const data = await gameDataService.mapping();
     const answers = this.auditionGameAnswers;
     const arr = data.array;
     const mainWord = data.mainWordToAsk;
-    this.createPossibleWords(arr, answers);
+    GameService.createPossibleWords(arr, answers);
     const audio = new Audio(`${urls.mainAudioPath}${mainWord.audio}`);
-    if(!this.closed){audio.play();
-    this.preloader.hide();
-    this.sound = this.auditionGameSoundBtn;
-   this.container.classList.remove('hide');
-    this.mainEventHandler(lives, mainWord, roundsAll, currentRound, roundResults);
-    this.idkBtnHandler(lives, mainWord, roundsAll, currentRound, roundResults);
-    this.repeatAudioHandler(audio);
-    this.progressBarHandler(roundsAll, currentRound);
-    this.bgRandomize();
-    this.keyboardEventsHandler();
-    this.soundHandler();
-    this.hintHandler(mainWord);}
+    if (!this.closed) {
+      audio.play();
+      this.preloader.hide();
+      this.sound = this.auditionGameSoundBtn;
+      this.container.classList.remove('hide');
+      this.mainEventHandler(lives, mainWord, roundsAll, currentRound, roundResults);
+      this.idkBtnHandler(lives, mainWord, roundsAll, currentRound, roundResults);
+      this.repeatAudioHandler(audio);
+      GameService.progressBarHandler(roundsAll, currentRound);
+      GameService.bgRandomize();
+      this.keyboardEventsHandler();
+      this.soundHandler();
+      this.hintHandler(mainWord);
+    }
   }
-  genGame(){
+
+  genGame() {
     const wrapper = document.querySelector('.audition-game__wrapper');
     this.container = create('div', 'audition-game__container hide', '', wrapper);
     const soundCont = create('div', 'audition-game__sound__container', '', this.container);
     const hintCont = create('div', 'audition-game__hint__container', '', this.container);
     if (!this.isMuted) this.auditionGameSoundBtn = create('div', 'audition-game__sound__button', '', soundCont);
     else this.auditionGameSoundBtn = create('div', 'audition-game__sound__button audition-game__sound__buttonMuted', '', soundCont);
-    if(this.isHintAvailable)
-    this.auditionGameHintBtn = create('div', 'audition-game__hint__button', '', hintCont);
+    if (this.isHintAvailable) this.auditionGameHintBtn = create('div', 'audition-game__hint__button', '', hintCont);
     else this.auditionGameHintBtn = create('div', 'audition-game__hint__button unavailable', '', hintCont);
     const game = create('div', 'audition-game__game', '', this.container);
     this.audioPulse = create('div', 'audition-game__audio__pulse', '', game);
@@ -87,6 +96,7 @@ export default class GameService {
     this.auditionGameAnswers = create('div', 'audition-game__answers', '', game);
     this.auditionGameNextBtn = create('button', 'audition-game__button__next Enter', `${auditionGameVariables.idkBtn}`, game);
   }
+
   nextRound(lives, roundsAll, currentRound, roundResults) {
     if (lives > 0 && currentRound !== roundsAll) {
       let curr = currentRound;
@@ -95,30 +105,39 @@ export default class GameService {
     } else {
       document.querySelector('.progress').style.width = auditionGameVariables.zeroPercent;
       document.querySelector('.audition-game__wrapper').className = 'audition-game__wrapper';
-      const correctArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.correct));
-      const failArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.fail));
-      const idkArray = this.normalize(roundResults.filter((res) => res.result === auditionGameVariables.IDK));
-      this.ShortTermStatistics.render(failArray, correctArray,idkArray);
+      const correctArray = GameService.normalize(
+        roundResults.filter((res) => res.result === auditionGameVariables.correct),
+      );
+      const failArray = GameService.normalize(
+        roundResults.filter((res) => res.result === auditionGameVariables.fail),
+      );
+      const idkArray = GameService.normalize(
+        roundResults.filter((res) => res.result === auditionGameVariables.IDK),
+      );
+      this.ShortTermStatistics.render(failArray, correctArray, idkArray);
       const stat = new Statistics(this.user);
       stat.init();
-      setTimeout(()=>{
-      stat.saveGameStatistics('auditiongame',correctArray.length,failArray.length);},5000);
+      setTimeout(() => {
+        stat.saveGameStatistics('auditiongame', correctArray.length, failArray.length);
+      }, 5000);
     }
   }
-  normalize(arrayToNormalize){
+
+  static normalize(arrayToNormalize) {
     const res = [];
-      for(let i = 0; i< arrayToNormalize.length; i++){
-        res.push(arrayToNormalize[i].word);
-      }
-      return res;
+    for (let i = 0; i < arrayToNormalize.length; i += 1) {
+      res.push(arrayToNormalize[i].word);
+    }
+    return res;
   }
-  createPossibleWords(arrayOfWords, answersBlock) {
+
+  static createPossibleWords(arrayOfWords, answersBlock) {
     for (let i = 0; i < auditionGameVariables.possibleWordsAmount; i += 1) {
       create('div', `audition-game__element Digit${i + 1}`, `${i + 1}.${arrayOfWords[i]?.wordTranslate}`, answersBlock);
     }
   }
 
-  designUncheckedPossibleWords(elements) {
+  static designUncheckedPossibleWords(elements) {
     for (let i = 0; i < elements.length; i += 1) {
       if (!elements[i].classList.contains('checked')) elements[i].classList.add('unchecked');
     }
@@ -132,7 +151,7 @@ export default class GameService {
         nextBtn.innerHTML = auditionGameVariables.arrowSymbol;
         event.target.classList.toggle('checked');
         const elements = document.querySelectorAll('.audition-game__element');
-        this.designUncheckedPossibleWords(elements);
+        GameService.designUncheckedPossibleWords(elements);
         document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.wordTranslate}`;
         this.audioPulse.style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
         if (event.target.innerText.includes(mainWord.wordTranslate)) {
@@ -162,11 +181,13 @@ export default class GameService {
       document.querySelector('.audition-game__container').remove();
       this.nextRound(lives, roundsAll, currentRound, roundResults);
     }, { once: true });
-    document.addEventListener('keydown', (event) => {
+
+    this.keyEnterDownEvent = (event) => {
       if (event.code === auditionGameVariables.Enter && document.querySelector('.audition-game__button__next')?.innerText !== auditionGameVariables.idkBtn) {
         nextBtn.click();
       }
-    }, { once: true });
+    };
+    document.addEventListener('keydown', this.keyEnterDownEvent);
   }
 
   idkBtnHandler(lives, mainWord, roundsAll, currentRound, roundResults) {
@@ -179,7 +200,7 @@ export default class GameService {
         document.querySelector('.audition-game__correctanswer').innerText = `${mainWord.word} - ${mainWord.wordTranslate}`;
         this.audioPulse.style.backgroundImage = `url(${urls.mainAudioPath}${mainWord.image})`;
         const elements = document.querySelectorAll('.audition-game__element');
-        this.designUncheckedPossibleWords(elements);
+        GameService.designUncheckedPossibleWords(elements);
         setTimeout(() => {
           roundResults.push({ result: auditionGameVariables.IDK, word: mainWord });
           this.nextRoundEventHandler(nextBtn, lives, roundsAll, currentRound, roundResults);
@@ -217,11 +238,12 @@ export default class GameService {
       if (!this.sound.classList.contains('audition-game__sound__buttonMuted')) audio.play();
     });
   }
-  progressBarHandler(roundsAll, currentRound) {
+
+  static progressBarHandler(roundsAll, currentRound) {
     document.querySelector('.progress').style.width = `${100 * (currentRound / roundsAll)}%`;
   }
 
-  bgRandomize() {
+  static bgRandomize() {
     const { bg } = auditionGameVariables;
     bg.sort(() => Math.random() - 0.5);
     const wrapper = document.querySelector('.audition-game__wrapper');
@@ -237,10 +259,10 @@ export default class GameService {
     create('p', 'alarmDesc', auditionGameVariables.modalDesc, this.modalContent);
     create('button', 'agreeToClose', auditionGameVariables.close, this.modalContent);
     create('button', 'cancelToClose', auditionGameVariables.cancel, this.modalContent);
-    this.modalDialogEventsHandler();
+    GameService.modalDialogEventsHandler();
   }
 
-  modalDialogEventsHandler() {
+  static modalDialogEventsHandler() {
     document.querySelector('.agreeToClose').addEventListener('click', () => {
       document.querySelector('.audition-game__container').remove();
       document.querySelector('.audition-game__startScreen').classList.toggle('hide');
@@ -254,12 +276,14 @@ export default class GameService {
   }
 
   keyboardEventsHandler() {
-    document.addEventListener('keydown', (event) => {
+    this.digitDonwEvent = (event) => {
       const choose = document.querySelector(`.${event.code}`);
       if (auditionGameVariables.digits.includes(event.code)) {
         choose.click();
       }
-    });
+    };
+
+    document.addEventListener('keydown', this.digitDonwEvent);
   }
 
   soundHandler() {

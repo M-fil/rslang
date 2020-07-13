@@ -5,12 +5,32 @@
 .word-info__image {
   width: 450px;
   height: 200px;
+
+  @include media-tablet {
+    width: 350px;
+    height: 180px;
+  }
+
+  @include media-mobile {
+    width: 300px;
+    height: 170px;
+  }
 }
 
 .word-info__image-block {
   width: 450px;
   height: 200px;
   box-shadow: 0 0 10px $speak-it-standard-box-shadow;
+
+  @include media-tablet {
+    width: 350px;
+    height: 180px;
+  }
+
+  @include media-mobile {
+    width: 300px;
+    height: 170px;
+  }
 }
 
 .word-info__translation {

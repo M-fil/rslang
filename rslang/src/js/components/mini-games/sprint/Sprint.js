@@ -7,7 +7,7 @@ import {
   sprintAudios,
   wordsToLearnSelectConstants,
 } from '../../../constants/constants';
-import Preloader from '../../preloader/preloader';
+import Preloader from '../../preloader/Preloader';
 import StartWindow from '../common/StartWindow';
 import Vocabulary from '../../vocabulary/Vocabulary';
 import Statistics from '../../statistics/Statistics';
@@ -45,6 +45,7 @@ export default class SprintGame {
     this.closeButton.addCancelCallbackFn((this.pauseGame).bind(this));
 
     this.startWindow = new StartWindow((this.GameBegin).bind(this));
+    this.startWindow.gameWindow.classList.add('sprint__start-game-window');
     this.vocabulary = new Vocabulary(this.user);
     this.statistics = new Statistics(this.user);
     this.preloader = new Preloader();
@@ -63,9 +64,6 @@ export default class SprintGame {
     this.mainContainer = document.querySelector(elementQuery);
     create('div', 'container main-container', '', this.SprintGameWrapper);
     this.renderStartWindow();
-
-    this.activateKeyDownEvent();
-    this.activateGameButtons();
   }
 
   renderStartWindow() {
@@ -117,7 +115,7 @@ export default class SprintGame {
   }
 
   activateKeyDownEvent() {
-    document.addEventListener('keydown', (e) => {
+    this.keyDownEvent = (e) => {
       if (e.key === sprint.KEYBOARD_BUTTON_CORRECT) {
         if (window.answer) this.Correct();
         else this.Incorrect();
@@ -128,11 +126,13 @@ export default class SprintGame {
         else this.Incorrect();
         this.GetWordData();
       }
-    });
+    };
+
+    document.addEventListener('keydown', this.keyDownEvent);
   }
 
   activateGameButtons() {
-    document.addEventListener('click', (e) => {
+    this.gameButtonsEvent = (e) => {
       if (e.target === this.yesButton) {
         if (window.answer) this.Correct();
         else this.Incorrect();
@@ -174,7 +174,9 @@ export default class SprintGame {
       if (e.target.classList[0] === 'audio-icon') {
         e.target.childNodes[0].play();
       }
-    });
+    };
+
+    document.addEventListener('click', this.gameButtonsEvent);
   }
 
   renderGameAfterStartButtonClick() {
@@ -206,6 +208,9 @@ export default class SprintGame {
   }
 
   GameBegin(collection, group) {
+    this.activateKeyDownEvent();
+    this.activateGameButtons();
+
     this.SprintGameWrapper = create('div', 'sprint-game-wrapper', '', this.mainContainer);
     this.renderGameAfterStartButtonClick();
     this.setGameAudio();
@@ -380,7 +385,6 @@ export default class SprintGame {
 
     this.shortTermStatistics.render(this.gameResults.errors, this.gameResults.correct);
     this.shortTermStatistics.addCallbackFnOnClose((this.Home).bind(this));
-
     this.statistics.saveGameStatistics('sprint', this.gameResults.correct.length, this.gameResults.errors.length);
   }
 
@@ -407,6 +411,12 @@ export default class SprintGame {
   }
 
   Home() {
+    document.removeEventListener('click', this.gameButtonsEvent);
+    document.removeEventListener('keydown', this.keyDownEvent);
+
+    this.shortTermStatistics.removeEvents();
+    this.closeButton.modalWindow.removeEvents();
+
     this.renderStartWindow();
     this.SprintGameWrapper.remove();
     this.GameContainer.classList.remove('flex');

@@ -1,4 +1,4 @@
-
+import Chart from 'chart.js';
 import create from '../../utils/сreate';
 import {
   statisticsText,
@@ -13,6 +13,12 @@ export default class StatisticsChart {
 
   renderStatisticsCharts() {
     return this.myDiv;
+  }
+
+  clearRenderedCharts() {
+    if (this.myDiv) {
+      this.myDiv.innerHTML = '';
+    }
   }
 
   learnedWordsChart(learnedWords, learnedWordsObj) {

@@ -23,6 +23,7 @@ export default class ModalWindow {
     const modal = document.querySelector(`#${this.id}`);
     if (modal) {
       modal.classList.remove('modal-block_hidden');
+      document.body.classList.add('body_overflow-hidden');
     }
   }
 
@@ -30,6 +31,7 @@ export default class ModalWindow {
     const modal = document.querySelector(`#${this.id}`);
     if (modal) {
       modal.classList.add('modal-block_hidden');
+      document.body.classList.remove('body_overflow-hidden');
     }
   }
 

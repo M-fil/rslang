@@ -8,9 +8,9 @@ import {
   StatisticsGameCodes,
 } from '../../../constants/constants';
 import create from '../../../utils/сreate';
-import shuffle from '../../../utils/shuffle';
+import { shuffle } from '../../../utils/shuffle';
 import wordsFilter from '../../../utils/wordsfilter';
-import Preloader from '../../preloader/preloader';
+import Preloader from '../../preloader/Preloader';
 import Settings from '../../settings/Settings';
 import Statistics from '../../statistics/Statistics';
 import StartWindow from '../common/StartWindow';
@@ -100,7 +100,7 @@ export default class FindAPair {
     this.container.innerHTML = '';
     this.container.classList.remove('find-a-pair__start-page');
 
-    const timerEl = create('i', 'find-a-pair-timer__seconds', `${findAPairConst.gameTimerSec}`, undefined, ['id', 'remain_seconds']);
+    const timerEl = create('span', 'find-a-pair-timer__seconds', `${findAPairConst.gameTimerSec}`, undefined, ['id', 'remain_seconds']);
     const timerContainer = create('div', 'find-a-pair-timer', timerEl);
     timerContainer.innerHTML += `
     <svg class="find-a-pair-timer__svg">
@@ -270,16 +270,18 @@ export default class FindAPair {
   }
 
   pauseGameHandler() {
-    this.gameOnPause = !this.gameOnPause;
     const pauseButton = document.querySelector('#find-a-pair-pause-button');
-    if (this.gameOnPause) {
-      this.container.classList.add('find-a-pair_on-pause');
-      pauseButton.innerHTML = '<i class="fas fa-play"></i>';
-      pauseButton.setAttribute('title', findAPairText.onPauseButton);
-    } else {
-      this.container.classList.remove('find-a-pair_on-pause');
-      pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-      pauseButton.setAttribute('title', findAPairText.pauseButton);
+    if (pauseButton) {
+      this.gameOnPause = !this.gameOnPause;
+      if (this.gameOnPause) {
+        this.container.classList.add('find-a-pair_on-pause');
+        pauseButton.innerHTML = '<i class="fas fa-play"></i>';
+        pauseButton.setAttribute('title', findAPairText.onPauseButton);
+      } else {
+        this.container.classList.remove('find-a-pair_on-pause');
+        pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        pauseButton.setAttribute('title', findAPairText.pauseButton);
+      }
     }
   }
 
@@ -316,6 +318,9 @@ export default class FindAPair {
   }
 
   newGameHandler() {
+    this.CloseButton.modalWindow.removeEvents();
+    this.ShortTermStatistics.removeEvents();
+
     this.clearTimer();
     this.clearPage();
     this.ShortTermStatistics.hide();

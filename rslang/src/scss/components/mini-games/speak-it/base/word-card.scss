@@ -1,4 +1,5 @@
 .word-card {
+  @extend %speakit-button-transition;
   position: relative;
 
   cursor: pointer;
@@ -14,7 +15,20 @@
   padding: 5px 20px;
   margin-bottom: 30px;
   margin-right: 20px;
-  transition: 0.5s ease all;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @include media-tablet {
+    display: block;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  @include media-mobile {
+    width: 100% !important;
+    padding: 0;
+  }
 
   &_guessed {
     border-color: $speak-it-guessed-card-border-color;
@@ -66,6 +80,26 @@
   align-items: center;
 
   margin-left: 15px;
+
+  @include media-mobile {
+    margin: 0;
+  }
+}
+
+.word-card__word {
+  @include font(2.5rem, 3rem);
+
+  margin: 0;
+}
+
+.word-card__transcription {
+  @include font(2rem, initial);
+
+  color: $speak-it-transcription-color;
+
+  @include media-mobile {
+    @include font(2rem, 2.5rem);
+  }
 }
 
 .word-card__skip-word-button {
@@ -82,7 +116,7 @@
   background-color: $speak-it-standard-button-background;
 
   &_start-page {
-    @include font(2.5rem, 3rem);
+    @include font(1.6rem, 2rem);
     position: relative;
     display: block;
     margin: 5px;

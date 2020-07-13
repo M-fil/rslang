@@ -2,24 +2,26 @@ import create from '../../utils/сreate';
 import Authorization from '../authentication/Authorization';
 import Registration from '../authentication/Registration';
 import Authentication from '../authentication/Authentication';
-import MainGame from '../main-game/MainGame';
-import Preloader from '../preloader/preloader';
+import Preloader from '../preloader/Preloader';
+import PromoPage from '../promo-page/PromoPage';
 import Vocabulary from '../vocabulary/Vocabulary';
 import Settings from '../settings/Settings';
-
 import Statistics from '../statistics/Statistics';
-
 import AboutTeam from '../about-team/AboutTeam';
-import SavannahGame from '../mini-games/savannah/Savannah';
 
-import Sprint from '../mini-games/sprint/Sprint';
-import SavannahGame from '../mini-games/savannah/Savannah';
-import SpeakIt from '../mini-games/speak-it/SpeakIt';
+import MainPage from '../main-page/MainPage';
 
 import CloseButton from '../mini-games/common/CloseButton';
 import ShortTermStatistics from '../mini-games/common/ShortTermStatistics';
+import BurgerMenu from '../main-page/components/BurgerMenu';
+
+import MainGame from '../main-game/MainGame';
+import SavannahGame from '../mini-games/savannah/Savannah';
+import SpeakIt from '../mini-games/speak-it/SpeakIt';
 import EnglishPuzzle from '../mini-games/english-puzzle/EnglishPuzzle';
 import FindAPair from '../mini-games/find-a-pair/find-a-pair';
+import SprintGame from '../mini-games/sprint/Sprint';
+import AuditionGame from '../mini-games/audition-game/AuditionGame';
 
 import {
   createUser,
@@ -30,8 +32,9 @@ import {
 import {
   errorTypes,
   authenticationConstants,
+  mainPageHeaderButtonConstants,
+  gamesInfo,
 } from '../../constants/constants';
-import SprintGame from '../mini-games/sprint/Sprint';
 
 const {
   USER_IS_NOT_AUTHORIZED,
@@ -42,27 +45,81 @@ const {
   REGISTRATION_TITLE,
 } = authenticationConstants;
 
+const {
+  mainGame,
+  savannah,
+  speakIt,
+  findAPair,
+  sprint,
+  audioGame,
+  englishPuzzle,
+} = gamesInfo;
+
+const {
+  STATISTICS_CODE,
+  VOCABULARY_CODE,
+  PROMO_CODE,
+  ABOUT_TEAM_CODE,
+  SETTINGS_CODE,
+} = mainPageHeaderButtonConstants;
+
+const deafaultUserState = {
+  isAuthrorized: false,
+  userId: '',
+  refreshToken: '',
+  token: '',
+  email: '',
+  name: '',
+};
+
 class App {
   constructor() {
     this.closeButton = new CloseButton();
     this.shortTermStatistics = new ShortTermStatistics();
-    this.preloader = new Preloader();
 
     this.state = {
-      user: {
-        isAuthrorized: false,
-        userId: '',
-        refreshToken: '',
-        token: '',
-        email: '',
-        name: '',
-      },
-      vocabulary: {},
-      settings: {},
-      statistics: {},
+      user: deafaultUserState,
+      currentPage: localStorage.getItem('current-page'),
     };
 
+    const arrowSavedState = localStorage.getItem('arrow-bottom-clicked');
+    this.isArrowBottomButtonClicked = arrowSavedState && JSON.parse(arrowSavedState);
     this.container = null;
+  }
+
+  async run() {
+    this.container = create('main', 'main-page__content', '', document.body);
+    try {
+      this.activateMainPageHandlers();
+      await this.checkIsUserAuthorized();
+    } catch (error) {
+      this.state.user = deafaultUserState;
+      this.clearAppLocalData();
+      this.renderAuthorizationBlock();
+      this.preloader.hide();
+    }
+  }
+
+  clearAppLocalData() {
+    localStorage.clear();
+    this.state.currentPage = '';
+    this.isArrowBottomButtonClicked = false;
+  }
+
+  activateMainPageHandlers() {
+    this.activateLogOutButton();
+    this.activateGoToTheMainPageButton();
+    this.activatePagesRenders();
+    this.activateToggleAuthentication();
+    this.activateAuthenticationForm();
+    BurgerMenu.activateBurgerMenuHandler();
+  }
+
+  renderAuthorizationBlock() {
+    App.removeModalElements();
+    this.state.user.isAuthrorized = false;
+    this.clearMainContainersBeforeRender();
+    this.renderAuthenticationBlock('authorization');
   }
 
   createMiniGameParameterObject() {
@@ -77,29 +134,168 @@ class App {
     document.addEventListener('click', (event) => {
       const target = event.target.closest('#button-go-to-main-page');
       if (target) {
-        this.goToTheMainPageHanlder();
+        this.closeButton.exitButton.classList.remove('main-game__exit-button');
+        this.closeButton.modalWindow.modalClose.removeAttribute('id');
+        this.clearMainContainersBeforeRender();
+        this.saveCurrentPage();
+        this.renderMainPage();
+        BurgerMenu.makeBurgerMenuIconVisible();
       }
     });
   }
 
-  goToTheMainPageHanlder() {
-    this.container.innerHTML = '';
+  saveCurrentPage(page = '') {
+    this.state.currentPage = page;
+    if (page === SETTINGS_CODE) {
+      this.state.currentPage = '';
+    }
+
+    localStorage.setItem('current-page', this.state.currentPage);
   }
 
-  async run() {
-    this.container = create('main', 'main-page__content', '', document.body);
-    try {
-      await this.checkIsUserAuthorized();
-    } catch (error) {
-      App.removeModalElements();
-      localStorage.setItem('user-data', '');
-      this.state.user.isAuthrorized = false;
-      this.container.innerHTML = '';
-      this.renderAuthenticationBlock('authorization');
-      this.activateToggleAuthentication();
-      this.activateAuthenticationForm();
-      this.preloader.hide();
+  renderStatistics() {
+    this.statistics.render('.main-page__content');
+  }
+
+  async renderVocabulary() {
+    const html = await this.vocabulary.render();
+    this.container.append(html);
+  }
+
+  renderPromoPage() {
+    this.promo = new PromoPage('.main-page__content');
+    this.promo.render();
+  }
+
+  renderAboutTeamPage() {
+    this.aboutTeam = new AboutTeam('.main-page__content');
+    this.aboutTeam.render();
+  }
+
+  renderSettingsBlock(isRenderAfterReload = false) {
+    if (isRenderAfterReload) {
+      this.renderMainPage();
     }
+    const { background: settingsBackground } = this.settings.modalWindow;
+    this.settings.openSettingsWindow();
+    settingsBackground.classList.add('modal-block_top-layer');
+  }
+
+  activatePagesRenders() {
+    document.addEventListener('click', async (event) => {
+      const target = event.target.closest('[data-page-code]');
+
+      if (target) {
+        const { pageCode } = target.dataset;
+        BurgerMenu.closeBurgerMenu();
+        await this.selectPageRenderingByPageCode(pageCode, false);
+      }
+    });
+  }
+
+  async selectPageRenderingByPageCode(pageCode, isRenderAfterReload = true) {
+    this.saveCurrentPage(pageCode);
+
+    this.clearMainContainersBeforeRender(pageCode);
+    document.body.scrollIntoView();
+    this.preloader.show();
+    switch (pageCode) {
+      case mainGame.code:
+        await this.renderMainGame();
+        break;
+      case speakIt.code:
+        await this.renderSpeakItGame();
+        break;
+      case englishPuzzle.code:
+        await this.renderEnglishPuzzle();
+        break;
+      case audioGame.code:
+        this.renderAuditionGame();
+        break;
+      case savannah.code:
+        await this.renderSavannah();
+        break;
+      case sprint.code:
+        await this.renderSprintGame();
+        break;
+      case findAPair.code:
+        await this.renderFindAPair();
+        break;
+      case STATISTICS_CODE:
+        this.renderStatistics();
+        break;
+      case VOCABULARY_CODE:
+        await this.renderVocabulary();
+        break;
+      case PROMO_CODE:
+        this.renderPromoPage();
+        break;
+      case ABOUT_TEAM_CODE:
+        this.renderAboutTeamPage();
+        break;
+      case SETTINGS_CODE:
+        this.renderSettingsBlock(isRenderAfterReload);
+        break;
+      default:
+        this.renderMainPage();
+    }
+    this.preloader.hide();
+  }
+
+  clearMainContainersBeforeRender(targetPage = '') {
+    if (targetPage === SETTINGS_CODE) return;
+
+    this.container.innerHTML = '';
+    const startGameWindow = document.querySelector('.start-game-window');
+    const dailyStatistics = document.querySelector('.daily-statistics__overlay');
+    if (startGameWindow) {
+      startGameWindow.remove();
+    }
+    if (dailyStatistics) {
+      dailyStatistics.remove();
+    }
+  }
+
+  async renderMainGame() {
+    this.mainGame = new MainGame(this.createMiniGameParameterObject());
+    await this.mainGame.render('.main-page__content');
+  }
+
+  async renderSpeakItGame() {
+    this.speakIt = new SpeakIt(this.createMiniGameParameterObject(), '.main-page__content');
+    await this.speakIt.run();
+  }
+
+  async renderEnglishPuzzle() {
+    this.englishPuzzle = new EnglishPuzzle(this.createMiniGameParameterObject());
+    await this.englishPuzzle.start('.main-page__content');
+  }
+
+  renderAuditionGame() {
+    if (!this.auditionGame) {
+      this.auditionGame = new AuditionGame(
+        this.createMiniGameParameterObject(), this.container,
+      );
+    }
+    this.auditionGame.render();
+  }
+
+  async renderSavannah() {
+    if (!this.savannah) {
+      this.savannah = new SavannahGame(this.createMiniGameParameterObject());
+    }
+    await this.savannah.render('.main-page__content');
+  }
+
+  renderSprintGame() {
+    this.sprintGame = new SprintGame(this.createMiniGameParameterObject());
+    this.sprintGame.SprintRender('.main-page__content');
+  }
+
+  async renderFindAPair() {
+    this.findAPair = new FindAPair(this.createMiniGameParameterObject());
+    await this.findAPair.init();
+    this.findAPair.renderStartPage('.main-page__content');
   }
 
   static removeModalElements() {
@@ -115,43 +311,62 @@ class App {
     }
   }
 
+  updateUserState(newUserData) {
+    const { name, email } = newUserData;
+
+    this.mainPage.updateUserName(name || email);
+    this.state.user = {
+      ...this.state.user,
+      name,
+      email,
+    };
+  }
+
   async initSettings() {
-    this.settingsObj = new Settings(this.state.user);
-    await this.settingsObj.init();
-    this.state.settings = this.settingsObj.getSettings();
+    this.settings = new Settings(this.state.user);
+    await this.settings.init();
+    this.settings.setUserChangesListener(this.updateUserState.bind(this));
   }
 
-  showSettingsWindow() {
-    this.settingsObj.openSettingsWindow();
+  async initStatistics() {
+    this.statistics = new Statistics(this.state.user);
+    await this.statistics.init();
   }
 
-  async renderStatistics() {
-    const statistics = new Statistics(this.state.user);
-    await statistics.init();
-    statistics.render('.main-container');
-  }
-
-  async renderVocabulary(userState) {
-    this.vocabulary = new Vocabulary(userState);
+  async initVocabulary() {
+    this.vocabulary = new Vocabulary(this.state.user);
     await this.vocabulary.init();
-    const html = await this.vocabulary.render();
-    document.body.append(html);
   }
 
-  async renderEnglishPuzzle() {
-    this.englishPuzzle = new EnglishPuzzle(this.createMiniGameParameterObject());
-    await this.englishPuzzle.start();
+  async initAuxilaryComponents() {
+    await this.initSettings();
+    await this.initStatistics();
+    await this.initVocabulary();
   }
 
-  async renderSpeakItGame() {
-    this.speakIt = new SpeakIt(this.createMiniGameParameterObject());
-    await this.speakIt.run();
+  renderMainPage() {
+    const { name, email } = this.state.user;
+    this.mainPage = new MainPage(name || email);
+    const html = this.mainPage.render();
+    this.container.append(html);
+    BurgerMenu.makeBurgerMenuIconVisible();
+
+    if (this.isArrowBottomButtonClicked) {
+      setTimeout(() => {
+        MainPage.scrollIntoGamesBlock();
+      }, 1000);
+    }
   }
 
-  async renderFindAPair() {
-    const findAPair = new FindAPair(this.createMiniGameParameterObject());
-    await findAPair.init();
-    findAPair.renderStartPage('.main-page__content');
+  activateLogOutButton() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('#logout-trigger');
+
+      if (target) {
+        this.renderAuthorizationBlock();
+        this.clearAppLocalData();
+      }
+    });
   }
 
   activateAuthenticationForm() {
@@ -188,6 +403,7 @@ class App {
   async signInUser() {
     try {
       const data = await Authentication.submitData(loginUser);
+      const userData = await getUserById(data.userId, data.token);
       this.state = {
         ...this.state,
         user: {
@@ -195,28 +411,22 @@ class App {
           userId: data.userId,
           token: data.token,
           refreshToken: data.refreshToken,
-          name: data.name,
+          name: userData.name,
+          email: userData.email,
         },
       };
       document.querySelector('.authentication__wrapper').remove();
-      await this.initSettings();
-      await this.renderSprintGame();
-      await this.renderStatistics();
-      await this.renderSpeakItGame();
-      await this.renderVocabulary(this.state.user);
+      await this.initAuxilaryComponents();
+      await this.selectPageRenderingByPageCode(this.state.currentPage);
     } catch (error) {
       Authentication.createErrorBlock(error.message);
     }
   }
 
-  async renderSavannahGame() {
-    this.savannahGame = new SavannahGame(this.createMiniGameParameterObject());
-    await this.savannahGame.render();
-  }
-
   async checkIsUserAuthorized() {
     const savedUserData = localStorage.getItem('user-data');
     try {
+      this.preloader = new Preloader();
       this.preloader.render();
       this.preloader.show();
 
@@ -245,10 +455,8 @@ class App {
         refreshToken: JSON.parse(savedUserData).refreshToken,
         name: data.name,
       };
-      await this.initSettings();
-      await this.renderSprintGame();
-      await this.renderStatistics();
-      await this.renderMainGame();
+      await this.initAuxilaryComponents();
+      await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.preloader.hide();
     } catch (error) {
       const parsedData = JSON.parse(savedUserData);
@@ -258,26 +466,10 @@ class App {
         ...this.state.user,
         ...data,
       };
-      await this.initSettings();
-      await this.renderSprintGame();
-      await this.renderStatistics();
+      await this.initAuxilaryComponents();
+      await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.preloader.hide();
-      await this.renderMainGame();
     }
-  }
-
-  async renderMainGame() {
-    this.mainGame = new MainGame(this.createMiniGameParameterObject());
-    await this.mainGame.render('.main-page__content');
-  }
-  async auditiongame(userState){
-    const audition = new AuditionGame(userState, this.container);
-    await audition.render(5,5);
-  }	 
-
-  async renderSprintGame() {
-    this.sprint = new SprintGame(this.createMiniGameParameterObject());
-    await this.sprint.SprintRender('.main-page__content');
   }
 
   activateToggleAuthentication() {
@@ -289,8 +481,8 @@ class App {
         this.renderAuthenticationBlock(typeToInit);
         target.dataset.authenticationType = typeToInit;
         target.textContent = authenticationType === 'registration'
-          ? REGISTRATION_TITLE
-          : AUTHORIZATION_TITLE;
+          ? AUTHORIZATION_TITLE
+          : REGISTRATION_TITLE;
       }
     });
   }
@@ -307,4 +499,3 @@ class App {
 }
 
 export default App;
-

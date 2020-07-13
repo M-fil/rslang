@@ -1,5 +1,5 @@
 .exit-button {
-  z-index: 1000;
+  cursor: pointer;
   display: none;
   width: 35px;
   height: 35px;
@@ -11,7 +11,6 @@
 }
 
 .exit-button:hover {
-  cursor: pointer;
   transform: rotateX(180deg);
   opacity: 1;
 }

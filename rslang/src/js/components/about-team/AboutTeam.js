@@ -46,22 +46,40 @@ const {
 } = aboutTeam;
 
 export default class AboutTeam {
-  constructor() {
-    const mainContent = document.querySelector('.main-content');
-    const wrapper = create('div', 'team-wrapper', '', mainContent);
-    this.container = create('div', 'about-team-container', '', wrapper);
-    this.backButton = create('div', '', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
-    this.teamTitle = create('h3', 'team_title', TEAM, this.container);
+  constructor(elementQuery) {
+    const mainContent = document.querySelector(elementQuery);
+    this.wrapper = create('div', 'about-team__wrapper', '', mainContent);
+    this.container = create('div', 'about-team-container', '', this.wrapper);
+    this.backButton = create('div', 'about-team__back-button', BACK_BUTTON, this.container, ['id', 'button-go-to-main-page']);
+    this.teamTitle = create('div', 'team_title', TEAM, this.container);
     this.teamBlock = create('div', 'team_block', '', this.container);
   }
 
   render() {
-    this.createAboutPerson(NAME_FILANOVICH, WORK_FILANOVICH, PHOTO_FILANOVICH, GIT_FILANOVICH, VK_FILANOVICH, LINKEDIN_FILANOVICH);
-    this.createAboutPerson(NAME_LATUSHKINA, WORK_LATUSHKINA, PHOTO_LATUSHKINA, GIT_LATUSHKINA, VK_LATUSHKINA, LINKEDIN_LATUSHKINA);
-    this.createAboutPerson(NAME_ANTONOV, WORK_ANTONOV, PHOTO_ANTONOV, GIT_ANTONOV, VK_ANTONOV, LINKEDIN_ANTONOV);
-    this.createAboutPerson(NAME_ZHDANOV, WORK_ZHDANOV, PHOTO_ZHDANOV, GIT_ZHDANOV, VK_ZHDANOV, LINKEDIN_ZHDANOV);
-    this.createAboutPerson(NAME_ANDREEV, WORK_ANDREEV, PHOTO_ANDREEV, GIT_ANDREEV, VK_ANDREEV, LINKEDIN_ANDREEV);
-    this.createAboutPerson(NAME_SHNIRKEVICH, WORK_SHNIRKEVICH, PHOTO_SHNIRKEVICH, GIT_SHNIRKEVICH, VK_SHNIRKEVICH, LINKEDIN_SHNIRKEVICH);
+    this.createAboutPerson(
+      NAME_FILANOVICH, WORK_FILANOVICH, PHOTO_FILANOVICH,
+      GIT_FILANOVICH, VK_FILANOVICH, LINKEDIN_FILANOVICH,
+    );
+    this.createAboutPerson(
+      NAME_LATUSHKINA, WORK_LATUSHKINA, PHOTO_LATUSHKINA,
+      GIT_LATUSHKINA, VK_LATUSHKINA, LINKEDIN_LATUSHKINA,
+    );
+    this.createAboutPerson(
+      NAME_ANTONOV, WORK_ANTONOV, PHOTO_ANTONOV,
+      GIT_ANTONOV, VK_ANTONOV, LINKEDIN_ANTONOV,
+    );
+    this.createAboutPerson(
+      NAME_ZHDANOV, WORK_ZHDANOV, PHOTO_ZHDANOV,
+      GIT_ZHDANOV, VK_ZHDANOV, LINKEDIN_ZHDANOV,
+    );
+    this.createAboutPerson(
+      NAME_ANDREEV, WORK_ANDREEV, PHOTO_ANDREEV,
+      GIT_ANDREEV, VK_ANDREEV, LINKEDIN_ANDREEV,
+    );
+    this.createAboutPerson(
+      NAME_SHNIRKEVICH, WORK_SHNIRKEVICH, PHOTO_SHNIRKEVICH,
+      GIT_SHNIRKEVICH, VK_SHNIRKEVICH, LINKEDIN_SHNIRKEVICH,
+    );
   }
 
   createAboutPerson(name, work, photoSrc, gitLink, vkLink, linkedinLink) {

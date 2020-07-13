@@ -14,7 +14,7 @@
 }
 
 .daily-statistics {
-  @include font(2rem);
+  @include font(2rem, 2.5rem);
 
   color: $daily-statistics-text-color;
   background-color: $daily-statistics-background;
@@ -24,7 +24,7 @@
   flex-direction: column;
   align-items: center;
 
-  border: $daily-statistics-text-color;
+  border: 3px solid $daily-statistics-text-color;
   border-radius: 10px;
   width: 65vmax;
   height: 50vmin;
@@ -38,7 +38,7 @@
 
   @include media-mobile {
     width: 80vw;
-    @include font(1.7rem);
+    @include font(1.7rem, 2rem);
   }
 }
 
@@ -78,9 +78,14 @@
 
   padding: 5px 50px;
   color: $daily-statistics-text-color;
-  width: 100%;
+  width: fit-content;
 
   @include media-mobile {
     @include font(2rem);
+  }
+
+  &:hover {
+    background: $main-page-button-hover-color;
+    color: $main-page-text-color;
   }
 }

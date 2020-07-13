@@ -56,12 +56,13 @@ export default class EnglishPuzzle {
     this.painting = null;
   }
 
-  async start() {
+  async start(elementQuery) {
     await this.vocabulary.init();
     await this.statistics.init();
 
     const gameZone = new MainBlock();
     const startWindow = new StartWindow((this.startMenuButtonAction).bind(this));
+    startWindow.gameWindow.classList.add('english-puzzle__start-game-window');
     this.gameForm = gameZone.createMainForm();
     this.backData.closeButton.show();
     this.gameForm.appendChild(this.backData.closeButton.render());
@@ -74,9 +75,9 @@ export default class EnglishPuzzle {
 
     this.preloader.render();
 
-    [this.body] = document.getElementsByTagName('body');
+    const container = document.querySelector(elementQuery);
     this.wrapper = create('div', 'english-puzzle-wrapper', [this.startMenu, this.gameForm, this.resultForm]);
-    this.body.appendChild(this.wrapper);
+    container.appendChild(this.wrapper);
 
     this.backData.closeButton.addCloseCallbackFn((this.actionOnCloseButton).bind(this));
     this.actionsOnSupportButtons();
@@ -93,7 +94,7 @@ export default class EnglishPuzzle {
       this.dragAndDropActions();
       document.querySelector('.bonus-button').classList.remove('active-bonus');
     } catch (e) {
-      console.error(e);
+      this.preloader.hide();
     }
   }
 
@@ -102,7 +103,8 @@ export default class EnglishPuzzle {
     const lvl = getRandomInteger(0, GAME_BLOCK.gameLevels) + 1;
     switch (this.gameStatus) {
       case SELECT_OPTION_LEARNED_WORDS_VALUE:
-        this.words = this.vocabulary.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE);
+        this.words = this.vocabulary
+          .getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE);
         this.words = this.words.map((el) => el.optional.allData);
         this.painting = findPainting(lvl, this.page);
         viewElement([document.querySelector('.new-lvl-button_container')], []);
@@ -174,9 +176,9 @@ export default class EnglishPuzzle {
         ], [
           document.querySelector('.result-button'),
         ]);
-        this.gameStatus === SELECT_OPTION_LEARNED_WORDS_VALUE ? 
-          viewElement([document.querySelector('.repeat-button')], []) : 
-          viewElement([], [document.querySelector('.repeat-button')]);
+        this.gameStatus === SELECT_OPTION_LEARNED_WORDS_VALUE
+          ? viewElement([document.querySelector('.repeat-button')], [])
+          : viewElement([], [document.querySelector('.repeat-button')]);
       }
     }
   }
@@ -385,6 +387,8 @@ export default class EnglishPuzzle {
   }
 
   async actionOnCloseButton() {
+    this.backData.shortTermStatistics.removeEvents();
+    this.backData.closeButton.modalWindow.removeEvents();
     viewElement([this.gameForm], [this.startMenu]);
   }
 

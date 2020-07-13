@@ -3,6 +3,23 @@
   transition: 0.4s ease;
 }
 
+%arrow-down-button-transition {
+  transition: 0.3s ease-in-out;
+}
+
+%standard-button-transition {
+  transition: 0.3s ease;
+}
+
+%burger-menu-transition {
+  transition: all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-transition: all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+%speakit-button-transition {
+  transition: 0.5s ease all;
+}
+
 %main-game-button-transition {
   transition: 0.2s ease-in;
 }
@@ -11,16 +28,40 @@
   transition: all 300ms ease;
 }
 
+%setting-transition-for-button-before {
+  transition: all 0ms ease;
+}
+
+%setting-transition-for-button-before {
+  transition: all 0ms ease;
+}
+
+%setting-transition-for-button-hover-before {
+  transition: all 300ms Wease;
+}
+
+%modal-window-button-hover {
+  transition: all 300ms ease;
+}
+
+%modal-window-button-hover {
+  transition: all 300ms ease;
+}
+
 %start-window-start-button-before-transition {
   transition: all 0ms ease;
 }
 
-%start-window-start-button-before-hover-transition {
+%modal-window-button-before {
+  transition: all 0ms ease;
+}
+
+%modal-window-button-before-hover {
   transition: all 300ms ease;
 }
 
-%close-button-transition {
-  transition: all 300ms;
+%start-window-start-button-before-hover-transition {
+  transition: all 300ms ease;
 }
 
 %vocabulary-header-button-transition {
@@ -29,6 +70,10 @@
 
 %vocabulary-header-button-before-transition {
   transition: 0.5s;
+}
+
+%authentication-button-transition {
+  transition: all 300ms ease;
 }
 
 %vocabulary-word-item-transition {
@@ -41,6 +86,10 @@
 
 %vocabulary-audio-icon-transition {
   transition: all 0.5s;
+}
+
+%start-window-start-button-before-hover-transition {
+  transition: all 300ms ease;
 }
 
 %vocabulary-exit-button-transition {
@@ -59,12 +108,16 @@
   transition: all 300ms ease;
 }
 
-%close-button-transition {
-  transition: all 300ms;
+%authentication-button-transition {
+  transition: all 300ms ease;
 }
 
-%modal-window-button-hover {
+%start-window-start-button-transition {
   transition: all 300ms ease;
+}
+
+%close-button-transition {
+  transition: all 300ms;
 }
 
 %modal-window-button-before {
@@ -74,15 +127,44 @@
 %start-window-start-button-before-hover-transition {
   transition: all 300ms ease;
 }
+
 %modal-window-button-hover {
   transition: all 300ms ease;
 }
 
-%modal-window-button-before {
+%start-window-start-button-before-transition {
   transition: all 0ms ease;
 }
 
-%close-button-transition {
+%start-window-start-button-before-hover-transition {
+  transition: all 300ms ease;
+}
+
+%vocabulary-exit-button-transition {
+  transition: all 300ms;
+}
+
+%statistics-tab-item-button-transition {
+  transition: 0.5s;
+}
+
+%short-statistics-audio-hover-transition {
+  transition: all 0.5s ease-in;
+}
+
+%start-window-start-button-transition {
+  transition: all 300ms ease;
+}
+
+%modal-window-button-hover {
+  transition: all 300ms ease;
+}
+
+%start-window-start-button-before-transition {
+  transition: all 0ms ease;
+}
+
+%start-window-start-button-before-hover-transition {
   transition: all 300ms;
 }
 
@@ -98,6 +180,10 @@
   transition: all 300ms ease;
 }
 
-%statistics-tab-item-button-transition {
-  transition: all 300ms ease;
+%promo-back-button-transition {
+  transition: all 0.5s;
+}
+
+%close-button-transition {
+  transition: all 300ms;
 }

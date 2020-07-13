@@ -45,7 +45,7 @@ class Vocabulary {
     Vocabulary.instance = this;
     this.state = {
       allUserWords: [],
-      currentVocabulary: WORDS_TO_LEARN_TITLE,
+      currentVocabulary: LEARNED_WORDS_TITLE,
       vocabularies: {
         wordsToLearn: [],
         learnedWords: [],
@@ -72,7 +72,7 @@ class Vocabulary {
     this.activateVocabularyHeaderButtons();
     this.activateAudioButtons();
     this.activateRestoreButtons();
-    Vocabulary.actionsOnListComponent();
+    this.actionsOnListComponent();
 
     return this.container;
   }
@@ -133,20 +133,20 @@ class Vocabulary {
   }
 
   async addWordToTheVocabulary(
-    word, vocabularyType = WORDS_TO_LEARN_TITLE, estimation = GOOD.text,
+    wordObject, vocabularyType = WORDS_TO_LEARN_TITLE, estimation = GOOD.text,
   ) {
     const { userId, token } = this.state.userState;
-    try {
-      const data = await this.createWordDataForBackend(word, estimation, vocabularyType);
-      const { wordId } = data.optional;
-      await updateUserWord(userId, wordId, data, token);
-      await this.sortWordsInVocabularies();
-    } catch (error) {
-      const data = await this.createWordDataForBackend(word, estimation, vocabularyType);
-      const { wordId } = data.optional;
-      await createUserWord(userId, wordId, data, token);
-      await this.sortWordsInVocabularies();
+    const { allUserWords } = this.state;
+    const wordIdToAdd = wordObject.id || wordObject._id;
+    const wordIdInBackendData = allUserWords.find((item) => item.wordId === wordIdToAdd);
+
+    const data = await this.createWordDataForBackend(wordObject, estimation, vocabularyType);
+    if (wordIdInBackendData) {
+      await updateUserWord(userId, wordIdToAdd, data, token);
+    } else {
+      await createUserWord(userId, wordIdToAdd, data, token);
     }
+    await this.sortWordsInVocabularies();
   }
 
   updateWords(words) {
@@ -180,8 +180,8 @@ class Vocabulary {
 
   renderInitialVocabulary() {
     const dictionary = this.settings.getSettingsByGroup('dictionary');
-    const { wordsToLearn } = this.state.vocabularies;
-    const vocabulary = new WordsToLearnVocabulary(wordsToLearn, dictionary);
+    const { learnedWords } = this.state.vocabularies;
+    const vocabulary = new LearnedWordsVocabulary(learnedWords, dictionary);
     this.renderVocabulary(vocabulary);
   }
 
@@ -190,21 +190,6 @@ class Vocabulary {
       .filter((word) => word.optional.vocabulary === vocabularyType);
     return (getNormalObject) ? wordsArr.map((word) => word.optional.allData) : wordsArr;
   }
-  getAllVocabulariesData(getNormalObjects = false) {
-   let vocabulariesWordsObject;
-    if (getNormalObjects) {
-      vocabulariesWordsObject = {
-        wordsToLearn: this.state.vocabularies.wordsToLearn.map((word) => word.optional.allData),
-        learnedWords: this.state.vocabularies.learnedWords.map((word) => word.optional.allData),
-        removedWords: this.state.vocabularies.removedWords.map((word) => word.optional.allData),
-        difficultWords: this.state.vocabularies.difficultWords.map((word) => word.optional.allData),
-      };
-    } else {
-      vocabulariesWordsObject = this.state.vocabularies;
-    }
-    return vocabulariesWordsObject;
-  }	  
-
 
   getAllVocabulariesData(getNormalObjects = false) {
     let vocabulariesWordsObject;
@@ -238,7 +223,7 @@ class Vocabulary {
   }
 
   activateVocabularyHeaderButtons() {
-    document.addEventListener('click', async (event) => {
+    this.container.addEventListener('click', async (event) => {
       const target = event.target.closest('.vocabulary__header-item');
       const targetVocabularyType = target && target.dataset.vocabularyType;
       if (target && targetVocabularyType !== this.state.currentVocabulary) {
@@ -282,7 +267,7 @@ class Vocabulary {
   }
 
   activateRestoreButtons() {
-    document.addEventListener('click', async (event) => {
+    this.container.addEventListener('click', async (event) => {
       const target = event.target.closest('.word-item__restore-button');
 
       if (target) {
@@ -327,7 +312,7 @@ class Vocabulary {
   }
 
   activateAudioButtons() {
-    document.addEventListener('click', (event) => {
+    this.container.addEventListener('click', (event) => {
       const target = event.target.closest('.word-item__audio');
       const { showAudioExample } = this.settings.getSettingsByGroup('dictionary');
 
@@ -351,8 +336,8 @@ class Vocabulary {
     return { targetWordObject, targetWordHTML: wordCardHTML || extraWordCardHTML };
   }
 
-  static actionsOnListComponent() {
-    document.addEventListener('click', (event) => {
+  actionsOnListComponent() {
+    this.container.addEventListener('click', (event) => {
       if (event.target.classList.contains('word-item__main')) {
         const parent = event.target.parentNode;
         event.target.classList.toggle('active-vocword-button');

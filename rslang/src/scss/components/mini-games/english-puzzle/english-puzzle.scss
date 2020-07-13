@@ -1,12 +1,7 @@
-* {
-    margin: 0 auto;
-}
-
 .english-puzzle-wrapper {
     width: 100vw;
     height: 100vh;
     min-width: 320px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .english-puzzle-wrapper .fas {
@@ -51,8 +46,9 @@
 .submit-button:after,
 .information-button:after,
 .game-button:after {
-    position: absolute;
     content: "";
+
+    position: absolute;
     width: 100%;
     height: 0;
     top: 0;
@@ -82,16 +78,16 @@
     top: 2px;
 }
 
-.start-game-window {
-    margin-top: 0;
-}
-
 .hidden-element {
     display: none;
 }
 
 .game-container {
     flex-direction: column;
+
+    & * {
+        margin: 0 auto;
+    }
 }
 
 .game-block {
@@ -153,8 +149,13 @@
 }
 
 .translate-sentense {
+    @include font(1.5rem, 2rem);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     text-align: center;
-    font-size: 1.5rem;
     width: 70%;
     height: 80%;
 }
@@ -398,6 +399,8 @@
     width: 100%;
     height: 20%;
     text-align: center;
+    line-height: 1.5rem;
+    margin-top: 2px;
 }
 
 .result-image {
@@ -445,6 +448,10 @@
 
 .painting-description {
     font-size: 1.6rem;
+}
+
+.english-puzzle__start-game-window {
+    width: 55%;
 }
 
 @media (max-width: 1270px) {

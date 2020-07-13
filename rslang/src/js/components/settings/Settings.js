@@ -12,7 +12,7 @@ import {
   checkEmail,
 } from '../../utils/validators';
 import ModalWindow from '../modal-window/modalwindow';
-import Preloader from '../preloader/preloader';
+import Preloader from '../preloader/Preloader';
 
 const SettingsConst = {
   differenceBetweenNewAndMax: 5,
