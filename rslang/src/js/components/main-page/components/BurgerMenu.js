@@ -31,13 +31,13 @@ class BurgerMenu extends Header {
 
       this.container = create('div', 'burger-menu');
       this.wrapper = create('div', 'burger-menu__wrapper', '', this.container);
+      this.wrapper.append(this.renderLogo());
       this.buttonsList = create('div', 'burger-menu__buttons-list', '', this.wrapper);
       this.renderHeaderButton(VOCABULARY_BUTTON_TEXT, VOCABULARY_CODE);
       this.renderHeaderButton(STATISTICS_BUTTON_TEXT, STATISTICS_CODE);
       this.renderHeaderButton(PROMO_BUTTON_TEXT, PROMO_CODE);
       this.renderHeaderButton(ABOUT_TEAM_TEXT, ABOUT_TEAM_CODE);
       this.renderHeaderButton(SETTINGS_BUTTON_TEXT, SETTINGS_CODE);
-      this.wrapper.append(this.renderLogo());
 
       return this.container;
     }

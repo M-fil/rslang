@@ -4,6 +4,10 @@
 
 .main-page__user-content {
   padding-top: 110px;
+
+  @include media-mobile {
+    padding-top: 78px;
+  }
 }
 
 #logout-modal {

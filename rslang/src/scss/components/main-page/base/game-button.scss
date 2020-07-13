@@ -1,15 +1,16 @@
 .main-page__game-button {
   position: relative;
 
-  padding: 3px 3px 20px 3px;
+  padding: 5px 5px 20px 5px;
   width: 250px;
-  background: $main-page-game-buttons-background;
+  background: $main-page-english-goals-background;
   margin-bottom: 50px;
   overflow: hidden;
+  border: 1.5px solid $main-page-header-border-color;
 
   &:hover {
     & .game-button__name {
-      color: $main-page-logour-hover-color;
+      color: $main-page-header-border-color;
     }
   }
 
@@ -28,7 +29,7 @@
   z-index: 100;
 
   &:hover {
-    color: $main-page-logour-hover-color;
+    opacity: 0;
     transform: scale(1.1);
 
     & ~ .game-button__description {
@@ -88,6 +89,7 @@
   opacity: 0;
   background: $main-page-game-buttons-background;
   overflow: auto;
+  text-align: left;
 
   &:hover {
     opacity: 1;
