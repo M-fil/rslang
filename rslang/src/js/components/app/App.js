@@ -314,7 +314,7 @@ class App {
   updateUserState(newUserData) {
     const { name, email } = newUserData;
 
-    this.mainPage.updateUserName(name || email);
+    this.mainPage.updateUserData(name, email);
     this.state.user = {
       ...this.state.user,
       name,

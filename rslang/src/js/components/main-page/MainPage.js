@@ -63,8 +63,14 @@ class MainPage {
     return this.HTML;
   }
 
-  updateUserName(userName) {
-    this.header.userNameHTML.textContent = userName;
+  updateUserData(userName, userEmail) {
+    const userInfoTitle = userName
+      ? `${userName} / ${userEmail}`
+      : userEmail;
+    const userTextContent = userName || userEmail;
+
+    this.header.userNameHTML.textContent = userTextContent;
+    this.header.userNameHTML.title = userInfoTitle;
   }
 
   renderStartPageForMainPage() {
