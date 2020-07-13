@@ -527,7 +527,7 @@ const aboutTeam = {
 
 const promoPage = {
   PROMO_TITLE: 'Промо',
-  PROMO_VIDEO: 'https://www.youtube.com/embed/1XuOFg4p83o',
+  PROMO_VIDEO: 'https://www.youtube.com/embed/XDqg_2ExX4E',
   IMG_CHICKEN1: './src/assets/images/promo/chick1.svg',
   IMG_CHICKEN2: './src/assets/images/promo/chick2.svg',
   IMG_CHICKEN3: './src/assets/images/promo/chick4_1.svg',
