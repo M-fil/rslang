@@ -43,6 +43,8 @@ export default class Settings {
       await this.loadSettings();
 
       this.renderSettingsWindow();
+
+      this.modalWindow.addCallbackFnOnClose((this.renderSettingsWindow).bind(this));
       this.preloader.render();
     }
   }
@@ -70,7 +72,7 @@ export default class Settings {
       formSettings,
     ]);
 
-    this.modalWindow.setContent(div);
+    this.modalWindow.setContent(div, true);
   }
 
   static renderTabList() {
@@ -239,6 +241,7 @@ export default class Settings {
   closeSettingsWindow() {
     this.modalWindow.closeModal();
     this.clearResultsElement();
+    this.renderSettingsWindow();
   }
 
   clearResultsElement() {
