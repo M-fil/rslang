@@ -18,9 +18,8 @@ const {
 } = mainPageHeaderButtonConstants;
 
 class BurgerMenu extends Header {
-  constructor(userName) {
-    super(userName);
-    this.userName = userName;
+  constructor() {
+    super();
     this.burgerMenuHTML = document.querySelector('.burger-menu');
   }
 

@@ -23,9 +23,10 @@ const {
 } = mainPageHeaderButtonConstants;
 
 class Header {
-  constructor(userName) {
+  constructor(userName, userEmail) {
     this.HTML = null;
     this.userName = userName;
+    this.userEmail = userEmail;
     this.modalWindow = new LogoutModalWindow();
   }
 
@@ -51,9 +52,14 @@ class Header {
   }
 
   renderUserBlock(isLogOutToRender = true) {
+    const userInfoTitle = this.userName
+      ? `${this.userName} / ${this.userEmail}`
+      : this.userEmail;
+    const userTextContent = this.userName || this.userEmail;
+
     const container = create('div', 'header__user-block');
     const userIcon = create('i', 'fas fa-user header__user-icon');
-    this.userNameHTML = create('span', 'user-name__text', this.userName);
+    this.userNameHTML = create('span', 'user-name__text', userTextContent, null, ['title', userInfoTitle]);
     create('div', 'header__user-name', [userIcon, this.userNameHTML], container);
     if (isLogOutToRender) {
       this.logoutButton = create('button', 'header__logout-button', LOG_OUT_BUTTON_TEXT, container);

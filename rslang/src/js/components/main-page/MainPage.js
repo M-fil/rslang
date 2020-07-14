@@ -37,15 +37,16 @@ const {
 } = mainPageUrls;
 
 class MainPage {
-  constructor(userName) {
+  constructor(userName, userEmail) {
     this.HTML = null;
     this.userName = userName;
+    this.userEmail = userEmail;
   }
 
   render() {
     this.HTML = create('div', 'main-page');
-    this.burgerMenu = new BurgerMenu(this.userName);
-    this.header = new Header(this.userName);
+    this.burgerMenu = new BurgerMenu();
+    this.header = new Header(this.userName, this.userEmail);
     this.mainBlock = new MainBlock();
 
     document.body.append(this.burgerMenu.render());
@@ -62,8 +63,14 @@ class MainPage {
     return this.HTML;
   }
 
-  updateUserName(userName) {
-    this.header.userNameHTML.textContent = userName;
+  updateUserData(userName, userEmail) {
+    const userInfoTitle = userName
+      ? `${userName} / ${userEmail}`
+      : userEmail;
+    const userTextContent = userName || userEmail;
+
+    this.header.userNameHTML.textContent = userTextContent;
+    this.header.userNameHTML.title = userInfoTitle;
   }
 
   renderStartPageForMainPage() {
