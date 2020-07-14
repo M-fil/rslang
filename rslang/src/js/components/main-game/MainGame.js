@@ -148,7 +148,6 @@ class MainGame {
       await this.initStatistics();
 
       await this.getStatisticsData();
-      await this.setStatisticsData();
 
       this.state.userWords = await this.getAllUserWordsFromBackend();
       this.state.userWords = this.parseUserWordsData();
@@ -158,8 +157,11 @@ class MainGame {
       const { newWordsForToday } = JSON.parse(
         this.statistics.getGameStatistics(MAIN_GAME_CODE).additional,
       );
+      console.log(JSON.parse(this.statistics.getGameStatistics(MAIN_GAME_CODE).additional))
       learnedWords = learnedWords || 0;
 
+      console.log('learnedWords', learnedWords);
+      console.log('maxCardsPerDay', maxCardsPerDay);
       this.state.isWordsNormCompleted = learnedWords === maxCardsPerDay;
       if (learnedWords < maxCardsPerDay) {
         this.state.currentWordIndex = 0;
@@ -489,7 +491,6 @@ class MainGame {
     const wordCardInput = document.querySelector('.word-card__input');
     wordCardInput.focus();
     this.formControl.updateInputWidth(currentWordCard.word);
-    this.toggleWordCardTranslation();
   }
 
   renderMainGameHeader() {
@@ -723,20 +724,7 @@ class MainGame {
 
     translationSettingCheckbox.addEventListener('change', (event) => {
       this.state.gameSetting.isTranslationsEnabled = event.target.checked;
-      this.toggleWordCardTranslation();
     });
-  }
-
-  toggleWordCardTranslation() {
-    const { showTranslateWord } = this.settings.getSettingsByGroup('main');
-    if (!showTranslateWord) return;
-
-    const wordTransaltionHTML = document.querySelector('.word-card__translation');
-    if (this.state.gameSetting.isTranslationsEnabled) {
-      wordTransaltionHTML.classList.remove('word-card__translation_hidden');
-    } else {
-      wordTransaltionHTML.classList.add('word-card__translation_hidden');
-    }
   }
 
   increaseLongestSeriesValues() {
@@ -774,7 +762,7 @@ class MainGame {
         this.playAudiosInTurns(0);
       }
       if (isTranslationsEnabled) {
-        MainGame.toggleTranslations();
+        this.toggleTranslations();
       }
 
       if ((numberOfMistakes === 0 && trimedValue.length) || isForShowAnswerButton) {
@@ -871,6 +859,7 @@ class MainGame {
         }
 
         await this.checkIfDailyNormCompleted();
+        this.resetMistakesInCurrentWords();
         this.preloader.hide();
       }
     });
@@ -962,6 +951,7 @@ class MainGame {
     const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
     const difficultWordsLength = this.vocabulary.getVocabularyWordsLength(DIFFUCULT_WORDS_TITLE);
 
+    console.log('learnedWordsNumber', learnedWordsNumber);
     return (learnedWords === maxCardsPerDay && currentWordsType !== ONLY_DIFFICULT_WORDS)
       || (learnedWordsNumber === difficultWordsLength && currentWordsType === ONLY_DIFFICULT_WORDS);
   }
@@ -1087,21 +1077,8 @@ class MainGame {
       const target = event.target.closest('.main-game__show-answer-button');
 
       if (target) {
-        const { currentWordsType, currentWordIndex, currentWordsArray } = this.state;
-        const currentWord = currentWordsArray[currentWordIndex];
-
-        this.preloader.show();
         this.switchToTheNextWordCard(true);
-        if (currentWordsType !== ONLY_DIFFICULT_WORDS) {
-          this.removeWordFromTheAppropriateList(currentWord.id || currentWord._id);
-        }
-        await this.setStatisticsData();
-        await this.checkIfDailyNormCompleted();
-
-        this.state.difficultWordsState.mistakesInCurrentWord = 0;
-        this.state.stats.additional.mistakesInCurrentWord = 0;
         this.state.stats.additional.longestSeriesIndicator = 0;
-        this.preloader.hide();
       }
     });
   }
@@ -1176,6 +1153,7 @@ class MainGame {
     this.state.audio.pause();
 
     await this.checkIfDailyNormCompleted();
+    this.resetMistakesInCurrentWords();
     this.preloader.hide();
 
     setTimeout(() => {
@@ -1269,7 +1247,9 @@ class MainGame {
     });
   }
 
-  static toggleTranslations(isToShow = true) {
+  toggleTranslations(isToShow = true) {
+    const { showTranslateWord } = this.settings.getSettingsByGroup('main');
+    const wordTransaltionHTML = document.querySelector('.word-card__translation');
     const translationElements = document.querySelectorAll('[data-translation-element]');
 
     translationElements.forEach((element) => {
@@ -1279,6 +1259,10 @@ class MainGame {
         element.classList.add('hidden-translation');
       }
     });
+
+    if (!showTranslateWord && wordTransaltionHTML) {
+      wordTransaltionHTML.classList.add('hidden-translation');
+    }
   }
 
   playAudiosInTurns(number) {

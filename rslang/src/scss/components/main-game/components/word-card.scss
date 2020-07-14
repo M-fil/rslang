@@ -134,14 +134,11 @@
 
 .word-card__translation {
   opacity: 1;
+  text-align: center;
 
   &_hidden {
     opacity: 0;
   }
-}
-
-.word-card__translation {
-  text-align: center;
 }
 
 .word-card__transcription {

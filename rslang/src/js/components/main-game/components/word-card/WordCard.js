@@ -69,7 +69,7 @@ class WordCard {
 
     const container = create('div', 'word-card__word-info');
     const wordTranslationHTML = create(
-      'div', 'word-card__translation',
+      'div', 'word-card__translation hidden-translation',
       this.wordTranslate, null,
       ['translationElement', ''],
     );

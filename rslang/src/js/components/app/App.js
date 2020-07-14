@@ -93,6 +93,7 @@ class App {
       this.activateMainPageHandlers();
       await this.checkIsUserAuthorized();
     } catch (error) {
+      console.log(error);
       this.state.user = deafaultUserState;
       this.clearAppLocalData();
       this.renderAuthorizationBlock();
@@ -339,11 +340,17 @@ class App {
   }
 
   updateAuxilaryComponentsUserState(userState) {
-    this.settings.user = userState;
-    this.settings.initialized = false;
-    this.statistics.user = userState;
-    this.statistics.initialized = false;
-    this.vocabulary.state.userState = userState;
+    if (this.settings) {
+      this.settings.user = userState;
+      this.settings.initialized = false;
+    }
+    if (this.statistics) {
+      this.statistics.user = userState;
+      this.statistics.initialized = false;
+    }
+    if (this.vocabulary) {
+      this.vocabulary.state.userState = userState;
+    }
   }
 
   async initAuxilaryComponents() {
@@ -401,6 +408,7 @@ class App {
           await this.signInUser();
           this.preloader.hide();
         } catch (error) {
+          console.log(error);
           this.preloader.hide();
           Authentication.createErrorBlock(error.message);
         }
@@ -429,6 +437,7 @@ class App {
       await this.initAuxilaryComponents();
       await this.selectPageRenderingByPageCode(this.state.currentPage);
     } catch (error) {
+      console.log(error);
       Authentication.createErrorBlock(error.message);
     }
   }
@@ -469,6 +478,7 @@ class App {
       await this.selectPageRenderingByPageCode(this.state.currentPage);
       this.preloader.hide();
     } catch (error) {
+      console.log(error);
       const parsedData = JSON.parse(savedUserData);
       const { userId, refreshToken } = parsedData;
       const data = await getRefreshToken(userId, refreshToken);
