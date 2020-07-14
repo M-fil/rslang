@@ -39,7 +39,6 @@ export default class SprintGame {
     this.closeButton = miniGameParameters.closeButton;
     this.shortTermStatistics = miniGameParameters.shortTermStatistics;
 
-    this.closeButton.exitButton.classList.add('sprint__exit-button');
     this.closeButton.addCloseCallbackFn((this.Home).bind(this));
     this.closeButton.addExitButtonClickCallbackFn((this.pauseGame).bind(this));
     this.closeButton.addCancelCallbackFn((this.pauseGame).bind(this));

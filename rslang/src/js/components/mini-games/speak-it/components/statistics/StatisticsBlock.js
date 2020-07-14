@@ -9,17 +9,6 @@ const {
 } = speakItConstants;
 
 export default class StatisticsBlock extends ShortTermStatistics {
-  constructor() {
-    super();
-    this.exists = false;
-
-    if (!this.exists) {
-      this.modal.append(this.renderButtons());
-      this.modalClose.setAttribute('disabled', 'disabled');
-      this.exists = true;
-    }
-  }
-
   renderButtons() {
     this.buttonsBlock = create('div', 'speak-it-statistics__buttons');
     this.continueButton = create(

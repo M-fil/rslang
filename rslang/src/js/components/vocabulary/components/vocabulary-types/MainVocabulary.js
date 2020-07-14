@@ -31,9 +31,17 @@ class MainVocabulary {
   renderVocabularyTitle() {
     const titleContainer = create('div', 'vocabulary__title-container');
     create('div', 'vocabulary__title', this.vacabularyTitle, titleContainer);
-    create('div', 'vocabulary__words-count', `${NUMBER_OF_WORDS_TEXT}: ${this.words.length}`, titleContainer);
+    this.numberOfWordsText = create(
+      'div', 'vocabulary__words-count',
+      `${NUMBER_OF_WORDS_TEXT}: ${this.words.length}`,
+      titleContainer,
+    );
 
     return titleContainer;
+  }
+
+  updateVocabularyTextLength(newWordsLength) {
+    this.numberOfWordsText.innerHTML = `${NUMBER_OF_WORDS_TEXT}: ${newWordsLength}`;
   }
 
   static getEmptyVocabularyMessage() {

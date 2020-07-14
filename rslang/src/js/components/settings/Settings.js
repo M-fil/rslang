@@ -48,6 +48,7 @@ export default class Settings {
   }
 
   renderSettingsWindow() {
+    this.modalWindow.content.innerHTML = '';
     const tabsList = Settings.renderTabList();
 
     this.resultTextElement = create('span', 'settings-results');

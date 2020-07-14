@@ -29,7 +29,7 @@ export default class StatisticsChart {
     const data = [];
     for (let i = 0; i < arr.length; i += 1) {
       dateLabels.push(arr[i][0]);
-      data.push(arr[i][1]);
+      data.push(arr[i][1] || 0);
     }
     Chart.defaults.global.responsive = true;
     new Chart(ctx, {

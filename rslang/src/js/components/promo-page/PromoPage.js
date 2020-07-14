@@ -2,6 +2,7 @@ import create from '../../utils/сreate';
 import { promoPage } from '../../constants/constants';
 
 const {
+  REPO,
   PROMO_TITLE,
   PROMO_VIDEO,
   IMG_CHICKEN1,
@@ -32,6 +33,7 @@ const {
   FIND_PAIR_TEXT,
   SPRINT,
   SPRINT_TEXT,
+  REPO_TEXT,
 } = promoPage;
 
 export default class PromoPage {
@@ -47,6 +49,11 @@ export default class PromoPage {
   render() {
     this.promoVideo = create('iframe', '', '', this.promoBlock);
     this.promoVideo.src = PROMO_VIDEO;
+
+    this.repoBlock = create('div', 'promo_block-block', '', this.promoBlock);
+    this.repoLink = create('a', 'promo_title-blocks', REPO_TEXT, this.repoBlock);
+    this.repoLink.href = REPO;
+    this.repoLink.target = '_blank';
 
     this.advantagesBlock = create('div', 'promo_block-block', '', this.promoBlock);
     PromoPage.createBlocks(this.advantagesBlock, ADVANTAGES, ADVANTAGES_TEXT);

@@ -77,8 +77,6 @@ export default class SpeakIt {
       isMicroDisabled: true,
       userState: this.userState,
     };
-    this.recognition.addEventListener('end', this.recognition.start);
-    this.recognition.start();
   }
 
   async run() {
@@ -92,13 +90,11 @@ export default class SpeakIt {
   activateAllHanlders() {
     this.startGame();
     this.wordCardClickEvent();
-    this.activateContinueButton();
     this.activateRestartButton();
     this.activateMicroButton();
     this.activateNavigation();
     this.activateStatisticsBlock();
     this.activateSkipButtons();
-    this.activateStatisticsButtons();
   }
 
   async renderStartGamePage() {
@@ -114,7 +110,30 @@ export default class SpeakIt {
     document.querySelector(this.elementQuery).append(this.startWindowContainer);
   }
 
+  resetGameState() {
+    this.state.correct = 0;
+    this.state.gameStarted = false;
+    this.state.isMicroDisabled = true;
+
+    this.currentArrayOfWords = [];
+    this.words = [];
+    this.skippedWords = [];
+    this.guessedWords = [];
+    this.learnedWords = [];
+    this.iDontKnowWords = [];
+  }
+
   async goToTheStartPageHandler() {
+    this.shortTermStatistics.modal.removeEventListener('click', this.continueButtonHandler.bind(this));
+    this.shortTermStatistics.modal.removeEventListener('click', this.newGameHandler.bind(this));
+    this.shortTermStatistics.render([], []);
+    this.shortTermStatistics.hide();
+
+    this.resetGameState();
+
+    this.recognition.removeEventListener('end', this.recognition.start);
+    this.recognition.removeEventListener('result', this.checkPronouncedWord.bind(this));
+    this.recognition.stop();
     this.shortTermStatistics.removeEvents();
     this.closeButton.modalWindow.removeEvents();
     const speakItMainHTML = document.querySelector('.speak-it__main');
@@ -123,20 +142,29 @@ export default class SpeakIt {
       speakItMainHTML.classList.remove('in-game');
       this.closeButton.exitButton.classList.remove('speak-it__exit-button');
       this.shortTermStatistics.buttonsBlock.remove();
-      this.shortTermStatistics.modalClose.removeAttribute('disabled');
       this.startWindow.gameWindow.remove();
       await this.renderStartGamePage();
     }
   }
 
   createMainContainerWrapper() {
-    const container = document.querySelector(this.elementQuery);
-    const wrapper = create('div', 'main-container__wrapper');
-    create('div', 'speak-it__main', wrapper, container);
+    const speakItMainHTML = document.querySelector('.speak-it__main');
+    if (!speakItMainHTML) {
+      const container = document.querySelector(this.elementQuery);
+      const wrapper = create('div', 'main-container__wrapper');
+      create('div', 'speak-it__main', wrapper, container);
+    }
   }
 
   async initMainGamePage() {
+    this.activateContinueButton();
+    this.activateStatisticsButtons();
+
+    this.shortTermStatistics.modal.append(this.shortTermStatistics.renderButtons());
     this.shortTermStatistics.addCallbackFnOnClose(this.goToTheStartPageHandler.bind(this));
+    this.recognition.addEventListener('end', this.recognition.start);
+    this.recognition.start();
+
     this.createMainContainerWrapper();
     const mainContainerWrapper = document.querySelector('.main-container__wrapper');
     this.startWindow.gameWindow.remove();
@@ -144,7 +172,7 @@ export default class SpeakIt {
     mainContainerWrapper.innerHTML = '';
     document.querySelector('.speak-it__main').classList.add('in-game');
 
-    mainContainerWrapper.append(create('div', 'score hidden'));
+    mainContainerWrapper.prepend(create('div', 'score hidden'));
     mainContainerWrapper.append(create('div', 'overlay hidden'));
     this.preloader.show();
 
@@ -410,74 +438,81 @@ export default class SpeakIt {
     this.recognition.grammars = recognitionList;
     this.recognition.maxAlternatives = 1;
 
-    this.recognition.addEventListener('result', async (event) => {
-      if (!this.state.gameStarted) return;
-      if (this.state.isMicroDisabled) return;
+    this.recognition.addEventListener('result', this.checkPronouncedWord.bind(this));
+  }
 
-      const transcript = Array.from(event.results)
-        .map((result) => result[0])
-        .map((result) => result.transcript)
-        .join('');
+  async checkPronouncedWord(event) {
+    if (!this.state.gameStarted) return;
+    if (this.state.isMicroDisabled) return;
 
-      const resultHTML = document.querySelector('.word-info__speech-recognition span');
-      const wordInfoHTML = document.querySelector('.game-page__word-info');
-      const scoreHTML = document.querySelector('.score');
-
-      if (resultHTML) {
-        resultHTML.textContent = transcript;
-      }
-      const pronouncedWords = transcript.trim().toLowerCase().split(' ');
-      const guessedWord = listOfWords.find((word) => pronouncedWords.includes(word));
-      const guessedWordObject = this.currentArrayOfWords
-        .find((word) => word.word.toLowerCase() === guessedWord);
-      const currentWordHTML = document
-        .querySelector(`[data-word="${(guessedWordObject && guessedWordObject.word) || ''}"]`);
-
-      if (
-        guessedWord && currentWordHTML
-        && !currentWordHTML.classList.contains('word-card_guessed')
-        && !currentWordHTML.classList.contains('word-card_skipped')
-      ) {
-        currentWordHTML.classList.add('word-card_guessed');
-        this.playWordAudio(CORRECT_AUDIO_PATH);
-        wordInfoHTML.remove();
-        const currentImage = `${WORDS_IMAGES_URL}${guessedWordObject.image}`;
-        const imageBlock = new ImageBlock(currentImage, guessedWord, '', false);
-        document.querySelector('.game-page').prepend(imageBlock.render());
-        resultHTML.textContent = guessedWord;
-
-        scoreHTML.textContent = `+${this.state.correct += 1}`;
-        scoreHTML.classList.remove('hidden');
-        this.guessedWords.push(guessedWordObject);
-        this.iDontKnowWords = this.iDontKnowWords
-          .filter((word) => (word.id || word._id) !== guessedWordObject.id);
-        this.shortTermStatistics.render(this.iDontKnowWords, this.guessedWords);
-
-        await this.checkIsGameEnded();
-      }
+    const listOfWords = this.currentArrayOfWords.map((word) => {
+      const item = word.word.trim().toLowerCase();
+      return item;
     });
+    const transcript = Array.from(event.results)
+      .map((result) => result[0])
+      .map((result) => result.transcript)
+      .join('');
+
+    const speakItMain = document.querySelector('.speak-it__main');
+    const resultHTML = speakItMain.querySelector('.word-info__speech-recognition span');
+    const wordInfoHTML = speakItMain.querySelector('.game-page__word-info');
+    const scoreHTML = speakItMain.querySelector('.score');
+
+    if (resultHTML) {
+      resultHTML.textContent = transcript;
+    }
+    const pronouncedWords = transcript.trim().toLowerCase().split(' ');
+    const guessedWord = listOfWords.find((word) => pronouncedWords.includes(word));
+    const guessedWordObject = this.currentArrayOfWords
+      .find((word) => word.word.toLowerCase() === guessedWord);
+    const currentWordHTML = document
+      .querySelector(`[data-word="${(guessedWordObject && guessedWordObject.word) || ''}"]`);
+
+    if (
+      guessedWord && currentWordHTML
+      && !currentWordHTML.classList.contains('word-card_guessed')
+      && !currentWordHTML.classList.contains('word-card_skipped')
+    ) {
+      currentWordHTML.classList.add('word-card_guessed');
+      this.playWordAudio(CORRECT_AUDIO_PATH);
+      wordInfoHTML.remove();
+      const currentImage = `${WORDS_IMAGES_URL}${guessedWordObject.image}`;
+      const imageBlock = new ImageBlock(currentImage, guessedWord, '', false);
+      document.querySelector('.game-page').prepend(imageBlock.render());
+      resultHTML.textContent = guessedWord;
+
+      scoreHTML.textContent = `+${this.state.correct += 1}`;
+      scoreHTML.classList.remove('hidden');
+      this.guessedWords.push(guessedWordObject);
+      this.iDontKnowWords = this.iDontKnowWords
+        .filter((word) => (word.id || word._id) !== guessedWordObject.id);
+      this.shortTermStatistics.render(this.iDontKnowWords, this.guessedWords);
+      this.shortTermStatistics.hide();
+
+      await this.checkIsGameEnded();
+    }
   }
 
   activateContinueButton() {
-    document.querySelector('.speak-it-statistics__buttons').addEventListener('click', (event) => {
+    this.continueButtonHandler = (event) => {
       const target = event.target.closest('.continue-button');
 
       if (target && this.shortTermStatistics) {
         this.shortTermStatistics.hide();
       }
-    });
+    };
+
+    this.shortTermStatistics.modal.addEventListener('click', this.continueButtonHandler.bind(this));
   }
 
   async checkIsGameEnded() {
     const numberOfCorrectWords = this.currentArrayOfWords.length - this.skippedWords.length;
 
     if (this.state.correct === numberOfCorrectWords) {
-      setTimeout(() => {
-        this.playWordAudio(SUCCESS_AUDIO_PATH);
-        this.shortTermStatistics.render(this.skippedWords, this.guessedWords);
-        this.shortTermStatistics.modalClose.removeAttribute('disabled');
-        this.shortTermStatistics.continueButton.classList.add('hidden');
-      }, 1000);
+      this.playWordAudio(SUCCESS_AUDIO_PATH);
+      this.shortTermStatistics.render(this.skippedWords, this.guessedWords);
+      this.shortTermStatistics.continueButton.classList.add('hidden');
       await this.addSkippedWordsToTheWordsToLearn();
       await this.statistics.saveGameStatistics(
         SPEAK_IT_GAME_CODE, this.guessedWords.length, this.skippedWords.length,
@@ -495,6 +530,7 @@ export default class SpeakIt {
       const targetValue = Number(options[target.selectedIndex].value);
       await this.setCollectionWordsData(targetValue);
       this.shortTermStatistics.render(this.iDontKnowWords, this.guessedWords);
+      this.shortTermStatistics.hide();
       this.preloader.hide();
     });
   }
@@ -543,7 +579,10 @@ export default class SpeakIt {
   }
 
   switchOnTrainingMode() {
-    document.querySelector('.word-info__image').src = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
+    const wordInfoImage = document.querySelector('.word-info__image');
+    if (wordInfoImage) {
+      wordInfoImage.src = DEAFAULT_SPEAKIT_WORD_IMAGE_URL;
+    }
     document.querySelector('.word-info__translation').textContent = '';
     document.querySelector('.word-info__speech-recognition span').textContent = '';
 
@@ -611,7 +650,7 @@ export default class SpeakIt {
   }
 
   activateStatisticsButtons() {
-    document.querySelector('.speak-it-statistics__buttons').addEventListener('click', async (event) => {
+    this.newGameHandler = async (event) => {
       const target = event.target.closest('.new-game-button');
 
       if (target && this.state.currentWordsType === SELECT_OPTION_WORDS_FROM_COLLECTIONS_VALUE) {
@@ -631,14 +670,15 @@ export default class SpeakIt {
         SpeakIt.removeNavigationHTML();
         this.renderNavigation(true);
       }
-    });
+    };
+    this.shortTermStatistics.modal.addEventListener('click', this.newGameHandler.bind(this));
   }
 
   activateRestartButton() {
     document.querySelector('.speak-it__main').addEventListener('click', (event) => {
       const target = event.target.closest('.speak-it__restart-button');
 
-      if (target) {
+      if (target && this.state.gameStarted) {
         this.switchOnTrainingMode();
       }
     });

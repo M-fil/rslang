@@ -7,7 +7,7 @@
 
   height: calc(100vh - 180px);
   padding-top: 25px;
-  background: $main-page-start-page-background;
+  background: $main-page-main-block-background;
 
   @include media-tablet {
     height: calc(100vh - 380px);
@@ -44,14 +44,20 @@
   }
 }
 
+.start-page__main-image-container {
+  @include media-mobile {
+    padding-top: 30px;
+  }
+}
+
 .start-page__main-image {
   @include media-tablet {
     width: 400px;
-    height: 300px;
+    height: 290px;
   }
 
   @include media-mobile {
-    width: 280px;
-    height: 200px;
+    width: 290px;
+    height: 210px;
   }
 }

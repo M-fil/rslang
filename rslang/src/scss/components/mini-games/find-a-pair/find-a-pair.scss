@@ -10,6 +10,7 @@
 }
 
 .find-a-pair__container {
+  position: relative;
   border: 1px solid $find-a-pair-border-color;
   border-radius: 15px;
   padding: 15px;
@@ -17,6 +18,10 @@
   margin: 0 auto;
   width: auto;
   max-width: $content-width;
+
+  & .exit-button {
+      top: 17px;
+  }
   @include media-tablet {
     min-width: 285px;
   }

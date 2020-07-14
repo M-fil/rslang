@@ -28,16 +28,16 @@
 		margin: 10%;
 		border: 5px solid white;
 		background: transparent;
-	}
+  }
+
+  & .exit-button {
+    top: 9px;
+    right: 30px;
+  }
 }
 
 .sprint__start-game-window {
 	width: 55%;
-}
-
-.sprint__exit-button {
-	top: 9px;
-	right: 30px;
 }
 
 .game-choice {
