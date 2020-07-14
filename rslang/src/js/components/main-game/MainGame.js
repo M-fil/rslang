@@ -617,6 +617,7 @@ class MainGame {
           break;
         }
         case ONLY_DIFFICULT_WORDS: {
+          this.resetDifficultWordsState();
           this.state.userWords = await this.getAllUserWordsFromBackend();
           this.state.userWords = this.parseUserWordsData();
           const difficultWordsLength = this.vocabulary
@@ -639,6 +640,26 @@ class MainGame {
       this.renderNextWordCard();
       this.progressBar.updateSize(completedWordsNumber, numberOfWords);
     });
+  }
+
+  resetMistakesInCurrentWords() {
+    this.state.difficultWordsState.mistakesInCurrentWord = 0;
+    this.state.stats.additional.mistakesInCurrentWord = 0;
+  }
+
+  resetDifficultWordsState() {
+    this.state.difficultWordsState.learnedWordsNumber = 0;
+    this.state.difficultWordsState.mistakesInCurrentWord = 0;
+  }
+
+  increaseLearnedWords() {
+    const { currentWordsType } = this.state;
+
+    if (currentWordsType === ONLY_DIFFICULT_WORDS) {
+      this.state.difficultWordsState.learnedWordsNumber += 1;
+    } else {
+      this.state.stats.learnedWordsToday += 1;
+    }
   }
 
   renderAgainWordCard() {
@@ -741,17 +762,15 @@ class MainGame {
           || (difficultWordsState.mistakesInCurrentWord > 0 && currentWordsType === ONLY_DIFFICULT_WORDS)
         ) {
           this.addWordToTheCurrentTraining();
+          this.resetMistakesInCurrentWords();
           this.state.stats.additional.longestSeriesIndicator += 1;
-          this.state.difficultWordsState.mistakesInCurrentWord = 0;
-          this.state.stats.additional.mistakesInCurrentWord = 0;
         } else {
           console.log('ELSE')
           this.increaseLongestSeriesValues();
           this.addWordToTheCorrect(currentWordId);
+          this.increaseLearnedWords();
           this.state.stats.additional.longestSeriesIndicator = 0;
-          this.state.stats.learnedWordsToday += 1;
 
-          this.state.difficultWordsState.learnedWordsNumber += 1;
           this.wordsSelectList.disable();
           userAnswerHTML.classList.remove('word-card__user-answer_translucent');
           this.updateProgressBar();
