@@ -228,6 +228,23 @@ const getAggregatedWordsByFilter = async (
   return content;
 };
 
+const getAggregatedWordById = async (userId, token, wordId) => {
+  const rawResponse = await fetch(
+    `${GET_USER_URL}${userId}/aggregatedWords/${wordId}`,
+    {
+      method: 'GET',
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    },
+  );
+
+  const content = await rawResponse.json();
+  return content;
+};
+
 const updateStatistics = async (userId, token, body) => {
   const rawResponse = await fetch(`${GET_USER_URL}${userId}/statistics`, {
     method: 'PUT',
@@ -343,4 +360,5 @@ export {
   getRefreshToken,
   updateUserStatistics,
   getUserStatistics,
+  getAggregatedWordById,
 };
