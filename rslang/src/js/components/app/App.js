@@ -339,7 +339,6 @@ class App {
   }
 
   updateAuxilaryComponentsUserState(userState) {
-    // document.querySelector('#settings_modal').remove();
     this.settings.user = userState;
     this.settings.initialized = false;
     this.statistics.user = userState;
