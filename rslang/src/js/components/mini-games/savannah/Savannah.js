@@ -187,7 +187,7 @@ export default class SavannahGame {
       disabledButton.classList.remove('word_error');
       disabledButton.disabled = false;
     });
-    this.closeButton.disabled(false);
+    this.closeButton.show();
     this.wordsTranslate.length = 0;
     this.num += 1;
     this.engBut.innerHTML = this.engRandomWords[this.num].word;
@@ -238,7 +238,6 @@ export default class SavannahGame {
         this.createStatistics();
       }
     } else {
-      this.correctWordNumber = 0;
       target.classList.add('word_error');
       this.errorWord();
     }
@@ -359,6 +358,7 @@ export default class SavannahGame {
   errorWord() {
     this.allLives = document.querySelectorAll('.live');
     this.error += 1;
+    this.correctWordNumber = 0;
     playAudio(AUDIO_ERROR, this.audio);
     this.rusBut.forEach((rusButton) => {
       if (rusButton.dataset.translate === this.engRandomWords[this.num].wordTranslate) {
@@ -387,7 +387,7 @@ export default class SavannahGame {
       const disabledButton = rusButton;
       disabledButton.disabled = true;
     });
-    this.closeButton.disabled(true);
+    this.closeButton.hide();
   }
 
   static changeDisplay(element, event) {
@@ -420,7 +420,6 @@ export default class SavannahGame {
       this.container.append(this.closeButton.render());
       this.closeButton.hide();
       this.error = 0;
-      this.closeButton.disabled(false);
     }
   }
 }
