@@ -312,7 +312,10 @@ class MainGame {
     const additionData = typeof statisticsData.additional === 'string'
       ? JSON.parse(statisticsData.additional)
       : statisticsData.additional;
-    if (!statisticsData.additional) {
+
+    console.log('additionData', additionData);
+
+    if (!additionData) {
       console.log('HERE setStatisticsData(false)');
       await this.setStatisticsData(false);
     } else {
@@ -375,7 +378,8 @@ class MainGame {
       );
     } else {
       await this.statistics.saveMainGameStatistics(
-        isIncrementPlayingCount, 0, 0, 0, mainGameAdditional, true,
+        isIncrementPlayingCount, 0, 0, learnedWordsToday,
+        mainGameAdditional, true,
       );
     }
   }
@@ -844,7 +848,10 @@ class MainGame {
         this.wordsSelectList.enable();
         this.renderNextWordCard();
         this.state.audio.pause();
-        continueButton.remove();
+        if (continueButton) {
+          console.log('CONTINUE BUTTON EXISTS');
+          continueButton.remove();
+        }
 
         await this.checkIfDailyNormCompleted();
         this.preloader.hide();
@@ -1067,8 +1074,21 @@ class MainGame {
       const target = event.target.closest('.main-game__show-answer-button');
 
       if (target) {
+        const { currentWordsType, currentWordIndex, currentWordsArray } = this.state;
+        const currentWord = currentWordsArray[currentWordIndex];
+
+        this.preloader.show();
         this.switchToTheNextWordCard(true);
+        if (currentWordsType !== ONLY_DIFFICULT_WORDS) {
+          this.removeWordFromTheAppropriateList(currentWord.id || currentWord._id);
+        }
         await this.setStatisticsData();
+        await this.checkIfDailyNormCompleted();
+
+        this.state.difficultWordsState.mistakesInCurrentWord = 0;
+        this.state.stats.additional.mistakesInCurrentWord = 0;
+        this.state.stats.additional.longestSeriesIndicator = 0;
+        this.preloader.hide();
       }
     });
   }
@@ -1120,10 +1140,19 @@ class MainGame {
   async renderWordAfterVocabularyButtonClick(
     target, vocbularyType, buttonText, activeButtonText,
   ) {
+    const { mistakesInCurrentWord } = this.state.stats.additional;
+    const { currentWordsType, currentWordIndex, currentWordsArray } = this.state;
+    const currentWord = currentWordsArray[currentWordIndex];
+
     this.preloader.show();
     this.toggleVocabularyButtons(false);
     target.textContent = activeButtonText;
     const buttonType = this.getButtonTypeOfCurrentWord();
+
+    if (mistakesInCurrentWord === 0 && currentWordsType !== ONLY_DIFFICULT_WORDS) {
+      this.removeWordFromTheAppropriateList(currentWord.id || currentWord._id);
+    }
+
     await this.addWordToTheVocabulary(vocbularyType, buttonType);
     await this.setStatisticsData();
     await this.getStatisticsData();
