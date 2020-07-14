@@ -339,12 +339,17 @@ class App {
   }
 
   updateAuxilaryComponentsUserState(userState) {
-    // document.querySelector('#settings_modal').remove();
-    this.settings.user = userState;
-    this.settings.initialized = false;
-    this.statistics.user = userState;
-    this.statistics.initialized = false;
-    this.vocabulary.state.userState = userState;
+    if (this.settings) {
+      this.settings.user = userState;
+      this.settings.initialized = false;
+    }
+    if (this.statistics) {
+      this.statistics.user = userState;
+      this.statistics.initialized = false;
+    }
+    if (this.vocabulary) {
+      this.vocabulary.state.userState = userState;
+    }
   }
 
   async initAuxilaryComponents() {
