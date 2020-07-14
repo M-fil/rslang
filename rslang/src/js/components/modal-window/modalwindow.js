@@ -4,7 +4,7 @@ export default class ModalWindow {
   constructor(classNames, id, title) {
     this.id = id;
 
-    const spanButton = create('span', 'modal-block__close-button', 'X');
+    const spanButton = create('span', 'modal-block__close-button');
     spanButton.addEventListener('click', (this.clickHandler).bind(this));
     const spanTitle = create('span', 'modal-block__title', title);
     const navbar = create('div', 'modal-block__navbar', [spanTitle, spanButton]);

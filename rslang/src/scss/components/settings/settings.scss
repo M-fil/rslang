@@ -15,6 +15,49 @@
 .settings-results_wrong {
   color: $settings-result-text-wrong;
 }
+ 
+.settings__modal .modal-block__close-button {
+  position: absolute;
+  cursor: pointer;
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  right: 10px;
+  top: 5px;
+  opacity: 0.5;
+  @extend %close-button-transition;
+
+  &:before,
+  &:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 20px;
+    width: 2px;
+    background-color: $game-background-or-hover-for-buttons;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &:hover {
+    transform: rotateX(180deg);
+    opacity: 1;
+  }
+}
+
+.settings__modal .modal-block__navbar {
+  position: relative;
+}
+
+.settings__modal .modal-block__title {
+  font-size: 1.8rem;
+}
 
 .settings-tabs-list {
   list-style: none;
@@ -40,6 +83,8 @@
 .settings-tabs-list__item_active {
   width: 120px;
   text-align: center;
+  background-color: $settings-background-or-hover-for-buttons;
+  color: $settings-active-link-text-color;
 }
 
 .settings-tabs__item {

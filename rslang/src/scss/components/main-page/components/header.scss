@@ -11,7 +11,7 @@
   z-index: 1000;
   
   background: $main-gage-header-background;
-  border-bottom: 1px solid $main-page-border-color;
+  border-bottom: 3px solid $main-page-header-border-color;
 
   @include media-tablet {
     justify-content: flex-end;
@@ -19,6 +19,7 @@
 
   @include media-mobile {
     align-items: flex-start;
+    height: 55px;
   }
 
   & .main-page__logo {
