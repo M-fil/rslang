@@ -1,6 +1,6 @@
 import create from '../../utils/сreate';
 import {
-  settingsText,
+  settingsConstants,
 } from '../../constants/constants';
 import {
   saveUserData,
@@ -33,7 +33,7 @@ export default class Settings {
     Settings.instance = this;
     this.initialized = false;
 
-    this.modalWindow = new ModalWindow('settings__modal', 'settings_modal', settingsText.title);
+    this.modalWindow = new ModalWindow('settings__modal', 'settings_modal', settingsConstants.title);
     this.preloader = new Preloader();
   }
 
@@ -74,10 +74,10 @@ export default class Settings {
   }
 
   static renderTabList() {
-    const tabProfile = create('li', 'settings-tabs-list__item settings-tabs-list__item_active', settingsText.tabList.profile, undefined, ['tabId', 1], ['title', settingsText.tabList.profile]);
-    const tabMain = create('li', 'settings-tabs-list__item', settingsText.tabList.mainGame, undefined, ['tabId', 2], ['title', settingsText.tabList.mainGame]);
-    const tabDictionary = create('li', 'settings-tabs-list__item', settingsText.tabList.dictionary, undefined, ['tabId', 3], ['title', settingsText.tabList.dictionary]);
-    const tabFindAPair = create('li', 'settings-tabs-list__item', settingsText.tabList.findapair, undefined, ['tabId', 4], ['title', settingsText.tabList.findapair]);
+    const tabProfile = create('li', 'settings-tabs-list__item settings-tabs-list__item_active', settingsConstants.tabList.profile, undefined, ['tabId', 1], ['title', settingsConstants.tabList.profile]);
+    const tabMain = create('li', 'settings-tabs-list__item', settingsConstants.tabList.mainGame, undefined, ['tabId', 2], ['title', settingsConstants.tabList.mainGame]);
+    const tabDictionary = create('li', 'settings-tabs-list__item', settingsConstants.tabList.dictionary, undefined, ['tabId', 3], ['title', settingsConstants.tabList.dictionary]);
+    const tabFindAPair = create('li', 'settings-tabs-list__item', settingsConstants.tabList.findapair, undefined, ['tabId', 4], ['title', settingsConstants.tabList.findapair]);
     const ul = create('ul', 'settings-tabs-list', [tabProfile, tabMain, tabDictionary, tabFindAPair]);
 
     ul.addEventListener('click', Settings.openTabsHandler);
@@ -86,9 +86,9 @@ export default class Settings {
   }
 
   static renderProfileEditTab() {
-    const nameEl = Settings.createInputTabElement('text', 'userNewName', settingsText.tabs.profile.userName, '', false, undefined, ['autocomplete', 'off']);
-    const emailEL = Settings.createInputTabElement('email', 'userNewEmail', settingsText.tabs.profile.userEmail, '', false, undefined, ['autocomplete', 'off']);
-    const passwordEL = Settings.createInputTabElement('password', 'userNewPassword', settingsText.tabs.profile.userPassword, '', true, undefined, ['autocomplete', 'off']);
+    const nameEl = Settings.createInputTabElement('text', 'userNewName', settingsConstants.tabs.profile.userName, '', false, undefined, ['autocomplete', 'off']);
+    const emailEL = Settings.createInputTabElement('email', 'userNewEmail', settingsConstants.tabs.profile.userEmail, '', false, undefined, ['autocomplete', 'off']);
+    const passwordEL = Settings.createInputTabElement('password', 'userNewPassword', settingsConstants.tabs.profile.userPassword, '', true, undefined, ['autocomplete', 'off']);
 
     const div = create('div', 'settings-tabs__item settings-tabs__item_active', [nameEl, emailEL, passwordEL], undefined, ['tabId', 1]);
 
@@ -96,23 +96,23 @@ export default class Settings {
   }
 
   renderMainTab() {
-    const newCardsPerDay = Settings.createNumberTabElement('newMainCardsPerDay', settingsText.tabs.mainGame.newCardsPerDay, this.options.main.newCardsPerDay, false, (event) => {
+    const newCardsPerDay = Settings.createNumberTabElement('newMainCardsPerDay', settingsConstants.tabs.mainGame.newCardsPerDay, this.options.main.newCardsPerDay, false, (event) => {
       const maxCardsEl = document.querySelector('.settings-form__input[name=maxMainCardsPerDay]');
       const newCards = Number(event.target.value);
       const maxCardsMin = newCards + SettingsConst.differenceBetweenNewAndMax;
       maxCardsEl.setAttribute('min', maxCardsMin);
       if (Number(maxCardsEl.value) < (maxCardsMin)) maxCardsEl.value = maxCardsMin;
-    });
+    }, ['min', settingsConstants.minValues.newCardsPerDay]);
     const maxCardsMin = this.options.main.newCardsPerDay + SettingsConst.differenceBetweenNewAndMax;
     const maxCardsValue = (this.options.main.maxCardsPerDay < maxCardsMin)
       ? maxCardsMin
       : this.options.main.maxCardsPerDay;
-    const maxCardsPerDay = Settings.createNumberTabElement('maxMainCardsPerDay', settingsText.tabs.mainGame.maxCardsPerDay, maxCardsValue, false, undefined, ['min', maxCardsMin]);
-    const TranslateWord = Settings.createCheckboxTabElement('isMainShowTranslateWord', settingsText.tabs.mainGame.showTranslateWord, this.options.main.showTranslateWord, Settings.checkboxMainControllerHandler);
-    const WordMeaning = Settings.createCheckboxTabElement('isMainShowWordMeaning', settingsText.tabs.mainGame.showWordMeaning, this.options.main.showWordMeaning, Settings.checkboxMainControllerHandler);
-    const WordExample = Settings.createCheckboxTabElement('isMainShowWordExample', settingsText.tabs.mainGame.showWordExample, this.options.main.showWordExample, Settings.checkboxMainControllerHandler);
-    const Transcription = Settings.createCheckboxTabElement('isMainShowTranscription', settingsText.tabs.mainGame.showTranscription, this.options.main.showTranscription, Settings.checkboxMainControllerHandler);
-    const ImageAssociations = Settings.createCheckboxTabElement('isMainShowImageAssociations', settingsText.tabs.mainGame.showImageAssociations, this.options.main.showImageAssociations, Settings.checkboxMainControllerHandler);
+    const maxCardsPerDay = Settings.createNumberTabElement('maxMainCardsPerDay', settingsConstants.tabs.mainGame.maxCardsPerDay, maxCardsValue, false, undefined, ['min', maxCardsMin]);
+    const TranslateWord = Settings.createCheckboxTabElement('isMainShowTranslateWord', settingsConstants.tabs.mainGame.showTranslateWord, this.options.main.showTranslateWord, Settings.checkboxMainControllerHandler);
+    const WordMeaning = Settings.createCheckboxTabElement('isMainShowWordMeaning', settingsConstants.tabs.mainGame.showWordMeaning, this.options.main.showWordMeaning, Settings.checkboxMainControllerHandler);
+    const WordExample = Settings.createCheckboxTabElement('isMainShowWordExample', settingsConstants.tabs.mainGame.showWordExample, this.options.main.showWordExample, Settings.checkboxMainControllerHandler);
+    const Transcription = Settings.createCheckboxTabElement('isMainShowTranscription', settingsConstants.tabs.mainGame.showTranscription, this.options.main.showTranscription, Settings.checkboxMainControllerHandler);
+    const ImageAssociations = Settings.createCheckboxTabElement('isMainShowImageAssociations', settingsConstants.tabs.mainGame.showImageAssociations, this.options.main.showImageAssociations, Settings.checkboxMainControllerHandler);
     Settings.checkboxMainController(
       TranslateWord,
       WordMeaning,
@@ -121,10 +121,10 @@ export default class Settings {
       ImageAssociations,
     );
 
-    const ButtonShowAnswer = Settings.createCheckboxTabElement('isMainShowButtonShowAnswer', settingsText.tabs.mainGame.showButtonShowAnswer, this.options.main.showButtonShowAnswer);
-    const ButtonDelete = Settings.createCheckboxTabElement('isMainShowButtonDelete', settingsText.tabs.mainGame.showButtonShowDelete, this.options.main.showButtonDelete);
-    const ButtonHard = Settings.createCheckboxTabElement('isMainShowButtonHard', settingsText.tabs.mainGame.showButtonShowHard, this.options.main.showButtonHard);
-    const ButtonsEasyDifficult = Settings.createCheckboxTabElement('isMainShowButtons', settingsText.tabs.mainGame.showButtons, this.options.main.showButtons, (event) => {
+    const ButtonShowAnswer = Settings.createCheckboxTabElement('isMainShowButtonShowAnswer', settingsConstants.tabs.mainGame.showButtonShowAnswer, this.options.main.showButtonShowAnswer);
+    const ButtonDelete = Settings.createCheckboxTabElement('isMainShowButtonDelete', settingsConstants.tabs.mainGame.showButtonShowDelete, this.options.main.showButtonDelete);
+    const ButtonHard = Settings.createCheckboxTabElement('isMainShowButtonHard', settingsConstants.tabs.mainGame.showButtonShowHard, this.options.main.showButtonHard);
+    const ButtonsEasyDifficult = Settings.createCheckboxTabElement('isMainShowButtons', settingsConstants.tabs.mainGame.showButtons, this.options.main.showButtons, (event) => {
       const easyEl = document.querySelector('.settings-form__input[name=mainIntervalEasy]');
       const normalEl = document.querySelector('.settings-form__input[name=mainIntervalNormal]');
       const difficultEl = document.querySelector('.settings-form__input[name=mainIntervalDifficult]');
@@ -132,9 +132,9 @@ export default class Settings {
       normalEl.disabled = !event.target.checked;
       difficultEl.disabled = !event.target.checked;
     });
-    const intervalEasy = Settings.createNumberTabElement('mainIntervalEasy', settingsText.tabs.mainGame.mainIntervalEasy, this.options.main.intervalEasy, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', this.options.main.intervalNormal + SettingsConst.minStepBetweenEasyAndNormal]);
-    const intervalNormal = Settings.createNumberTabElement('mainIntervalNormal', settingsText.tabs.mainGame.mainIntervalNormal, this.options.main.intervalNormal, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', this.options.main.intervalDifficult + SettingsConst.minStepBetweenNormalAndDifficult]);
-    const intervalDifficult = Settings.createNumberTabElement('mainIntervalDifficult', settingsText.tabs.mainGame.mainIntervalDifficult, this.options.main.intervalDifficult, !this.options.main.showButtons, Settings.intervalLimitsHandler);
+    const intervalEasy = Settings.createNumberTabElement('mainIntervalEasy', settingsConstants.tabs.mainGame.mainIntervalEasy, this.options.main.intervalEasy, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', this.options.main.intervalNormal + SettingsConst.minStepBetweenEasyAndNormal]);
+    const intervalNormal = Settings.createNumberTabElement('mainIntervalNormal', settingsConstants.tabs.mainGame.mainIntervalNormal, this.options.main.intervalNormal, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', this.options.main.intervalDifficult + SettingsConst.minStepBetweenNormalAndDifficult]);
+    const intervalDifficult = Settings.createNumberTabElement('mainIntervalDifficult', settingsConstants.tabs.mainGame.mainIntervalDifficult, this.options.main.intervalDifficult, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', settingsConstants.minValues.intervalDifficult]);
 
     const div = create('div', 'settings-tabs__item', [
       newCardsPerDay,
@@ -157,12 +157,12 @@ export default class Settings {
   }
 
   renderDictionaryTab() {
-    const AudioExample = Settings.createCheckboxTabElement('isDictionaryShowAudioExample', settingsText.tabs.dictionary.audioExample, this.options.dictionary.showAudioExample);
-    const TranslateWord = Settings.createCheckboxTabElement('isDictionaryShowTranslateWord', settingsText.tabs.dictionary.translateWord, this.options.dictionary.showTranslateWord);
-    const WordMeaning = Settings.createCheckboxTabElement('isDictionaryShowWordMeaning', settingsText.tabs.dictionary.wordMeaning, this.options.dictionary.showWordMeaning);
-    const WordExample = Settings.createCheckboxTabElement('isDictionaryShowWordExample', settingsText.tabs.dictionary.wordExample, this.options.dictionary.showWordExample);
-    const Transcription = Settings.createCheckboxTabElement('isDictionaryShowTranscription', settingsText.tabs.dictionary.transcription, this.options.dictionary.showTranscription);
-    const ImageAssociations = Settings.createCheckboxTabElement('isDictionaryShowImageAssociations', settingsText.tabs.dictionary.imageAssociations, this.options.dictionary.showImageAssociations);
+    const AudioExample = Settings.createCheckboxTabElement('isDictionaryShowAudioExample', settingsConstants.tabs.dictionary.audioExample, this.options.dictionary.showAudioExample);
+    const TranslateWord = Settings.createCheckboxTabElement('isDictionaryShowTranslateWord', settingsConstants.tabs.dictionary.translateWord, this.options.dictionary.showTranslateWord);
+    const WordMeaning = Settings.createCheckboxTabElement('isDictionaryShowWordMeaning', settingsConstants.tabs.dictionary.wordMeaning, this.options.dictionary.showWordMeaning);
+    const WordExample = Settings.createCheckboxTabElement('isDictionaryShowWordExample', settingsConstants.tabs.dictionary.wordExample, this.options.dictionary.showWordExample);
+    const Transcription = Settings.createCheckboxTabElement('isDictionaryShowTranscription', settingsConstants.tabs.dictionary.transcription, this.options.dictionary.showTranscription);
+    const ImageAssociations = Settings.createCheckboxTabElement('isDictionaryShowImageAssociations', settingsConstants.tabs.dictionary.imageAssociations, this.options.dictionary.showImageAssociations);
 
     const div = create('div', 'settings-tabs__item', [AudioExample, TranslateWord, WordMeaning, WordExample, Transcription, ImageAssociations], undefined, ['tabId', 3]);
 
@@ -170,12 +170,12 @@ export default class Settings {
   }
 
   renderFindAPairTab() {
-    const delayBeforeClosing = Settings.createNumberTabElement('delayBeforeClosingCard', settingsText.tabs.findapair.delayBeforeClosingCard, (this.options.findapair.delayBeforeClosingCard / SettingsConst.convertToMilliseconds), false, undefined, ['min', 0.5], ['max', 5], ['step', 0.1]);
-    const cardTextOnStart = Settings.createCheckboxTabElement('showCardsTextOnStart', settingsText.tabs.findapair.showCardsTextOnStart, this.options.findapair.showCardsTextOnStart, (event) => {
+    const delayBeforeClosing = Settings.createNumberTabElement('delayBeforeClosingCard', settingsConstants.tabs.findapair.delayBeforeClosingCard, (this.options.findapair.delayBeforeClosingCard / SettingsConst.convertToMilliseconds), false, undefined, ['min', 0.5], ['max', 5], ['step', 0.1]);
+    const cardTextOnStart = Settings.createCheckboxTabElement('showCardsTextOnStart', settingsConstants.tabs.findapair.showCardsTextOnStart, this.options.findapair.showCardsTextOnStart, (event) => {
       const elem = document.querySelector('.settings-form__input[name=showingCardsTime]');
       elem.disabled = !event.target.checked;
     });
-    const showingCardsTime = Settings.createNumberTabElement('showingCardsTime', settingsText.tabs.findapair.showingCardsTime, (this.options.findapair.showingCardsTime / SettingsConst.convertToMilliseconds), !this.options.findapair.showCardsTextOnStart, undefined, ['min', 1], ['max', 59]);
+    const showingCardsTime = Settings.createNumberTabElement('showingCardsTime', settingsConstants.tabs.findapair.showingCardsTime, (this.options.findapair.showingCardsTime / SettingsConst.convertToMilliseconds), !this.options.findapair.showCardsTextOnStart, undefined, ['min', 1], ['max', 59]);
 
     const div = create('div', 'settings-tabs__item', [delayBeforeClosing, cardTextOnStart, showingCardsTime], undefined, ['tabId', 4]);
 
@@ -221,7 +221,7 @@ export default class Settings {
   }
 
   static createFormElement(classes, id, innerElements) {
-    const submitButton = create('input', 'settings-form__submit', undefined, undefined, ['type', 'submit'], ['value', settingsText.form.submitButton]);
+    const submitButton = create('input', 'settings-form__submit', undefined, undefined, ['type', 'submit'], ['value', settingsConstants.form.submitButton]);
 
     const form = create('form', classes, [
       ...innerElements,
@@ -411,7 +411,7 @@ export default class Settings {
           body.email = newUserEmail;
         } else {
           if (!errors) {
-            this.addWrongResultText(settingsText.results.wrongEmail);
+            this.addWrongResultText(settingsConstants.results.wrongEmail);
           }
           this.preloader.hide();
           errors = true;
@@ -423,7 +423,7 @@ export default class Settings {
           body.password = newUserPassword;
         } else {
           if (!errors) {
-            this.addWrongResultText(settingsText.results.wrongPassword);
+            this.addWrongResultText(settingsConstants.results.wrongPassword);
           }
           this.preloader.hide();
           errors = true;
@@ -434,13 +434,13 @@ export default class Settings {
         const res = await saveUserData(this.user.userId, this.user.token, body);
 
         if (res) {
-          this.addCorrectResultText(settingsText.results.dataSaved);
+          this.addCorrectResultText(settingsConstants.results.dataSaved);
           if (this.userChangesListenerFn) {
             body.password = undefined;
             this.userChangesListenerFn(body);
           }
         } else {
-          this.addWrongResultText(settingsText.results.dataNotSaved);
+          this.addWrongResultText(settingsConstants.results.dataNotSaved);
         }
       }
     }
@@ -493,9 +493,9 @@ export default class Settings {
     const res = await this.saveSettings();
 
     if (res) {
-      this.addCorrectResultText(settingsText.results.dataSaved);
+      this.addCorrectResultText(settingsConstants.results.dataSaved);
     } else {
-      this.addWrongResultText(settingsText.results.dataNotSaved);
+      this.addWrongResultText(settingsConstants.results.dataNotSaved);
     }
 
     this.preloader.hide();
