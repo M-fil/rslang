@@ -87,6 +87,7 @@
   position: relative;
   border-left: 1.5px solid $statistics-border-color;
   border-right: 1.5px solid $statistics-border-color;
+
   &::before {
     content: '';
     position: absolute;
@@ -95,6 +96,7 @@
     top: 0;
     left: 0;
   }
+
   &::after {
     content: '';
     position: absolute;
@@ -150,12 +152,13 @@
     width: 100%;
   }
 }
+
 @media only screen and (max-width: 475px) {
   .statistics__container {
     margin-top: 30px;
   }
 
-  .exit-button {
+  .statistics__exit-button {
     top: 40px;
   }
 
