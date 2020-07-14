@@ -157,11 +157,8 @@ class MainGame {
       const { newWordsForToday } = JSON.parse(
         this.statistics.getGameStatistics(MAIN_GAME_CODE).additional,
       );
-      console.log(JSON.parse(this.statistics.getGameStatistics(MAIN_GAME_CODE).additional))
       learnedWords = learnedWords || 0;
 
-      console.log('learnedWords', learnedWords);
-      console.log('maxCardsPerDay', maxCardsPerDay);
       this.state.isWordsNormCompleted = learnedWords === maxCardsPerDay;
       if (learnedWords < maxCardsPerDay) {
         this.state.currentWordIndex = 0;
@@ -951,7 +948,6 @@ class MainGame {
     const { maxCardsPerDay } = this.settings.getSettingsByGroup('main');
     const difficultWordsLength = this.vocabulary.getVocabularyWordsLength(DIFFUCULT_WORDS_TITLE);
 
-    console.log('learnedWordsNumber', learnedWordsNumber);
     return (learnedWords === maxCardsPerDay && currentWordsType !== ONLY_DIFFICULT_WORDS)
       || (learnedWordsNumber === difficultWordsLength && currentWordsType === ONLY_DIFFICULT_WORDS);
   }
