@@ -1322,7 +1322,7 @@ class MainGame {
         `${WORDS_AUDIOS_URL}${currentWord.audio}`,
         audioMeaning,
         audioExample,
-      ];
+      ].filter((item) => item !== null);
     }
   }
 }
