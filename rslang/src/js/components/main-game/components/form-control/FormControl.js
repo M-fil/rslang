@@ -34,6 +34,11 @@ class FormControll {
   }
 
   renderContinueButton() {
+    const continueButtonHTML = this.HTML.querySelector('.continue-button');
+    if (continueButtonHTML) {
+      continueButtonHTML.remove();
+    }
+
     const button = FormControll.renderButton('continue-button', CONTINUE_BUTTON);
     this.buttonsContainer.append(button);
   }

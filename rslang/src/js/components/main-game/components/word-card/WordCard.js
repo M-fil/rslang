@@ -28,14 +28,10 @@ class WordCard {
 
   render() {
     const {
-      showWordMeaning,
-      showWordExample,
       showImageAssociations,
     } = this.wordCardSettings;
 
-    if (showWordMeaning && showWordExample) {
-      this.sentencesBlock = this.renderSentences();
-    }
+    this.sentencesBlock = this.renderSentences();
     const imageBlock = create('div', 'word-card__image-block');
 
     if (showImageAssociations) {
@@ -49,7 +45,7 @@ class WordCard {
     this.HTML = create(
       'div', 'main-game__word-card',
       [
-        (showWordMeaning && showWordExample) ? this.sentencesBlock : '',
+        this.sentencesBlock,
         showImageAssociations ? imageBlock : '',
         this.renderWordInfo(),
       ],
@@ -73,7 +69,7 @@ class WordCard {
 
     const container = create('div', 'word-card__word-info');
     const wordTranslationHTML = create(
-      'div', 'word-card__translation',
+      'div', 'word-card__translation hidden-translation',
       this.wordTranslate, null,
       ['translationElement', ''],
     );
