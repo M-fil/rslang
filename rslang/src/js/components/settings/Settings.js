@@ -104,7 +104,7 @@ export default class Settings {
       const maxCardsMin = newCards + SettingsConst.differenceBetweenNewAndMax;
       maxCardsEl.setAttribute('min', maxCardsMin);
       if (Number(maxCardsEl.value) < (maxCardsMin)) maxCardsEl.value = maxCardsMin;
-    }, ['min', settingsConstants.minValues.newCardsPerDay]);
+    }, ['min', settingsConstants.limitValues.newCardsPerDay]);
     const maxCardsMin = this.options.main.newCardsPerDay + SettingsConst.differenceBetweenNewAndMax;
     const maxCardsValue = (this.options.main.maxCardsPerDay < maxCardsMin)
       ? maxCardsMin
@@ -136,7 +136,7 @@ export default class Settings {
     });
     const intervalEasy = Settings.createNumberTabElement('mainIntervalEasy', settingsConstants.tabs.mainGame.mainIntervalEasy, this.options.main.intervalEasy, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', this.options.main.intervalNormal + SettingsConst.minStepBetweenEasyAndNormal]);
     const intervalNormal = Settings.createNumberTabElement('mainIntervalNormal', settingsConstants.tabs.mainGame.mainIntervalNormal, this.options.main.intervalNormal, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', this.options.main.intervalDifficult + SettingsConst.minStepBetweenNormalAndDifficult]);
-    const intervalDifficult = Settings.createNumberTabElement('mainIntervalDifficult', settingsConstants.tabs.mainGame.mainIntervalDifficult, this.options.main.intervalDifficult, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', settingsConstants.minValues.intervalDifficult]);
+    const intervalDifficult = Settings.createNumberTabElement('mainIntervalDifficult', settingsConstants.tabs.mainGame.mainIntervalDifficult, this.options.main.intervalDifficult, !this.options.main.showButtons, Settings.intervalLimitsHandler, ['min', settingsConstants.limitValues.intervalDifficult]);
 
     const div = create('div', 'settings-tabs__item', [
       newCardsPerDay,
@@ -172,12 +172,17 @@ export default class Settings {
   }
 
   renderFindAPairTab() {
-    const delayBeforeClosing = Settings.createNumberTabElement('delayBeforeClosingCard', settingsConstants.tabs.findapair.delayBeforeClosingCard, (this.options.findapair.delayBeforeClosingCard / SettingsConst.convertToMilliseconds), false, undefined, ['min', 0.5], ['max', 5], ['step', 0.1]);
+    const delayBeforeClosing = Settings.createNumberTabElement('delayBeforeClosingCard', settingsConstants.tabs.findapair.delayBeforeClosingCard, (this.options.findapair.delayBeforeClosingCard / SettingsConst.convertToMilliseconds), false, undefined,
+      ['min', settingsConstants.limitValues.minDelayBeforeClosing],
+      ['max', settingsConstants.limitValues.maxDelayBeforeClosing],
+      ['step', settingsConstants.limitValues.stepDelayBeforeClosing]);
     const cardTextOnStart = Settings.createCheckboxTabElement('showCardsTextOnStart', settingsConstants.tabs.findapair.showCardsTextOnStart, this.options.findapair.showCardsTextOnStart, (event) => {
       const elem = document.querySelector('.settings-form__input[name=showingCardsTime]');
       elem.disabled = !event.target.checked;
     });
-    const showingCardsTime = Settings.createNumberTabElement('showingCardsTime', settingsConstants.tabs.findapair.showingCardsTime, (this.options.findapair.showingCardsTime / SettingsConst.convertToMilliseconds), !this.options.findapair.showCardsTextOnStart, undefined, ['min', 1], ['max', 59]);
+    const showingCardsTime = Settings.createNumberTabElement('showingCardsTime', settingsConstants.tabs.findapair.showingCardsTime, (this.options.findapair.showingCardsTime / SettingsConst.convertToMilliseconds), !this.options.findapair.showCardsTextOnStart, undefined,
+      ['min', settingsConstants.limitValues.minShowingCardsTime],
+      ['max', settingsConstants.limitValues.maxShowingCardsTime]);
 
     const div = create('div', 'settings-tabs__item', [delayBeforeClosing, cardTextOnStart, showingCardsTime], undefined, ['tabId', 4]);
 

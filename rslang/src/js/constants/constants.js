@@ -265,9 +265,14 @@ const settingsConstants = {
     wrongEmail: 'Введите корректный E-Mail',
     wrongPassword: 'Пароль должен содержать не менее 8 символов и должен включать как минимум одну прописную букву, одну заглавную букву, одну цифру и один спецсимвол',
   },
-  minValues: {
+  limitValues: {
     newCardsPerDay: 1,
     intervalDifficult: 1,
+    minDelayBeforeClosing: 0.5,
+    maxDelayBeforeClosing: 5,
+    stepDelayBeforeClosing: 0.1,
+    minShowingCardsTime: 1,
+    maxShowingCardsTime: 59,
   },
 };
 
