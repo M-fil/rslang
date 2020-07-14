@@ -45,10 +45,6 @@ export default class CloseButton {
     this.modalWindow.addCallbackFnOnClose(callbackFn);
   }
 
-  disabled(boolean) {
-    this.exitButton.disabled = boolean;
-  }
-
   static changeDisplay(element, event) {
     const el = element;
     if (event === 'none') {
