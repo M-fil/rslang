@@ -530,7 +530,7 @@ const aboutTeam = {
   `,
   WORK_SHNIRKEVICH: `${'<i class="fas fa-puzzle-piece"></i>'}  Мини-игра «English Puzzle»${'<br>'}
   ${'<i class="fas fa-paint-brush"></i>'}  Дизайн и адаптив для мини-игры «English Puzzle» и страницы «Словарь»${'<br>'}
-  ${'<i class="fas fa-palette"></i>'}  Стили и адптив для общих элементов мини-игр
+  ${'<i class="fas fa-palette"></i>'}  Стили и адаптив для общих элементов мини-игр
   `,
 };
 
