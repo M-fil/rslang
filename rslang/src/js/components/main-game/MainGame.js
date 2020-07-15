@@ -126,11 +126,13 @@ class MainGame {
     }
   }
 
-  addWordToTheCorrect(wordId) {
-    const { wordsWithMistakes } = this.state.stats.additional;
-    const findedWord = wordsWithMistakes.find((id) => id === wordId);
-    if (!findedWord) {
-      this.state.stats.additional.correctWords.push(wordId);
+  addWordToTheCorrect(wordId, isForShowAnswerButton = false) {
+    if (!isForShowAnswerButton) {
+      const { wordsWithMistakes } = this.state.stats.additional;
+      const findedWord = wordsWithMistakes.find((id) => id === wordId);
+      if (!findedWord) {
+        this.state.stats.additional.correctWords.push(wordId);
+      }
     }
   }
 
@@ -389,7 +391,7 @@ class MainGame {
     const wordsToRevise = userWords.filter((word) => {
       const { valuationDate, daysInterval } = word.optional;
       const elapsedTime = addDaysToTheDate(daysInterval);
-      const isNeedToRevise = elapsedTime < currentTime;
+      const isNeedToRevise = new Date(elapsedTime) < currentTime;
       return isNeedToRevise && valuationDate && daysInterval;
     });
 
@@ -457,8 +459,7 @@ class MainGame {
   }
 
   async renderDailyStatistics() {
-    const { correctAnswersNumber } = this.state.stats;
-    const { longestSeriesOfAnswers } = this.state.stats.additional;
+    const { longestSeriesOfAnswers, correctWords } = this.state.stats.additional;
     const { currentWordsType } = this.state;
 
     if (currentWordsType === ONLY_DIFFICULT_WORDS) {
@@ -468,7 +469,7 @@ class MainGame {
     } else {
       const { newWordsLengthForToday } = this.state.stats.additional;
       const { learnedWordsToday } = this.state.stats;
-      const percentOfCorrectAnswers = calculatePercentage(correctAnswersNumber, learnedWordsToday);
+      const percentOfCorrectAnswers = calculatePercentage(correctWords.length, learnedWordsToday);
       this.dailyStatistics = new DailyStatistics(
         learnedWordsToday, percentOfCorrectAnswers,
         newWordsLengthForToday, longestSeriesOfAnswers,
@@ -730,6 +731,7 @@ class MainGame {
     if (this.state.stats.additional.longestSeriesIndicator === 0) {
       if (currentLongestSeriesOfAnswers >= longestSeriesOfAnswers) {
         this.state.stats.additional.longestSeriesOfAnswers += 1;
+        this.state.stats.additional.currentLongestSeriesOfAnswers = 0;
       }
       this.state.stats.additional.currentLongestSeriesOfAnswers += 1;
       this.state.stats.correctAnswersNumber += 1;
@@ -780,7 +782,7 @@ class MainGame {
           this.state.stats.additional.longestSeriesIndicator += 1;
         } else {
           this.increaseLongestSeriesValues();
-          this.addWordToTheCorrect(currentWordId);
+          this.addWordToTheCorrect(currentWordId, isForShowAnswerButton);
           this.increaseLearnedWords();
           this.state.stats.additional.longestSeriesIndicator = 0;
 
@@ -1073,8 +1075,13 @@ class MainGame {
       const target = event.target.closest('.main-game__show-answer-button');
 
       if (target) {
+        const { currentWordIndex, currentWordsArray } = this.state;
+        const currentWordId = currentWordsArray[currentWordIndex].id
+          || currentWordsArray[currentWordIndex]._id;
+
+        this.state.stats.additional.longestSeriesIndicator += 1;
         this.switchToTheNextWordCard(true);
-        this.state.stats.additional.longestSeriesIndicator = 0;
+        this.addWordToTheMistaken(currentWordId);
       }
     });
   }

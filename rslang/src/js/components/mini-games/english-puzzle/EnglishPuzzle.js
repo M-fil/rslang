@@ -84,7 +84,9 @@ export default class EnglishPuzzle {
     cleanParentNode(this.startMenu);
     this.words = this.vocabulary.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE);
     const isShowLearnedWordsOption = this.words.length >= GAME_BLOCK.gameZoneRows;
-    const startBlock = this.startWindow.render(START_WINDOW.title, START_WINDOW.description, isShowLearnedWordsOption);
+    const startBlock = this.startWindow.render(
+      START_WINDOW.title, START_WINDOW.description, isShowLearnedWordsOption,
+    );
     this.startMenu.appendChild(startBlock);
   }
 
