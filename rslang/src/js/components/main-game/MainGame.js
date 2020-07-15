@@ -391,7 +391,7 @@ class MainGame {
     const wordsToRevise = userWords.filter((word) => {
       const { valuationDate, daysInterval } = word.optional;
       const elapsedTime = addDaysToTheDate(daysInterval);
-      const isNeedToRevise = elapsedTime < currentTime;
+      const isNeedToRevise = new Date(elapsedTime) < currentTime;
       return isNeedToRevise && valuationDate && daysInterval;
     });
 
