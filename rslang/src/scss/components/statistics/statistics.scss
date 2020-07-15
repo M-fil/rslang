@@ -1,0 +1,171 @@
+.statistics__wrapper {
+  height: fit-content;
+  min-height: calc(100vh - 20px);
+  background: $statistics-wrapper-gradient;
+  padding-top: 20px;
+}
+
+.statistics {
+  max-width: $content-width;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.statistics__exit-button {
+  display: block;
+}
+
+.statistics__container {
+  margin-top: 10px;
+  padding: 5px 0;
+}
+
+.statistics-selects__label {
+  padding: 5px;
+  @include font(1.9rem);
+
+  @include media-mobile {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin: 0 auto;
+  }
+}
+
+.statictics-tab-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.statictics-tab-list__item {
+  display: block;
+  position: relative;
+  color: $statistics-tab-item-color;
+  border: none;
+  text-transform: uppercase;
+  width: 185px;
+  @include font(1.5rem);
+  padding: 10px 0;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  @extend %statistics-tab-item-button-transition;
+
+  &:not(:first-child) {
+    margin-left: 10px;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: $statistics-tab-item-on-hover-color;
+      background: $statistics-tab-item-background-or-hover-for-buttons;
+    }
+  }
+}
+
+.statictics-tab-list_active {
+  font-weight: bold;
+  color: $statistics-tab-item-on-hover-color;
+  background: $statistics-tab-item-background-or-hover-for-buttons;
+}
+
+.statistics-tab__item {
+  display: none;
+}
+
+.statistics-tab_active {
+  display: block;
+}
+
+.statistics__game-statistic,
+.statistics__charts {
+  margin: 20px auto 0;
+  position: relative;
+  border-left: 1.5px solid $statistics-border-color;
+  border-right: 1.5px solid $statistics-border-color;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    border-bottom: 1.5px solid $statistics-border-color;
+    top: 0;
+    left: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    border-bottom: 1.5px solid $statistics-border-color;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.statistics-selects__select {
+  border: 1px solid $statistics-select-background-hover-color;
+  width: 130px;
+  border-radius: 15px;
+  padding: 0 5px;
+  @include font(1.5rem);
+  @media (hover: hover) {
+    &:hover {
+      border: 1px dashed $statistics-select-background-hover-color;
+    }
+  }
+}
+
+.statistics-short-term__param {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  padding: 5px;
+  @include font(2rem);
+}
+
+.statistics__charts{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+.statistics__game-statistic{
+  width: fit-content;
+}
+.mainChart{
+  width: 100%;
+  min-height: 250px;
+}
+
+.pieChart{
+  width: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+  .pieChart{
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 475px) {
+  .statistics__container {
+    margin-top: 30px;
+  }
+
+  .statistics__exit-button {
+    top: 40px;
+  }
+
+  .statistics__wrapper {
+    height: fit-content;
+    min-height: calc(100vh - 10px);
+    background: $statistics-wrapper-gradient;
+    padding-top: 10px;
+  }
+}

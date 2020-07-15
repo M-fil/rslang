@@ -1,0 +1,26 @@
+.lives {
+  @include media-tablet {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 115px;
+    right: 10px;
+  }
+}
+.sound {
+  @include media-mobile {
+    font-size: 2rem;
+  }
+}
+.add-lives-number {
+  @media (max-width: $savannah-tablet-width) {
+    top: 70px;
+  }
+}
+.add-lives-number {
+  @include media-mobile {
+    font-size: 3rem;
+    right: 5rem;
+    top: 55px;
+  }
+}

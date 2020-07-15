@@ -1,0 +1,91 @@
+
+.daily-statistics__overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  background: $daily-statistics-overlay-background;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.daily-statistics {
+  @include font(2rem, 2.5rem);
+
+  color: $daily-statistics-text-color;
+  background-color: $daily-statistics-background;
+  border: 3px solid $daily-statistics-text-color;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border: 3px solid $daily-statistics-text-color;
+  border-radius: 10px;
+  width: 65vmax;
+  height: 50vmin;
+  padding: 20px;
+  z-index: 500;
+
+  @include media-tablet {
+    width: 80vmin;
+    height: 50vmax;
+  }
+
+  @include media-mobile {
+    width: 80vw;
+    @include font(1.7rem, 2rem);
+  }
+}
+
+.daily-statistics__title {
+  @include font(3rem);
+
+  margin-bottom: 30px;
+  text-align: center;
+
+  @include media-mobile {
+    @include font(2.5rem);
+  }
+}
+
+.daily-statistics__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-grow: 1;
+
+  margin-bottom: 30px;
+}
+
+.daily-statistics__buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > *:not(:last-child) {
+    margin-bottom: 20px;
+  }
+}
+
+.daily-statistics__button, .daily-statistics__revise-button {
+  @include main-game-input;
+  @include font(2.5rem);
+
+  padding: 5px 50px;
+  color: $daily-statistics-text-color;
+  width: fit-content;
+
+  @include media-mobile {
+    @include font(2rem);
+  }
+
+  &:hover {
+    background: $main-page-button-hover-color;
+    color: $main-page-text-color;
+  }
+}

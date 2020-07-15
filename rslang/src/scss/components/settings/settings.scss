@@ -1,0 +1,160 @@
+.settings {
+  width: 270px;
+}
+
+.settings-results {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.settings-results_correct {
+  color: $settings-result-text-correct;
+}
+
+.settings-results_wrong {
+  color: $settings-result-text-wrong;
+}
+
+.settings__modal .modal-block__close-button {
+  position: absolute;
+  cursor: pointer;
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  right: 10px;
+  top: 5px;
+  opacity: 0.5;
+  @extend %close-button-transition;
+
+  &:before,
+  &:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 20px;
+    width: 2px;
+    background-color: $game-background-or-hover-for-buttons;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &:hover {
+    transform: rotateX(180deg);
+    opacity: 1;
+  }
+}
+
+.settings__modal .modal-block__navbar {
+  position: relative;
+}
+
+.settings__modal .modal-block__title {
+  font-size: 1.8rem;
+}
+
+.settings-tabs-list {
+  list-style: none;
+  display: flex;
+  justify-content: normal;
+  width: 320px;
+  padding: 0;
+}
+
+.settings-tabs-list__item {
+  display: block;
+  width: 50px;
+  padding: 10px 0;
+  @include font(1.5rem);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border: 1px solid $modal-window-border-color;
+  background-color: $settings-tabs-background;
+  cursor: pointer;
+}
+
+.settings-tabs-list__item_active {
+  width: 120px;
+  text-align: center;
+  background-color: $settings-background-or-hover-for-buttons;
+  color: $settings-active-link-text-color;
+}
+
+.settings-tabs__item {
+  display: none;
+  text-align: left;
+  max-height: 290px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.settings-tabs__item_active {
+  display: block;
+}
+
+.form-hidden {
+  display: none;
+}
+
+.settings-form__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 5px;
+  @include font(1.5rem, normal);
+}
+
+.settings-form__text {
+  width: fit-content;
+  max-width: 200px;
+}
+
+.settings-form__input {
+  height: 25px;
+}
+
+.settings-form__input[type=number] {
+  width: 45px;
+  height: 25px;
+  text-align: end;
+}
+
+.settings-form__input[type=checkbox] {
+  margin: 0;
+  height: 20px;
+  width: 20px;
+}
+
+.settings-form {
+  text-align: center;
+}
+
+.settings-form__submit {
+  position: relative;
+  padding: 10px;
+  min-width: 120px;
+  margin: 0 10px 0 10px;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  border: 1.5px solid $standard-border-color;
+  text-transform: uppercase;
+  transition: all 300ms ease;
+  box-shadow: 0px 4px 10px 2px rgba(black, 0.2);
+  z-index: 1;
+
+  @media(hover: hover) {
+    &:hover {
+      box-shadow: none;
+      background: $settings-background-or-hover-for-buttons;
+      color: $settings-text-on-hover-buttons;
+    }
+  }
+}

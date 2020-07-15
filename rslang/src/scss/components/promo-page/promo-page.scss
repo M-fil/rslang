@@ -1,0 +1,96 @@
+.promo-page__wrapper {
+  background-color: $promo-page-background;
+  padding-top: 10px;
+
+  & #button-go-to-main-page {
+    @include arrow-back-button;
+  }
+}
+.promo-page__back-button {
+  @include arrow-back-button;
+}
+.promo-page-container {
+  @include font(1rem, 1.2);
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto
+}
+.promo_title {
+  font-size: 3rem;
+  text-align: center;
+  margin: 10px auto;
+  color: $promo-black;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  border-bottom: 2px solid $promo-blocks-title;
+  width: fit-content;
+}
+.promo_block {
+  padding-bottom: 25px;
+  text-align: justify;
+}
+.promo_block-block {
+  margin-top: 10px;
+}
+.promo_title-blocks {
+  font-size: 2.2rem;
+  margin: 0;
+  color: $promo-blocks-title;
+}
+u {
+  color: $promo-blocks-title;
+}
+.promo-text {
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
+.promo_chicken-right,
+.promo_chicken-left {
+  height: 250px;
+  width: 200px;
+}
+.promo_chicken-left {
+  margin: 15px 32px 15px 0;
+  float: left;
+}
+.promo_chicken-right {
+  margin: 15px 0 15px 32px;
+  float: right;
+}
+.promo_games {
+  text-align: center;
+  font-size: 3rem;
+  color: $promo-game-title;
+  margin-bottom: 10px;
+  margin-top: 30px;
+}
+iframe {
+  width: 50%;
+  min-width: 255px;
+  height: 300px;
+  margin: 3% 0 0 25%;
+}
+
+.chicken {
+  @include media-tablet {
+    display: none;
+  }
+}
+.promo_block {
+  @include media-tablet {
+    text-align: left;
+  }
+}
+.promo_title-blocks {
+  @include media-tablet {
+    text-align: center;
+  }
+}
+iframe {
+  @include media-mobile {
+    width: 100%;
+    margin: 3% 0 0 0;
+    height: 200px;
+  }
+}

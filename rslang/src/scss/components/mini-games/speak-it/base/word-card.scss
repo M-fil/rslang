@@ -1,0 +1,129 @@
+.word-card {
+  @extend %speakit-button-transition;
+  position: relative;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  
+  border: 2px solid transparent;
+  background-color: $speak-it-standard-button-background;
+  color: $speak-it-standard-button-text-color;
+  box-shadow: 0 0 0 4px $speak-it-standard-button-background, 0 0 6px $speak-it-standard-button-text-color;
+
+  min-width: 15%;
+  padding: 5px 20px;
+  margin-bottom: 30px;
+  margin-right: 20px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @include media-tablet {
+    display: block;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  @include media-mobile {
+    width: 100% !important;
+    padding: 0;
+  }
+
+  &_guessed {
+    border-color: $speak-it-guessed-card-border-color;
+    box-shadow: 0 0 0 4px $speak-it-guessed-card-border-color;
+
+    & .word-card__skip-word-button {
+      display: none;
+    }
+  }
+
+  &_selected, &:hover {
+    border-color: $speak-it-standard-button-text-color;
+  }
+
+  &_skipped {
+    border-color: $speak-it-skipped-card-border-color;
+    box-shadow: 0 0 0 4px $speak-it-skipped-card-border-color;
+    opacity: 0.7;
+  }
+
+  &_in-game:hover {
+    border-color: $speak-it-standard-button-text-color;
+
+    & .word-card__skip-word-button {
+      display: block;
+    }
+  }
+  
+  &_skipped:hover {
+    & .word-card__skip-word-button {
+      display: none;
+    }
+  }
+
+  &_guessed:hover {
+    & .word-card__skip-word-button {
+      display: none;
+    }
+  }
+
+  & i {
+    font-size: 3rem;
+  }
+}
+
+.word-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-left: 15px;
+
+  @include media-mobile {
+    margin: 0;
+  }
+}
+
+.word-card__word {
+  @include font(2.5rem, 3rem);
+
+  margin: 0;
+}
+
+.word-card__transcription {
+  @include font(2rem, initial);
+
+  color: $speak-it-transcription-color;
+
+  @include media-mobile {
+    @include font(2rem, 2.5rem);
+  }
+}
+
+.word-card__skip-word-button {
+  @include font(1.5rem, 2rem);
+
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+  border: none;
+  outline: none;
+  color: $speak-it-standard-button-text-color;
+  background-color: $speak-it-standard-button-background;
+
+  &_start-page {
+    @include font(1.6rem, 2rem);
+    position: relative;
+    display: block;
+    margin: 5px;
+    box-shadow: 0 0 2px $speak-it-standard-button-text-color;
+  }
+
+  &:hover {
+    background-color: $speak-it-microphone-disabled-color;
+  }
+}

@@ -1,0 +1,52 @@
+main {
+
+}
+
+.hidden {
+  display: none !important;
+}
+
+.overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: $speak-it-overlay-background;
+
+  z-index: 5000;
+}
+
+.speak-it__main {
+  display: none;
+
+  min-height: 100vh;
+  margin: 0;
+  background: $speak-it-linear-gradient-background;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  &.in-game {
+    display: flex;
+  }
+}
+
+.main-container__wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  margin: 10px;
+}
+
+.speak-it__message {
+  @include font(6rem);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  text-shadow: 0 0 10px $speak-it-standard-text-shadow;
+  color: $speak-it-standard-button-text-color;
+}

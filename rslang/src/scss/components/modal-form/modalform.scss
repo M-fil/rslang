@@ -1,0 +1,52 @@
+.modal-block {
+  @include font(1.5rem);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: $modal-window-background;
+
+  &_top-layer {
+    top: 0;
+    left: 0;
+    z-index: 2000;
+  }
+}
+
+.modal-block_hidden {
+  display: none;
+}
+
+.modal-block__main {
+  border: 1px solid $modal-window-border-color;
+  border-radius: 15px;
+  background: $modal-window-main-background;
+  margin: 15vh auto 0;
+  padding: 5px;
+  width: 300px;
+}
+
+.modal-block__navbar {
+  display: flex;
+  justify-content: space-between;
+  text-align: right;
+  padding: 5px;
+}
+
+.modal-block__title {
+  width: 100%;
+  text-align: center;
+  @include font(1.5rem);
+  text-transform: uppercase;
+  text-decoration: blink;
+  text-decoration-color: $game-background-or-hover-for-buttons;
+  text-decoration-line: underline;
+}
+
+.modal-block__close-button {
+  cursor: pointer;
+}
+
+.modal-block__content {
+  padding: 5px;
+  width: max-content;
+}

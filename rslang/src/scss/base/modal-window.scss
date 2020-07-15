@@ -1,0 +1,116 @@
+.modal {
+  display: none;
+  position: fixed;
+  align-items: center;
+  z-index: 500;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $modal-window-background;
+}
+
+.modal_text {
+  background-color: $modal-window-main-background;
+  margin-top: 15vh;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  border: 1.5px solid $modal-window-border-color;
+  border-radius: 10px;
+  width: 35%;
+  height: fit-content;
+  overflow: auto;
+  text-align: center;
+  line-height: normal;
+}
+
+#closebutton .modal_text {
+  min-width: 260px;
+  max-height: 310px;
+}
+
+.modal_title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.modal_warning {
+  font-size: 1.9rem;
+  margin-bottom: 20px;
+}
+
+.modal_button {
+  @include disabled-button-styles;
+  @extend %modal-window-button-hover;
+
+  width: 53%;
+  margin-bottom: 10px;
+  position: relative;
+  padding: 10px;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  border: 1.5px solid $modal-window-border-color;
+  text-transform: uppercase;
+  box-shadow: 0px 4px 10px 2px rgba($modal-window-border-color, 0.2);
+  z-index: 1;
+
+  &:before{
+    position: absolute;
+    content: '';
+    width: 0%;
+    height: 100%;
+    background: $game-background-or-hover-for-buttons;
+    top: 0;
+    left: 50%;
+    z-index: -1;
+    @extend %modal-window-button-before;
+  }
+  
+  &:hover{
+    color: white; 
+    box-shadow:none;
+    &:before{
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      background: $game-background-or-hover-for-buttons;
+      top: 0;
+      left: 0%;
+      z-index: -1;
+      @extend %modal-window-button-before-hover;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  #closebutton .modal_text {
+    margin-top: 20%;
+    width: 40%
+  }
+}
+
+@media (max-width: 860px) {
+  #closebutton .modal_text {
+    width: 50%
+  }
+}
+
+@media (max-width: 690px) {
+  #closebutton .modal_text {
+    margin-top: 25%;
+    width: 60%;
+  }
+}
+
+@media (max-width: 480px) {
+  #closebutton .modal_text {
+    margin-top: 35%;
+  }
+
+  .modal_text {
+    width: auto;
+  }
+}

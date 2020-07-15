@@ -1,0 +1,35 @@
+.start-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: $speak-it-standard-button-text-color;
+  height: 100%;
+}
+
+.start-page__title {
+  @include font(9rem, 10.5rem, 900);
+
+  margin: 0;
+  margin-bottom: 40px;
+  text-shadow: 0 0 10px $speak-it-standard-text-shadow;
+}
+
+.start-page__explanation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-size: inherit;
+  line-height: 2rem;
+}
+
+.start-page__paragraph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
+}

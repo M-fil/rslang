@@ -1,0 +1,44 @@
+.speak-it-statistics__buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
+
+    @include media-tablet {
+      margin: 0;
+      margin-bottom: 10px;
+    }
+  }
+
+  @include media-tablet {
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 20px;
+    padding: 0 10px;
+  }
+}
+
+.speak-it-statistics__button {
+  @include font(4rem, 5rem);
+  
+  color: $speak-it-standard-button-text-color;
+  border: 3px solid $speak-it-standard-button-text-color;
+  background-color: $speak-it-standard-button-background;
+  border-radius: 20px;
+  padding: 5px 10px;
+  transition: 0.3s ease all;
+
+  &:hover {
+    color: $speak-it-incorrect-color;
+    border-color: $speak-it-incorrect-color;
+  }
+
+  @include media-tablet {
+    @include font(2rem, 2.5rem);
+
+    width: 60%;
+  }
+}
