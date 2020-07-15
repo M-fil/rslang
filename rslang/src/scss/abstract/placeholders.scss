@@ -35,10 +35,6 @@
   transition: all 300ms Wease;
 }
 
-%modal-window-button-hover {
-  transition: all 300ms ease;
-}
-
 %start-window-start-button-before-transition {
   transition: all 0ms ease;
 }
@@ -81,6 +77,10 @@
 
 %vocabulary-exit-button-transition {
   transition: all 300ms;
+}
+
+%modal-window-button-hover {
+  transition: all 300ms ease;
 }
 
 %close-button-transition {

@@ -15,7 +15,10 @@ export default class ModalWindow {
     this.background.addEventListener('click', (this.clickHandler).bind(this));
   }
 
-  setContent(body) {
+  setContent(body, clearOldContent = false) {
+    if (clearOldContent) {
+      this.content.innerHTML = '';
+    }
     this.content.append(body);
   }
 
@@ -32,6 +35,9 @@ export default class ModalWindow {
     if (modal) {
       modal.classList.add('modal-block_hidden');
       document.body.classList.remove('body_overflow-hidden');
+      if (this.callbackFnOnClose) {
+        this.callbackFnOnClose();
+      }
     }
   }
 
@@ -39,6 +45,12 @@ export default class ModalWindow {
     const elem = event.target;
     if (elem.classList.contains('modal-block') || elem.classList.contains('modal-block__close-button')) {
       this.closeModal();
+    }
+  }
+
+  addCallbackFnOnClose(callbackFn) {
+    if (typeof callbackFn === 'function') {
+      this.callbackFnOnClose = callbackFn;
     }
   }
 }

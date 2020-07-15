@@ -210,7 +210,7 @@ class App {
         await this.renderEnglishPuzzle();
         break;
       case audioGame.code:
-        this.renderAuditionGame();
+        await this.renderAuditionGame();
         break;
       case savannah.code:
         await this.renderSavannah();
@@ -271,13 +271,13 @@ class App {
     await this.englishPuzzle.start('.main-page__content');
   }
 
-  renderAuditionGame() {
+  async renderAuditionGame() {
     if (!this.auditionGame) {
       this.auditionGame = new AuditionGame(
         this.createMiniGameParameterObject(), this.container,
       );
     }
-    this.auditionGame.render();
+    await this.auditionGame.render();
   }
 
   async renderSavannah() {

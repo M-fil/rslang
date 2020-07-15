@@ -61,17 +61,13 @@ export default class EnglishPuzzle {
     await this.statistics.init();
 
     const gameZone = new MainBlock();
-    const startWindow = new StartWindow((this.startMenuButtonAction).bind(this));
-    startWindow.gameWindow.classList.add('english-puzzle__start-game-window');
+    this.startWindow = new StartWindow((this.startMenuButtonAction).bind(this));
+    this.startWindow.gameWindow.classList.add('english-puzzle__start-game-window');
     this.gameForm = gameZone.createMainForm();
     this.backData.closeButton.show();
     this.gameForm.appendChild(this.backData.closeButton.render());
-
-    this.words = this.vocabulary.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE);
-    const isShowLearnedWordsOption = this.words.length >= GAME_BLOCK.gameZoneRows;
-    this.startMenu = create('div', 'start-window', startWindow.render(
-      START_WINDOW.title, START_WINDOW.description, isShowLearnedWordsOption,
-    ));
+    this.startMenu = create('div', 'start-window');
+    await this.checkWordsCollections();
 
     this.preloader.render();
 
@@ -82,6 +78,14 @@ export default class EnglishPuzzle {
     this.backData.closeButton.addCloseCallbackFn((this.actionOnCloseButton).bind(this));
     this.actionsOnSupportButtons();
     this.controlButtonsAction();
+  }
+
+  async checkWordsCollections() {
+    cleanParentNode(this.startMenu);
+    this.words = this.vocabulary.getWordsByVocabularyType(vocabularyConstants.LEARNED_WORDS_TITLE);
+    const isShowLearnedWordsOption = this.words.length >= GAME_BLOCK.gameZoneRows;
+    const startBlock = this.startWindow.render(START_WINDOW.title, START_WINDOW.description, isShowLearnedWordsOption);
+    this.startMenu.appendChild(startBlock);
   }
 
   async getCardsAndStartGame(status = false) {
@@ -389,6 +393,7 @@ export default class EnglishPuzzle {
   async actionOnCloseButton() {
     this.backData.shortTermStatistics.removeEvents();
     this.backData.closeButton.modalWindow.removeEvents();
+    await this.checkWordsCollections();
     viewElement([this.gameForm], [this.startMenu]);
   }
 

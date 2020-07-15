@@ -29,7 +29,7 @@ export default class GameDataService {
       .filter((word) => word.partOfSpeech === auditionGameVariables.noun);
     const possibleAnswers = filteredWordsInfo.slice(0, auditionGameVariables.possibleWordsAmount);
     const mainWordToAsk = possibleAnswers[0];
-    if (this.vocabulary.length >= auditionGameVariables.possibleWordsAmount
+    if (this.vocabulary?.length >= auditionGameVariables.possibleWordsAmount
       && this.collection === wordsToLearnSelectConstants.SELECT_OPTION_LEARNED_WORDS_VALUE
       && this.collectionLength
     ) {
